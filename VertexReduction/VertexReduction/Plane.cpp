@@ -11,6 +11,7 @@ CPlane::~CPlane()
 {
 }
 
+
 //! Initializes the variables of the class.
 void CPlane::Init(CVector3D vPosition, float fWidth, float fHeight)
 {
@@ -41,4 +42,16 @@ void CPlane::Init(CVector3D vPosition, float fWidth, float fHeight)
 	TempPosition.X -= fWidth;
 	//! And we assign that final position to the last vertex (Bottom left).
 	m_Vertices[3].m_Position = TempPosition;
+}
+
+//! This function move one of the vertices of the plane.
+void CPlane::MoveVertex(int iIndex, CVector3D newPosition)
+{
+	//! First we need to check if the index is a number between 0 & 3.
+	if (iIndex <= 3 && iIndex >= 0)
+	{
+		//! Change the position of the given vertex
+		m_Vertices[iIndex].m_Position = newPosition;
+	}
+
 }
