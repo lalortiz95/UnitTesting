@@ -42,5 +42,13 @@ public:
 	 * @param float fHeight: The Height that will be asigned to the plane.
 	 */
 	void Init(CVector3D vPosition, float fWidth, float fHeight);
+
+	/**
+	 *	@brief This function changes the position of one vertex of this plane.
+	 *	@param int iIndex: The index of vertex in this plane that we want to move.
+	 *	@param CVector3D newPosition: The new position to move the vertex.
+	 */
+	void MoveVertex(int iIndex, CVector3D newPosition);
+
 };
 
