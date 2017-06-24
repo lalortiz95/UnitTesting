@@ -11,6 +11,7 @@ int main()
 	Plane.Init(Position, 25, 38);
 
 	//TODO: reducir lineas del isoline.
+	//
 
 	return 0;
 }
