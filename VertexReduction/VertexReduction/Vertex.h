@@ -39,8 +39,5 @@ public:
 
 	//! Function to realease memory and destroy objects.
 	void Destroy();
-	
-
-
 };
 
