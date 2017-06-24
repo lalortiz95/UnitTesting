@@ -110,6 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Isoline.cpp" />
     <ClCompile Include="Vector2D.cpp" />
     <ClCompile Include="Vector2DI.cpp" />
     <ClCompile Include="Vector3D.cpp" />
@@ -119,6 +120,7 @@
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Isoline.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vector2DI.h" />
     <ClInclude Include="Vector3D.h" />

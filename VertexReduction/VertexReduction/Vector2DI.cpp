@@ -41,7 +41,7 @@ CVector2DI CVector2DI::operator-(const CVector2DI& V) const
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-CVector2DI CVector2DI::operator*(float Scale) const
+CVector2DI CVector2DI::operator*(int Scale) const
 {
 	return CVector2DI(X * Scale, Y * Scale);
 }
@@ -56,7 +56,7 @@ CVector2DI CVector2DI::operator*(const CVector2DI& V) const
 /************************************************************************/
 /*                                                                      */
 /************************************************************************/
-CVector2DI CVector2DI::operator/(float Scale) const
+CVector2DI CVector2DI::operator/(int Scale) const
 {
 	return CVector2DI(X * Scale, Y * Scale);
 }

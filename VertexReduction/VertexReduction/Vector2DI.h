@@ -30,9 +30,9 @@ public:
 	/************************************************************************************************************************/
 	CVector2DI operator+(const CVector2DI& V) const;		//Suma
 	CVector2DI operator-(const CVector2DI& V) const;		//Resta
-	CVector2DI operator*(float Scale) const;				//Multiplicación (escalar)
+	CVector2DI operator*(int Scale) const;				//Multiplicación (escalar)
 	CVector2DI operator*(const CVector2DI& V) const;		//Multiplicación (vector)
-	CVector2DI operator/(float Scale) const;							//División (escalar)
+	CVector2DI operator/(int Scale) const;							//División (escalar)
 	CVector2DI operator/(const CVector2DI& V) const;					//División (vector)
 
 
