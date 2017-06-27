@@ -110,6 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Isoline.cpp" />
     <ClCompile Include="Vector2D.cpp" />
@@ -121,6 +122,7 @@
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Circle.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Isoline.h" />
     <ClInclude Include="Vector2D.h" />

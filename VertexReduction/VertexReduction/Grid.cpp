@@ -1,8 +1,9 @@
 #include "Grid.h"
 
+#include <random>
+
 namespace LevelGenerator
 {
-	
 	//! Default constructor.
 	CGrid::CGrid()
 	{
@@ -28,7 +29,7 @@ namespace LevelGenerator
 
 		/// Then we assing memory for each plane in x.
 		m_ppPlane = new CPlane*[m_iNumberPlanesX];
-		
+
 		/// For each plane in x array, we assing a new plane in y.
 		for (int i = 0; i < m_iNumberPlanesX; ++i)
 		{
@@ -46,6 +47,16 @@ namespace LevelGenerator
 			}
 			tempVec.X += CPlane::m_iSize;
 		}
+
+		//float fTempRadius = rand() % 50;
+
+		CVector3D tempPos(0, 0, 0);
+		tempPos.X = rand() % m_iWidth;
+		tempPos.Y = rand() % m_iHeight;
+
+		float fTempRadius = 100;
+		//fTempRadius = sqrt(pow(tempPos.X, 2) + pow(tempPos.Y, 2));
+		m_Cricle.Init(tempPos, fTempRadius);
 	}
 
 	//! This function free all memory and deletes the objects.
@@ -64,9 +75,61 @@ namespace LevelGenerator
 
 						m_ppPlane[i][j].Destroy();
 					}
-				}			
-			}	
+				}
+			}
 		}
+	}
+	//! Calls necessary functions to generate the algorithm.
+	void CGrid::MarchingSquare()
+	{
+		float fResult = 0;
+		///We go through the TileMap, checking each one of it's vertices with the scalar function of a circle.
+		for (int i = 0; i < m_iNumberPlanesX; ++i)
+		{
+			for (int j = 0; j < m_iNumberPlanesY; ++j)
+			{
+				//TODO: hacer constante de numer de indices.
+				for (int k = 0; k < 3; ++k)
+				{
+					m_ppPlane[i][j].m_Vertices[k].m_bIsInside = CalculatePlaneCase(m_ppPlane[i][j].m_Vertices[k].m_Position);
+				}
+			}
+		}
+
+		std::vector<CPlane> tempPlaneVect;
+		for (int i = 0; i < m_iNumberPlanesX; ++i)
+		{
+			for (int j = 0; j < m_iNumberPlanesY; ++j)
+			{
+				for (int k = 0; k < 3; ++k)
+				{
+					if (m_ppPlane[i][j].m_Vertices[k].m_bIsInside)
+					{
+						tempPlaneVect.push_back(m_ppPlane[i][j]);
+					}
+				}
+			}
+		}
+		tempPlaneVect = tempPlaneVect;
+	}
+
+	//! This function Calculates each plane's case. It's done comparing a scalar function with each vertice's position.
+	bool CGrid::CalculatePlaneCase(CVector3D vPosition/*, float fRadius*/)
+	{
+		//float fRadiusSquared = pow(m_Cricle.m_fRadius, 2);
+		//float fXSquared = pow(vPosition.X - m_Cricle.m_Position.X, 2);
+		//float fYSquared = pow(vPosition.Y - m_Cricle.m_Position.Y, 2);
+		if (vPosition.Magnitud(m_Cricle.m_Position - vPosition) < m_Cricle.m_fRadius)
+		{
+			return true;
+		}
+		//if ((fXSquared + fYSquared) < fRadiusSquared)
+		//{
+		//	return true;
+		//}
+		return false;
+
+		/*return fXSquared + fYSquared - fRadiusSquared;*/
 	}
 
 	//! This function returns the number of planes in the grid, in the X axis.

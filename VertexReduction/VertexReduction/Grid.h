@@ -1,6 +1,8 @@
 #pragma once
+#include "Circle.h"
 #include "Plane.h"
 
+#include <vector>
 
 namespace LevelGenerator
 {
@@ -55,6 +57,12 @@ namespace LevelGenerator
 		 */
 		int m_iNumberPlanesY;
 
+
+		/**
+		 *	@brief Circle.
+		 */
+		CCircle m_Cricle;
+
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
@@ -72,6 +80,19 @@ namespace LevelGenerator
 		 *	@brief This function realeases the memory of the class.
 		 */
 		void Destroy();
+
+		/**
+	  	 *	@brief Calls necessary functions to generate the algorithm.
+		 */
+		void MarchingSquare();
+
+		/**
+		 *	@brief This function Calculates each plane's case. It's done comparing a scalar function with each vertice's position.
+		 *	@param CVector3D vPosition: the position of the scalar function origin's.
+		 *	@param float fRadius: The radius that the scalar function will have.
+		 *	@return if its or not inside of the scalar function. True when its inside.
+		 */
+		bool CalculatePlaneCase(CVector3D vPosition/*, float fRadius*/);
 
 		///************************************************************************/
 		///*						   Accessors.								  */
