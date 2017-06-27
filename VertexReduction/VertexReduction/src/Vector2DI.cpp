@@ -174,7 +174,7 @@ namespace LevelGenerator
 	/************************************************************************/
 	/*                                                                      */
 	/************************************************************************/
-	float CVector2DI::Magnitud(const CVector2DI& V)
+	int CVector2DI::Magnitud(const CVector2DI& V)
 	{
 		return (float)sqrt((float)pow((float)V.X, 2) + pow((float)V.Y, 2));
 	}

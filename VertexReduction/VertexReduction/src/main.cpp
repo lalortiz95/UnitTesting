@@ -7,7 +7,7 @@ using namespace LevelGenerator;
 //! The Main.
 int main()
 {
-	srand(time(NULL));
+	srand((size_t)time(NULL));
 	CGrid Grid2D;
 
 	Grid2D.Init(20, 12);

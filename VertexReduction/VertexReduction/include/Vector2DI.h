@@ -63,7 +63,7 @@ namespace LevelGenerator
 		int operator|(const CVector2DI& V) const;			//Dot Product
 		int operator^(const CVector2DI& V) const;			//Cross Product
 
-		float Magnitud(const CVector2DI& V);
+		int Magnitud(const CVector2DI& V);
 		CVector2DI Normalize(const CVector2DI& V);
 		int DotProduct(const CVector2DI& A, const CVector2DI& B);
 

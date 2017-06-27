@@ -114,8 +114,6 @@ namespace LevelGenerator
 			}
 		}
 		tempPlaneVect = tempPlaneVect;
-
-
 	}
 
 	//! This function Calculates each plane's case. It's done comparing a scalar function with each vertice's position.
