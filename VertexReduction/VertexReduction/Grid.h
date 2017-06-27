@@ -89,10 +89,9 @@ namespace LevelGenerator
 		/**
 		 *	@brief This function Calculates each plane's case. It's done comparing a scalar function with each vertice's position.
 		 *	@param CVector3D vPosition: the position of the scalar function origin's.
-		 *	@param float fRadius: The radius that the scalar function will have.
 		 *	@return if its or not inside of the scalar function. True when its inside.
 		 */
-		bool CalculatePlaneCase(CVector3D vPosition/*, float fRadius*/);
+		bool CalculatePlaneCase(CVector3D vPosition);
 
 		///************************************************************************/
 		///*						   Accessors.								  */

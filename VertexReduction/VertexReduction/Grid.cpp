@@ -1,5 +1,4 @@
 #include "Grid.h"
-
 #include <random>
 
 namespace LevelGenerator
@@ -20,8 +19,8 @@ namespace LevelGenerator
 	void CGrid::Init(int iPlaneAmoutX, int iPlaneAmoutY)
 	{
 		/// Stores the width and height in the member variable for future references.
-		m_iHeight = iPlaneAmoutX * CPlane::m_iSize;
-		m_iWidth = iPlaneAmoutY * CPlane::m_iSize;
+		m_iHeight = iPlaneAmoutX * CPlane::SIZE_OF_PLANE;
+		m_iWidth = iPlaneAmoutY * CPlane::SIZE_OF_PLANE;
 
 		/// First calculate the number of planes in x and y axis.
 		m_iNumberPlanesX = iPlaneAmoutX;
@@ -43,19 +42,18 @@ namespace LevelGenerator
 			for (int j = 0; j < m_iNumberPlanesY; ++j)
 			{
 				m_ppPlane[i][j].Init(tempVec);
-				tempVec.Y += CPlane::m_iSize;
+				tempVec.Y += CPlane::SIZE_OF_PLANE;
 			}
-			tempVec.X += CPlane::m_iSize;
+			tempVec.X += CPlane::SIZE_OF_PLANE;
 		}
 
-		//float fTempRadius = rand() % 50;
+	
 
 		CVector3D tempPos(0, 0, 0);
 		tempPos.X = rand() % m_iWidth;
 		tempPos.Y = rand() % m_iHeight;
 
 		float fTempRadius = 100;
-		//fTempRadius = sqrt(pow(tempPos.X, 2) + pow(tempPos.Y, 2));
 		m_Cricle.Init(tempPos, fTempRadius);
 	}
 
@@ -79,29 +77,34 @@ namespace LevelGenerator
 			}
 		}
 	}
+
 	//! Calls necessary functions to generate the algorithm.
 	void CGrid::MarchingSquare()
 	{
-		float fResult = 0;
 		///We go through the TileMap, checking each one of it's vertices with the scalar function of a circle.
 		for (int i = 0; i < m_iNumberPlanesX; ++i)
 		{
 			for (int j = 0; j < m_iNumberPlanesY; ++j)
 			{
-				//TODO: hacer constante de numer de indices.
-				for (int k = 0; k < 3; ++k)
+				/// We iterate through every vertex in the plane.
+				for (int k = 0; k < CPlane::NUM_VERTEX_PER_PLANE; ++k)
 				{
+					/// We assign the flag, that if inside it's true, otherwise it's false.
 					m_ppPlane[i][j].m_Vertices[k].m_bIsInside = CalculatePlaneCase(m_ppPlane[i][j].m_Vertices[k].m_Position);
+					
 				}
 			}
 		}
 
+		/// We create a temporal vector to store planes that interact with the line.
 		std::vector<CPlane> tempPlaneVect;
+
+		/// We store the planes that have at least one of their vertices as true.
 		for (int i = 0; i < m_iNumberPlanesX; ++i)
 		{
 			for (int j = 0; j < m_iNumberPlanesY; ++j)
 			{
-				for (int k = 0; k < 3; ++k)
+				for (int k = 0; k < CPlane::NUM_VERTEX_PER_PLANE; ++k)
 				{
 					if (m_ppPlane[i][j].m_Vertices[k].m_bIsInside)
 					{
@@ -111,36 +114,35 @@ namespace LevelGenerator
 			}
 		}
 		tempPlaneVect = tempPlaneVect;
+
+
 	}
 
 	//! This function Calculates each plane's case. It's done comparing a scalar function with each vertice's position.
-	bool CGrid::CalculatePlaneCase(CVector3D vPosition/*, float fRadius*/)
+	bool CGrid::CalculatePlaneCase(CVector3D vPosition)
 	{
-		//float fRadiusSquared = pow(m_Cricle.m_fRadius, 2);
-		//float fXSquared = pow(vPosition.X - m_Cricle.m_Position.X, 2);
-		//float fYSquared = pow(vPosition.Y - m_Cricle.m_Position.Y, 2);
+		/// Check if the magnitud bettewn the circle position and the position of the vertex is
+		/// less than the radius.
 		if (vPosition.Magnitud(m_Cricle.m_Position - vPosition) < m_Cricle.m_fRadius)
 		{
+			/// If that is the case we return true.
 			return true;
 		}
-		//if ((fXSquared + fYSquared) < fRadiusSquared)
-		//{
-		//	return true;
-		//}
+	
 		return false;
-
-		/*return fXSquared + fYSquared - fRadiusSquared;*/
 	}
 
 	//! This function returns the number of planes in the grid, in the X axis.
 	int CGrid::GetPlanesX()
 	{
+		/// The number of planes in X Axis.
 		return m_iNumberPlanesX;
 	}
 
 	//! This function returns the number of planes in the grid, in the Y axis.
 	int CGrid::GetPlanesY()
 	{
+		/// The number of planes in Y Axis.
 		return m_iNumberPlanesY;
 	}
 }

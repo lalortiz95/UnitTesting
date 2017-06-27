@@ -3,20 +3,74 @@
 
 namespace LevelGenerator
 {
+	/**
+	 *	@brief Class to use a Vector in a 2D space.
+	 */
 	class CVector2D
 	{
 	public:
 
+		///**************************************************************************/
+		///*						  Member Variables.								*/
+		///**************************************************************************/
+
+		/**
+		 *	@brief This variable store the position in X Axis.
+		 */
 		float X;
+
+		/**
+		 *	@brief This variable store the position in Y Axis.
+		 */
 		float Y;
 
-		/************************************************************************************************************************/
-		/* Constructores   y Destructores                                                     									*/
-		/************************************************************************************************************************/
+		///************************************************************************/
+		///*                            Constructor & Destructor.                 */
+		///************************************************************************/
+
+		/**
+		 * @brief Constructor default.
+		 */
 		CVector2D();
+
+		/**
+		 *	@brief Constructor with parameters.
+		 *	@param float fPosX: Position in X axis.
+		 *	@param float fPosY: Position in Y axis.
+		 */
 		CVector2D(float InX, float InY);
 
+		/**
+		 * @brief Destructor default.
+		 */
 		~CVector2D();
+
+
+		///************************************************************************/
+		///*						   Class Functions.							  */
+		///************************************************************************/
+
+		/**
+		 *	@brief This function return the magnitud of the vector given in the parameter.
+		 *	@param CVector2D& Vector: The vector.
+		 *	@return the magnitud of the vector.
+		 */
+		float Magnitud(const CVector2D& Vector);
+
+		/**
+		 *	@brief This function reduce the magnitud of the vector given between 0 and 1.
+		 *	@param CVector2D& Vector: The vector.
+		 *	@return The normalized vector.
+		 */
+		CVector2D Normalize(const CVector2D& V);
+
+		/**
+		 *	@brief This function reduce the magnitud of the vector given between 0 and 1.
+		 *	@param CVector2D& VectorA: 
+		 *	@param CVector2D& VectorB:
+		 *	@return The proyection from VectorA and VectorB.
+		 */
+		float DotProduct(const CVector2D& VectorA, const CVector2D& VectorB);
 
 		/************************************************************************************************************************/
 		/* Declaración de operadores aritméticos                                 												*/
@@ -51,12 +105,12 @@ namespace LevelGenerator
 		CVector2D& operator*=(const CVector2D& V);
 		CVector2D& operator/=(const CVector2D& V);
 
+
 		float operator|(const CVector2D& V) const;			//Dot Product
 		float operator^(const CVector2D& V) const;			//Cross Product
 
-		float Magnitud(const CVector2D& V);
-		CVector2D Normalize(const CVector2D& V);
-		float DotProduct(const CVector2D& A, const CVector2D& B);
+
+	
 
 
 	};
