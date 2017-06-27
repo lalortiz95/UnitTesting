@@ -1,6 +1,8 @@
 #pragma once
 #include <cmath>
 
+namespace LevelGenerator
+{
 	class  CVector3D
 	{
 	public:
@@ -40,9 +42,9 @@
 		bool operator>=(const CVector3D& Other) const;					//Mayor o igual a
 		bool Equals(const CVector3D& V, float Tolerance) const;			//Compara si son "iguales" manejando una toleracia
 
-	    /************************************************************************************************************************/
-	    /* Declaración de operadores de asignación compuesta                    												*/
-	    /************************************************************************************************************************/
+		/************************************************************************************************************************/
+		/* Declaración de operadores de asignación compuesta                    												*/
+		/************************************************************************************************************************/
 		CVector3D operator+=(const CVector3D& V);
 		CVector3D operator-=(const CVector3D& V);
 		CVector3D operator*=(float Scale);
@@ -59,3 +61,4 @@
 		CVector3D Cross3(const CVector3D& V, const CVector3D& B);
 
 	};
+}

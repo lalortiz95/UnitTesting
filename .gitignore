@@ -2,4 +2,14 @@
 *.ilk
 *.tlog
 *.log
+<<<<<<< HEAD
 VertexReduction/VertexReduction.VC.db
+=======
+*.db
+*.obj
+*.enc
+*.idb
+*.pdb
+*.exe
+*.suo
+>>>>>>> 0422a7287778948500deb05949b9dbefc86549a2
