@@ -1,43 +1,63 @@
 #pragma once
 #include "Vector3D.h"
 
-/**
- *	@brief This class stores a vertex in a 3D space.
- */
-class CVertex
+namespace LevelGenerator
 {
-public:
+	/**
+	 *	@brief This class stores a vertex in a 3D space.
+	 */
+	class CVertex
+	{
+	public:
 
-	/************************************************************************/
-	/*                        Constructor & Destructor.						*/
-	/************************************************************************/
+		///************************************************************************/
+		///*                        Constructor & Destructor.					  */
+		///************************************************************************/
 
-	//! Default Constructor.
-	CVertex();
-	//! Default Destructor.
-	~CVertex();
-	//! Parameters Constructor.
-	CVertex(CVector3D vPosition);
+		/**
+		 *	@brief Default Constructor.
+		 */
+		CVertex();
 
-	
+		/**
+		 *	@brief Default Destructor.
+		 */
+		~CVertex();
 
-	/************************************************************************/
-	/*						  Member Variables.								*/
-	/************************************************************************/
+		/**
+		 *	@brief Parameters Constructor.
+		 */
+		CVertex(CVector3D vPosition);
 
-	//! This variable stores a 3D position (X,Y,Z).
-	CVector3D m_Position;
-	//! This variable stores an ID for purposes of identification when using a vertex.
-	int m_iID;
 
-	/************************************************************************/
-	/*						   Class Functions.								*/
-	/************************************************************************/
 
-	//! Function to initialize the variables.
-	void Init();
+		///************************************************************************/
+		///*						  Member Variables.							  */
+		///************************************************************************/
 
-	//! Function to realease memory and destroy objects.
-	void Destroy();
-};
+		/**
+		 *	@brief This variable stores a 3D position (X,Y,Z).
+		 */
+		CVector3D m_Position;
 
+		/**
+		 *	@brief This variable detects if the vertex is inside of the scalar function given in the grid.
+		 */
+		bool m_bIsInside;
+
+
+		///************************************************************************/
+		///*						   Class Functions.							  */
+		///************************************************************************/
+
+		/**
+		 *	@brief Function to initialize the variables.
+		 */
+		void Init();
+
+		/**
+		 *	@brief Function to realease memory and destroy objects.
+		 */
+		void Destroy();
+	};
+}

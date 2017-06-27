@@ -1,22 +1,24 @@
 #include "Isoline.h"
 
 
-
-CIsoline::CIsoline()
+namespace LevelGenerator
 {
-}
+	CIsoline::CIsoline()
+	{
+	}
 
 
-CIsoline::~CIsoline()
-{
-}
+	CIsoline::~CIsoline()
+	{
+	}
 
-void CIsoline::Initialize()
-{
+	void CIsoline::Initialize()
+	{
 
-}
+	}
 
-void CIsoline::Destroy()
-{
+	void CIsoline::Destroy()
+	{
 
+	}
 }

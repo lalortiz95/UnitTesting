@@ -1,17 +1,14 @@
 #pragma once
-#include "Plane.h"
-#include "Isoline.h"
+#include "Grid.h"
 
+using namespace LevelGenerator;
 //! The Main.
 int main()
 {
-	CPlane Plane;
-	CVector3D Position = {-15,80,0};
+	CGrid Grid2D;
 
-	Plane.Init(Position, 25, 38);
-
-	//TODO: reducir lineas del isoline.
-	//
-
+	Grid2D.Init(20, 12);
+	Grid2D.Destroy();
+	
 	return 0;
 }

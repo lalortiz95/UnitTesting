@@ -3,18 +3,21 @@
 
 #include <vector>
 
-//!Declaration of CIsoline Class
-class CIsoline
+namespace LevelGenerator
 {
-public:
-	//!Default constructor and destructor.
-	CIsoline();
-	~CIsoline();
+	//!Declaration of CIsoline Class
+	class CIsoline
+	{
+	public:
+		//!Default constructor and destructor.
+		CIsoline();
+		~CIsoline();
 
-	void Initialize();
-	void Destroy();
+		void Initialize();
+		void Destroy();
 
-	//!Array to store the lines.
-	std::vector<CVertex> m_VertexVector;
-};
+		//!Array to store the lines.
+		std::vector<CVertex> m_VertexVector;
+	};
+}
 
