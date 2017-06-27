@@ -46,11 +46,6 @@ namespace LevelGenerator
 	private:
 
 		/**
-		 *	@brief Const to define how many planes there will be.
-		 */
-		static const int m_kPlaneAmountCalculation;
-
-		/**
 		 *	@brief This variable stores the number of planes in x.
 		 */
 		int m_iNumberPlanesX;
@@ -77,6 +72,22 @@ namespace LevelGenerator
 		 *	@brief This function realeases the memory of the class.
 		 */
 		void Destroy();
+
+		///************************************************************************/
+		///*						   Accessors.								  */
+		///************************************************************************/
+
+		/**
+		 *	@brief This function returns the number of planes in the grid, in the X axis.
+		 *	@return the number of planes in the X axis.
+		 */
+		int GetPlanesX();
+
+		 /**
+		  *	@brief This function returns the number of planes in the grid, in the Y axis.
+		  *	@return the number of planes in the Y axis.
+		  */
+		int GetPlanesY();
 	};
 }
 

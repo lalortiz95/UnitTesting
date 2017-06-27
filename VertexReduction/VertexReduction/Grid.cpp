@@ -2,9 +2,7 @@
 
 namespace LevelGenerator
 {
-	/// Declaration of the constant PlaneAmountCalculation
-	const int CGrid::m_kPlaneAmountCalculation = 6;
-
+	
 	//! Default constructor.
 	CGrid::CGrid()
 	{
@@ -69,5 +67,17 @@ namespace LevelGenerator
 				}			
 			}	
 		}
+	}
+
+	//! This function returns the number of planes in the grid, in the X axis.
+	int CGrid::GetPlanesX()
+	{
+		return m_iNumberPlanesX;
+	}
+
+	//! This function returns the number of planes in the grid, in the Y axis.
+	int CGrid::GetPlanesY()
+	{
+		return m_iNumberPlanesY;
 	}
 }
