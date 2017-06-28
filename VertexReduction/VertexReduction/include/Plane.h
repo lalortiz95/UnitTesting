@@ -1,4 +1,5 @@
 #pragma once
+#include "PrerequisitesLevelGenerator.h"
 #include "Vertex.h"
 
 namespace LevelGenerator
@@ -7,7 +8,7 @@ namespace LevelGenerator
 	/**
 	 * @brief Plane class. Stores it's 4 vertices, it's width, and height.
 	 */
-	class CPlane
+	class LG_EXPORT CPlane
 	{
 	public:
 

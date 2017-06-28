@@ -1,10 +1,11 @@
 #pragma once
+#include "PrerequisitesLevelGenerator.h"
 #include <cmath>
 
 namespace LevelGenerator
 {
 #define DELTA 0.00001f
-	class  CVector4D
+	class LG_EXPORT CVector4D
 	{
 	public:
 

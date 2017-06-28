@@ -1,4 +1,5 @@
 #pragma once
+#include "PrerequisitesLevelGenerator.h"
 #include "Circle.h"
 #include "Plane.h"
 
@@ -9,7 +10,7 @@ namespace LevelGenerator
 	/**
 	 *	@brief This class stores a bidimensional array of planes to generate a grid.
 	 */
-	class CGrid
+	class LG_EXPORT CGrid
 	{
 	public:
 		///************************************************************************/

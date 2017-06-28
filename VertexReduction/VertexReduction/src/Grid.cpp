@@ -45,9 +45,7 @@ namespace LevelGenerator
 				tempVec.Y += CPlane::SIZE_OF_PLANE;
 			}
 			tempVec.X += CPlane::SIZE_OF_PLANE;
-		}
-
-	
+		}	
 
 		CVector3D tempPos(0, 0, 0);
 		tempPos.X = rand() % m_iWidth;

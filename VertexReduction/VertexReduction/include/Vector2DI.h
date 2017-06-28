@@ -1,9 +1,10 @@
 #pragma once
+#include "PrerequisitesLevelGenerator.h"
 #include <cmath>
 
 namespace LevelGenerator
 {
-	class CVector2DI
+	class LG_EXPORT CVector2DI
 	{
 	public:
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "PrerequisitesLevelGenerator.h"
 #include "Vector3D.h"
 
 namespace LevelGenerator
@@ -6,7 +7,7 @@ namespace LevelGenerator
 	/**
 	 *	@brief This class stores a vertex in a 3D space.
 	 */
-	class CVertex
+	class LG_EXPORT CVertex
 	{
 	public:
 

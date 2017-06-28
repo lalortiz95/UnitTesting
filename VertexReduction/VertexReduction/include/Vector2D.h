@@ -1,4 +1,5 @@
 #pragma once
+#include "PrerequisitesLevelGenerator.h"
 #include <cmath>
 
 namespace LevelGenerator
@@ -6,7 +7,7 @@ namespace LevelGenerator
 	/**
 	 *	@brief Class to use a Vector in a 2D space.
 	 */
-	class CVector2D
+	class LG_EXPORT CVector2D
 	{
 	public:
 

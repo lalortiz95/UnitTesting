@@ -1,4 +1,5 @@
 #pragma once
+#include "PrerequisitesLevelGenerator.h"
 #include "Vector3D.h"
 
 namespace LevelGenerator
@@ -6,7 +7,7 @@ namespace LevelGenerator
 	/**
 	*	@brief This class has a vector3D which stores it's position. And a float for it's radius.
 	*/
-	class CCircle
+	class LG_EXPORT CCircle
 	{
 	public:
 		///************************************************************************/

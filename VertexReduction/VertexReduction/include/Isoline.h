@@ -1,4 +1,5 @@
 #pragma once
+#include "PrerequisitesLevelGenerator.h"
 #include "Vertex.h"
 
 #include <vector>
@@ -6,7 +7,7 @@
 namespace LevelGenerator
 {
 	//!Declaration of CIsoline Class
-	class CIsoline
+	class LG_EXPORT CIsoline
 	{
 	public:
 		//!Default constructor and destructor.
