@@ -13,3 +13,7 @@ VertexReduction/VertexReduction.VC.db
 *.exe
 *.suo
 >>>>>>> 0422a7287778948500deb05949b9dbefc86549a2
+*.exp
+*.lib
+*.user
+*.dll
