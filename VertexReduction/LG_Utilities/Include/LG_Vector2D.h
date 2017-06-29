@@ -1,6 +1,5 @@
 #pragma once
 #include "LG_UtilitiesPrerequisites.h"
-#include <cmath>
 
 namespace LevelGenerator
 {
@@ -53,67 +52,187 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief This function return the magnitud of the vector given in the parameter.
-		 *	@param LG_Vector2D& Vector: The vector.
+		 *	@param const LG_Vector2D& OtherVector: The vector.
 		 *	@return the magnitud of the vector.
 		 */
-		float Magnitud(const LG_Vector2D& Vector);
+		float Magnitud(const LG_Vector2D& OtherVector);
+
+		/**
+		 *	@brief This function realize the dot product between 2 vectors.
+		 *	@param const LG_Vector2D& VectorA: 
+		 *	@param const LG_Vector2D& VectorB:
+		 *	@return The projection from VectorA with VectorB.
+		 */
+		float Dot(const LG_Vector2D& VectorA, const LG_Vector2D& VectorB);
 
 		/**
 		 *	@brief This function reduce the magnitud of the vector given between 0 and 1.
-		 *	@param LG_Vector2D& Vector: The vector.
+		 *	@param const LG_Vector2D& OtherVector: The vector.
 		 *	@return The normalized vector.
 		 */
-		LG_Vector2D Normalize(const LG_Vector2D& V);
+		LG_Vector2D Normalize(const LG_Vector2D& OtherVector);
+
+		///************************************************************************/
+		///*						Arithmetic Operators.				          */
+		///************************************************************************/
+		
+		/**
+		 *	@brief This is an operator to use + between 2 vectors.
+		 *	@param const LG_Vector2D& OtherVector: The vector to Add.
+		 *	@return the result of the addition.
+		 */
+		LG_Vector2D operator+(const LG_Vector2D& OtherVector) const;
 
 		/**
-		 *	@brief This function reduce the magnitud of the vector given between 0 and 1.
-		 *	@param LG_Vector2D& VectorA: 
-		 *	@param LG_Vector2D& VectorB:
-		 *	@return The proyection from VectorA and VectorB.
+		 *	@brief This is an operator to use - between 2 vectors.
+		 *	@param const LG_Vector2D& OtherVector: The vector to subtract.
+		 *	@return the result of the subtraction.
 		 */
-		float DotProduct(const LG_Vector2D& VectorA, const LG_Vector2D& VectorB);
+		LG_Vector2D operator-(const LG_Vector2D& OtherVector) const;
 
-		/************************************************************************************************************************/
-		/* Declaración de operadores aritméticos                                 												*/
-		/************************************************************************************************************************/
-		LG_Vector2D operator+(const LG_Vector2D& V) const;		//Suma
-		LG_Vector2D operator-(const LG_Vector2D& V) const;		//Resta
-		LG_Vector2D operator*(float Scale) const;				//Multiplicación (escalar)
-		LG_Vector2D operator*(const LG_Vector2D& V) const;		//Multiplicación (vector)
-		LG_Vector2D operator/(float Scale) const;							//División (escalar)
-		LG_Vector2D operator/(const LG_Vector2D& V) const;					//División (vector)
+		/**
+		 *	@brief This is an operator to use * between 1 vector and 1 scalar value.
+		 *	@param float Value: The value to multiply.
+		 *	@return the result of the multiplication.
+		 */
+		LG_Vector2D operator*(float Value) const;
 
+		/**
+		 *	@brief This is an operator to use * between 2 vectors.
+		 *	@param const LG_Vector2D& OtherVector: The vector to multiply.
+		 *	@return the result of the multiplication.
+		 */
+		LG_Vector2D operator*(const LG_Vector2D& OtherVector) const;
 
+		/**
+		 *	@brief This is an operator to use / between 1 vector and 1 scalar value.
+		 *	@param float Value: The value to divide.
+		 *	@return the result of the division.
+		 */
+		LG_Vector2D operator/(float Value) const;	
 
-		/************************************************************************************************************************/
-		/* Declaración de operadores lógicos                                     												*/
-		/************************************************************************************************************************/
-		bool operator==(const LG_Vector2D& V) const;						//Igual a
-		bool operator!=(const LG_Vector2D& V) const;						//Diferente a
-		bool operator<(const LG_Vector2D& Other) const;					//Menor que
-		bool operator>(const LG_Vector2D& Other) const;					//Mayor que
-		bool operator<=(const LG_Vector2D& Other) const;					//Menor o igual a
-		bool operator>=(const LG_Vector2D& Other) const;					//Mayor o igual a
-		bool Equals(const LG_Vector2D& V, float Tolerance) const;			//Compara si son "iguales" manejando una toleracia
-
-		/************************************************************************************************************************/
-		/* Declaración de operadores de asignación compuesta                    												*/
-		/************************************************************************************************************************/
-		LG_Vector2D& operator+=(const LG_Vector2D& V);
-		LG_Vector2D& operator-=(const LG_Vector2D& V);
-		LG_Vector2D& operator*=(float Scale);
-		LG_Vector2D& operator/=(float Scale);
-		LG_Vector2D& operator*=(const LG_Vector2D& V);
-		LG_Vector2D& operator/=(const LG_Vector2D& V);
+		/**
+		 *	@brief This is an operator to use / between 2 vectors.
+		 *	@param const LG_Vector2D& OtherVector: The vector to divide.
+		 *	@return the result of the division.
+		 */
+		LG_Vector2D operator/(const LG_Vector2D& OtherVector) const;
 
 
-		float operator|(const LG_Vector2D& V) const;			//Dot Product
-		float operator^(const LG_Vector2D& V) const;			//Cross Product
+		///************************************************************************/
+		///*						Logical Operators.				              */
+		///************************************************************************/
+		
+		/**
+		 *	@brief This operator compares that 2 vectors are the same.
+		 *	@param const LG_Vector2D& OtherVector: The vector to compare with this.
+		 *	@return true if the vector is the same that this, if not false.
+		 */
+		bool operator==(const LG_Vector2D& OtherVector) const;
+
+		/**
+		 *	@brief This operator compares that 2 vectors are diferents
+		 *	@param const LG_Vector2D& OtherVector: The vector to compare with this.
+		 *	@return true if the vector is diferent that this, if not, false.
+		 */
+		bool operator!=(const LG_Vector2D& OtherVector) const;
+
+		/**
+		 *	@brief This operator compares that this vector is lesser than other vector.
+		 *	@param const LG_Vector2D& OtherVector: The vector to compare with this.
+		 *	@return true if this vector is lesser than the other vector, if not, false.
+		 */
+		bool operator<(const LG_Vector2D& OtherVector) const;		
+
+		/**
+		 *	@brief This operator compares that this vector is greater than other vector.
+		 *	@param const LG_Vector2D& OtherVector: The vector to compare with this.
+		 *	@return true if this vector is greater than the other vector, if not, false.
+		 */
+		bool operator>(const LG_Vector2D& OtherVector) const;
+
+		/**
+		 *	@brief This operator compares that this vector is lesser or equal than other vector.
+		 *	@param const LG_Vector2D& OtherVector: The vector to compare with this.
+		 *	@return true if this vector is lesser or equal than the other vector, if not, false.
+		 */
+		bool operator<=(const LG_Vector2D& OtherVector) const;
+		
+		/**
+		 *	@brief This operator compares that this vector is greater or equal than other vector.
+		 *	@param const LG_Vector2D& OtherVector: The vector to compare with this.
+		 *	@return true if this vector is greater or equal than the other vector, if not, false.
+		 */
+		bool operator>=(const LG_Vector2D& OtherVector) const;
+
+		/**
+		*	@brief This function compares if 2 vectors are the same.
+		*	@param const LG_Vector2D& OtherVector: The vector to compare with this.
+		*	@param float fTolerance: This variable is used as a tolerance for considering that 2 vectors are the same.
+		*	@return true if this vector is the same that other vector., if not, false.
+		*/
+		bool Equals(const LG_Vector2D& OtherVector, float Tolerance) const;
 
 
-	
+		///************************************************************************/
+		///*					Compound Assignment Operators.				      */
+		///************************************************************************/
+		
+		/**
+		 *	@brief This operator add the values from other vector with this.
+		 *	@param const LG_Vector2D& OtherVector: The vector to add with this.
+		 *	@return this vector like a reference to actualize it's variables.
+		 */
+		LG_Vector2D& operator+=(const LG_Vector2D& OtherVector);
 
+		/**
+		 *	@brief This operator subtract the values from other vector with this.
+		 *	@param const LG_Vector2D& OtherVector: The vector to subtract with this.
+		 *	@return this vector like a reference to actualize it's variables.
+		 */
+		LG_Vector2D& operator-=(const LG_Vector2D& OtherVector);
 
+		/**
+		 *	@brief This operator multiply the values from this vector with a value.
+		 *	@param float Value: The value to multiply with this.
+		 *	@return this vector like a reference to actualize it's variables.
+		 */
+		LG_Vector2D& operator*=(float Value);
+
+		/**
+		 *	@brief This operator divide the values from this vector with a value.
+		 *	@param float Value: The value to divide with this.
+		 *	@return this vector like a reference to actualize it's variables.
+		 */
+		LG_Vector2D& operator/=(float Value);
+
+		/**
+		 *	@brief This operator multiply the values from other vector with this.
+		 *	@param const LG_Vector2D& OtherVector: The vector to multiply with this.
+		 *	@return this vector like a reference to actualize it's variables.
+		 */
+		LG_Vector2D& operator*=(const LG_Vector2D& OtherVector);
+
+		/**
+		 *	@brief This operator divide the values from other vector with this.
+		 *	@param const LG_Vector2D& OtherVector: The vector to divide with this.
+		 *	@return this vector like a reference to actualize it's variables.
+		 */
+		LG_Vector2D& operator/=(const LG_Vector2D& OtherVector);
+
+		/**
+		 *	@brief This operator return the dot product between this vector and other vector.
+		 *	@param const LG_Vector2D& OtherVector: The vector to apply the dot product with this.
+		 *	@return the result of the dot product.
+		 */
+		float operator|(const LG_Vector2D& OtherVector) const;		
+
+		/**
+		 *	@brief This operator return the cross product between this vector and other vector.
+		 *	@param const LG_Vector2D& OtherVector: The vector to apply the cross product with this.
+		 *	@return the result of the cross product.
+		 */
+		float operator^(const LG_Vector2D& OtherVector) const;
 	};
 }
 

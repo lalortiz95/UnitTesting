@@ -8,7 +8,7 @@
 namespace LevelGenerator
 {
 	/**
-	 *	@brief This class stores a bidimensional array of planes to generate a grid.
+	 *	@brief This class stores a bidimensional array of tiles to generate a grid.
 	 */
 	class LG_MAP_EXPORT LG_Grid
 	{
@@ -42,19 +42,24 @@ namespace LevelGenerator
 		int m_iWidth;
 
 		/**
-		 *	@brief Bidimensional array that stores the planes.
+		 *	@brief Bidimensional array that stores the tiles.
 		 */
 		LG_Tile** m_Grid;
+
+		/**
+		 *	@brief This variable stores in a vector the tiles that have case diferent than 0.
+		 */
+		std::vector<LG_Tile> m_ListTilesInside;
 
 	private:
 
 		/**
-		 *	@brief This variable stores the number of planes in x.
+		 *	@brief This variable stores the number of tiles in x.
 		 */
 		int m_iNumberPlanesX;
 
 		/**
-		 *	@brief This variable stores the number of planes in y.
+		 *	@brief This variable stores the number of tiles in y.
 		 */
 		int m_iNumberPlanesY;
 
@@ -88,27 +93,27 @@ namespace LevelGenerator
 		void MarchingSquare();
 
 		/**
-		 *	@brief This function Calculates each plane's case. It's done comparing a scalar function with each vertice's position.
+		 *	@brief This function Calculates each tile case. It's done comparing a scalar function with each vertice's position.
 		 *	@param LG_Vector3D vPosition: the position of the scalar function origin's.
 		 *	@return if its or not inside of the scalar function. True when its inside.
 		 */
-		bool CalculatePlaneCase(LG_Vector3D vPosition);
+		bool CalculateTileCase(LG_Vector3D vPosition);
 
 		///************************************************************************/
 		///*						   Accessors.								  */
 		///************************************************************************/
 
 		/**
-		 *	@brief This function returns the number of planes in the grid, in the X axis.
-		 *	@return the number of planes in the X axis.
+		 *	@brief This function returns the number of tiles in the grid, in the X axis.
+		 *	@return the number of tiles in the X axis.
 		 */
-		int GetPlanesX();
+		int GetTilesX();
 
 		 /**
-		  *	@brief This function returns the number of planes in the grid, in the Y axis.
-		  *	@return the number of planes in the Y axis.
+		  *	@brief This function returns the number of tiles in the grid, in the Y axis.
+		  *	@return the number of tiles in the Y axis.
 		  */
-		int GetPlanesY();
+		int GetTilesY();
 	};
 }
 

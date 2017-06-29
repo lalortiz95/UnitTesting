@@ -6,7 +6,7 @@ namespace LevelGenerator
 {
 
 	/**
-	 * @brief Plane class. Stores it's 4 vertices, it's width, and height.
+	 * @brief Tile class. Stores it's 4 nodes, it's width, and height.
 	 */
 	class LG_MAP_EXPORT LG_Tile
 	{
@@ -31,34 +31,54 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This value is used to identification the case of the plane.
+		 *	@brief This value is used to identification the case of the tile.
 		 */
 		int m_iCase; 
 
 		/**
-		 *	@brief An array of Nodes, one for each corner of the plane.
+		 *	@brief The top node on the right of the tile.
 		 */
-		LG_Node m_Vertices[4];
+		LG_Node m_nTopRight;
+
+		/**
+		 *	@brief The top node on the left of the tile.
+		 */
+		LG_Node m_nTopLeft;
+
+		/**
+		 *	@brief The bottom node on the right of the tile.
+		 */
+		LG_Node m_nBottomRight;
+
+		/**
+		 *	@brief The bottom node on the left of the tile.
+		 */
+		LG_Node m_nBottomLeft;
+		
+		 /**
+		  *	@brief An array of nodes, one for each corner of the tile.
+		  */
+		LG_Node m_Nodes[4];
 
 		
 		/**
-		 *	@brief The size of all lines that the plane has.
+		 *	@brief The constant that define the size per tile..
 		 */
-		static const int SIZE_OF_PLANE;
+		static const int SIZE_OF_TILE;
 
 		/**
 		 *	@note: The given value is 3 because we start counting on 0. Example: 0, 1, 2, 3.
-		 *	@brief The constant that define the number of vertices in the plane.
+		 *	@brief The constant that define the number of nodes in the tile.
 		 */
-		static const int NUM_VERTEX_PER_PLANE;
+		static const int NUM_NODES_PER_TILE;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
 
 		/**
-		 * @brief Function needed to initialize the variables of the Plane class.
-		 * @param CVetor3D vPosition: The position that will be assigned to the first vertex of the plane's array.
+		 * @brief Function needed to initialize the variables of the tile class.
+		 * @param CVetor3D vPosition: The position that will be assigned to the first node of the tiles array.
 		 */
 		void Init(LG_Vector3D vPosition);
 

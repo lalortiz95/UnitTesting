@@ -5,7 +5,7 @@
 namespace LevelGenerator
 {
 	/**
-	 *	@brief This class stores a vertex in a 3D space.
+	 *	@brief This class stores a node in a 3D space.
 	 */
 	class LG_MAP_EXPORT LG_Node
 	{
@@ -42,7 +42,7 @@ namespace LevelGenerator
 		LG_Vector3D m_Position;
 
 		/**
-		 *	@brief This variable detects if the vertex is inside of the scalar function given in the grid.
+		 *	@brief This flag determinate if the node is On or Off.
 		 */
 		bool m_bIsInside;
 

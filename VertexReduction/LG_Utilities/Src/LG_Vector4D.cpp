@@ -1,222 +1,269 @@
 #include "LG_Vector4D.h"
+#include <cmath>
 
+#define DELTA 0.00001f
 
 namespace LevelGenerator
 {
-	/************************************************************************************************************************/
-	/* Implementación de funciones del vector                               												*/
-	/************************************************************************************************************************/
+	//! Default Constructor.
 	LG_Vector4D::LG_Vector4D()
 	{
 
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
+
+	//! Parameters Constructor.
 	LG_Vector4D::LG_Vector4D(float InX, float InY, float InZ, float InW) : X(InX), Y(InY), Z(InZ), W(InW)
 	{
 
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
+
+	//! Default Destructor.
 	LG_Vector4D::~LG_Vector4D()
 	{
 
 	}
 
-	/************************************************************************************************************************/
-	/* Implementación de operadores aritméticos                             												*/
-	/************************************************************************************************************************/
-
-	LG_Vector4D LG_Vector4D::operator+(const LG_Vector4D& V) const
+	//! This function return the magnitud of the vector given in the parameter.
+	float LG_Vector4D::Magnitud(const LG_Vector4D & OtherVector)
 	{
-		return LG_Vector4D(X + V.X, Y + V.Y, Z + V.Z, W + V.W);
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::operator-(const LG_Vector4D& V) const
-	{
-		return LG_Vector4D(X - V.X, Y - V.Y, Z - V.Z, W - V.W);
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::operator*(float Scale) const
-	{
-		return LG_Vector4D(X * Scale, Y * Scale, Z * Scale, W * Scale);
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::operator*(const LG_Vector4D& V) const
-	{
-		return LG_Vector4D(X * V.X, Y * V.Y, Z * V.Z, W *V.W);
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::operator/(float Scale) const
-	{
-		const float RScale = 1.f / Scale;
-		return LG_Vector4D(X * RScale, Y * RScale, Z * RScale, W * RScale);
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::operator/(const LG_Vector4D& V) const
-	{
-		return LG_Vector4D(X / V.X, Y / V.Y, Z / V.Z, W / V.W);
+		return sqrt(pow(OtherVector.X, 2) +
+					pow(OtherVector.Y, 2) + 
+					pow(OtherVector.Z, 2) + 
+					pow(OtherVector.W, 2));
 	}
 
+	//! This function realize the dot product between 2 vectors.
+	float LG_Vector4D::Dot(const LG_Vector4D& OtherVector)
+	{
+		float escalar = (this->X * OtherVector.X) + 
+						(this->Y * OtherVector.Y) + 
+						(this->Z * OtherVector.Z) + 
+						(this->W * OtherVector.W);
 
+		if (escalar <= DELTA && escalar >= 0 - DELTA)
+		{
+			escalar = 0;
+		}
 
-	/************************************************************************************************************************/
-	/* Implementación de operadores lógicos                                 												*/
-	/************************************************************************************************************************/
-	bool LG_Vector4D::operator==(const LG_Vector4D& V) const
-	{
-		return X == V.X && Y == V.Y && Z == V.Z && W == V.W;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector4D::operator!=(const LG_Vector4D& V) const
-	{
-		return X != V.X || Y != V.Y || Z != V.Z || W != V.W;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector4D::operator<(const LG_Vector4D& Other) const
-	{
-		return X < Other.X && Y < Other.Y && Z < Other.Z && W < Other.W;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector4D::operator>(const LG_Vector4D& Other) const
-	{
-		return X > Other.X && Y > Other.Y && Z > Other.Z && W > Other.W;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector4D::operator<=(const LG_Vector4D& Other) const
-	{
-		return X <= Other.X && Y <= Other.Y && Z <= Other.Z && W <= Other.W;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector4D::operator>=(const LG_Vector4D& Other) const
-	{
-		return X >= Other.X && Y >= Other.Y && Z >= Other.Z&& W >= Other.W;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector4D::Equals(const LG_Vector4D& V, float Tolerance) const
-	{
-		return abs(X - V.X) < Tolerance && abs(Y - V.Y) < Tolerance && abs(Z - V.Z) < Tolerance && abs(W - V.W) < Tolerance;
+		return escalar;
 	}
 
-	/************************************************************************************************************************/
-	/* Implementación de operadores de asignación compuesta                 												*/
-	/************************************************************************************************************************/
-	LG_Vector4D LG_Vector4D::operator+=(const LG_Vector4D& V)
+	//! This function return a perpendicular vector between 2 vectors.
+	LG_Vector4D LG_Vector4D::Cross(const LG_Vector4D & VectorA, const LG_Vector4D & VectorB)
 	{
-		X += V.X; Y += V.Y; Z += V.Z; W += V.W;
+		return LG_Vector4D((VectorA.Y * VectorB.Z - VectorA.Z * VectorB.Y),
+						   (VectorA.Z * VectorB.X - VectorA.X * VectorB.Z),
+						   (VectorA.X * VectorB.Y - VectorA.Y * VectorB.X),
+							0);
+	}
+
+	//! This function reduce the magnitud of the vector given between 0 and 1.
+	LG_Vector4D LG_Vector4D::Normalize(const LG_Vector4D & OtherVector)
+	{
+		return OtherVector / Magnitud(OtherVector);
+	}
+
+	//! This function compares if 2 vectors are the same.
+	bool LG_Vector4D::Equals(const LG_Vector4D& OtherVector, float fTolerance) const
+	{
+		return	abs(X - OtherVector.X) < fTolerance &&
+			abs(Y - OtherVector.Y) < fTolerance &&
+			abs(Z - OtherVector.Z) < fTolerance &&
+			abs(W - OtherVector.W) < fTolerance;
+	}
+
+	//! This is an operator to use + between 2 vectors.
+	LG_Vector4D LG_Vector4D::operator+(const LG_Vector4D& OtherVector) const
+	{
+		return LG_Vector4D(	X + OtherVector.X, 
+							Y + OtherVector.Y,
+							Z + OtherVector.Z,
+							W + OtherVector.W);
+	}
+	
+	//! This is an operator to use - between 2 vectors.
+	LG_Vector4D LG_Vector4D::operator-(const LG_Vector4D& OtherVector) const
+	{
+		return LG_Vector4D(	X - OtherVector.X, 
+							Y - OtherVector.Y, 
+							Z - OtherVector.Z, 
+							W - OtherVector.W);
+	}
+	
+	//! This is an operator to use * between 1 vector and 1 scalar value.
+	LG_Vector4D LG_Vector4D::operator*(float Value) const
+	{
+		return LG_Vector4D(	X * Value, 
+							Y * Value, 
+							Z * Value, 
+							W * Value);
+	}
+
+	//! This is an operator to use * between 2 vectors.
+	LG_Vector4D LG_Vector4D::operator*(const LG_Vector4D& OtherVector) const
+	{
+		return LG_Vector4D(	X * OtherVector.X, 
+							Y * OtherVector.Y, 
+							Z * OtherVector.Z, 
+							W * OtherVector.W);
+	}
+	
+	//! This is an operator to use / between 1 vector and 1 scalar value.
+	LG_Vector4D LG_Vector4D::operator/(float Value) const
+	{
+		const float RValue = 1.f / Value;
+		return LG_Vector4D(	X * RValue, 
+							Y * RValue, 
+							Z * RValue,		
+							W * RValue);
+	}
+	
+	//! This is an operator to use / between 2 vectors.
+	LG_Vector4D LG_Vector4D::operator/(const LG_Vector4D& OtherVector) const
+	{
+		return LG_Vector4D(	X / OtherVector.X, 
+							Y / OtherVector.Y, 
+							Z / OtherVector.Z,	
+							W / OtherVector.W);
+	}
+
+	//! This operator compares that 2 vectors are the same.
+	bool LG_Vector4D::operator==(const LG_Vector4D& OtherVector) const
+	{
+		return	X == OtherVector.X &&
+				Y == OtherVector.Y &&
+				Z == OtherVector.Z &&
+				W == OtherVector.W;
+	}
+
+	//! This operator compares that 2 vectors are diferents
+	bool LG_Vector4D::operator!=(const LG_Vector4D& OtherVector) const
+	{
+		return	X != OtherVector.X || 
+				Y != OtherVector.Y || 
+				Z != OtherVector.Z || 
+				W != OtherVector.W;
+	}
+
+	//! This operator compares that this vector is lesser than other vector.
+	bool LG_Vector4D::operator<(const LG_Vector4D& OtherVector) const
+	{
+		return	X < OtherVector.X && 
+				Y < OtherVector.Y && 
+				Z < OtherVector.Z && 
+				W < OtherVector.W;
+	}
+	
+	//! his operator compares that this vector is greater than other vector.
+	bool LG_Vector4D::operator>(const LG_Vector4D& OtherVector) const
+	{
+		return	X > OtherVector.X && 
+				Y > OtherVector.Y && 
+				Z > OtherVector.Z && 
+				W > OtherVector.W;
+	}
+	
+	//! This operator compares that this vector is lesser or equal than other vector.
+	bool LG_Vector4D::operator<=(const LG_Vector4D& OtherVector) const
+	{
+		return	X <= OtherVector.X && 
+				Y <= OtherVector.Y && 
+				Z <= OtherVector.Z && 
+				W <= OtherVector.W;
+	}
+	
+	//! This operator compares that this vector is greater or equal than other vector.
+	bool LG_Vector4D::operator>=(const LG_Vector4D& OtherVector) const
+	{
+		return	X >= OtherVector.X && 
+				Y >= OtherVector.Y &&
+				Z >= OtherVector.Z && 
+				W >= OtherVector.W;
+	}
+	
+	//! This operator add the values from other vector with this.
+	LG_Vector4D& LG_Vector4D::operator+=(const LG_Vector4D& OtherVector)
+	{
+		X += OtherVector.X; 
+		Y += OtherVector.Y; 
+		Z += OtherVector.Z; 
+		W += OtherVector.W;
+
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::operator-=(const LG_Vector4D& V)
+	
+	//! This operator subtract the values from other vector with this.
+	LG_Vector4D& LG_Vector4D::operator-=(const LG_Vector4D& OtherVector)
 	{
-		X -= V.X; Y -= V.Y; Z -= V.Z; W -= V.W;
+		X -= OtherVector.X; 
+		Y -= OtherVector.Y; 
+		Z -= OtherVector.Z; 
+		W -= OtherVector.W;
+
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::operator*=(float Scale)
+	
+	//! This operator multiply the values from this vector with a value.
+	LG_Vector4D& LG_Vector4D::operator*=(float Value)
 	{
-		X *= Scale; Y *= Scale; Z *= Scale; W *= Scale;
+		X *= Value; 
+		Y *= Value; 
+		Z *= Value; 
+		W *= Value;
+
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::operator/=(float V)
+	
+	//! This operator divide the values from this vector with a value.
+	LG_Vector4D& LG_Vector4D::operator/=(float Value)
 	{
-		const float RV = 1.f / V;
-		X *= RV; Y *= RV; Z *= RV; W *= RV;
+		const float RV = 1.f / Value;
+
+		X *= RV;
+		Y *= RV; 
+		Z *= RV; 
+		W *= RV;
+
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::operator*=(const LG_Vector4D& V)
+	
+	//! This operator multiply the values from other vector with this.
+	LG_Vector4D& LG_Vector4D::operator*=(const LG_Vector4D& OtherVector)
 	{
-		X *= V.X; Y *= V.Y; Z *= V.Z; W *= V.W;
+		X *= OtherVector.X; 
+		Y *= OtherVector.Y; 
+		Z *= OtherVector.Z; 
+		W *= OtherVector.W;
+
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::operator/=(const LG_Vector4D& V)
+	
+	//! This operator divide the values from other vector with this.
+	LG_Vector4D& LG_Vector4D::operator/=(const LG_Vector4D& OtherVector)
 	{
-		X /= V.X; Y /= V.Y; Z /= V.Z; W /= V.W;
+		X /= OtherVector.X; 
+		Y /= OtherVector.Y; 
+		Z /= OtherVector.Z;
+		W /= OtherVector.W;
+
 		return *this;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	float LG_Vector4D::Magnitud(const LG_Vector4D & V)
-	{
-		return sqrt(pow(V.X, 2) + pow(V.Y, 2) + pow(V.Z, 2) + pow(V.W, 2));
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector4D LG_Vector4D::Normalize(const LG_Vector4D & V)
-	{
-		return V / Magnitud(V);
 	}
 
-	/************************************************************************/
-	/* Producto Punto                                                       */
-	/************************************************************************/
-	float LG_Vector4D::operator|(const LG_Vector4D& V) const
+	//! his operator return the dot product between this vector and other vector.
+	float LG_Vector4D::operator|(const LG_Vector4D& OtherVector) const
 	{
-		return X*V.X + Y*V.Y + Z*V.Z + W*V.W;
+		return	X * OtherVector.X + 
+				Y * OtherVector.Y + 
+				Z * OtherVector.Z + 
+				W * OtherVector.W;
 	}
 
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
+	//! This operator return the cross product between this vector and other vector.
 	float LG_Vector4D::operator^(const LG_Vector4D& V) const
 	{
 		//TODO: Implementar el operador.
 		return 0.0f;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	float LG_Vector4D::Dot(const LG_Vector4D& B)
-	{
-		float escalar = this->X * B.X + this->Y * B.Y + this->Z * B.Z + this->W * B.W;
-		if (escalar <= DELTA && escalar >= 0 - DELTA)
-		{
-			escalar = 0;
-		}
-		return escalar;
-	}
 
-	LG_Vector4D LG_Vector4D::Cross(const LG_Vector4D & V, const LG_Vector4D & B)
-	{
-		return LG_Vector4D((V.Y*B.Z - V.Z * B.Y), (V.Z * B.X - V.X * B.Z), (V.X * B.Y - V.Y * B.X), 0);
-	}
+	
 }

@@ -22,7 +22,7 @@ namespace LevelGenerator
 
 	/**
 	 *	@brief Parameter Constructor.
-	 *	@param LG_Vector3D Is the wanted position for the vertex.
+	 *	@param LG_Vector3D Is the wanted position for the node.
 	 */
 	LG_Node::LG_Node(LG_Vector3D vPosition)
 	{
@@ -30,7 +30,7 @@ namespace LevelGenerator
 	}
 
 	/**
-	 *	@brief Initialize resources of the vertex.
+	 *	@brief Initialize resources of the node.
 	 */
 	void LG_Node::Init()
 	{

@@ -32,7 +32,6 @@
     <ClCompile Include="src\LG_Isoline.cpp" />
     <ClCompile Include="src\LG_Node.cpp" />
     <ClCompile Include="src\LG_Tile.cpp" />
-    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{828359A7-3D1B-4CC5-9264-B6432D9B6D04}</ProjectGuid>

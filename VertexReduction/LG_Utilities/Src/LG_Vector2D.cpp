@@ -1,208 +1,176 @@
 #include "LG_Vector2D.h"
+#include <cmath>
 
 namespace LevelGenerator
 {
+	//! Default Constructor.
 	LG_Vector2D::LG_Vector2D()
 	{
 
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
+	
+	//! Constructor with parameters.
 	LG_Vector2D::LG_Vector2D(float InX, float InY) : X(InX), Y(InY)
 	{
 
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
+	
+	//! Default Destructor.
 	LG_Vector2D::~LG_Vector2D()
 	{
 
 	}
 
-	/************************************************************************************************************************/
-	/* Implementación de operadores aritméticos                             												*/
-	/************************************************************************************************************************/
+	//! This function return the magnitud of the vector given in the parameter.
+	float LG_Vector2D::Magnitud(const LG_Vector2D & OtherVector)
+	{
+		return sqrt(pow(OtherVector.X, 2) + pow(OtherVector.Y, 2));
+	}
+	
+	//! This function reduce the magnitud of the vector given between 0 and 1.
+	LG_Vector2D LG_Vector2D::Normalize(const LG_Vector2D & OtherVector)
+	{
+		return OtherVector / Magnitud(OtherVector);
+	}
 
-	LG_Vector2D LG_Vector2D::operator+(const LG_Vector2D& V) const
+	//! This function realize the dot product between 2 vectors.
+	float LG_Vector2D::Dot(const LG_Vector2D& VectorA, const LG_Vector2D& VectorB)
 	{
-		return LG_Vector2D(X + V.X, Y + V.Y);
+		return VectorA | VectorB;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D LG_Vector2D::operator-(const LG_Vector2D& V) const
+
+	//! This is an operator to use + between 2 vectors.
+	LG_Vector2D LG_Vector2D::operator+(const LG_Vector2D& OtherVector) const
 	{
-		return LG_Vector2D(X - V.X, Y - V.Y);
+		return LG_Vector2D(X + OtherVector.X, Y + OtherVector.Y);
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D LG_Vector2D::operator*(float Scale) const
+	
+	//! This is an operator to use - between 2 vectors.
+	LG_Vector2D LG_Vector2D::operator-(const LG_Vector2D& OtherVector) const
 	{
-		return LG_Vector2D(X * Scale, Y * Scale);
+		return LG_Vector2D(X - OtherVector.X, Y - OtherVector.Y);
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D LG_Vector2D::operator*(const LG_Vector2D& V) const
+
+	//! This is an operator to use * between 1 vector and 1 scalar value.
+	LG_Vector2D LG_Vector2D::operator*(float Value) const
 	{
-		return LG_Vector2D(X * V.X, Y * V.Y);
+		return LG_Vector2D(X * Value, Y * Value);
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D LG_Vector2D::operator/(float Scale) const
+	
+	//! This is an operator to use * between 2 vectors.
+	LG_Vector2D LG_Vector2D::operator*(const LG_Vector2D& OtherVector) const
 	{
-		const float RScale = 1.f / Scale;
+		return LG_Vector2D(X * OtherVector.X, Y * OtherVector.Y);
+	}
+	
+	//! This is an operator to use / between 1 vector and 1 scalar value.
+	LG_Vector2D LG_Vector2D::operator/(float Value) const
+	{
+		const float RScale = 1.f / Value;
 		return LG_Vector2D(X * RScale, Y * RScale);
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D LG_Vector2D::operator/(const LG_Vector2D& V) const
+
+	//! This is an operator to use / between 2 vectors.
+	LG_Vector2D LG_Vector2D::operator/(const LG_Vector2D& OtherVector) const
 	{
-		return LG_Vector2D(X / V.X, Y / V.Y);
+		return LG_Vector2D(X / OtherVector.X, Y / OtherVector.Y);
 	}
 
-
-
-	/************************************************************************************************************************/
-	/* Implementación de operadores lógicos                                 												*/
-	/************************************************************************************************************************/
-	bool LG_Vector2D::operator==(const LG_Vector2D& V) const
+	//! This operator compares that 2 vectors are the same.
+	bool LG_Vector2D::operator==(const LG_Vector2D& OtherVector) const
 	{
-		return X == V.X && Y == V.Y;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector2D::operator!=(const LG_Vector2D& V) const
-	{
-		return X != V.X || Y != V.Y;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector2D::operator<(const LG_Vector2D& Other) const
-	{
-		return X < Other.X && Y < Other.Y;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector2D::operator>(const LG_Vector2D& Other) const
-	{
-		return X > Other.X && Y > Other.Y;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector2D::operator<=(const LG_Vector2D& Other) const
-	{
-		return X <= Other.X && Y <= Other.Y;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector2D::operator>=(const LG_Vector2D& Other) const
-	{
-		return X >= Other.X && Y >= Other.Y;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	bool LG_Vector2D::Equals(const LG_Vector2D& V, float Tolerance) const
-	{
-		return abs(X - V.X) < Tolerance && abs(Y - V.Y) < Tolerance;
+		return X == OtherVector.X && Y == OtherVector.Y;
 	}
 
-	/************************************************************************************************************************/
-	/* Implementación de operadores de asignación compuesta                 												*/
-	/************************************************************************************************************************/
-	LG_Vector2D& LG_Vector2D::operator+=(const LG_Vector2D& V)
+	//! This operator compares that 2 vectors are diferents.
+	bool LG_Vector2D::operator!=(const LG_Vector2D& OtherVector) const
 	{
-		X += V.X; Y += V.Y;
+		return X != OtherVector.X || Y != OtherVector.Y;
+	}
+	
+	//! This operator compares that this vector is lesser than other vector.
+	bool LG_Vector2D::operator<(const LG_Vector2D& OtherVector) const
+	{
+		return X < OtherVector.X && Y < OtherVector.Y;
+	}
+	
+	//! This operator compares that this vector is greater than other vector.
+	bool LG_Vector2D::operator>(const LG_Vector2D& OtherVector) const
+	{
+		return X > OtherVector.X && Y > OtherVector.Y;
+	}
+	
+	//! This operator compares that this vector is lesser or equal than other vector.
+	bool LG_Vector2D::operator<=(const LG_Vector2D& OtherVector) const
+	{
+		return X <= OtherVector.X && Y <= OtherVector.Y;
+	}
+
+	//! This operator compares that this vector is greater or equal than other vector.
+	bool LG_Vector2D::operator>=(const LG_Vector2D& OtherVector) const
+	{
+		return X >= OtherVector.X && Y >= OtherVector.Y;
+	}
+	
+	//! This function compares if 2 vectors are the same.
+	bool LG_Vector2D::Equals(const LG_Vector2D& OtherVector, float Tolerance) const
+	{
+		return abs(X - OtherVector.X) < Tolerance && abs(Y - OtherVector.Y) < Tolerance;
+	}
+
+	//! This operator add the values from other vector with this.
+	LG_Vector2D& LG_Vector2D::operator+=(const LG_Vector2D& OtherVector)
+	{
+		X += OtherVector.X; Y += OtherVector.Y;
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D& LG_Vector2D::operator-=(const LG_Vector2D& V)
+	
+	//! This operator subtract the values from other vector with this.
+	LG_Vector2D& LG_Vector2D::operator-=(const LG_Vector2D& OtherVector)
 	{
-		X -= V.X; Y -= V.Y;
+		X -= OtherVector.X; Y -= OtherVector.Y;
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D& LG_Vector2D::operator*=(float Scale)
+	
+	//! This operator multiply the values from this vector with a value.
+	LG_Vector2D& LG_Vector2D::operator*=(float Value)
 	{
-		X *= Scale; Y *= Scale;
+		X *= Value; Y *= Value;
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D& LG_Vector2D::operator/=(float V)
+	
+	//! This operator divide the values from this vector with a value.
+	LG_Vector2D& LG_Vector2D::operator/=(float Value)
 	{
-		const float RV = 1.f / V;
+		const float RV = 1.f / Value;
 		X *= RV; Y *= RV;
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D& LG_Vector2D::operator*=(const LG_Vector2D& V)
+	
+	//! This operator multiply the values from other vector with this.
+	LG_Vector2D& LG_Vector2D::operator*=(const LG_Vector2D& OtherVector)
 	{
-		X *= V.X; Y *= V.Y;
+		X *= OtherVector.X; Y *= OtherVector.Y;
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D& LG_Vector2D::operator/=(const LG_Vector2D& V)
+	
+	//! This operator divide the values from other vector with this.
+	LG_Vector2D& LG_Vector2D::operator/=(const LG_Vector2D& OtherVector)
 	{
-		X /= V.X; Y /= V.Y;
+		X /= OtherVector.X; Y /= OtherVector.Y;
 		return *this;
 	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	float LG_Vector2D::Magnitud(const LG_Vector2D & V)
+
+	//!This operator return the dot product between this vector and other vector.
+	float LG_Vector2D::operator|(const LG_Vector2D& OtherVector) const
 	{
-		return sqrt(pow(V.X, 2) + pow(V.Y, 2));
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	LG_Vector2D LG_Vector2D::Normalize(const LG_Vector2D & V)
-	{
-		return V / Magnitud(V);
+		return (X * OtherVector.X) + (Y * OtherVector.Y);
 	}
 
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	float LG_Vector2D::operator|(const LG_Vector2D& V) const
+	//! This operator return the cross product between this vector and other vector.
+	float LG_Vector2D::operator^(const LG_Vector2D& OtherVector) const
 	{
-		return X*V.X + Y*V.Y;
+		return (X * OtherVector.Y) - (Y * OtherVector.X);
 	}
-
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	float LG_Vector2D::operator^(const LG_Vector2D& V) const
-	{
-		return X*V.Y - Y*V.X;
-	}
-	/************************************************************************/
-	/*                                                                      */
-	/************************************************************************/
-	float LG_Vector2D::DotProduct(const LG_Vector2D& A, const LG_Vector2D& B)
-	{
-		return A | B;
-	}
-
+	
 }
