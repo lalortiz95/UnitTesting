@@ -87,18 +87,6 @@ namespace LevelGenerator
 		 */
 		void Destroy();
 
-		/**
-	  	 *	@brief Calls necessary functions to generate the algorithm.
-		 */
-		void MarchingSquare();
-
-		/**
-		 *	@brief This function Calculates each tile case. It's done comparing a scalar function with each vertice's position.
-		 *	@param LG_Vector3D vPosition: the position of the scalar function origin's.
-		 *	@return if its or not inside of the scalar function. True when its inside.
-		 */
-		bool CalculateTileCase(LG_Vector3D vPosition);
-
 		///************************************************************************/
 		///*						   Accessors.								  */
 		///************************************************************************/

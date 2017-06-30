@@ -49,8 +49,6 @@ namespace LevelGenerator
 		 *	@brief This function free all memory of the class.
 		 */
 		void Destroy();
-
-
 	};
 }
 

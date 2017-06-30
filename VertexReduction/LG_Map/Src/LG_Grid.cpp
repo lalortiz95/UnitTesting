@@ -76,54 +76,6 @@ namespace LevelGenerator
 		}
 	}
 
-	//! Calls necessary functions to generate the algorithm.
-	void LG_Grid::MarchingSquare()
-	{
-		///We go through the TileMap, checking each one of it's nodes with the scalar function of a circle.
-		for (int i = 0; i < m_iNumberPlanesX; ++i)
-		{
-			for (int j = 0; j < m_iNumberPlanesY; ++j)
-			{
-				/// We iterate through every node in the tile.
-				for (int k = 0; k < LG_Tile::NUM_NODES_PER_TILE; ++k)
-				{
-					/// We assign the flag, that if inside it's true, otherwise it's false.
-					m_Grid[i][j].m_Nodes[k].m_bIsInside = CalculateTileCase(m_Grid[i][j].m_Nodes[k].m_Position);
-					
-				}
-			}
-		}
-
-		/// We store the tiles that have at least one of their nodes as true.
-		for (int i = 0; i < m_iNumberPlanesX; ++i)
-		{
-			for (int j = 0; j < m_iNumberPlanesY; ++j)
-			{
-				for (int k = 0; k < LG_Tile::NUM_NODES_PER_TILE; ++k)
-				{
-					if (m_Grid[i][j].m_Nodes[k].m_bIsInside)
-					{
-						m_ListTilesInside.push_back(m_Grid[i][j]);
-					}
-				}
-			}
-		}
-	}
-	
-	//! This function Calculates each tiles case. It's done comparing a scalar function with each node's position.
-	bool LG_Grid::CalculateTileCase(LG_Vector3D vPosition)
-	{
-		/// Check if the magnitud bettewn the circle position and the position of the nodes is
-		/// less than the radius.
-		if (vPosition.Magnitud(m_Cricle.m_Position - vPosition) < m_Cricle.m_fRadius)
-		{
-			/// If that is the case we return true.
-			return true;
-		}
-	
-		return false;
-	}
-
 	//! This function returns the number of tiles in the grid, in the X axis.
 	int LG_Grid::GetTilesX()
 	{

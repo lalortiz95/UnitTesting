@@ -57,6 +57,5 @@ namespace LevelGenerator
 
 	void LG_Tile::CheckPlaneCase()
 	{
-		
 	}
 }
