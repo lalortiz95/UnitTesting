@@ -30,6 +30,9 @@
     <ClInclude Include="Include\LG_UtilitiesPrerequisites.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\LG_Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_Vector2D.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\LG_Vector4D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\LG_Math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

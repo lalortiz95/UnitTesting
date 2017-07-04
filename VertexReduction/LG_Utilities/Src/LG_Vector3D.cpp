@@ -154,6 +154,16 @@ namespace LevelGenerator
 				Z >= OtherVector.Z;
 	}
 	
+	//! This operator assigns the values from other vector with this.
+	LG_Vector3D & LG_Vector3D::operator=(const LG_Vector3D & OtherVector)
+	{
+		X = OtherVector.X;
+		Y = OtherVector.Y;
+		Z = OtherVector.Z;
+
+		return *this;
+	}
+
 	//!	This operator add the values from other vector with this.
 	LG_Vector3D& LG_Vector3D::operator+=(const LG_Vector3D& OtherVector)
 	{

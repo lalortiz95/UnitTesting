@@ -22,37 +22,33 @@ namespace LevelGenerator
 		m_iHeight = iPlaneAmoutX * LG_Tile::SIZE_OF_TILE;
 		m_iWidth = iPlaneAmoutY * LG_Tile::SIZE_OF_TILE;
 
+		/// Set the center of the grid.
+		LG_Vector3D CenterPosition((float)(m_iWidth / 2), (float)(m_iHeight / 2), 0);
+		m_MapCenter.m_Position = CenterPosition;
+
 		/// First calculate the number of tiles in x and y axis.
 		m_iNumberPlanesX = iPlaneAmoutX;
 		m_iNumberPlanesY = iPlaneAmoutY;
 
 		/// Then we assing memory for each tile in x.
 		m_Grid = new LG_Tile*[m_iNumberPlanesX];
-
-		/// For each tile in x array, we assing a new tile in y.
+		LG_Vector3D SpawnPosition(0, 0, 0);
 		for (int i = 0; i < m_iNumberPlanesX; ++i)
 		{
+			/// For each tile in x array, we assing a new tile in y.
 			m_Grid[i] = new LG_Tile[m_iNumberPlanesY];
-
-		}
-
-		LG_Vector3D tempVec(0, 0, 0);
-		for (int i = 0; i < m_iNumberPlanesX; ++i)
-		{
 			for (int j = 0; j < m_iNumberPlanesY; ++j)
 			{
-				m_Grid[i][j].Init(tempVec);
-				tempVec.Y += LG_Tile::SIZE_OF_TILE;
+				/// Initialization of each tile in the grid.
+				m_Grid[i][j].Init(SpawnPosition);
+				/// Adds the size of the tile to the Y position.
+				SpawnPosition.Y += LG_Tile::SIZE_OF_TILE;
 			}
-			tempVec.X += LG_Tile::SIZE_OF_TILE;
+			/// Restart the position in y axis.
+			SpawnPosition.Y = 0;
+			/// Adds the size of the tile to set the position in the next column of the grid. 
+			SpawnPosition.X += LG_Tile::SIZE_OF_TILE;
 		}	
-
-		LG_Vector3D tempPos(0, 0, 0);
-		tempPos.X = rand() % m_iWidth;
-		tempPos.Y = rand() % m_iHeight;
-
-		float fTempRadius = 100;
-		m_Cricle.Init(tempPos, fTempRadius);
 	}
 
 	//! This function free all memory and deletes the objects.

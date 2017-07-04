@@ -192,6 +192,13 @@ namespace LevelGenerator
 		///************************************************************************/
 
 		/**
+		 *	@brief This operator assigns the values from other vector with this.
+		 *	@param const LG_Vector3D& OtherVector: The vector to add with this.
+		 *	@return this vector like a reference to actualize it's variables.
+		 */
+		LG_Vector3D& operator=(const LG_Vector3D& OtherVector);
+
+		/**
 		 *	@brief This operator add the values from other vector with this.
 		 *	@param const LG_Vector3D& OtherVector: The vector to add with this.
 		 *	@return this vector like a reference to actualize it's variables.

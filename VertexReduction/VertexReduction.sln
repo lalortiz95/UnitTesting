@@ -22,6 +22,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LG_Algorithms", "LG_Algorit
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LG_Utilities", "LG_Utilities\LG_Utilities.vcxproj", "{225902FA-D56E-40E7-9EE6-6E692C09A3DF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LG_AlgorithmsUnitTest", "LG_AlgorithmsUnitTest\LG_AlgorithmsUnitTest.vcxproj", "{E61560D7-E343-41A6-ADB0-AED887858112}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EB9F2D87-47B7-400B-8ABE-FC00203F1C54} = {EB9F2D87-47B7-400B-8ABE-FC00203F1C54}
+		{828359A7-3D1B-4CC5-9264-B6432D9B6D04} = {828359A7-3D1B-4CC5-9264-B6432D9B6D04}
+		{225902FA-D56E-40E7-9EE6-6E692C09A3DF} = {225902FA-D56E-40E7-9EE6-6E692C09A3DF}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -62,6 +69,14 @@ Global
 		{225902FA-D56E-40E7-9EE6-6E692C09A3DF}.Release|x64.Build.0 = Release|x64
 		{225902FA-D56E-40E7-9EE6-6E692C09A3DF}.Release|x86.ActiveCfg = Release|Win32
 		{225902FA-D56E-40E7-9EE6-6E692C09A3DF}.Release|x86.Build.0 = Release|Win32
+		{E61560D7-E343-41A6-ADB0-AED887858112}.Debug|x64.ActiveCfg = Debug|x64
+		{E61560D7-E343-41A6-ADB0-AED887858112}.Debug|x64.Build.0 = Debug|x64
+		{E61560D7-E343-41A6-ADB0-AED887858112}.Debug|x86.ActiveCfg = Debug|Win32
+		{E61560D7-E343-41A6-ADB0-AED887858112}.Debug|x86.Build.0 = Debug|Win32
+		{E61560D7-E343-41A6-ADB0-AED887858112}.Release|x64.ActiveCfg = Release|x64
+		{E61560D7-E343-41A6-ADB0-AED887858112}.Release|x64.Build.0 = Release|x64
+		{E61560D7-E343-41A6-ADB0-AED887858112}.Release|x86.ActiveCfg = Release|Win32
+		{E61560D7-E343-41A6-ADB0-AED887858112}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

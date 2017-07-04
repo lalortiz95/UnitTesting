@@ -36,24 +36,24 @@ namespace LevelGenerator
 		int m_iCase; 
 
 		/**
-		 *	@brief The top node on the right of the tile.
-		 */
-		LG_Node m_nTopRight;
-
-		/**
 		 *	@brief The top node on the left of the tile.
 		 */
-		LG_Node m_nTopLeft;
+		LG_Node* m_pTopLeft;
 
+		/**
+		 *	@brief The top node on the right of the tile.
+		 */
+		LG_Node* m_pTopRight;
+		
 		/**
 		 *	@brief The bottom node on the right of the tile.
 		 */
-		LG_Node m_nBottomRight;
+		LG_Node* m_pBottomRight;
 
 		/**
 		 *	@brief The bottom node on the left of the tile.
 		 */
-		LG_Node m_nBottomLeft;
+		LG_Node* m_pBottomLeft;
 		
 		 /**
 		  *	@brief An array of nodes, one for each corner of the tile.
@@ -67,7 +67,6 @@ namespace LevelGenerator
 		static const int SIZE_OF_TILE;
 
 		/**
-		 *	@note: The given value is 3 because we start counting on 0. Example: 0, 1, 2, 3.
 		 *	@brief The constant that define the number of nodes in the tile.
 		 */
 		static const int NUM_NODES_PER_TILE;

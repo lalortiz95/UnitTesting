@@ -2,7 +2,6 @@
 #include "LG_MapPrerequisites.h"
 #include "LG_Circle.h"
 #include "LG_Tile.h"
-
 #include <vector>
 
 namespace LevelGenerator
@@ -47,9 +46,14 @@ namespace LevelGenerator
 		LG_Tile** m_Grid;
 
 		/**
+		 *	@brief This pointer is a reference to the map's center.
+		 */
+		 LG_Node m_MapCenter;
+
+		/**
 		 *	@brief This variable stores in a vector the tiles that have case diferent than 0.
 		 */
-		std::vector<LG_Tile> m_ListTilesInside;
+		std::vector<LG_Tile*> m_pListTilesInside;
 
 	private:
 
@@ -62,12 +66,6 @@ namespace LevelGenerator
 		 *	@brief This variable stores the number of tiles in y.
 		 */
 		int m_iNumberPlanesY;
-
-
-		/**
-		 *	@brief Circle.
-		 */
-		LG_Circle m_Cricle;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */
