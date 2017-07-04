@@ -56,7 +56,6 @@ namespace LevelGenerator
 		/**
 		 *	@brief A LG_Grid pointer in which we are realizing the algorithm.
 		 */
-		
 		LG_Grid* m_pMap;
 
 		/**
@@ -84,23 +83,22 @@ namespace LevelGenerator
 		 */
 		 void Run();
 
+	private:
 		 /**
-		  *	@brief This function Calculates each tile case. It's done comparing a scalar function with each vertice's position.
+		  *	@brief This function Calculates each tile case, Calculated through the flags on it's nodes.
 		  */
 		void SetTilesCases();
 		
 		/**
-		 *	@brief This function generates a vector of tiles that have cases different than 0.
+		 *	@brief This function tells us wether or not, a tile's node is inside of a list of circles.
 		 *	@param LG_Node ActualNode: The node to compare with the scalar function.
 		 *	@return true if it's inside, otherwise false.
 		 */
 		bool IsTilesInsideOfCircles(LG_Node ActualNode);
 
 		/**
-		 *	@brief This function set a given number of circles.
+		 *	@brief This function set a random number of circles.
 		 */
-		void SetCircles();
-
-			
+		void SetCircles();			
 	};
 }

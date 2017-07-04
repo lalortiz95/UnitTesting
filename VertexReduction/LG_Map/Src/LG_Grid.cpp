@@ -12,6 +12,7 @@ namespace LevelGenerator
 	//! Default destructor.
 	LG_Grid::~LG_Grid()
 	{
+		/// Releases the memory.
 		Destroy();
 	}
 
@@ -64,7 +65,7 @@ namespace LevelGenerator
 					/// If the memory of the pointer isn't nullptr.
 					if (m_Grid[i] != nullptr)
 					{
-
+						/// Releases the memory.
 						m_Grid[i][j].Destroy();
 					}
 				}

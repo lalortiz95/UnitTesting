@@ -46,12 +46,12 @@ namespace LevelGenerator
 		LG_Tile** m_Grid;
 
 		/**
-		 *	@brief This pointer is a reference to the map's center.
+		 *	@brief This variable stores the map's center.
 		 */
 		 LG_Node m_MapCenter;
 
 		/**
-		 *	@brief This variable stores in a vector the tiles that have case diferent than 0.
+		 *	@brief This variable stores in a vector the reference of the tiles that have a case different than 0.
 		 */
 		std::vector<LG_Tile*> m_pListTilesInside;
 
