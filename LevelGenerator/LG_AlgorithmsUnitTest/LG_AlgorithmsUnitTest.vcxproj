@@ -98,6 +98,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
@@ -106,6 +107,8 @@
       <AdditionalDependencies>LG_Algorithms.lib;LG_Map.lib;LG_Utilities.lib;gtestd.lib;gtest_main-mdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
+      <NoEntryPoint>false</NoEntryPoint>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -114,6 +117,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
@@ -122,6 +126,8 @@
       <AdditionalDependencies>LG_Algorithms.lib;LG_Map.lib;LG_Utilities.lib;gtestd.lib;gtest_main-mdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
+      <NoEntryPoint>false</NoEntryPoint>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -132,6 +138,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -139,6 +146,8 @@
       <AdditionalDependencies>LG_Algorithms.lib;LG_Map.lib;LG_Utilities.lib;gtest.lib;gtest_main-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
+      <NoEntryPoint>false</NoEntryPoint>
+      <SubSystem>Console</SubSystem>
     </Link>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
@@ -152,6 +161,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -159,6 +169,8 @@
       <AdditionalDependencies>LG_Algorithms.lib;LG_Map.lib;LG_Utilities.lib;gtest.lib;gtest_main-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
+      <NoEntryPoint>false</NoEntryPoint>
+      <SubSystem>Console</SubSystem>
     </Link>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>

@@ -3,17 +3,12 @@
 #include <time.h>
 #include <gtest/gtest.h>
 
-//using namespace LevelGenerator;
-//TEST(AlgorithmUnitTest, Test1)
-//{
-//	srand(5);
-//	LG_MarchingSquare MarchingSquare;
-//	MarchingSquare.Run();
-//	//EXPECT_TRUE();
-//}
+using namespace LevelGenerator;
 
-int main(/*int argc, char **argv*/)
+TEST(AlgorithmUnitTest, Test1)
 {
-	//::testing::InitGoogleTest(&argc, argv);
-	return 0/*RUN_ALL_TESTS()*/;
+	srand(time(NULL));
+	LG_MarchingSquare MarchingSquare;
+	MarchingSquare.Run();
+	EXPECT_TRUE(MarchingSquare.m_pMap->m_pListTilesInside.size() > 0);
 }
