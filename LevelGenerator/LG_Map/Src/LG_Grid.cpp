@@ -19,6 +19,7 @@ namespace LevelGenerator
 	//! This function initialize all variables of the class.
 	void LG_Grid::Init(int iPlaneAmoutX, int iPlaneAmoutY)
 	{
+		Destroy();
 		/// Stores the width and height in the member variable for future references.
 		m_iHeight = iPlaneAmoutX * LG_Tile::SIZE_OF_TILE;
 		m_iWidth = iPlaneAmoutY * LG_Tile::SIZE_OF_TILE;

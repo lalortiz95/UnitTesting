@@ -27,6 +27,16 @@ namespace LevelGenerator
 		SetCircles();
 	}
 
+	//! This function initialize all variables of the class.
+	void LG_MarchingSquare::Init(float fRadius, LG_Vector3D position, int tilesX, int tilesY)
+	{
+		/// Assign memory and initialize the grid.
+		m_pMap = new LG_Grid();
+		m_pMap->Init(tilesX, tilesY);
+
+		SetCircle(fRadius, position);
+	}
+
 	//! This function free the memory of the class.
 	void LG_MarchingSquare::Destroy()
 	{
@@ -45,6 +55,45 @@ namespace LevelGenerator
 	{
 		/// Initialize the class' variables.
 		Init();
+		///We see that the grid's got valid information.
+		if (m_pMap == nullptr)	return;
+
+		/// Flag that indicates if a tile's got at least 1 node set as true.
+		/// Meaning it's inside of one circle, and by so it's inserted in the it's list.
+		bool bFlag = false;
+		///We go through the TileMap, checking each one of it's nodes with a list circles.
+		for (int i = 0; i < m_pMap->GetTilesX(); ++i)
+		{
+			for (int j = 0; j < m_pMap->GetTilesY(); ++j)
+			{
+				/// We iterate through every node in the tile.
+				for (int k = 0; k < LG_Tile::NUM_NODES_PER_TILE; ++k)
+				{
+					/// We assign the flag, that if inside it's true, otherwise it's false.
+					m_pMap->m_Grid[i][j].m_Nodes[k].m_bIsInside = IsTilesInsideOfCircles(m_pMap->m_Grid[i][j].m_Nodes[k]);
+
+					/// If one node is true and the tile is not yet in the list, then we insert the tile in te list.
+					if (m_pMap->m_Grid[i][j].m_Nodes[k].m_bIsInside && !bFlag)
+						/// Change the flag so that the tile is added to the list.
+						bFlag = true;
+				}
+				///If there was a node set to true, we insert the tile in the list.
+				if (bFlag)
+					m_pMap->m_pListTilesInside.push_back(&m_pMap->m_Grid[i][j]);
+				/// Change the flag back to false so that the next tile could get in the list.
+				bFlag = false;
+			}
+		}
+
+		/// Set every tile's case.
+		SetTilesCases();
+	}
+
+	//! This function is the only one you need to generate marching squares algorithm.
+	void LG_MarchingSquare::Run(float fRadius, LG_Vector3D position, int iNumTilesX, int iNumTilesY)
+	{
+		/// Initialize the class' variables.
+		Init(fRadius, position, iNumTilesX, iNumTilesY);
 		///We see that the grid's got valid information.
 		if (m_pMap == nullptr)	return;
 
@@ -245,11 +294,20 @@ namespace LevelGenerator
 	//! This function generates a vector of tiles that have cases different than 0.
 	bool LG_MarchingSquare::IsTilesInsideOfCircles(LG_Node ActualNode)
 	{
+		/// Stores the distance between a node and the circle's center.
 		float fDistance;
+
+		/// We check that there are circles to check with.
+		if (m_CircleList.size() <= 0)
+		{
+			///If not, we return false.
+			return false;
+		}
+
 		/// Iterates through the circle list.
 		for (int i = 0; i < m_CircleList.size(); ++i)
 		{
-			///We calculate the distance between the actual node, and all  the circles.
+			/// We calculate the distance between the actual node, and all  the circles.
 			fDistance = ActualNode.m_Position.Magnitud(m_CircleList[i].m_Position - ActualNode.m_Position);
 			/// Check if it's inside of the actual circle.
 			if (fDistance <= m_CircleList[i].m_fRadius)
@@ -286,5 +344,18 @@ namespace LevelGenerator
 			/// Add the circle in the circles' list.
 			m_CircleList.push_back(NewCircle);
 		}
+	}
+
+	//! This function set a random number of circles.
+	void LG_MarchingSquare::SetCircle(float fRadius, LG_Vector3D position)
+	{
+
+		/// This variable store the actual circle being created.
+		LG_Circle NewCircle;
+
+		/// We initialize our new circle.
+		NewCircle.Init(position, fRadius);
+		/// We add it to the circle list.
+		m_CircleList.push_back(NewCircle);
 	}
 }
