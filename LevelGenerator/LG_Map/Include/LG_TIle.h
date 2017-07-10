@@ -4,7 +4,6 @@
 
 namespace LevelGenerator
 {
-
 	/**
 	 * @brief Tile class. Stores it's 4 nodes, it's width, and height.
 	 */

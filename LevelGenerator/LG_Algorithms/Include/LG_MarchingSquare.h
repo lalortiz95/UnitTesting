@@ -69,19 +69,36 @@ namespace LevelGenerator
 
 		/**
 		 *  @brief This function initialize all variables of the class.
-		 *	@param The grid.
 		 */
 		void Init();
 
 		/**
-		 *	@brief This function free the memory of the class.
+		 *  @brief This function initialize all variables of the class.
+		 *	@params float fRadius: the radius that the circle will have.
+		 *	@params LG_Vector3D position: the position where the circle will be.
+		 *	@params int tilesX: the amount of tiles in X for the grid.
+		 *	@params int tilesY: the amount of tiles in Y for the grid.
+		 */
+		void Init(float fRadius, LG_Vector3D position, int tilesX, int tilesY);
+
+		/**
+		 *	@brief This function free the memory of the class, and destroys it's variables.
 		 */
 		void Destroy();
-		
+
 		/**
 		 *	@brief This function is the only one you need to generate marching squares algorithm.
 		 */
 		 void Run();
+
+		 /**
+		  *	@brief This function is the only one you need to generate marching squares algorithm.
+		  *	@param float fRadius: the radius that the circle will have.
+		  *	@param LG_Vector3D position: the position where the circle will be.
+		  *	@param int iNumTilesX: The amount of tiles to be created in the X Axis.	
+		  * @param int iNumTilesY: The amount of tiles to be created in the Y Axis.
+		  */
+		 void Run(float fRadius, LG_Vector3D position, int iNumTilesX, int iNumTilesY);
 
 	private:
 		 /**
@@ -99,6 +116,12 @@ namespace LevelGenerator
 		/**
 		 *	@brief This function set a random number of circles.
 		 */
-		void SetCircles();			
+		void SetCircles();
+
+		/**
+		 *	@brief This function sets one circle in a given position, with a given radius.
+		 *	@params LG_Vector3D position: Where the circle will be placed.
+		 */
+		void SetCircle(float fRadius, LG_Vector3D position);
 	};
 }

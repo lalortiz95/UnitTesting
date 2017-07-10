@@ -3,7 +3,7 @@
 namespace LevelGenerator
 {
 	//! The constant that define the size per tile.
-	const int  LG_Tile::SIZE_OF_TILE = 25;
+	const int LG_Tile::SIZE_OF_TILE = 50;
 	//! The constant that define the number of nodes in the tile.
 	const int LG_Tile::NUM_NODES_PER_TILE = 4;
 
@@ -25,7 +25,6 @@ namespace LevelGenerator
 	//! Initializes the variables of the class.
 	void LG_Tile::Init(LG_Vector3D vPosition)
 	{
-
 		//! A vector to store each nodes position. Calculated with the width, height, and position of the first node.
 		LG_Vector3D TempPosition = vPosition;
 

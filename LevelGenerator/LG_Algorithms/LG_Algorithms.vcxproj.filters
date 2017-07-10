@@ -21,9 +21,15 @@
     <ClInclude Include="Include\LG_AlgorithmsPrerequisites.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\LG_RDP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_MarchingSquare.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\LG_RDP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
