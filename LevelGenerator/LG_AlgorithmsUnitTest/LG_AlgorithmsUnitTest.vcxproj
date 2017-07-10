@@ -18,6 +18,9 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E61560D7-E343-41A6-ADB0-AED887858112}</ProjectGuid>
     <RootNamespace>LG_AlgorithmsUnitTest</RootNamespace>
@@ -164,9 +167,6 @@
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Src\Main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

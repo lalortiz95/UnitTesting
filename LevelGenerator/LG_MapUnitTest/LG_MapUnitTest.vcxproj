@@ -18,6 +18,9 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9D1804C4-A201-4903-98B2-C6B37C0374B3}</ProjectGuid>
     <RootNamespace>UnitTest</RootNamespace>
@@ -154,9 +157,6 @@
       <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
