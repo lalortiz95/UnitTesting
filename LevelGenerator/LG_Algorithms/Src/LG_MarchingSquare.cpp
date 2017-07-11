@@ -308,7 +308,7 @@ namespace LevelGenerator
 		for (int i = 0; i < m_CircleList.size(); ++i)
 		{
 			/// We calculate the distance between the actual node, and all  the circles.
-			fDistance = ActualNode.m_Position.Magnitud(m_CircleList[i].m_Position - ActualNode.m_Position);
+			fDistance = ActualNode.m_Position.Magnitude(m_CircleList[i].m_Position - ActualNode.m_Position);
 			/// Check if it's inside of the actual circle.
 			if (fDistance <= m_CircleList[i].m_fRadius)
 			{

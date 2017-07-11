@@ -169,11 +169,13 @@
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Include\LG_AlgorithmManager.h" />
     <ClInclude Include="Include\LG_AlgorithmsPrerequisites.h" />
     <ClInclude Include="Include\LG_MarchingSquare.h" />
     <ClInclude Include="Include\LG_RDP.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\LG_AlgorithmManager.cpp" />
     <ClCompile Include="Src\LG_MarchingSquare.cpp" />
     <ClCompile Include="Src\LG_RDP.cpp" />
   </ItemGroup>

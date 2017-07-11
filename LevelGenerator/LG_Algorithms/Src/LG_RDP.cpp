@@ -74,7 +74,10 @@ namespace LevelGenerator
 
 	void LG_RDP::CreateBoundary()
 	{
-
+		//TODO: crear 2 vectores que sean el vector entre el nodo final y el nodo inicial.
+		//más, y menos la mitad del rango.
+		// ver que los nodos tengan su bandera de borrar nodo encendida estén dentro del rango.
+		// de lo contrario, buscar el nuevo punto más lejano.
 	}
 
 	//! This function is the only one you need to generate Ramer-Douglas-Peucker algorithm.
@@ -83,5 +86,7 @@ namespace LevelGenerator
 		//TODO: sacar un vector entre el primer y el último nodo de la isolinea.
 		//definir el rango que se va a tener.
 		//ver si algun nodo está dentro del área delimitada por 2 vectores, simulando un rectangulo.
+		Init(0.5f, m_OriginalIsoline);
+		CreateBoundary();
 	}
 }
