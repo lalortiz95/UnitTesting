@@ -2,6 +2,7 @@
 #include "LG_MapPrerequisites.h"
 #include "LG_Circle.h"
 #include "LG_Tile.h"
+#include "LG_Isoline.h"
 #include <vector>
 
 namespace LevelGenerator

@@ -63,6 +63,11 @@ namespace LevelGenerator
 		 */
 		std::vector<LG_Circle>m_CircleList;
 
+		/**
+		 *	@brief The contour of the generated shape.
+		 */
+		LG_Isoline m_Outline;
+
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/

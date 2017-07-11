@@ -58,11 +58,18 @@ namespace LevelGenerator
 		///************************************************************************/
 
 		/**
-		 *	@brief This function return the magnitud of the vector given in the parameter.
+		 *	@brief This function return the magnitude of the vector given in the parameter.
 		 *	@param const LG_Vector3D& OtherVector: The vector.
-		 *	@return the magnitud of the vector.
+		 *	@return the magnitude of the vector.
 		 */
-		float Magnitud(const LG_Vector3D& OtherVector);
+		float Magnitude(const LG_Vector3D& OtherVector);
+
+		/**
+		 *	@brief This function return the magnitude of the vector given in the parameter.
+		 *	@param const LG_Vector3D& VectorA: The given vector.
+		 *	@return the magnitude of two vectors.
+		 */
+		 static float StaticMagnitude(const LG_Vector3D VectorA);
 
 		/**
 		 *	@brief This function realize the dot product between 2 vectors.
@@ -80,14 +87,14 @@ namespace LevelGenerator
 		LG_Vector3D Cross3(const LG_Vector3D& V, const LG_Vector3D& B);
 
 		/**
-		 *	@brief This function reduce the magnitud of the vector given between 0 and 1.
+		 *	@brief This function reduce the Magnitude of the vector given between 0 and 1.
 		 *	@param const LG_Vector3D& OtherVector: The vector.
 		 *	@return The normalized vector.
 		 */
 		LG_Vector3D Normalize(const LG_Vector3D& OtherVector);
 
 		/**
-		 *	@brief This function compares if 2 vectors are the same.
+1		 *	@brief This function compares if 2 vectors are the same.
 		 *	@param const LG_Vector3D& OtherVector: The vector to compare with this.
 		 *	@param float fTolerance: This variable is used as a tolerance for considering that 2 vectors are the same.
 		 *	@return true if this vector is the same that other vector., if not, false.

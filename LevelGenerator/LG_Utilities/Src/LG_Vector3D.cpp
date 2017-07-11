@@ -21,12 +21,19 @@ namespace LevelGenerator
 
 	}
 
-	//! This function return the magnitud of the vector given in the parameter.
-	float LG_Vector3D::Magnitud(const LG_Vector3D & OtherVector)
+	//! This function return the magnitude of the vector given in the parameter.
+	float LG_Vector3D::Magnitude(const LG_Vector3D & OtherVector)
 	{
 		return sqrt(pow(OtherVector.X, 2) + 
 					pow(OtherVector.Y, 2) + 
 					pow(OtherVector.Z, 2));
+	}
+	//! This function return the magnitude of the vector given in the parameter.
+	float LG_Vector3D::StaticMagnitude(const LG_Vector3D VectorA)
+	{
+		return sqrt(pow(VectorA.X, 2) +
+			        pow(VectorA.Y, 2) +
+					pow(VectorA.Z, 2));
 	}
 
 	//! This function realize the dot product between 2 vectors.
@@ -46,7 +53,7 @@ namespace LevelGenerator
 	//! This function reduce the magnitud of the vector given between 0 and 1.
 	LG_Vector3D LG_Vector3D::Normalize(const LG_Vector3D & OtherVector)
 	{
-		return OtherVector / Magnitud(OtherVector);
+		return OtherVector / Magnitude(OtherVector);
 	}
 
 	//! This function compares if 2 vectors are the same.
