@@ -75,7 +75,7 @@ namespace LevelGenerator
 		/**
 		 *  @brief This function initialize all variables of the class.
 		 */
-		void Init();
+		void Init(LG_Grid* gridToWorkWith);
 
 		/**
 		 *  @brief This function initialize all variables of the class.
@@ -94,7 +94,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief This function is the only one you need to generate marching squares algorithm.
 		 */
-		 void Run();
+		 void Run(LG_Grid* gridToWorkWith);
 
 		 /**
 		  *	@brief This function is the only one you need to generate marching squares algorithm.

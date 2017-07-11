@@ -18,11 +18,12 @@ namespace LevelGenerator
 	}
 
 	//! This function initilize all variables of the class.
-	void LG_MarchingSquare::Init()
+	void LG_MarchingSquare::Init(LG_Grid* gridToWorkWith)
 	{
 		/// Assign memory and initialize the grid.
-		m_pMap = new LG_Grid();
-		m_pMap->Init(20, 12);
+		m_pMap = gridToWorkWith;
+		//m_pMap = new LG_Grid();
+		//m_pMap->Init(20, 12);
 		/// Calculates how many circles there will be, which what sizes, and in which positions.
 		SetCircles();
 	}
@@ -51,10 +52,10 @@ namespace LevelGenerator
 	}
 
 	//! This function is the only one you need to generate marching squares algorithm.
-	void LG_MarchingSquare::Run()
+	void LG_MarchingSquare::Run(LG_Grid* gridToWorkWith)
 	{
 		/// Initialize the class' variables.
-		Init();
+		Init(gridToWorkWith);
 		///We see that the grid's got valid information.
 		if (m_pMap == nullptr)	return;
 

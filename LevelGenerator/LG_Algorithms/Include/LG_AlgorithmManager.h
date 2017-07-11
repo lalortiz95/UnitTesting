@@ -1,5 +1,8 @@
 #pragma once
 #include "LG_AlgorithmsPrerequisites.h"
+#include "LG_MarchingSquare.h"
+
+#include <LG_Grid.h>
 
 namespace LevelGenerator
 {
@@ -21,5 +24,37 @@ namespace LevelGenerator
 		 *	@brief Default destructor.
 		 */
 		~LG_AlgorithmManager();
+	
+		///**************************************************************************/
+		///*						  Member Variables.								*/
+		///**************************************************************************/
+
+		/**
+		 *	@brief An object of the marching square class. It's used to run the algorithm.
+		 */
+		LG_MarchingSquare m_MS;
+
+		/**
+		 *	@brief A map where we generate marching square.
+		 */
+		LG_Grid* m_pMap;
+		 ///************************************************************************/
+		 ///*						   Class Functions.							  */
+		 ///************************************************************************/
+
+		 /**
+		  *  @brief This function initialize all variables of the class.
+		  */
+		 void Initialize();
+
+		 /**
+		  *	@brief This function free the memory of the class, and destroys it's variables.
+		  */
+		 void Destroy();
+
+		 /**
+		  *	@brief This calls all the algorithms and put them together to generate a procedural level.
+		  */
+		 void Run();
 	};
 }

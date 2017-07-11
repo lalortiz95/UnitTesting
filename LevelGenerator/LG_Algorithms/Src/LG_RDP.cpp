@@ -30,10 +30,11 @@ namespace LevelGenerator
 			m_ActualEndNode = m_End;
 		}
 
-		
+		LG_Vector3D Range;
 		for (int i = 0; i < IsolineToReduce.m_NodeVector.size(); ++i)
 		{
 			// TODO: generar el rango.
+			//Range = m_ActualEndNode.m_Position - m_Begin.m_Position;
 
 		}
 
