@@ -1,5 +1,6 @@
 #pragma once
 #include <LG_MarchingSquare.h>
+#include <LG_RDP.h>
 #include <time.h>
 #include <gtest/gtest.h>
 
@@ -37,8 +38,12 @@ TEST(AlgorithmUnitTest, AreTilesInside)
 	LG_MarchingSquare MarchingSquare;
 	///The variable used to call marching square functions with a given circle.
 	LG_MarchingSquare SpecificCase;
+
+	/// A map to work with for our marching square algorithm.
+	LG_Grid* pMap = new LG_Grid();
+	pMap->Init(20, 12);
 	///Call the algorithm with a random amount of random circles.
-	MarchingSquare.Run();
+	MarchingSquare.Run(pMap);
 	/// We test that there are tiles inside of the generated circles.
 	EXPECT_TRUE(MarchingSquare.m_pMap->m_pListTilesInside.size() > 0);
 
@@ -53,5 +58,34 @@ TEST(AlgorithmUnitTest, AreTilesInside)
 
 	/// We compare that both, the calculated tiles inside, and the ones we know that are inside.
 	/// Are the same.
+
 	EXPECT_TRUE(CompareTilesVector(CorrectCaseValue, SpecificCase.m_pMap->m_pListTilesInside));
+
+
+	///
+	LG_Isoline Isoline;
+	Isoline.Init();
+	Isoline.AddNode(LG_Vector3D(1, 1, 0));
+	Isoline.AddNode(LG_Vector3D(2, 2, 0));
+	Isoline.AddNode(LG_Vector3D(2, 4, 0));
+	Isoline.AddNode(LG_Vector3D(3, 6, 0));
+	Isoline.AddNode(LG_Vector3D(4, 5, 0));
+	Isoline.AddNode(LG_Vector3D(5, 5, 0));
+	Isoline.AddNode(LG_Vector3D(6, 5, 0));
+	Isoline.AddNode(LG_Vector3D(7, 5, 0));
+	Isoline.AddNode(LG_Vector3D(8, 5, 0));
+	Isoline.AddNode(LG_Vector3D(9, 7, 0));
+	Isoline.AddNode(LG_Vector3D(9, 9, 0));
+	Isoline.AddNode(LG_Vector3D(9, 10, 0));
+
+	LG_RDP RDP;
+	RDP.RunVec(0.1f, Isoline);
+	RDP.m_OriginalIsoline.m_NodeVector;
+	//RDP.Run(0.1f, Isoline);
+	//RDP.m_FinalIsoline;
+}
+
+TEST(RDP_Algorithm, IsIsolineReduced)
+{
+	
 }

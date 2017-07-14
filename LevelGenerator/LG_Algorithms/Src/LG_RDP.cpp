@@ -33,7 +33,6 @@ namespace LevelGenerator
 			m_pActualEndNode = &m_OriginalIsoline.m_NodeList.back();
 		}
 
-
 		for (std::list<LG_Node>::iterator itt = m_OriginalIsoline.m_NodeList.begin();
 			itt != m_OriginalIsoline.m_NodeList.end(); ++itt)
 		{

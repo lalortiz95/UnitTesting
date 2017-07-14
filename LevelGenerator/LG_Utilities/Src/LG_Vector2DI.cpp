@@ -25,7 +25,7 @@ namespace LevelGenerator
 	//! This function return the magnitud of the vector given in the parameter.
 	int LG_Vector2DI::Magnitud(const LG_Vector2DI & OtherVector)
 	{
-		return sqrt(pow(OtherVector.X, 2) + pow(OtherVector.Y, 2));
+		return (int)sqrt(pow(OtherVector.X, 2) + pow(OtherVector.Y, 2));
 	}
 
 	//! This function realize the dot product between 2 vectors.
@@ -67,7 +67,7 @@ namespace LevelGenerator
 	//! This is an operator to use / between 1 vector and 1 scalar value.
 	LG_Vector2DI LG_Vector2DI::operator/(int Value) const
 	{
-		const int RScale = 1.f / Value;
+		const int RScale = 1 / Value;
 		return LG_Vector2DI(X * RScale, Y * RScale);
 	}
 
@@ -143,7 +143,7 @@ namespace LevelGenerator
 	//! This operator divide the values from this vector with a value.
 	LG_Vector2DI& LG_Vector2DI::operator/=(int Value)
 	{
-		const int RV = 1.f / Value;
+		const int RV = 1 / Value;
 		X *= RV; Y *= RV;
 		return *this;
 	}
