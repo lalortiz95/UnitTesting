@@ -3,6 +3,11 @@
 
 namespace LevelGenerator
 {
+	///**************************************************************************/
+	///*						 Forward declarations.							*/
+	///**************************************************************************/
+	class LG_Matrix3D;
+
 	/**
 	 *	@brief Class to use a Vector in a 3D space.
 	 */
@@ -59,10 +64,9 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief This function return the magnitude of the vector given in the parameter.
-		 *	@param const LG_Vector3D& OtherVector: The vector.
 		 *	@return the magnitude of the vector.
 		 */
-		float Magnitude(const LG_Vector3D& OtherVector);
+		float Magnitude();
 
 		/**
 		 *	@brief This function return the magnitude of the vector given in the parameter.
@@ -88,10 +92,8 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief This function reduce the Magnitude of the vector given between 0 and 1.
-		 *	@param const LG_Vector3D& OtherVector: The vector.
-		 *	@return The normalized vector.
 		 */
-		LG_Vector3D Normalize(const LG_Vector3D& OtherVector);
+		void Normalize();
 
 		/**
 1		 *	@brief This function compares if 2 vectors are the same.
@@ -132,6 +134,13 @@ namespace LevelGenerator
 		 *	@return the result of the multiplication.
 		 */
 		LG_Vector3D operator*(const LG_Vector3D& OtherVector) const;
+
+		/**
+		 *	@brief This is an operator to use * between 2 vectors.
+		 *	@param const LG_Matrix3D& M: The matrix to multiply with this vector.
+		 *	@return the result of the multiplication.
+		 */
+		LG_Vector3D operator*(const LG_Matrix3D& M);
 
 		/**
 		 *	@brief This is an operator to use / between 1 vector and 1 scalar value.
@@ -225,6 +234,14 @@ namespace LevelGenerator
 		 *	@return this vector like a reference to actualize it's variables.
 		 */
 		LG_Vector3D& operator*=(float Value);
+
+
+		/**
+		 *	@brief This operator multiply the values from this vector with a value.
+		 *	@param const LG_Matrix3D& M: The matrix to multiply with this vector. 
+		 *	@return this vector like a reference to actualize it's variables.
+		 */
+		LG_Vector3D& operator*=(const LG_Matrix3D& M);
 
 		/**
 		 *	@brief This operator divide the values from this vector with a value.

@@ -1,5 +1,5 @@
 #pragma once
-#include "LG_MapPrerequisites.h"
+#include "LG_UtilitiesPrerequisites.h"
 #include <LG_Vector3D.h>
 
 namespace LevelGenerator
@@ -7,7 +7,7 @@ namespace LevelGenerator
 	/**
 	 *	@brief This class stores a node in a 3D space.
 	 */
-	class LG_MAP_EXPORT LG_Node
+	class LG_UTILITIES_EXPORT LG_Node
 	{
 	public:
 
@@ -45,6 +45,16 @@ namespace LevelGenerator
 		 *	@brief This flag determinate if the node is On or Off.
 		 */
 		bool m_bIsInside;
+
+		/**
+		 *	@brief This flag determinate if this node can be deleted.
+		 */
+		bool m_bCanDeleted;
+
+		/**
+		 *	@brief This variable store's an ID.
+		 */
+		int m_iID;
 
 
 		///************************************************************************/

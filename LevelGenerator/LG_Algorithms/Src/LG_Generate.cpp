@@ -1,34 +1,33 @@
-#include "LG_AlgorithmManager.h"
-#include <LG_Grid.h>
+#include "LG_Generate.h"
 
 namespace LevelGenerator
 {
 	//! Default constructor.
-	LG_AlgorithmManager::LG_AlgorithmManager()
+	LG_Generate::LG_Generate()
 	{
 
 	}
 
 	//! Default destructor.
-	LG_AlgorithmManager::~LG_AlgorithmManager()
+	LG_Generate::~LG_Generate()
 	{
 
 	}
 
 	//! This function initialize all variables of the class.
-	void LG_AlgorithmManager::Initialize()
+	void LG_Generate::Initialize()
 	{
 
 	}
 
 	//! This function free the memory of the class, and destroys it's variables.
-	void LG_AlgorithmManager::Destroy()
+	void LG_Generate::Destroy()
 	{
 
 	}
 
 	//! This calls all the algorithms and put them together to generate a procedural level.
-	void LG_AlgorithmManager::Run()
+	void LG_Generate::Run()
 	{
 		//TODO: with the generated cases make an isoiline.
 		//we apply then, RDP algorithm to reduce that isoloine.

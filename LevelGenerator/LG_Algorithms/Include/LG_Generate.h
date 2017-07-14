@@ -1,7 +1,7 @@
 #pragma once
 #include "LG_AlgorithmsPrerequisites.h"
 #include "LG_MarchingSquare.h"
-
+#include "LG_RDP.h"
 #include <LG_Grid.h>
 
 namespace LevelGenerator
@@ -9,7 +9,7 @@ namespace LevelGenerator
 	/**
 	 *	@brief This class manages and unificates all the algorithms in the project.
 	 */
-	class LG_ALGORITHMS_EXPORT LG_AlgorithmManager
+	class LG_ALGORITHMS_EXPORT LG_Generate
 	{
 	public:
 		///************************************************************************/
@@ -19,11 +19,11 @@ namespace LevelGenerator
 		/**
 		 *	@brief Default constructor.
 		 */
-		LG_AlgorithmManager();
+		LG_Generate();
 		/**
 		 *	@brief Default destructor.
 		 */
-		~LG_AlgorithmManager();
+		~LG_Generate();
 	
 		///**************************************************************************/
 		///*						  Member Variables.								*/

@@ -8,6 +8,7 @@ namespace LevelGenerator
 	LG_Node::LG_Node()
 	{
 		m_bIsInside = false;
+		m_bCanDeleted = true;
 	}
 
 
@@ -27,6 +28,8 @@ namespace LevelGenerator
 	LG_Node::LG_Node(LG_Vector3D vPosition)
 	{
 		m_Position = vPosition;
+		m_bIsInside = false;
+		m_bCanDeleted = true;
 	}
 
 	/**

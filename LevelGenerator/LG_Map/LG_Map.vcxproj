@@ -19,18 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\LG_Circle.h" />
     <ClInclude Include="include\LG_Grid.h" />
-    <ClInclude Include="include\LG_Isoline.h" />
     <ClInclude Include="Include\LG_MapPrerequisites.h" />
-    <ClInclude Include="include\LG_Node.h" />
     <ClInclude Include="include\LG_TIle.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\LG_Circle.cpp" />
     <ClCompile Include="src\LG_Grid.cpp" />
-    <ClCompile Include="src\LG_Isoline.cpp" />
-    <ClCompile Include="src\LG_Node.cpp" />
     <ClCompile Include="src\LG_Tile.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
