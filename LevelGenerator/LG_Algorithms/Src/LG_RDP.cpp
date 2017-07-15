@@ -81,14 +81,23 @@ namespace LevelGenerator
 		/// The boundary to apply the range.
 		LG_Rect Boundary;
 
+		/// A node that points at what we consider the first node of the isoline.
 		LG_Node* pStart = &m_OriginalIsoline.m_NodeVector.front();
+		/// A node that points at what we onsider the last node of the isoline.
 		LG_Node* pEnd = &m_OriginalIsoline.m_NodeVector.back();
+		/// A node used to iterate.
 		LG_Node* pActualNode;
+		/// The reduced isoline.
 		std::vector<LG_Node> FinalList;
 
+		/// This flag is true when when all the nodes that can be deleted are inside
+		/// The range given.
 		bool bCanDeletedNodes = true;
+		///
 		bool bChangeEnd = false;
+		/// This flag is true when all the nodes of the isoline are false.
 		bool bListIsFalse = false;
+		/// Flag that allow us, to end the agorithm loop.
 		bool bQuit = true;
 
 		int iCountEndNode = 0;
@@ -102,26 +111,41 @@ namespace LevelGenerator
 			bQuit = false;
 			bListIsFalse = true;
 
+			/// We iterate the vector.
 			for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
 			{
+				/// Check if we can delete the node, to set the new and, as the
+				/// furthest node.
 				if (m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted)
 				{
+					/// Calculate the distance between both begin and end node.
+					/// and every other node of the isoline.
 					float fNewDistance = CheckDistance(m_OriginalIsoline.m_NodeVector[i],
 						*pStart, *pEnd);
+
+					/// If it's greater than the previous greater, it becomes the new greater distance.
 					if (fNewDistance > fDistance)
 					{
+						/// Assign the new further distance.
 						fDistance = fNewDistance;
+						/// Save that node.
 						pActualNode = &m_OriginalIsoline.m_NodeVector[i];
+						/// Set the changes made.
 						bChangeEnd = true;
+						/// We store that node's position in the vector.
 						iCountEndNode = i;
 					}
 				}
 			}
 
+			/// If changes where made, we change the end node to the furthest.
 			if (bChangeEnd)
 				pEnd = pActualNode;
 
+			/// Create a boundary with the given range to see if any nodes are inside
+			/// of it.
 			Boundary.Init(pStart->m_Position, pEnd->m_Position, fRange);
+			/// Assign that the first node cannot be deleted.
 			pStart->m_bCanDeleted = false;
 
 			/// Sets the nodes that are after the temp end, as false.
@@ -162,10 +186,12 @@ namespace LevelGenerator
 			/// Check if we can delete any nodes.
 			if (bCanDeletedNodes)
 			{
-				for (int i = 0; i < iCountEndNode; ++i)
+				for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
 				{
-					if (!m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted && !m_OriginalIsoline.m_NodeVector[i].m_bIsInside)
+					if (!m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted && 
+						!m_OriginalIsoline.m_NodeVector[i].m_bIsInside)
 					{
+						m_OriginalIsoline.m_NodeVector[i].m_bIsInside = true;
 						FinalList.push_back(m_OriginalIsoline.m_NodeVector[i]);
 					}
 				}
@@ -180,7 +206,8 @@ namespace LevelGenerator
 
 			/// Check that the whole list is false, this means that the end node
 			/// is next to the start node.
-			if (bListIsFalse && iCountStartNode < m_OriginalIsoline.m_NodeVector.size() - 1)
+			if (bListIsFalse && 
+				iCountStartNode < m_OriginalIsoline.m_NodeVector.size() - 1)
 			{
 
 				if (!pStart->m_bIsInside)
@@ -188,15 +215,6 @@ namespace LevelGenerator
 					pStart->m_bIsInside = true;
 					FinalList.push_back(*pStart);
 				}
-				//for (int i = 0; i < FinalList.size(); ++i)
-				//{
-				//	if (FinalList[i].m_Position != pStart->m_Position)
-				//	{
-				//		/// Insert the start as the new reduced line's first node.
-				//		FinalList.push_back(*pStart);
-				//		break;
-				//	}
-				//}
 
 				/// assign as true, all the nodes beyond the start node.
 				for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
@@ -211,6 +229,7 @@ namespace LevelGenerator
 					/// Assign the new start node.
 					iCountStartNode++;
 					pStart = &m_OriginalIsoline.m_NodeVector[iCountStartNode];
+					pEnd = &m_OriginalIsoline.m_NodeVector.back();
 				}
 			}
 
