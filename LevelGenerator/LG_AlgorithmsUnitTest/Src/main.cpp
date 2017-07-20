@@ -79,7 +79,7 @@ TEST(AlgorithmUnitTest, AreTilesInside)
 	Isoline.AddNode(LG_Vector3D(9, 10, 0));
 
 	LG_RDP RDP;
-	RDP.RunVec(0.1f, Isoline);
+	RDP.Run(0.1f, Isoline);
 	RDP.m_OriginalIsoline.m_NodeVector;
 	//RDP.Run(0.1f, Isoline);
 	//RDP.m_FinalIsoline;

@@ -31,7 +31,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief This node stores when the isoline begin.
 		 */
-		LG_Node* m_pBegin;
+		LG_Node* m_pStart;
 
 		/**
 		 *	@brief This node stores when the isoline end.
@@ -41,7 +41,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief This node stores a temporal node.
 		 */
-		LG_Node* m_pActualEndNode;
+		LG_Node* m_pActualNode;
 
 		/**
 		 *	@brief The original isoline which will be reduced.
@@ -80,22 +80,21 @@ namespace LevelGenerator
 		void Destroy();
 
 		/**
-		 *	@brief This function check the distance between the end node, the start node and the given node.
-		 *	@param LG_Node ActualNode: The node to that we have check.
-		 *	@param LG_Node newEndNode: The furthest node.
-		 *	@param int iID: This variable generates the ActualEndNode's id.
-		 */
-		void CheckNodeDistance(LG_Node ActualNode, LG_Node& newEndNode, int iId);
-
-		void RunVec(float fRange, LG_Isoline Isoline);
-
-		float CheckDistance(LG_Node ActualNode, LG_Node nStart, LG_Node nEnd);
-
-		/**
 		 *	@brief This function is the only one you need to generate Ramer-Douglas-Peucker algorithm.
 		 *	@param float fRange: The range to reduce nodes.
 		 *	@param LG_Isoline IsolineToReduce: The isoline that we want to reduce.
 		 */
-		void Run(float fRange, LG_Isoline IsolineToReduce);
+		void Run(float fRange, LG_Isoline Isoline);
+
+		/**
+		*	@brief This function check the distance between the end node, the start node and the given node.
+		*	@param LG_Node ActualNode: The node to that we have check.
+		*	@param LG_Node nStart: The furthest node.
+		*	@param LG_Node nEnd: 
+		*/
+		float CheckDistance(LG_Node ActualNode, LG_Node nStart, LG_Node nEnd);
+
+		
+		
 	};
 }

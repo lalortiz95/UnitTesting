@@ -61,16 +61,17 @@ namespace LevelGenerator
 		/************************************************************************/
 		/*                                                                      */
 		/************************************************************************/
-		void Zero(void);
-		LG_Matrix3D Identity(void);
-		LG_Matrix3D Transpose(const LG_Matrix3D& A);
-
+		static LG_Matrix3D Zero();
+		static LG_Matrix3D Identity();
 		static LG_Matrix3D RotateX(float fValue);
 		static LG_Matrix3D RotateY(float fValue);
 		static LG_Matrix3D RotateZ(float fValue);
 		static LG_Matrix3D Rotate(float fValue);
-		void Inverse(); 
+
+		LG_Matrix3D Transpose(const LG_Matrix3D& A);
 		LG_Matrix3D Adjunct(LG_Matrix3D M);
+
+		void Inverse(); 
 		float Determinant(LG_Matrix3D M, int iCol, int iRow);
 		
 		

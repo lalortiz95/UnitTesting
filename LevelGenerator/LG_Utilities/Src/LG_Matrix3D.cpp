@@ -1,4 +1,4 @@
-#include "LG_Matrix3D.h"
+ #include "LG_Matrix3D.h"
 
 
 
@@ -156,18 +156,20 @@ namespace LevelGenerator
 	/************************************************************************/
 	/* Matriz Inicializada en 0                                             */
 	/************************************************************************/
-	void LG_Matrix3D::Zero(void)
+	LG_Matrix3D LG_Matrix3D::Zero()
 	{
+		LG_Matrix3D mZero;
 		for (int i = 0; i < 9; i++)
-			this->MatrixLikeArray[i] = 0;
+			mZero.MatrixLikeArray[i] = 0;
+		return mZero;
 	}
 	/************************************************************************/
 	/* Matriz identidad														*/
 	/************************************************************************/
-	LG_Matrix3D LG_Matrix3D::Identity(void)
+	LG_Matrix3D LG_Matrix3D::Identity()
 	{
 		LG_Matrix3D identity;
-		identity.Zero();
+		identity = Zero();
 		identity.m.X0 = 1;
 		identity.m.Y1 = 1;
 		identity.m.Z2 = 1;
