@@ -75,9 +75,6 @@ namespace LevelGenerator
 			m.X3 / M.m.W0, m.Y3 / M.m.W1, m.Z3 / M.m.W2, m.W3 / M.m.W3);
 	}
 
-	/************************************************************************/
-	/* Operador Multiplicación por un Escalar								*/
-	/************************************************************************/
 	LG_Matrix4D LG_Matrix4D::operator*(float Value)
 	{
 		return LG_Matrix4D(m.X0 * Value, m.Y0 * Value, m.Z0 * Value, m.W0 * Value,
@@ -103,9 +100,7 @@ namespace LevelGenerator
 			(m.X2 / V.Z + m.Y2 / V.Z + m.Z2 / V.Z + m.W2 / V.W),
 			(m.X3 / V.Z + m.Y3 / V.Z + m.Z3 / V.Z + m.W3 / V.W));
 	}
-	/************************************************************************/
-	/* Operador Mas igual de matiz											*/
-	/************************************************************************/
+
 	LG_Matrix4D& LG_Matrix4D::operator+=(const LG_Matrix4D & M)
 	{
 		m.X0 += M.m.X0; m.Y0 += M.m.Y0; m.Z0 += M.m.Z0; m.W0 += M.m.W0;
@@ -114,9 +109,7 @@ namespace LevelGenerator
 		m.X3 += M.m.X3; m.Y3 += M.m.Y3; m.Z3 += M.m.Z3; m.W3 += M.m.W3;
 		return *this;
 	}
-	/************************************************************************/
-	/* Operador menos igual de matriz										*/
-	/************************************************************************/
+
 	LG_Matrix4D& LG_Matrix4D::operator-=(const LG_Matrix4D & M)
 	{
 		m.X0 -= M.m.X0; m.Y0 -= M.m.Y0; m.Z0 -= M.m.Z0; m.W0 -= M.m.W0;
@@ -125,9 +118,7 @@ namespace LevelGenerator
 		m.X3 -= M.m.X3; m.Y3 -= M.m.Y3; m.Z3 -= M.m.Z3; m.W3 -= M.m.W3;
 		return *this;
 	}
-	/************************************************************************/
-	/* Operador por igual de matriz											*/
-	/************************************************************************/
+
 	LG_Matrix4D& LG_Matrix4D::operator*=(const LG_Matrix4D& M)
 	{
 		m.X0 *= M.m.X0; m.Y0 *= M.m.Y0; m.Z0 *= M.m.Z0; m.W0 *= M.m.W0;
@@ -136,9 +127,7 @@ namespace LevelGenerator
 		m.X3 *= M.m.X3; m.Y3 *= M.m.Y3; m.Z3 *= M.m.Z3; m.W3 *= M.m.W3;
 		return *this;
 	}
-	/************************************************************************/
-	/* Operador entre igual de matriz                                       */
-	/************************************************************************/
+
 	LG_Matrix4D& LG_Matrix4D::operator/=(const LG_Matrix4D & M)
 	{
 		m.X0 /= M.m.X0; m.Y0 /= M.m.Y0; m.Z0 /= M.m.Z0; m.W0 /= M.m.W0;
@@ -147,17 +136,13 @@ namespace LevelGenerator
 		m.X3 /= M.m.X3; m.Y3 /= M.m.Y3; m.Z3 /= M.m.Z3; m.W3 /= M.m.W3;
 		return *this;
 	}
-	/************************************************************************/
-	/* Matriz Inicializada en 0                                             */
-	/************************************************************************/
+
 	void LG_Matrix4D::Zero(void)
 	{
 		for (int i = 0; i < 16; i++)
 			this->MatrixLikeArray[i] = 0;
 	}
-	/************************************************************************/
-	/* Matriz identidad														*/
-	/************************************************************************/
+
 	void LG_Matrix4D::Identity(void)
 	{
 		this->Zero();
@@ -166,9 +151,7 @@ namespace LevelGenerator
 		this->m.Z2 = 1;
 		this->m.W3 = 1;
 	}
-	/************************************************************************/
-	/* Transpuesta de una matriz											*/
-	/************************************************************************/
+
 	LG_Matrix4D LG_Matrix4D::Transpose()
 	{
 		LG_Matrix4D MatTemp;
@@ -178,9 +161,7 @@ namespace LevelGenerator
 
 		return MatTemp;
 	}
-	/************************************************************************/
-	/*  Inversa de una matriz												*/
-	/************************************************************************/
+
 	LG_Matrix4D LG_Matrix4D::Inverse(const LG_Matrix4D & A)
 	{
 		//TODO: Implementar la inversa.
@@ -196,8 +177,6 @@ namespace LevelGenerator
 		this->m.X1 = 0, this->m.Y1 = yScale, this->m.Z1 = 0, this->m.W1 = 0;
 		this->m.X2 = 0, this->m.Y2 = 0, this->m.Z2 = zFar*zNear / (zFar - zNear), this->m.W2 = 1;
 		this->m.X3 = 0, this->m.Y3 = 0, this->m.Z3 = -zNear*zFar / (zFar - zNear), this->m.W3 = 0;
-
-
 	}
 
 	void LG_Matrix4D::LookAtLeftH(const LG_Vector4D EyePos, const LG_Vector4D Target, const LG_Vector4D Up)

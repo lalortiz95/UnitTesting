@@ -250,7 +250,6 @@ namespace LevelGenerator
 		 *	@return the result of the cross product.
 		 */
 		float operator^(const LG_Vector4D& OtherVector) const;
-
 	};
 }
 
