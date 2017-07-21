@@ -47,7 +47,6 @@ namespace LevelGenerator
 		if (m_pActualNode != nullptr)
 		{
 			m_pActualNode->Destroy();
-			//delete m_pActualNode;
 			m_pActualNode = nullptr;
 		}
 
@@ -55,7 +54,6 @@ namespace LevelGenerator
 		if (m_pEnd != nullptr)
 		{
 			m_pEnd->Destroy();
-			//delete m_pEnd;
 			m_pEnd = nullptr;
 		}
 
@@ -63,7 +61,6 @@ namespace LevelGenerator
 		if (m_pStart != nullptr)
 		{
 			m_pStart->Destroy();
-			//delete m_pStart;
 			m_pStart = nullptr;
 		}
 	}
