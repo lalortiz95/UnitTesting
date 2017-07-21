@@ -29,6 +29,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LG_AlgorithmsUnitTest", "LG
 		{225902FA-D56E-40E7-9EE6-6E692C09A3DF} = {225902FA-D56E-40E7-9EE6-6E692C09A3DF}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LG_UtilitiesUnitTest", "LG_UtilitiesUnitTest\LG_UtilitiesUnitTest.vcxproj", "{E78598CF-16A0-41C3-A22C-802CEB54814E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{225902FA-D56E-40E7-9EE6-6E692C09A3DF} = {225902FA-D56E-40E7-9EE6-6E692C09A3DF}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -77,6 +82,14 @@ Global
 		{E61560D7-E343-41A6-ADB0-AED887858112}.Release|x64.Build.0 = Release|x64
 		{E61560D7-E343-41A6-ADB0-AED887858112}.Release|x86.ActiveCfg = Release|Win32
 		{E61560D7-E343-41A6-ADB0-AED887858112}.Release|x86.Build.0 = Release|Win32
+		{E78598CF-16A0-41C3-A22C-802CEB54814E}.Debug|x64.ActiveCfg = Debug|x64
+		{E78598CF-16A0-41C3-A22C-802CEB54814E}.Debug|x64.Build.0 = Debug|x64
+		{E78598CF-16A0-41C3-A22C-802CEB54814E}.Debug|x86.ActiveCfg = Debug|Win32
+		{E78598CF-16A0-41C3-A22C-802CEB54814E}.Debug|x86.Build.0 = Debug|Win32
+		{E78598CF-16A0-41C3-A22C-802CEB54814E}.Release|x64.ActiveCfg = Release|x64
+		{E78598CF-16A0-41C3-A22C-802CEB54814E}.Release|x64.Build.0 = Release|x64
+		{E78598CF-16A0-41C3-A22C-802CEB54814E}.Release|x86.ActiveCfg = Release|Win32
+		{E78598CF-16A0-41C3-A22C-802CEB54814E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

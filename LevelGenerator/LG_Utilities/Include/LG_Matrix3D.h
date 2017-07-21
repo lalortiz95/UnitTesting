@@ -17,12 +17,12 @@ namespace LevelGenerator
 			struct 
 			{
 				float X0, Y0, Z0,
-				X1, Y1, Z1,
-				X2, Y2, Z2;
+					  X1, Y1, Z1,
+					  X2, Y2, Z2;
 			}m;
 
-			float MatrixLikeArray[9];
-			float MatrixLikeMatrix[3][3];
+			float LikeArray[9];
+			float LikeMatrix[3][3];
 		};
 		/************************************************************************/
 		/*                                                                      */
@@ -45,10 +45,10 @@ namespace LevelGenerator
 		 LG_Matrix3D operator*(float Value);
 		 LG_Matrix3D operator/(float Value);
 
-		 LG_Vector3D operator*(const LG_Vector3D& V);
-		 LG_Vector3D operator/(const LG_Vector3D& V);
+		 LG_Matrix3D operator*(const LG_Vector3D& V);
+		 LG_Matrix3D operator/(const LG_Vector3D& V);
 
-		 LG_Vector3D operator*=(const LG_Vector3D& V);
+		 LG_Matrix3D operator*=(const LG_Vector3D& V);
 
 		/************************************************************************/
 		/*                                                                      */
@@ -58,19 +58,23 @@ namespace LevelGenerator
 		LG_Matrix3D& operator*=(const LG_Matrix3D& M);
 		LG_Matrix3D& operator/=(const LG_Matrix3D& M);
 
+		bool operator==(LG_Matrix3D M);
+
+		
 		/************************************************************************/
 		/*                                                                      */
 		/************************************************************************/
-		void Zero(void);
-		LG_Matrix3D Identity(void);
-		LG_Matrix3D Transpose(const LG_Matrix3D& A);
-
+		static LG_Matrix3D Zero();
+		static LG_Matrix3D Identity();
 		static LG_Matrix3D RotateX(float fValue);
 		static LG_Matrix3D RotateY(float fValue);
 		static LG_Matrix3D RotateZ(float fValue);
 		static LG_Matrix3D Rotate(float fValue);
-		void Inverse(); 
+
+		LG_Matrix3D Transpose(const LG_Matrix3D& A);
 		LG_Matrix3D Adjunct(LG_Matrix3D M);
+
+		void Inverse(); 
 		float Determinant(LG_Matrix3D M, int iCol, int iRow);
 		
 		
@@ -79,7 +83,6 @@ namespace LevelGenerator
 		/************************************************************************/
 		LG_Matrix3D Translation(const LG_Vector3D& V);
 		LG_Matrix3D Scaling(const LG_Vector3D& V);
-		LG_Matrix3D Rotate(const LG_Vector3D& V); //! Falta Rotate
 		
 	};
 }

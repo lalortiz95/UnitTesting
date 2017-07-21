@@ -31,7 +31,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief This node stores when the isoline begin.
 		 */
-		LG_Node* m_pBegin;
+		LG_Node* m_pStart;
 
 		/**
 		 *	@brief This node stores when the isoline end.
@@ -41,7 +41,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief This node stores a temporal node.
 		 */
-		LG_Node* m_pActualEndNode;
+		LG_Node* m_pActualNode;
 
 		/**
 		 *	@brief The original isoline which will be reduced.
@@ -49,7 +49,7 @@ namespace LevelGenerator
 		LG_Isoline m_OriginalIsoline;
 
 		/**
-		 *	@brief The reduced isoline.
+		 *	@brief The reduced set of nodes.
 		 */
 		LG_Isoline m_FinalIsoline;
 
@@ -57,11 +57,6 @@ namespace LevelGenerator
 		 *	@brief The range to reduce nodes.
 		 */
 		float m_fRange;
-
-		/**
-		 *	@brief The actual distance between 2 vectors.
-		 */
-		float m_fGreaterDistance;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */
@@ -80,22 +75,36 @@ namespace LevelGenerator
 		void Destroy();
 
 		/**
-		 *	@brief This function check the distance between the end node, the start node and the given node.
-		 *	@param LG_Node ActualNode: The node to that we have check.
-		 *	@param LG_Node newEndNode: The furthest node.
-		 *	@param int iID: This variable generates the ActualEndNode's id.
-		 */
-		void CheckNodeDistance(LG_Node ActualNode, LG_Node& newEndNode, int iId);
-
-		void RunVec(float fRange, LG_Isoline Isoline);
-
-		float CheckDistance(LG_Node ActualNode, LG_Node nStart, LG_Node nEnd);
-
-		/**
 		 *	@brief This function is the only one you need to generate Ramer-Douglas-Peucker algorithm.
 		 *	@param float fRange: The range to reduce nodes.
 		 *	@param LG_Isoline IsolineToReduce: The isoline that we want to reduce.
 		 */
-		void Run(float fRange, LG_Isoline IsolineToReduce);
+		void Run(float fRange, LG_Isoline Isoline);
+
+	private:
+		/**
+		 *	@brief This function check the distance between the end node, the start node and the given node.
+		 */
+		void SetFurthestNode();
+
+		/**
+		 *	@brief This function set the flags according to the start and end nodes. 
+		 */
+		void SetFlags();
+
+		/**
+		 *	@brief Set the node's IDs.
+		 */
+		void SetIsolineID();
+
+		/**
+		 *	@brief Adds a node to the final isoline, and changes the start and end.
+		 */
+		void AddNodeToFinalIsoline();
+
+		/**
+		 *	@brief When the start node is next to the end node, we change the start and end nodes.
+		 */
+		void ListIsFalse();
 	};
 }

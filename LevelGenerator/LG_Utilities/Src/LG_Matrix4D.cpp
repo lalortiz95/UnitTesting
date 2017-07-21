@@ -140,7 +140,7 @@ namespace LevelGenerator
 	void LG_Matrix4D::Zero(void)
 	{
 		for (int i = 0; i < 16; i++)
-			this->MatrixLikeArray[i] = 0;
+			this->LikeArray[i] = 0;
 	}
 
 	void LG_Matrix4D::Identity(void)
@@ -157,7 +157,7 @@ namespace LevelGenerator
 		LG_Matrix4D MatTemp;
 		for (int i = 0; i < 4; ++i)
 			for (int j = 0; j < 4; ++j)
-				MatTemp.MatrixLikeMatrix[j][i] = this->MatrixLikeMatrix[i][j];
+				MatTemp.LikeMatrix[j][i] = this->LikeMatrix[i][j];
 
 		return MatTemp;
 	}

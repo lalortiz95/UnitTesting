@@ -40,7 +40,7 @@ namespace LevelGenerator
 		float m_fHeight;
 
 		/**
-		 *	@brief 
+		 *	@brief This matrix is used to check collisions easily.
 		 */
 		LG_Matrix3D m_RotationMatrix;
 

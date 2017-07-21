@@ -6,375 +6,226 @@ namespace LevelGenerator
 	//! Default constructor.
 	LG_RDP::LG_RDP()
 	{
-		m_fGreaterDistance = 0.0f;
+		/// Initializes the variables with default values.
+		m_pStart = nullptr;
+		m_pEnd = nullptr;
+		m_pActualNode = nullptr;
 	}
 
 	//! Default destructor.
 	LG_RDP::~LG_RDP()
 	{
+		/// Releases memory
 		Destroy();
 	}
 
 	//! This function initialize all variables of the class.
 	void LG_RDP::Init(float fRange, LG_Isoline IsolineToReduce)
 	{
+		/// Call destroy function to release all memory.
+		Destroy();
+
 		/// Store in member variables the values in the parametrs for future references.
 		m_fRange = fRange;
 		m_OriginalIsoline = IsolineToReduce;
-		/// This variable is used to assign the ID's.
-		int iCount = 0;
 
-		/// Check if the vector node in the isoline isn't empty.
-		if (m_OriginalIsoline.m_NodeList.size() != 0)
-		{
-			/// Assign the begin node and end node's values.
-			m_pBegin = &m_OriginalIsoline.m_NodeList.front();
-			m_pEnd = &m_OriginalIsoline.m_NodeList.back();
-			m_pActualEndNode = &m_OriginalIsoline.m_NodeList.back();
-		}
+		/// Assign the start and end nodes.
+		m_pStart = &m_OriginalIsoline.m_NodeVector.front();
+		m_pEnd = &m_OriginalIsoline.m_NodeVector.back();
 
-		for (std::list<LG_Node>::iterator itt = m_OriginalIsoline.m_NodeList.begin();
-			itt != m_OriginalIsoline.m_NodeList.end(); ++itt)
-		{
-			/// This flag indicates if the node will be deleted.
-			/// this happens when thery're before the actual en node.
-			(*itt).m_bIsInside = true;
-			(*itt).m_iID = iCount;
-			iCount++;
-		}
+		/// Set the isoline's node's ids.
+		SetIsolineID();
+
+		/// Set which nodes can or cannot be deleted.
+		SetFlags();
+
 	}
 
 	//! This function free the memory of the class, and destroys it's variables.
 	void LG_RDP::Destroy()
 	{
-		// TODO: Liberar memoria.
-	}
-
-	//! This function check the distance between the end node, the start node and the given node.
-	void LG_RDP::CheckNodeDistance(LG_Node ActualNode, LG_Node& newEndNode, int Id)
-	{
-
-		/// We calculate the distance between the actual iterating node and the first node of the isoline.
-		float fStartDistance = LG_Vector3D::StaticMagnitude(ActualNode.m_Position - m_pBegin->m_Position);
-		/// We calculate the distance between the actual iterating node and the last node of the isoline.
-		float fEndDistance = LG_Vector3D::StaticMagnitude(ActualNode.m_Position - m_pActualEndNode->m_Position);
-		/// We add both distances.
-		float fFinalDistance = fStartDistance + fEndDistance;
-		//TODO: Generar un nodo temporal para hacer el calculo de esto.
-		/// If the final distance is greater than the 
-		if (fFinalDistance > m_fGreaterDistance)
+		/// If this pointer is diferent than nullptr it calls it's destroy function and frees memory.
+		if (m_pActualNode != nullptr)
 		{
-			/// We set the actual end node.
-			newEndNode = ActualNode;
-			newEndNode.m_iID = Id;
-			/// We set the new greater distance between both vectors.
-			m_fGreaterDistance = fFinalDistance;
+			m_pActualNode->Destroy();
+			m_pActualNode = nullptr;
+		}
+
+		/// If this pointer is diferent than nullptr it calls it's destroy function and frees memory.
+		if (m_pEnd != nullptr)
+		{
+			m_pEnd->Destroy();
+			m_pEnd = nullptr;
+		}
+
+		/// If this pointer is diferent than nullptr it calls it's destroy function and frees memory.
+		if (m_pStart != nullptr)
+		{
+			m_pStart->Destroy();
+			m_pStart = nullptr;
 		}
 	}
 
-	void LG_RDP::RunVec(float fRange, LG_Isoline Isoline)
+	void LG_RDP::Run(float fRange, LG_Isoline Isoline)
 	{
-		/// Stores this variables for future references.
-		m_fRange = fRange;
-		m_OriginalIsoline = Isoline;
-
-		/// The boundary to apply the range.
+		/// Declaration of the boundary to apply the range.
 		LG_Rect Boundary;
+		/// Flag that indicates if we can delete the nodes between the start and end.
+		bool bCanDelete = true;
 
-		/// A node that points at what we consider the first node of the isoline.
-		LG_Node* pStart = &m_OriginalIsoline.m_NodeVector.front();
-		/// A node that points at what we onsider the last node of the isoline.
-		LG_Node* pEnd = &m_OriginalIsoline.m_NodeVector.back();
-		/// A node used to iterate.
-		LG_Node* pActualNode;
-		/// The reduced isoline.
-		std::vector<LG_Node> FinalList;
+		/// Call the init function.
+		Init(fRange, Isoline);
 
-		/// This flag is true when when all the nodes that can be deleted are inside
-		/// The range given.
-		bool bCanDeletedNodes = true;
-		///
-		bool bChangeEnd = false;
-		/// This flag is true when all the nodes of the isoline are false.
-		bool bListIsFalse = false;
-		/// Flag that allow us, to end the agorithm loop.
-		bool bQuit = true;
+		bool bQuit = false;
 
-		int iCountEndNode = 0;
-		int iCountStartNode = 0;
-
-		float fDistance = 0;
-
-		while (bQuit)
+		while (!bQuit)
 		{
-			/// Reset values to default.
-			bQuit = false;
-			bListIsFalse = true;
+			/// Reset the flag so that it can get inside again.
+			bCanDelete = true;
+			/// Checks if the whole isoline is false, if so it changes the start and end nodes.
+			ListIsFalse();
 
-			/// We iterate the vector.
-			for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
-			{
-				/// Check if we can delete the node, to set the new and, as the
-				/// furthest node.
-				if (m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted)
-				{
-					/// Calculate the distance between both begin and end node.
-					/// and every other node of the isoline.
-					float fNewDistance = CheckDistance(m_OriginalIsoline.m_NodeVector[i],
-						*pStart, *pEnd);
-
-					/// If it's greater than the previous greater, it becomes the new greater distance.
-					if (fNewDistance > fDistance)
-					{
-						/// Assign the new further distance.
-						fDistance = fNewDistance;
-						/// Save that node.
-						pActualNode = &m_OriginalIsoline.m_NodeVector[i];
-						/// Set the changes made.
-						bChangeEnd = true;
-						/// We store that node's position in the vector.
-						iCountEndNode = i;
-					}
-				}
-			}
-
-			/// If changes where made, we change the end node to the furthest.
-			if (bChangeEnd)
-				pEnd = pActualNode;
-
-			/// Create a boundary with the given range to see if any nodes are inside
-			/// of it.
-			Boundary.Init(pStart->m_Position, pEnd->m_Position, fRange);
-			/// Assign that the first node cannot be deleted.
-			pStart->m_bCanDeleted = false;
-
-			/// Sets the nodes that are after the temp end, as false.
-			for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
-			{
-				if (i >= iCountEndNode)
-					m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted = false;
-				if (m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted)
-					bListIsFalse = false;
-			}
-
-			if (iCountStartNode >= m_OriginalIsoline.m_NodeVector.size() - 1)
-			{
-				bQuit = false;
-				bCanDeletedNodes = false;
-			}
+			/// Initialize the boundary.
+			Boundary.Init(m_pStart->m_Position, m_pEnd->m_Position, m_fRange);
 
 			/// we check collision with the true nodes of the isoline.
-			for (int i = 0; i < iCountEndNode; ++i)
+			for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
 			{
-				/// If the list is all false, or we're ahead of the first node.
-				if (i > iCountStartNode || bListIsFalse)
+				/// If we're ahead of the first node.
+				if (i > m_pStart->m_iID && i < m_pEnd->m_iID)
 				{
 					/// If it can be deleted, and is colliding with the boundary.
 					if (m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted &&
 						Boundary.CheckCollision(m_OriginalIsoline.m_NodeVector[i],
-							*pStart))
+							*m_pStart))
 						continue;
 					else
 					{
-						///If not, we cant delete nodes :C
-						bCanDeletedNodes = false;
+						bCanDelete = false;
 						break;
 					}
 				}
 			}
 
-			/// Check if we can delete any nodes.
-			if (bCanDeletedNodes)
+			/// If we can delete nodes in between the start and end nodes.
+			if (bCanDelete)
 			{
-				for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
-				{
-					if (!m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted && 
-						!m_OriginalIsoline.m_NodeVector[i].m_bIsInside)
-					{
-						m_OriginalIsoline.m_NodeVector[i].m_bIsInside = true;
-						FinalList.push_back(m_OriginalIsoline.m_NodeVector[i]);
-					}
-				}
 
-				for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
-				{
-					m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted = true;
-				}
-				*pStart = *pEnd;
-				pEnd = &m_OriginalIsoline.m_NodeVector.back();
+				/// Adds the start to the final isoline, and sets the new start and end nodes.
+				AddNodeToFinalIsoline();
+			}
+			else
+			{
+				/// If not, we calculate the furthest node, and set it as the end node.
+				SetFurthestNode();
 			}
 
-			/// Check that the whole list is false, this means that the end node
-			/// is next to the start node.
-			if (bListIsFalse && 
-				iCountStartNode < m_OriginalIsoline.m_NodeVector.size() - 1)
+			/// If we went through the whole list, it's over.
+			if (m_pStart->m_iID == m_pEnd->m_iID)
 			{
-
-				if (!pStart->m_bIsInside)
-				{
-					pStart->m_bIsInside = true;
-					FinalList.push_back(*pStart);
-				}
-
-				/// assign as true, all the nodes beyond the start node.
-				for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
-				{
-					if (i > iCountStartNode)
-						m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted = true;
-				}
-
-				/// Revision so that it doesn't go out of the array.
-				if (iCountStartNode < m_OriginalIsoline.m_NodeVector.size() - 1)
-				{
-					/// Assign the new start node.
-					iCountStartNode++;
-					pStart = &m_OriginalIsoline.m_NodeVector[iCountStartNode];
-					pEnd = &m_OriginalIsoline.m_NodeVector.back();
-				}
-			}
-
-			fDistance = 0;
-			bCanDeletedNodes = true;
-			bChangeEnd = false;
-			for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
-			{
-				if (m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted)
-				{
-					bQuit = true;
-					break;
-				}
+				m_FinalIsoline.m_NodeVector.push_back(*m_pStart);
+				bQuit = true;
 			}
 		}
-
-		m_OriginalIsoline.m_NodeVector.clear();
-		m_OriginalIsoline.m_NodeVector.resize(FinalList.size());
-		m_OriginalIsoline.m_NodeVector = FinalList;
 	}
 
-	float LG_RDP::CheckDistance(LG_Node ActualNode, LG_Node nStart, LG_Node nEnd)
+	void LG_RDP::SetFurthestNode()
 	{
-		/// We calculate the distance between the actual iterating node and the first node of the isoline.
-		float fStartDistance = LG_Vector3D::StaticMagnitude(ActualNode.m_Position - nStart.m_Position);
-		/// We calculate the distance between the actual iterating node and the last node of the isoline.
-		float fEndDistance = LG_Vector3D::StaticMagnitude(ActualNode.m_Position - nEnd.m_Position);
-		/// We add both distances.
-		return fStartDistance + fEndDistance;
-	}
+		float fDistance = 0;
+		float fStartDistance = 0;
+		float fEndDistance = 0;
+		float fNewDistance = 0;
+		bool bChangeEnd = false;
 
-	//! This function is the only one you need to generate Ramer-Douglas-Peucker algorithm.
-	void LG_RDP::Run(float fRange, LG_Isoline IsolineToReduce)
-	{
-		/// We initialize the variables of the class.
-		Init(fRange, IsolineToReduce);
-		/// The flag used to break the loop.
-		bool bQuit = false;
-		/// This variable is used to count.
-		int iCount = 0;
-
-		std::list<LG_Node>::iterator itt;
-
-		/// A temporal node to asign the new end node.
-		LG_Node FurthestNode;
-		/// The current iterating node.
-		LG_Node ActualNode;
-		/// Then rectangle used as boundary to detect if we should delete nodes.
-		LG_Rect rect;
-
-		/// A counter that tells us how many nodes are inside the range.
-		int iNodesInside = 0;
-
-		/// The amount of iterations that have passed.
-		int iCountIterator = 0;
-
-
-		/// Now we iterate.
-		while (!bQuit)
+		/// We iterate thorugh the vector.
+		for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
 		{
-			iNodesInside = 0;
-			/// Reset the distance's value to 0.
-			m_fGreaterDistance = 0;
-
-
-			/// Iterate through the original isoline.
-			for (itt = m_OriginalIsoline.m_NodeList.begin(),
-				iCount = 0; iCount < m_pActualEndNode->m_iID; ++itt, ++iCount)
+			/// Check if it can be deleted.
+			if (m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted)
 			{
-				///Actual node used to check if its inside of the range.
-				ActualNode = (*itt);
-				(*itt).m_bIsInside = true;
-				CheckNodeDistance(ActualNode, FurthestNode, iCount);
-			}
+				/// We calculate the distance between the actual iterating node and the first node of the isoline.
+				fStartDistance = LG_Vector3D::StaticMagnitude(m_OriginalIsoline.m_NodeVector[i].m_Position - m_pStart->m_Position);
+				/// We calculate the distance between the actual iterating node and the last node of the isoline.
+				fEndDistance = LG_Vector3D::StaticMagnitude(m_OriginalIsoline.m_NodeVector[i].m_Position - m_pEnd->m_Position);
+				/// We add both distances.
+				fNewDistance = fStartDistance + fEndDistance;
 
-			/// The new end node is assigned as the furthest point.
-			*m_pActualEndNode = FurthestNode;
-
-			/// we generate that recatangle.
-			rect.Init(m_pBegin->m_Position, m_pActualEndNode->m_Position, m_fRange);
-
-			/// We go through the list.
-			for (itt = m_OriginalIsoline.m_NodeList.begin(), iCount = 0;
-				itt != m_OriginalIsoline.m_NodeList.end(); ++itt)
-			{
-				/// Change the flag to false of the nodes behind the end node.
-				if (iCount >= m_pActualEndNode->m_iID)
-					(*itt).m_bIsInside = false;
-				/// add to the counter.
-				iCount++;
-			}
-
-			/// we iterate trhough the list.
-			for (itt = m_OriginalIsoline.m_NodeList.begin();
-				itt != m_OriginalIsoline.m_NodeList.end(); ++itt)
-			{
-				/// We check that the node we're checking is before the actual end node.
-				if ((*itt).m_bIsInside)
+				if (fNewDistance > fDistance)
 				{
-					/// Checking if the node was inside of the rectangle.
-					if (rect.CheckCollision((*itt), *m_pBegin))
-					{
-						/// Add the amount of nodes inside.
-						iNodesInside++;
-					}
-				}
-				else
-				{
-					/// Breaks out of the loop, because they're all false after the
-					/// actual end node.
-					break;
+					fDistance = fNewDistance;
+					m_pActualNode = &m_OriginalIsoline.m_NodeVector[i];
+					bChangeEnd = true;
 				}
 			}
-
-			/// If the amount of nodes inside of the range, is the number of nodes until
-			/// the actual end, it means we gotta delete them.
-			if (iNodesInside == m_pActualEndNode->m_iID - 1)
-			{
-
-
-				for (itt = m_OriginalIsoline.m_NodeList.begin(), iCount = 1;
-					itt != m_OriginalIsoline.m_NodeList.end(); ++itt)
-				{
-					if (iCount < m_pActualEndNode->m_iID)
-					{
-						/// The values between both iterators it's gonna be deleted.
-						m_OriginalIsoline.m_NodeList.erase(itt);
-					}
-					iCount++;
-				}
-
-				/// Asign in the redused nodes to the final isoline.
-				m_FinalIsoline.m_NodeList.push_back(*m_pBegin);
-				m_FinalIsoline.m_NodeList.push_back(*m_pActualEndNode);
-
-				///We check if we've come all the way to the last node.
-				bQuit = (m_pBegin->m_iID == m_OriginalIsoline.m_NodeList.size());
-
-				/// Asign the new begin. 
-				m_pBegin = m_pActualEndNode;
-
-			}
-
-			iCountIterator++;
 		}
 
+		/// Check if we need to change the end node.
+		if (bChangeEnd)
+		{
+			/// We change the end node.
+			m_pEnd = m_pActualNode;
+			/// Set the flags accordingly.
+			SetFlags();
+		}
+	}
+
+	//! This function set the flags according to the start and end nodes. 
+	void LG_RDP::SetFlags()
+	{
+		/// Iterate the vector and set the flag.
+		for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
+		{
+			/// If the iterating node is before the start node, or after the end node
+			/// we set it's flag to false. Otherwise, meaning it's in between, we set
+			/// it as true.
+			if (i <= m_pStart->m_iID || i >= m_pEnd->m_iID)
+			{
+				m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted = false;
+			}
+			else
+				m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted = true;
+		}
+	}
+
+	//! Set the node's IDs.
+	void LG_RDP::SetIsolineID()
+	{
+		for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
+		{
+			m_OriginalIsoline.m_NodeVector[i].m_iID = i;
+		}
+	}
+
+	void LG_RDP::AddNodeToFinalIsoline()
+	{
+		/// Add to the final isoline.
+		m_FinalIsoline.m_NodeVector.push_back(*m_pStart);
+
+		/// Set The start as the actual end.
+		m_pStart = m_pEnd;
+		/// Set the end as the original isoline's end.
+		m_pEnd = &m_OriginalIsoline.m_NodeVector.back();
+
+		/// Change the flags accordingly.
+		SetFlags();
+	}
+
+	void LG_RDP::ListIsFalse()
+	{
+		bool bListFalse = true;
+
+		for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
+		{
+			if (m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted)
+			{
+				bListFalse = false;
+				break;
+			}
+		}
+
+		if (bListFalse)
+		{
+			AddNodeToFinalIsoline();
+		}
 	}
 }
