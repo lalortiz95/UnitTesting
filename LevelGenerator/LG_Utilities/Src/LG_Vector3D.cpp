@@ -12,9 +12,11 @@ namespace LevelGenerator
 	}
 
 	//! Parameters Constructor.
-	LG_Vector3D::LG_Vector3D(float InX, float InY, float InZ) : X(InX), Y(InY), Z(InZ)
+	LG_Vector3D::LG_Vector3D(float InX, float InY, float InZ)
 	{
-
+		X = InX;
+		Y = InY;
+		Z = InZ;
 	}
 
 	//! Default Destructor.
@@ -100,7 +102,7 @@ namespace LevelGenerator
 
 	LG_Vector3D LG_Vector3D::operator*(const LG_Matrix3D & M)
 	{
-		return LG_Vector3D((M.m.X0 * X + M.m.Y0  *X + M.m.Z0 * X),
+		return LG_Vector3D((M.m.X0 * X + M.m.Y0  * X + M.m.Z0 * X),
 			(M.m.X1 * Y + M.m.Y1  *Y + M.m.Z1 * Y),
 			(M.m.X2 * Z + M.m.Y2  *Z + M.m.Z2 * Z));
 	}

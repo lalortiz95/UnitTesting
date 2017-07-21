@@ -75,25 +75,25 @@
     <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <IncludePath>$(SolutionDir)LG_Algorithms\Include\;$(GoogleUnitTest_Lib)include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Utilities\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(GoogleUnitTest_Lib)Lib\$(PlatformTarget)\</LibraryPath>
+    <LibraryPath>$(GoogleUnitTest_Lib)Lib\$(PlatformTarget)\;$(SolutionDir)Lib\$(PlatformTarget)\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <IncludePath>$(SolutionDir)LG_Algorithms\Include\;$(GoogleUnitTest_Lib)include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Utilities\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;$(GoogleUnitTest_Lib)Lib\$(PlatformTarget)\</LibraryPath>
+    <LibraryPath>$(GoogleUnitTest_Lib)Lib\$(PlatformTarget)\;$(SolutionDir)Lib\$(PlatformTarget)\;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <IncludePath>$(SolutionDir)LG_Algorithms\Include\;$(GoogleUnitTest_Lib)include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Utilities\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(GoogleUnitTest_Lib)Lib\$(PlatformTarget)\</LibraryPath>
+    <LibraryPath>$(GoogleUnitTest_Lib)Lib\$(PlatformTarget)\;$(SolutionDir)Lib\$(PlatformTarget)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <IncludePath>$(SolutionDir)LG_Algorithms\Include\;$(GoogleUnitTest_Lib)include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Utilities\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(GoogleUnitTest_Lib)Lib\$(PlatformTarget)\</LibraryPath>
+    <LibraryPath>$(GoogleUnitTest_Lib)Lib\$(PlatformTarget)\;$(SolutionDir)Lib\$(PlatformTarget)\;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -112,6 +112,7 @@
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,6 +132,7 @@
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -151,6 +153,7 @@
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
     </Link>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
@@ -174,6 +177,7 @@
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
     </Link>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>

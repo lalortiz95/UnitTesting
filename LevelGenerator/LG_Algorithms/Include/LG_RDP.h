@@ -49,7 +49,7 @@ namespace LevelGenerator
 		LG_Isoline m_OriginalIsoline;
 
 		/**
-		 *	@brief The reduced isoline.
+		 *	@brief The reduced set of nodes.
 		 */
 		LG_Isoline m_FinalIsoline;
 
@@ -57,11 +57,6 @@ namespace LevelGenerator
 		 *	@brief The range to reduce nodes.
 		 */
 		float m_fRange;
-
-		/**
-		 *	@brief The actual distance between 2 vectors.
-		 */
-		float m_fGreaterDistance;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */
@@ -86,15 +81,30 @@ namespace LevelGenerator
 		 */
 		void Run(float fRange, LG_Isoline Isoline);
 
+	private:
 		/**
-		*	@brief This function check the distance between the end node, the start node and the given node.
-		*	@param LG_Node ActualNode: The node to that we have check.
-		*	@param LG_Node nStart: The furthest node.
-		*	@param LG_Node nEnd: 
-		*/
-		float CheckDistance(LG_Node ActualNode, LG_Node nStart, LG_Node nEnd);
+		 *	@brief This function check the distance between the end node, the start node and the given node.
+		 */
+		void SetFurthestNode();
 
-		
-		
+		/**
+		 *	@brief This function set the flags according to the start and end nodes. 
+		 */
+		void SetFlags();
+
+		/**
+		 *	@brief Set the node's IDs.
+		 */
+		void SetIsolineID();
+
+		/**
+		 *	@brief Adds a node to the final isoline, and changes the start and end.
+		 */
+		void AddNodeToFinalIsoline();
+
+		/**
+		 *	@brief When the start node is next to the end node, we change the start and end nodes.
+		 */
+		void ListIsFalse();
 	};
 }

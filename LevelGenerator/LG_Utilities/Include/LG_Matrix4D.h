@@ -27,8 +27,8 @@ namespace LevelGenerator
 					X2, Y2, Z2, W2,
 					X3, Y3, Z3, W3;
 			}m;
-			float MatrixLikeArray[16];
-			float MatrixLikeMatrix[4][4];
+			float LikeArray[16];
+			float LikeMatrix[4][4];
 		};
 		/************************************************************************/
 		/*                                                                      */
@@ -64,8 +64,6 @@ namespace LevelGenerator
 		/************************************************************************/
 		/*                                                                      */
 		/************************************************************************/
-		 
-		 
 
 		 LG_Matrix4D Transpose();
 		 LG_Matrix4D Inverse(const LG_Matrix4D& A); //! Falta la inversa

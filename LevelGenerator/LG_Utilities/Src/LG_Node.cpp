@@ -37,6 +37,7 @@ namespace LevelGenerator
 	 */
 	void LG_Node::Init()
 	{
+		
 	}
 
 
@@ -45,6 +46,7 @@ namespace LevelGenerator
 	 */
 	void LG_Node::Destroy()
 	{
+
 	}
 
 }

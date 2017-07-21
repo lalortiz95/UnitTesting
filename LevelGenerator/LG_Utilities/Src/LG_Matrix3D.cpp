@@ -1,4 +1,4 @@
- #include "LG_Matrix3D.h"
+#include "LG_Matrix3D.h"
 
 
 
@@ -53,9 +53,22 @@ namespace LevelGenerator
 	/************************************************************************/
 	LG_Matrix3D LG_Matrix3D::operator*(const LG_Matrix3D & M)
 	{
-		return LG_Matrix3D(m.X0 * M.m.X0, m.Y0 * M.m.X1, m.Z0 * M.m.X2,
-			m.X1 * M.m.Y0, m.Y1 * M.m.Y1, m.Z1 * M.m.Y2,
-			m.X2 * M.m.Z0, m.Y2 * M.m.Z1, m.Z2 * M.m.Z2);
+		int i, j, k;
+		///inicializamos en 0 la matriz.
+		LG_Matrix3D R = Zero();
+
+		for (i = 0; i < 3; i++)
+		{
+			for (j = 0; j < 3; j++)
+			{
+				for (k = 0; k < 3; k++)
+				{
+					R.LikeMatrix[i][j] += LikeMatrix[j][k] * M.LikeMatrix[k][i];
+				}
+			}
+		}
+
+		return R;
 	}
 
 	/************************************************************************/
@@ -90,68 +103,81 @@ namespace LevelGenerator
 	/************************************************************************/
 	/* Multiplicacion de Matriz por Vector                                  */
 	/************************************************************************/
-	LG_Vector3D LG_Matrix3D::operator*(const LG_Vector3D & V)
+	LG_Matrix3D LG_Matrix3D::operator*(const LG_Vector3D & V)
 	{
-		return LG_Vector3D((m.X0 * V.X + m.Y0  *V.X + m.Z0 * V.X),
-			(m.X1 * V.Y + m.Y1  *V.Y + m.Z1 * V.Y),
-			(m.X2 * V.Z + m.Y2  *V.Z + m.Z2 * V.Z));
+		LG_Matrix3D R = Zero();
+
+		R.m.X0 = m.X0 * V.X + m.X0 * V.Y + m.X0 * V.Z;
+		R.m.Y0 =  m.Y0 * V.X +  m.Y0 * V.Y +  m.Y0 * V.Z;
+		R.m.Z0 = m.Z0 * V.X + m.Z0 * V.Y + m.Z0 * V.Z;
+							    
+		R.m.X1 = m.X1 * V.X + m.X1 * V.Y + m.X1 * V.Z;
+		R.m.Y1 = m.Y1 * V.X + m.Y1 * V.Y + m.Y1 * V.Z;
+		R.m.Z1 = m.Z1 * V.X + m.Z1 * V.Y + m.Z1 * V.Z;
+							    
+		R.m.X2 = m.X2 * V.X + m.X2 * V.Y + m.X2 * V.Z;
+		R.m.Y2 = m.Y2 * V.X + m.Y2 * V.Y + m.Y2 * V.Z;
+		R.m.Z2 = m.Z2 * V.X + m.Z2 * V.Y + m.Z2 * V.Z;
+
+		return R;
 	}
 
-	LG_Vector3D LG_Matrix3D::operator/(const LG_Vector3D & V)
+	LG_Matrix3D LG_Matrix3D::operator/(const LG_Vector3D & V)
 	{
-		return LG_Vector3D((m.X0 / V.X + m.Y0 / V.X + m.Z0 / V.X),
-			(m.X1 / V.Y + m.Y1 / V.Y + m.Z1 / V.Y),
-			(m.X2 / V.Z + m.Y2 / V.Z + m.Z2 / V.Z));
+		//TODO Hacer funcion 
+		return Identity();
 	}
 
-	LG_Vector3D LG_Matrix3D::operator*=(const LG_Vector3D & V)
+	LG_Matrix3D LG_Matrix3D::operator*=(const LG_Vector3D & V)
 	{
-			LG_Vector3D res = *this * V;
-			return res;
+		return *this = *this * V;
 	}
 	/************************************************************************/
 	/* Operador Mas igual de matiz											*/
 	/************************************************************************/
 	LG_Matrix3D& LG_Matrix3D::operator+=(const LG_Matrix3D & M)
 	{
-		m.X0 += M.m.X0;	m.Y0 += M.m.Y0; m.Z0 += M.m.Z0;
-		m.X1 += M.m.X1; m.Y1 += M.m.Y1; m.Z1 += M.m.Z1;
-		m.X2 += M.m.X2;	m.Y2 += M.m.Y2; m.Z2 += M.m.Z2;
-
-		return *this;
+		return *this = *this + M;
 	}
 	/************************************************************************/
 	/* Operador menos igual de matriz										*/
 	/************************************************************************/
 	LG_Matrix3D& LG_Matrix3D::operator-=(const LG_Matrix3D & M)
 	{
-		m.X0 -= M.m.X0;	m.Y0 -= M.m.Y0; m.Z0 -= M.m.Z0;
-		m.X1 -= M.m.X1; m.Y1 -= M.m.Y1; m.Z1 -= M.m.Z1;
-		m.X2 -= M.m.X2;	m.Y2 -= M.m.Y2; m.Z2 -= M.m.Z2;
-
-		return *this;
+		return *this = *this - M;
 	}
 	/************************************************************************/
 	/* Operador por igual de matriz											*/
 	/************************************************************************/
 	LG_Matrix3D& LG_Matrix3D::operator*=(const LG_Matrix3D& M)
 	{
-		m.X0 *= M.m.X0;	m.Y0 *= M.m.Y0; m.Z0 *= M.m.Z0;
-		m.X1 *= M.m.X1; m.Y1 *= M.m.Y1; m.Z1 *= M.m.Z1;
-		m.X2 *= M.m.X2;	m.Y2 *= M.m.Y2; m.Z2 *= M.m.Z2;
-
-		return *this;
+		return *this = *this * M;
 	}
 	/************************************************************************/
 	/* Operador entre igual de matriz                                       */
 	/************************************************************************/
 	LG_Matrix3D& LG_Matrix3D::operator/=(const LG_Matrix3D & M)
 	{
-		m.X0 /= M.m.X0;	m.Y0 /= M.m.Y0; m.Z0 /= M.m.Z0;
-		m.X1 /= M.m.X1; m.Y1 /= M.m.Y1; m.Z1 /= M.m.Z1;
-		m.X2 /= M.m.X2;	m.Y2 /= M.m.Y2; m.Z2 /= M.m.Z2;
+		return *this = *this / M;
+	}
 
-		return *this;
+	bool LG_Matrix3D::operator==(LG_Matrix3D M)
+	{
+		///contador que nos indica si coincidieron todas las casillas.
+		int count = 0;
+
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (LikeMatrix[i][j] == M.LikeMatrix[i][j])
+				{
+					count++;
+				}
+			}
+		}
+
+		return (count == 9);
 	}
 	/************************************************************************/
 	/* Matriz Inicializada en 0                                             */
@@ -160,7 +186,7 @@ namespace LevelGenerator
 	{
 		LG_Matrix3D mZero;
 		for (int i = 0; i < 9; i++)
-			mZero.MatrixLikeArray[i] = 0;
+			mZero.LikeArray[i] = 0;
 		return mZero;
 	}
 	/************************************************************************/
@@ -181,17 +207,17 @@ namespace LevelGenerator
 	LG_Matrix3D LG_Matrix3D::Transpose(const LG_Matrix3D & A)
 	{
 		LG_Matrix3D MatTemp;
+		MatTemp = Zero();
 		for (int i = 0; i < 3; ++i)
 			for (int j = 0; j < 3; ++j)
-				MatTemp.MatrixLikeMatrix[j][i] = A.MatrixLikeMatrix[i][j];
+				MatTemp.LikeMatrix[j][i] = A.LikeMatrix[i][j];
 		return MatTemp;
 	}
 
 	LG_Matrix3D LG_Matrix3D::RotateX(float fValue)
 	{
 		LG_Matrix3D M;
-		M.Zero();
-		M.m.X0 = 1;
+		M = Identity();
 		M.m.Y1 = LG_Math::Cos(fValue);
 		M.m.Z1 = -LG_Math::Sin(fValue);
 		M.m.Y2 = LG_Math::Sin(fValue);
@@ -202,10 +228,9 @@ namespace LevelGenerator
 	LG_Matrix3D LG_Matrix3D::RotateY(float fValue)
 	{
 		LG_Matrix3D M;
-		M.Zero();
+		M = Identity();
 		M.m.X0 = LG_Math::Cos(fValue);
 		M.m.Z0 = LG_Math::Sin(fValue);
-		M.m.Y1 = 1;
 		M.m.X2 = -LG_Math::Sin(fValue);
 		M.m.Z2 = LG_Math::Cos(fValue);
 		return M;
@@ -214,12 +239,11 @@ namespace LevelGenerator
 	LG_Matrix3D LG_Matrix3D::RotateZ(float fValue)
 	{
 		LG_Matrix3D M;
-		M.Zero();
+		M = Identity();
 		M.m.X0 = LG_Math::Cos(fValue);
 		M.m.Y0 = -LG_Math::Sin(fValue);
 		M.m.X1 = LG_Math::Sin(fValue);
 		M.m.Y1 = LG_Math::Cos(fValue);
-		M.m.Z2 = 1;
 		return M;
 	}
 
@@ -247,15 +271,7 @@ namespace LevelGenerator
 			0, V.Y, 0,
 			0, 0, V.Z);
 	}
-	/************************************************************************/
-	/* Matriz de rotacion													*/
-	/************************************************************************/
-	LG_Matrix3D LG_Matrix3D::Rotate(const LG_Vector3D & V)
-	{
-		//TODO: Agregar implementacion de Rotate
-		return LG_Matrix3D();
-	}
-
+	
 	void LG_Matrix3D::Inverse()
 	{
 		float determinante = 0;
@@ -264,12 +280,12 @@ namespace LevelGenerator
 
 		/// Calculate the determinante.
 		determinante =
-			(MatrixLikeMatrix[0][0] * MatrixLikeMatrix[1][1] * MatrixLikeMatrix[2][2]) +
-			(MatrixLikeMatrix[0][2] * MatrixLikeMatrix[1][0] * MatrixLikeMatrix[2][1]) +
-			(MatrixLikeMatrix[2][0] * MatrixLikeMatrix[0][1] * MatrixLikeMatrix[1][2]) -
-			(MatrixLikeMatrix[2][0] * MatrixLikeMatrix[1][1] * MatrixLikeMatrix[0][2]) -
-			(MatrixLikeMatrix[0][0] * MatrixLikeMatrix[1][2] * MatrixLikeMatrix[2][1]) -
-			(MatrixLikeMatrix[2][2] * MatrixLikeMatrix[0][1] * MatrixLikeMatrix[1][0]);
+			(LikeMatrix[0][0] * LikeMatrix[1][1] * LikeMatrix[2][2]) +
+			(LikeMatrix[0][2] * LikeMatrix[1][0] * LikeMatrix[2][1]) +
+			(LikeMatrix[2][0] * LikeMatrix[0][1] * LikeMatrix[1][2]) -
+			(LikeMatrix[2][0] * LikeMatrix[1][1] * LikeMatrix[0][2]) -
+			(LikeMatrix[0][0] * LikeMatrix[1][2] * LikeMatrix[2][1]) -
+			(LikeMatrix[2][2] * LikeMatrix[0][1] * LikeMatrix[1][0]);
 
 		/// Check if we can draw the inverse.
 		if (determinante != 0)
@@ -289,12 +305,12 @@ namespace LevelGenerator
 	{
 		LG_Matrix3D adjunct;
 		/// Initialize the matrix adjunct like 0.
-		adjunct.Zero();
+		adjunct = Zero();
 
 		///We calculate each place of the adjunct.
 		for (int i = 0; i < 3; ++i)
 			for (int j = 0; j < 3; ++j)
-				adjunct.MatrixLikeMatrix[i][j] = Determinant(M, i, j);
+				adjunct.LikeMatrix[i][j] = Determinant(M, i, j);
 
 		///return the adjunct matrix.
 		return adjunct;
@@ -316,7 +332,7 @@ namespace LevelGenerator
 			{
 				if (i != iCol && j != iRow)
 				{
-					fValues[iCount] = M.MatrixLikeMatrix[i][j];
+					fValues[iCount] = M.LikeMatrix[i][j];
 					iCount++;
 				}
 			}

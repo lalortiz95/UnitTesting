@@ -1,7 +1,6 @@
 #pragma once
 #include "LG_UtilitiesPrerequisites.h"
 #include "LG_Node.h"
-#include <list>
 #include <vector>
 
 namespace LevelGenerator
@@ -30,11 +29,6 @@ namespace LevelGenerator
 		///**************************************************************************/
 		///*						  Member Variables.								*/
 		///**************************************************************************/
-
-		/**
-		 *	@brief This variable stores the series of points that make up this line.
-		 */
-		std::list<LG_Node> m_NodeList;
 
 		/**
 		 *	@brief This variable stores the series of points that make up this line.

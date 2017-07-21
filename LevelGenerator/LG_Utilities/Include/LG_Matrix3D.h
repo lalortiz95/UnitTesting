@@ -17,12 +17,12 @@ namespace LevelGenerator
 			struct 
 			{
 				float X0, Y0, Z0,
-				X1, Y1, Z1,
-				X2, Y2, Z2;
+					  X1, Y1, Z1,
+					  X2, Y2, Z2;
 			}m;
 
-			float MatrixLikeArray[9];
-			float MatrixLikeMatrix[3][3];
+			float LikeArray[9];
+			float LikeMatrix[3][3];
 		};
 		/************************************************************************/
 		/*                                                                      */
@@ -45,10 +45,10 @@ namespace LevelGenerator
 		 LG_Matrix3D operator*(float Value);
 		 LG_Matrix3D operator/(float Value);
 
-		 LG_Vector3D operator*(const LG_Vector3D& V);
-		 LG_Vector3D operator/(const LG_Vector3D& V);
+		 LG_Matrix3D operator*(const LG_Vector3D& V);
+		 LG_Matrix3D operator/(const LG_Vector3D& V);
 
-		 LG_Vector3D operator*=(const LG_Vector3D& V);
+		 LG_Matrix3D operator*=(const LG_Vector3D& V);
 
 		/************************************************************************/
 		/*                                                                      */
@@ -58,6 +58,9 @@ namespace LevelGenerator
 		LG_Matrix3D& operator*=(const LG_Matrix3D& M);
 		LG_Matrix3D& operator/=(const LG_Matrix3D& M);
 
+		bool operator==(LG_Matrix3D M);
+
+		
 		/************************************************************************/
 		/*                                                                      */
 		/************************************************************************/
@@ -80,7 +83,6 @@ namespace LevelGenerator
 		/************************************************************************/
 		LG_Matrix3D Translation(const LG_Vector3D& V);
 		LG_Matrix3D Scaling(const LG_Vector3D& V);
-		LG_Matrix3D Rotate(const LG_Vector3D& V); //! Falta Rotate
 		
 	};
 }

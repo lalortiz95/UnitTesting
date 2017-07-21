@@ -79,10 +79,9 @@ TEST(AlgorithmUnitTest, AreTilesInside)
 	Isoline.AddNode(LG_Vector3D(9, 10, 0));
 
 	LG_RDP RDP;
-	RDP.Run(0.1f, Isoline);
-	RDP.m_OriginalIsoline.m_NodeVector;
-	//RDP.Run(0.1f, Isoline);
-	//RDP.m_FinalIsoline;
+	RDP.Run(0.3f, Isoline);
+	EXPECT_TRUE(RDP.m_FinalIsoline.m_NodeVector.size() == 7);
+	
 }
 
 TEST(RDP_Algorithm, IsIsolineReduced)
