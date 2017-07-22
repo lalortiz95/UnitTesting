@@ -1,4 +1,5 @@
 #include "LG_Matrix4D.h"
+#include "LG_Matrix3D.h"
 
 namespace LevelGenerator
 {
@@ -145,7 +146,8 @@ namespace LevelGenerator
 		LG_Matrix4D TransposedMatrix;
 		LG_Matrix4D AdjunctedMatrix;
 
-		//TODO: agregar el eje que falta para que sea 4D.
+		//TODO: al quitar una columna o una hilera, quedan 4 matrices 3D a las que les
+		//Sacamos su determinante.
 		/// Calculamos la determinante.
 		determinante =
 			(LikeMatrix[0][0] * LikeMatrix[1][1] * LikeMatrix[2][2]) + (LikeMatrix[0][2] * LikeMatrix[1][0] * LikeMatrix[2][1]) +
@@ -183,6 +185,7 @@ namespace LevelGenerator
 	float LG_Matrix4D::GetDeterminant(LG_Matrix4D M, int col, int row)
 	{
 		///Los valores que hay en la matriz cuando se ignoran la col y la row dada.
+		LG_Matrix3D determinantMatrix;
 		float fValues[9];
 		///contador para llenar fValues
 		int iCount = 0;
@@ -195,6 +198,9 @@ namespace LevelGenerator
 			{
 				if (i != col && j != row)
 				{
+					//TODO: meter esto a una matriz 3x3, y calcular el determinante
+					// de dicha matriz. Con las determinantes que se obtengan de la
+					// matriz 3x3, obtener la determinante de esta matriz 4x4.
 					fValues[iCount] = M.LikeMatrix[i][j];
 					iCount++;
 				}

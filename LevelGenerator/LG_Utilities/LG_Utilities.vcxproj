@@ -168,7 +168,11 @@
     <ClInclude Include="Include\LG_Matrix4D.h" />
     <ClInclude Include="Include\LG_Node.h" />
     <ClInclude Include="Include\LG_Rect.h" />
+    <ClInclude Include="Include\LG_StdHeaders.h" />
     <ClInclude Include="Include\LG_UtilitiesPrerequisites.h" />
+    <ClInclude Include="Include\LG_UtilityMacro.h" />
+    <ClInclude Include="Include\LG_UtilityPlatformDefines.h" />
+    <ClInclude Include="Include\LG_UtilityPlatformTypes.h" />
     <ClInclude Include="Include\LG_Vector2D.h" />
     <ClInclude Include="Include\LG_Vector2DI.h" />
     <ClInclude Include="Include\LG_Vector3D.h" />
