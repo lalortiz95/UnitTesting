@@ -18,12 +18,12 @@ namespace LevelGenerator
 			/**
 			 *	@brief This variable store the position in X Axis.
 			 */
-			int X;
+			int32 X;
 
 			/**
 			 *	@brief This variable store the position in Y Axis.
 			 */
-			int Y;
+			int32 Y;
 
 			///************************************************************************/
 			///*                            Constructor & Destructor.                 */
@@ -39,7 +39,7 @@ namespace LevelGenerator
 			 *	@param int fPosX: Position in X axis.
 			 *	@param int fPosY: Position in Y axis.
 			 */
-			LG_Vector2DI(int InX, int InY);
+			LG_Vector2DI(int32 InX, int32 InY);
 
 			/**
 			 * @brief Destructor default.
@@ -93,10 +93,10 @@ namespace LevelGenerator
 
 			/**
 			 *	@brief This is an operator to use * between 1 vector and 1 scalar value.
-			 *	@param int Value: The value to multiply.
+			 *	@param int32 Value: The value to multiply.
 			 *	@return the result of the multiplication.
 			 */
-			LG_Vector2DI operator*(int Value) const;
+			LG_Vector2DI operator*(int32 Value) const;
 
 			/**
 			 *	@brief This is an operator to use * between 2 vectors.
@@ -107,10 +107,10 @@ namespace LevelGenerator
 
 			/**
 			 *	@brief This is an operator to use / between 1 vector and 1 scalar value.
-			 *	@param int Value: The value to divide.
+			 *	@param int32 Value: The value to divide.
 			 *	@return the result of the division.
 			 */
-			LG_Vector2DI operator/(int Value) const;
+			LG_Vector2DI operator/(int32 Value) const;
 
 			/**
 			 *	@brief This is an operator to use / between 2 vectors.
@@ -169,10 +169,10 @@ namespace LevelGenerator
 			/**
 			 *	@brief This function compares if 2 vectors are the same.
 			 *	@param const LG_Vector2DI& OtherVector: The vector to compare with this.
-			 *	@param int fTolerance: This variable is used as a tolerance for considering that 2 vectors are the same.
+			 *	@param int32 fTolerance: This variable is used as a tolerance for considering that 2 vectors are the same.
 			 *	@return true if this vector is the same that other vector., if not, false.
 			 */
-			bool Equals(const LG_Vector2DI& OtherVector, int Tolerance) const;
+			bool Equals(const LG_Vector2DI& OtherVector, int32 Tolerance) const;
 
 
 			///************************************************************************/
@@ -195,10 +195,10 @@ namespace LevelGenerator
 
 			/**
 			 *	@brief This operator multiply the values from this vector with a value.
-			 *	@param int Value: The value to multiply with this.
+			 *	@param int32 Value: The value to multiply with this.
 			 *	@return this vector like a reference to actualize it's variables.
 			 */
-			LG_Vector2DI& operator*=(int Value);
+			LG_Vector2DI& operator*=(int32 Value);
 
 			/**
 			 *	@brief This operator divide the values from this vector with a value.
@@ -234,7 +234,5 @@ namespace LevelGenerator
 			 *	@return the result of the cross product.
 			 */
 			int operator^(const LG_Vector2DI& OtherVector) const;
-
-
 	};
 }

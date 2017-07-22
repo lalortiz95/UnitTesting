@@ -182,7 +182,7 @@ namespace LevelGenerator
 		return Adjunct;
 	}
 
-	float LG_Matrix4D::GetDeterminant(LG_Matrix4D M, int col, int row)
+	float LG_Matrix4D::GetDeterminant(LG_Matrix4D M, int32 col, int32 row)
 	{
 		///Los valores que hay en la matriz cuando se ignoran la col y la row dada.
 		LG_Matrix3D determinantMatrix;

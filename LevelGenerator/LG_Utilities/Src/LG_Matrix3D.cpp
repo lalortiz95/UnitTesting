@@ -266,7 +266,7 @@ namespace LevelGenerator
 	}
 
 	//! 
-	float LG_Matrix3D::Determinant(LG_Matrix3D M, int iCol, int iRow)
+	float LG_Matrix3D::Determinant(LG_Matrix3D M, int32 iCol, int32 iRow)
 	{
 
 		float fValues[4];

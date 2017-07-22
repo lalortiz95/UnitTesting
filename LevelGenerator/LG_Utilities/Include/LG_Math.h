@@ -116,7 +116,7 @@ namespace LevelGenerator
 		 *	@brief Truncates from a float value.
 		 *	@params float fValue: the value to truncate. 
 		 */
-		static int Trunc(float fValue);
+		static int32 Trunc(float fValue);
 
 		/**
 		 *	@brief Truncates to a float value.
@@ -128,19 +128,19 @@ namespace LevelGenerator
 		 *	@brief Rounds down a value.
 		 *	@params float fValue: the value to round.
 		 */
-		static int Floor(float fValue);
+		static int32 Floor(float fValue);
 
 		/**
 		 *	@brief Rounds a value.
 		 *	@params float fValue: the value to round.
 		 */
-		static int Round(float fValue);
+		static int32 Round(float fValue);
 
 		/**
 		 *	@brief Rounds up a value.
 		 *	@params float fValue: the value to round.
 		 */
-		static int Ceil(float fValue);
+		static int32 Ceil(float fValue);
 
 		///************************************************************************/
 		///*				Trigonometric Functions.							  */

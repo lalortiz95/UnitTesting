@@ -143,7 +143,7 @@ extern "C"
 }
 #endif
 
-namespace BlackEngine
+namespace LevelGenerator
 {
 	template<typename T, typename A = std::allocator<T>>
 	using Deque = std::deque<T, A>;

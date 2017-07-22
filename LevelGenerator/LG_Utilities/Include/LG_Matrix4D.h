@@ -165,10 +165,10 @@ namespace LevelGenerator
 		/**
 		 *	@brief Gets the determinant of a given matrix on a given position.
 		 *	@param LG_Matrix4D M: The matrix to get the determinant from.
-		 *	@param int col: the column where the determinant is.
-		 *	@param int row: the row where the determinant is.
+		 *	@param int32 col: the column where the determinant is.
+		 *	@param int32 row: the row where the determinant is.
 		 */
-		 static float GetDeterminant(LG_Matrix4D M, int col, int row);
+		 static float GetDeterminant(LG_Matrix4D M, int32 col, int32 row);
 
 		 /**
 		  *	@brief Looks at a given target on the desired position.

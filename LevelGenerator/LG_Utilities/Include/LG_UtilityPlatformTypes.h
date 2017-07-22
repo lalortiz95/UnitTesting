@@ -1,7 +1,7 @@
 #pragma once
 #include "LG_UtilityPlatformDefines.h"
 
-namespace BlackEngine
+namespace LevelGenerator
 {
 	/************************************************************************/
 	/* Tipos basicos sin signo                                                                     */

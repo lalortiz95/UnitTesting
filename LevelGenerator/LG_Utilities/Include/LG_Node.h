@@ -54,7 +54,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief This variable store's an ID.
 		 */
-		int m_iID;
+		int32 m_iID;
 
 
 		///************************************************************************/

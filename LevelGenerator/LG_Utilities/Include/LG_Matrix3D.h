@@ -197,11 +197,11 @@ namespace LevelGenerator
 		/**
 		 *	@brief Calculates the determinant of a given matrix.
 		 *	@param LG_Matrix3D M: The matrix used for the determinant.
-		 *	@param int iCol: The column that will be ignored.
-		 *	@param int iRow: The row that will be ignored.
+		 *	@param int32 iCol: The column that will be ignored.
+		 *	@param int32 iRow: The row that will be ignored.
 		 *	@return The value for the place given of the matrix.
 		 */
-		float Determinant(LG_Matrix3D M, int iCol, int iRow);
+		float Determinant(LG_Matrix3D M, int32 iCol, int32 iRow);
 		
 		/**
 		 *	@brief Translades a matrix in a 3D space.

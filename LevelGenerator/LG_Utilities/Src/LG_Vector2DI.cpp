@@ -11,7 +11,7 @@ namespace LevelGenerator
 	}
 
 	//! Constructor with parameters.
-	LG_Vector2DI::LG_Vector2DI(int InX, int InY) : X(InX), Y(InY)
+	LG_Vector2DI::LG_Vector2DI(int32 InX, int32 InY) : X(InX), Y(InY)
 	{
 
 	}
@@ -53,7 +53,7 @@ namespace LevelGenerator
 	}
 
 	//! This is an operator to use * between 1 vector and 1 scalar value.
-	LG_Vector2DI LG_Vector2DI::operator*(int Value) const
+	LG_Vector2DI LG_Vector2DI::operator*(int32 Value) const
 	{
 		return LG_Vector2DI(X * Value, Y * Value);
 	}
@@ -65,9 +65,9 @@ namespace LevelGenerator
 	}
 
 	//! This is an operator to use / between 1 vector and 1 scalar value.
-	LG_Vector2DI LG_Vector2DI::operator/(int Value) const
+	LG_Vector2DI LG_Vector2DI::operator/(int32 Value) const
 	{
-		const int RScale = 1 / Value;
+		const int32 RScale = 1 / Value;
 		return LG_Vector2DI(X * RScale, Y * RScale);
 	}
 
@@ -134,16 +134,16 @@ namespace LevelGenerator
 	}
 
 	//! This operator multiply the values from this vector with a value.
-	LG_Vector2DI& LG_Vector2DI::operator*=(int Value)
+	LG_Vector2DI& LG_Vector2DI::operator*=(int32 Value)
 	{
 		X *= Value; Y *= Value;
 		return *this;
 	}
 
 	//! This operator divide the values from this vector with a value.
-	LG_Vector2DI& LG_Vector2DI::operator/=(int Value)
+	LG_Vector2DI& LG_Vector2DI::operator/=(int32 Value)
 	{
-		const int RV = 1 / Value;
+		const int32 RV = 1 / Value;
 		X *= RV; Y *= RV;
 		return *this;
 	}

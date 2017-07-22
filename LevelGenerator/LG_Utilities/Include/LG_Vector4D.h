@@ -132,10 +132,10 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief This is an operator to use / between 1 vector and 1 scalar value.
-		 *	@param float Value: The value to divide.
+		 *	@param float fValue: The value to divide.
 		 *	@return the result of the division.
 		 */
-		LG_Vector4D operator/(float Value) const;
+		LG_Vector4D operator/(float fValue) const;
 
 		/**
 		 *	@brief This is an operator to use / between 2 vectors.

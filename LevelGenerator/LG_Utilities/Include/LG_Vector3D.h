@@ -245,10 +245,10 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief This operator divide the values from this vector with a value.
-		 *	@param float Value: The value to divide with this.
+		 *	@param float fValue: The value to divide with this.
 		 *	@return this vector like a reference to actualize it's variables.
 		 */
-		LG_Vector3D& operator/=(float Value);
+		LG_Vector3D& operator/=(float fValue);
 
 		/**
 		 *	@brief This operator multiply the values from other vector with this.

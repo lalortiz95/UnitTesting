@@ -33,7 +33,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief This variable stores the series of points that make up this line.
 		 */
-		std::vector<LG_Node> m_NodeVector;
+		Vector<LG_Node> m_NodeVector;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */
