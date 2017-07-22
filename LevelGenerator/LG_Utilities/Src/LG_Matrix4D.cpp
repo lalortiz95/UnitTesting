@@ -2,20 +2,12 @@
 
 namespace LevelGenerator
 {
-	/************************************************************************/
-	/* Constructor Default													*/
-	/************************************************************************/
+
 	LG_Matrix4D::LG_Matrix4D()
 	{
-		m.X0 = 0, m.Y0 = 0, m.Z0 = 0, m.W0 = 0;
-		m.X1 = 0, m.Y1 = 0, m.Z1 = 0, m.W1 = 0;
-		m.X2 = 0, m.Y2 = 0, m.Z2 = 0, m.W2 = 0;
-		m.X3 = 0, m.Y3 = 0, m.Z3 = 0, m.W3 = 0;
+		*this = Zero();
 	}
 
-	/************************************************************************/
-	/* Constructor con Parametros											*/
-	/************************************************************************/
 	LG_Matrix4D::LG_Matrix4D(float fX0, float fY0, float fZ0, float fW0,
 		float fX1, float fY1, float fZ1, float fW1,
 		float fX2, float fY2, float fZ2, float fW2,
@@ -29,11 +21,9 @@ namespace LevelGenerator
 
 	LG_Matrix4D::~LG_Matrix4D()
 	{
+
 	}
 
-	/************************************************************************/
-	/* Operador Suma														*/
-	/************************************************************************/
 	LG_Matrix4D LG_Matrix4D::operator+(const LG_Matrix4D& M)
 	{
 		return LG_Matrix4D(	m.X0 + M.m.X0, m.Y0 + M.m.Y0, m.Z0 + M.m.Z0, m.W0 + M.m.W0,
@@ -42,9 +32,6 @@ namespace LevelGenerator
 							m.X3 + M.m.X3, m.Y3 + M.m.Y3, m.Z3 + M.m.Z3, m.W3 + M.m.W3);
 	}
 
-	/************************************************************************/
-	/* Operador Resta														*/
-	/************************************************************************/
 	LG_Matrix4D LG_Matrix4D::operator-(const LG_Matrix4D& M)
 	{
 		return LG_Matrix4D(m.X0 - M.m.X0, m.Y0 - M.m.Y0, m.Z0 - M.m.Z0, m.W0 - M.m.W0,
@@ -53,26 +40,25 @@ namespace LevelGenerator
 			m.X3 - M.m.X3, m.Y3 - M.m.Y3, m.Z3 - M.m.Z3, m.W3 - M.m.W3);
 	}
 
-	/************************************************************************/
-	/* Operador Multiplicación												*/
-	/************************************************************************/
 	LG_Matrix4D LG_Matrix4D::operator*(const LG_Matrix4D & M)
 	{
-		return LG_Matrix4D(m.X0 * M.m.X0, m.Y0 * M.m.X1, m.Z0 * M.m.X2, m.W0 * M.m.X3,
-			m.X1 * M.m.Y0, m.Y1 * M.m.Y1, m.Z1 * M.m.Y2, m.W1 * M.m.Y3,
-			m.X2 * M.m.Z0, m.Y2 * M.m.Z1, m.Z2 * M.m.Z2, m.W2 * M.m.Z3,
-			m.X3 * M.m.W0, m.Y3 * M.m.W1, m.Z3 * M.m.W2, m.W3 * M.m.W3);
-	}
+		///enteros que se usan para los for.
+		int i, j, k;
+		///inicializamos en 0 la matriz.
+		LG_Matrix4D R = Zero();
 
-	/************************************************************************/
-	/* Operador Division													*/
-	/************************************************************************/
-	LG_Matrix4D LG_Matrix4D::operator/(const LG_Matrix4D & M)
-	{
-		return LG_Matrix4D(m.X0 / M.m.X0, m.Y0 / M.m.X1, m.Z0 / M.m.X2, m.W0 / M.m.X3,
-			m.X1 / M.m.Y0, m.Y1 / M.m.Y1, m.Z1 / M.m.Y2, m.W1 / M.m.Y3,
-			m.X2 / M.m.Z0, m.Y2 / M.m.Z1, m.Z2 / M.m.Z2, m.W2 / M.m.Z3,
-			m.X3 / M.m.W0, m.Y3 / M.m.W1, m.Z3 / M.m.W2, m.W3 / M.m.W3);
+		for (i = 0; i < 4; i++)
+		{
+			for (j = 0; j < 4; j++)
+			{
+				for (k = 0; k < 4; k++)
+				{
+					R.LikeMatrix[i][j] += LikeMatrix[j][k] * M.LikeMatrix[k][i];
+				}
+			}
+		}
+
+		return R;
 	}
 
 	LG_Matrix4D LG_Matrix4D::operator*(float Value)
@@ -92,64 +78,55 @@ namespace LevelGenerator
 			(m.X3 * V.Z + m.Y3 * V.Z + m.Z3 * V.Z + m.W3 * V.W));
 	}
 
-	//! Operador para dividir una matriz por un vector.
-	LG_Vector4D LG_Matrix4D::operator/(const LG_Vector4D& V)
+	LG_Matrix4D LG_Matrix4D::operator/(float fValue)
 	{
-		return LG_Vector4D((m.X0 / V.X + m.Y0 / V.X + m.Z0 / V.X + m.W0 / V.W),
-			(m.X1 / V.Y + m.Y1 / V.Y + m.Z1 / V.Y + m.W1 / V.W),
-			(m.X2 / V.Z + m.Y2 / V.Z + m.Z2 / V.Z + m.W2 / V.W),
-			(m.X3 / V.Z + m.Y3 / V.Z + m.Z3 / V.Z + m.W3 / V.W));
+		LG_Matrix4D R = Zero();
+
+		if (fValue != 0)
+		{
+			for (int i = 0; i < 4; ++i)
+			{
+				for (int j = 0; j < 4; ++j)
+				{
+					R.LikeMatrix[i][j] = LikeMatrix[i][j] / fValue;
+				}
+			}
+		}
+
+		return R;
 	}
 
 	LG_Matrix4D& LG_Matrix4D::operator+=(const LG_Matrix4D & M)
 	{
-		m.X0 += M.m.X0; m.Y0 += M.m.Y0; m.Z0 += M.m.Z0; m.W0 += M.m.W0;
-		m.X1 += M.m.X1; m.Y1 += M.m.Y1; m.Z1 += M.m.Z1; m.W1 += M.m.W1;
-		m.X2 += M.m.X2; m.Y2 += M.m.Y2; m.Z2 += M.m.Z2; m.W2 += M.m.W2;
-		m.X3 += M.m.X3; m.Y3 += M.m.Y3; m.Z3 += M.m.Z3; m.W3 += M.m.W3;
-		return *this;
+		return *this = *this + M;
 	}
 
 	LG_Matrix4D& LG_Matrix4D::operator-=(const LG_Matrix4D & M)
 	{
-		m.X0 -= M.m.X0; m.Y0 -= M.m.Y0; m.Z0 -= M.m.Z0; m.W0 -= M.m.W0;
-		m.X1 -= M.m.X1; m.Y1 -= M.m.Y1; m.Z1 -= M.m.Z1; m.W1 -= M.m.W1;
-		m.X2 -= M.m.X2; m.Y2 -= M.m.Y2; m.Z2 -= M.m.Z2; m.W2 -= M.m.W2;
-		m.X3 -= M.m.X3; m.Y3 -= M.m.Y3; m.Z3 -= M.m.Z3; m.W3 -= M.m.W3;
-		return *this;
+		return *this = *this - M;
 	}
 
 	LG_Matrix4D& LG_Matrix4D::operator*=(const LG_Matrix4D& M)
 	{
-		m.X0 *= M.m.X0; m.Y0 *= M.m.Y0; m.Z0 *= M.m.Z0; m.W0 *= M.m.W0;
-		m.X1 *= M.m.X1; m.Y1 *= M.m.Y1; m.Z1 *= M.m.Z1; m.W1 *= M.m.W1;
-		m.X2 *= M.m.X2; m.Y2 *= M.m.Y2; m.Z2 *= M.m.Z2; m.W2 *= M.m.W2;
-		m.X3 *= M.m.X3; m.Y3 *= M.m.Y3; m.Z3 *= M.m.Z3; m.W3 *= M.m.W3;
-		return *this;
+		return *this = *this * M;
 	}
 
-	LG_Matrix4D& LG_Matrix4D::operator/=(const LG_Matrix4D & M)
+	LG_Matrix4D LG_Matrix4D::Zero(void)
 	{
-		m.X0 /= M.m.X0; m.Y0 /= M.m.Y0; m.Z0 /= M.m.Z0; m.W0 /= M.m.W0;
-		m.X1 /= M.m.X1; m.Y1 /= M.m.Y1; m.Z1 /= M.m.Z1; m.W1 /= M.m.W1;
-		m.X2 /= M.m.X2; m.Y2 /= M.m.Y2; m.Z2 /= M.m.Z2; m.W2 /= M.m.W2;
-		m.X3 /= M.m.X3; m.Y3 /= M.m.Y3; m.Z3 /= M.m.Z3; m.W3 /= M.m.W3;
-		return *this;
+		LG_Matrix4D mZero;
+		for (int i = 0; i < 9; i++)
+			mZero.LikeArray[i] = 0;
+		return mZero;
 	}
 
-	void LG_Matrix4D::Zero(void)
+	LG_Matrix4D LG_Matrix4D::Identity(void)
 	{
-		for (int i = 0; i < 16; i++)
-			this->LikeArray[i] = 0;
-	}
-
-	void LG_Matrix4D::Identity(void)
-	{
-		this->Zero();
-		this->m.X0 = 1;
-		this->m.Y1 = 1;
-		this->m.Z2 = 1;
-		this->m.W3 = 1;
+		LG_Matrix4D identity;
+		identity = Zero();
+		identity.m.X0 = 1;
+		identity.m.Y1 = 1;
+		identity.m.Z2 = 1;
+		return identity;
 	}
 
 	LG_Matrix4D LG_Matrix4D::Transpose()
@@ -162,10 +139,71 @@ namespace LevelGenerator
 		return MatTemp;
 	}
 
-	LG_Matrix4D LG_Matrix4D::Inverse(const LG_Matrix4D & A)
+	void LG_Matrix4D::Inverse()
 	{
-		//TODO: Implementar la inversa.
-		return LG_Matrix4D();
+		float determinante = 0;
+		LG_Matrix4D TransposedMatrix;
+		LG_Matrix4D AdjunctedMatrix;
+
+		//TODO: agregar el eje que falta para que sea 4D.
+		/// Calculamos la determinante.
+		determinante =
+			(LikeMatrix[0][0] * LikeMatrix[1][1] * LikeMatrix[2][2]) + (LikeMatrix[0][2] * LikeMatrix[1][0] * LikeMatrix[2][1]) +
+			(LikeMatrix[2][0] * LikeMatrix[0][1] * LikeMatrix[1][2]) - (LikeMatrix[2][0] * LikeMatrix[1][1] * LikeMatrix[0][2]) -
+			(LikeMatrix[0][0] * LikeMatrix[1][2] * LikeMatrix[2][1]) - (LikeMatrix[2][2] * LikeMatrix[0][1] * LikeMatrix[1][0]);
+
+		/// Revisamos que se pueda sacar su inversa.
+		if (determinante != 0)
+		{
+			///Es posible
+			/// Calculamos la transpuesta.
+			TransposedMatrix = Transpose();
+			///Calculamos la adjunta de la matriz una vez que ya fue transpuessta.
+			AdjunctedMatrix = GetAdjunct(TransposedMatrix);
+
+			*this = AdjunctedMatrix / determinante;
+		}
+	}
+
+	LG_Matrix4D LG_Matrix4D::GetAdjunct(LG_Matrix4D M)
+	{
+		LG_Matrix4D Adjunct;
+		/// Inicializamos en 0 la matriz adjunta.
+		Adjunct = Zero();
+
+		///Calculamos cada lugar de la adjunta.
+		for (int i = 0; i < 4; ++i)
+			for (int j = 0; j < 4; ++j)
+				Adjunct.LikeMatrix[i][j] = GetDeterminant(M, i, j);
+
+		///La regresamos.
+		return Adjunct;
+	}
+
+	float LG_Matrix4D::GetDeterminant(LG_Matrix4D M, int col, int row)
+	{
+		///Los valores que hay en la matriz cuando se ignoran la col y la row dada.
+		float fValues[9];
+		///contador para llenar fValues
+		int iCount = 0;
+		///
+		float fDeterminant = 0;
+
+		///guardamos los valores que no están en la columna ni en la fila dada.	
+		for (int i = 0; i < 4; ++i)
+			for (int j = 0; j < 4; ++j)
+			{
+				if (i != col && j != row)
+				{
+					fValues[iCount] = M.LikeMatrix[i][j];
+					iCount++;
+				}
+			}
+
+		///Calculamos la adjunta del lugar dado.
+		float fElevated = LG_Math::Pow(-1, ((col + 1) + (row + 1)));
+		//TODO: corregir esto.
+		return fElevated * (fValues[0] * fValues[3] - fValues[1] * fValues[2]);
 	}
 
 	void LG_Matrix4D::PerspectiveFOVLH(float zNear, float zFar, float FOV, float AspectRatio)
@@ -199,9 +237,6 @@ namespace LevelGenerator
 
 	}
 
-	/************************************************************************/
-	/* Matriz de translacion												*/
-	/************************************************************************/
 	void LG_Matrix4D::Translation(const LG_Vector4D & V)
 	{
 		this->m.X0 = 1,   this->m.Y0 = 0,	this->m.Z0 = 0,   this->m.W0 = 0;
@@ -209,9 +244,7 @@ namespace LevelGenerator
 		this->m.X2 = 0,	  this->m.Y2 = 0,	this->m.Z2 = 1,	  this->m.W2 = 0;
 		this->m.X3 = V.X, this->m.Y3 = V.Y, this->m.Z3 = V.Z, this->m.W3 = V.W;
 	}
-	/************************************************************************/
-	/* Matriz de escalacion													*/
-	/************************************************************************/
+
 	void LG_Matrix4D::Scaling(const LG_Vector4D & V)
 	{
 		this->m.X0 = V.X, this->m.Y0 = 0,	this->m.Z0 = 0,		this->m.W0 = 0;
@@ -220,41 +253,55 @@ namespace LevelGenerator
 		this->m.X3 = 0,   this->m.Y3 = 0,	this->m.Z3 = 0,		this->m.W3 = V.W;
 
 	}
-	/************************************************************************/
-	/* Matriz de rotacion													*/
-	/************************************************************************/
-	void LG_Matrix4D::Rotate(const LG_Vector4D & V)
+
+	LG_Matrix4D LG_Matrix4D::Rotate(const LG_Vector4D & V)
 	{
-		RotateX(V.X);
-		RotateY(V.Y);
-		RotateZ(V.Z);
+		LG_Matrix4D FinalRotation;
+		FinalRotation = RotateX(V.X) * RotateY(V.Y) * RotateZ(V.Z);
+
+		return FinalRotation;
 	}
 
-	//! Funcion para rotar en X.
-	void LG_Matrix4D::RotateX(float fValue)
+	//!
+	LG_Matrix4D LG_Matrix4D::RotateX(float fValue)
 	{
-		this->m.X0 = 1, this->m.Y0 = 0,						this->m.Z0 = 0,						this->m.W0 = 0;
-		this->m.X1 = 0, this->m.Y1 =  LG_Math::Cos(fValue), this->m.Z1 = LG_Math::Sin(fValue),	this->m.W1 = 0;
-		this->m.X2 = 0, this->m.Y2 = -LG_Math::Sin(fValue), this->m.Z2 = LG_Math::Cos(fValue),	this->m.W2 = 0;
-		this->m.X3 = 0, this->m.Y3 = 0,                     this->m.Z3 = 0,						this->m.W3 = 1;
+		/// The final rotation.
+		LG_Matrix4D FR;
+
+		FR.m.X0 = 1, FR.m.Y0 = 0,					  FR.m.Z0 = 0,						FR.m.W0 = 0;
+		FR.m.X1 = 0, FR.m.Y1 =  LG_Math::Cos(fValue), FR.m.Z1 = LG_Math::Sin(fValue),	FR.m.W1 = 0;
+		FR.m.X2 = 0, FR.m.Y2 = -LG_Math::Sin(fValue), FR.m.Z2 = LG_Math::Cos(fValue),	FR.m.W2 = 0;
+		FR.m.X3 = 0, FR.m.Y3 = 0,                     FR.m.Z3 = 0,						FR.m.W3 = 1;
+		
+		return FR;
 	}
 
-	//! Funcion para rotar en Y.
-	void LG_Matrix4D::RotateY(float fValue)
+	//!
+	LG_Matrix4D LG_Matrix4D::RotateY(float fValue)
 	{
-		this->m.X0 = LG_Math::Cos(fValue),	this->m.Y0 = 0, this->m.Z0 = -LG_Math::Sin(fValue), this->m.W0 = 0;
-		this->m.X1 = 0,						this->m.Y1 = 1, this->m.Z1 = 0,						this->m.W1 = 0;
-		this->m.X2 = LG_Math::Sin(fValue),	this->m.Y2 = 0, this->m.Z2 = LG_Math::Cos(fValue),	this->m.W2 = 0;
-		this->m.X3 = 0,						this->m.Y3 = 0, this->m.Z3 = 0,						this->m.W3 = 1;
+		/// The final rotation.
+		LG_Matrix4D FR;
+
+		FR.m.X0 = LG_Math::Cos(fValue),	FR.m.Y0 = 0, FR.m.Z0 = -LG_Math::Sin(fValue), FR.m.W0 = 0;
+		FR.m.X1 = 0,					FR.m.Y1 = 1, FR.m.Z1 = 0,					  FR.m.W1 = 0;
+		FR.m.X2 = LG_Math::Sin(fValue),	FR.m.Y2 = 0, FR.m.Z2 = LG_Math::Cos(fValue),  FR.m.W2 = 0;
+		FR.m.X3 = 0,					FR.m.Y3 = 0, FR.m.Z3 = 0,					  FR.m.W3 = 1;
+	
+		return FR;
 	}
 
-	//! Funcion para rotar en Z.
-	void LG_Matrix4D::RotateZ(float fValue)
+	//! 
+	LG_Matrix4D LG_Matrix4D::RotateZ(float fValue)
 	{
-		this->m.X0 =  LG_Math::Cos(fValue), this->m.Y0 = LG_Math::Sin(fValue),	this->m.Z0 = 0, this->m.W0 = 0;
-		this->m.X1 = -LG_Math::Sin(fValue),	this->m.Y1 = LG_Math::Cos(fValue),	this->m.Z1 = 0, this->m.W1 = 0;
-		this->m.X2 = 0,						this->m.Y2 = 0,						this->m.Z2 = 1, this->m.W2 = 0;
-		this->m.X3 = 0,						this->m.Y3 = 0,						this->m.Z3 = 0, this->m.W3 = 1;
+		/// The final rotation.
+		LG_Matrix4D FR;
+
+		FR.m.X0 =  LG_Math::Cos(fValue), FR.m.Y0 = LG_Math::Sin(fValue),	FR.m.Z0 = 0, FR.m.W0 = 0;
+		FR.m.X1 = -LG_Math::Sin(fValue), FR.m.Y1 = LG_Math::Cos(fValue),	FR.m.Z1 = 0, FR.m.W1 = 0;
+		FR.m.X2 = 0,					 FR.m.Y2 = 0,						FR.m.Z2 = 1, FR.m.W2 = 0;
+		FR.m.X3 = 0,					 FR.m.Y3 = 0,						FR.m.Z3 = 0, FR.m.W3 = 1;
+	
+		return FR;
 	}
 
 }

@@ -72,7 +72,6 @@ namespace LevelGenerator
 		///*				Wrapped Functions.									  */
 		///************************************************************************/
 
-		/// TODO: Comentar todas las funciones.
 		/**
 		 *	@brief The square root of a given value.
 		 *	@params float fValue: the value given to calculate it's square root.
@@ -186,7 +185,6 @@ namespace LevelGenerator
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
-
 
 		/**
 		 *	@ brief calculates the absolute value of a template.

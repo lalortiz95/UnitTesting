@@ -4,17 +4,12 @@
 
 namespace LevelGenerator
 {
-	/************************************************************************/
-	/* Constructor Default													*/
-	/************************************************************************/
+
 	LG_Matrix3D::LG_Matrix3D()
 	{
 
 	}
 
-	/************************************************************************/
-	/* Constructor con Parametros											*/
-	/************************************************************************/
 	LG_Matrix3D::LG_Matrix3D(float fX0, float fY0, float fZ0,
 		float fX1, float fY1, float fZ1,
 		float fX2, float fY2, float fZ2)
@@ -28,9 +23,6 @@ namespace LevelGenerator
 	{
 	}
 
-	/************************************************************************/
-	/* Operador Suma														*/
-	/************************************************************************/
 	LG_Matrix3D LG_Matrix3D::operator+(const LG_Matrix3D& M)
 	{
 		return LG_Matrix3D(m.X0 + M.m.X0, m.Y0 + M.m.Y0, m.Z0 + M.m.Z0,
@@ -38,9 +30,6 @@ namespace LevelGenerator
 			m.X2 + M.m.X2, m.Y2 + M.m.Y2, m.Z2 + M.m.Z2);
 	}
 
-	/************************************************************************/
-	/* Operador Resta														*/
-	/************************************************************************/
 	LG_Matrix3D LG_Matrix3D::operator-(const LG_Matrix3D& M)
 	{
 		return LG_Matrix3D(m.X0 - M.m.X0, m.Y0 - M.m.Y0, m.Z0 - M.m.Z0,
@@ -48,9 +37,6 @@ namespace LevelGenerator
 			m.X2 - M.m.X2, m.Y2 - M.m.Y2, m.Z2 - M.m.Z2);
 	}
 
-	/************************************************************************/
-	/* Operador Multiplicación												*/
-	/************************************************************************/
 	LG_Matrix3D LG_Matrix3D::operator*(const LG_Matrix3D & M)
 	{
 		int i, j, k;
@@ -71,50 +57,43 @@ namespace LevelGenerator
 		return R;
 	}
 
-	/************************************************************************/
-	/* Operador Division													*/
-	/************************************************************************/
-	LG_Matrix3D LG_Matrix3D::operator/(const LG_Matrix3D & M)
-	{
-		return LG_Matrix3D(m.X0 / M.m.X0, m.Y0 / M.m.X1, m.Z0 / M.m.X2,
-			m.X1 / M.m.Y0, m.Y1 / M.m.Y1, m.Z1 / M.m.Y2,
-			m.X2 / M.m.Z0, m.Y2 / M.m.Z1, m.Z2 / M.m.Z2);
-	}
-
-	/************************************************************************/
-	/* Operador Multiplicación por un Escalar								*/
-	/************************************************************************/
 	LG_Matrix3D LG_Matrix3D::operator*(float fValue)
 	{
 		return LG_Matrix3D(m.X0 * fValue, m.Y0 * fValue, m.Z0 * fValue,
 			m.X1 * fValue, m.Y1 * fValue, m.Z1 * fValue,
 			m.X2 * fValue, m.Y2 * fValue, m.Z2 * fValue);
 	}
+
 	LG_Matrix3D LG_Matrix3D::operator/(float fValue)
 	{
+		LG_Matrix3D R = Zero();
+
 		if (fValue != 0)
 		{
-			return LG_Matrix3D(m.X0 / fValue, m.Y0 / fValue, m.Z0 / fValue,
-				m.X1 / fValue, m.Y1 / fValue, m.Z1 / fValue,
-				m.X2 / fValue, m.Y2 / fValue, m.Z2 / fValue);
+			for (int i = 0; i < 3; ++i)
+			{
+				for (int j = 0; j < 3; ++j)
+				{
+					R.LikeMatrix[i][j] = LikeMatrix[i][j] / fValue;
+				}
+			}
 		}
-		return Identity();
+
+		return R;
 	}
-	/************************************************************************/
-	/* Multiplicacion de Matriz por Vector                                  */
-	/************************************************************************/
+
 	LG_Matrix3D LG_Matrix3D::operator*(const LG_Vector3D & V)
 	{
 		LG_Matrix3D R = Zero();
 
 		R.m.X0 = m.X0 * V.X + m.X0 * V.Y + m.X0 * V.Z;
-		R.m.Y0 =  m.Y0 * V.X +  m.Y0 * V.Y +  m.Y0 * V.Z;
+		R.m.Y0 = m.Y0 * V.X + m.Y0 * V.Y + m.Y0 * V.Z;
 		R.m.Z0 = m.Z0 * V.X + m.Z0 * V.Y + m.Z0 * V.Z;
-							    
+
 		R.m.X1 = m.X1 * V.X + m.X1 * V.Y + m.X1 * V.Z;
 		R.m.Y1 = m.Y1 * V.X + m.Y1 * V.Y + m.Y1 * V.Z;
 		R.m.Z1 = m.Z1 * V.X + m.Z1 * V.Y + m.Z1 * V.Z;
-							    
+
 		R.m.X2 = m.X2 * V.X + m.X2 * V.Y + m.X2 * V.Z;
 		R.m.Y2 = m.Y2 * V.X + m.Y2 * V.Y + m.Y2 * V.Z;
 		R.m.Z2 = m.Z2 * V.X + m.Z2 * V.Y + m.Z2 * V.Z;
@@ -122,43 +101,24 @@ namespace LevelGenerator
 		return R;
 	}
 
-	LG_Matrix3D LG_Matrix3D::operator/(const LG_Vector3D & V)
-	{
-		//TODO Hacer funcion 
-		return Identity();
-	}
-
 	LG_Matrix3D LG_Matrix3D::operator*=(const LG_Vector3D & V)
 	{
 		return *this = *this * V;
 	}
-	/************************************************************************/
-	/* Operador Mas igual de matiz											*/
-	/************************************************************************/
+
 	LG_Matrix3D& LG_Matrix3D::operator+=(const LG_Matrix3D & M)
 	{
 		return *this = *this + M;
 	}
-	/************************************************************************/
-	/* Operador menos igual de matriz										*/
-	/************************************************************************/
+
 	LG_Matrix3D& LG_Matrix3D::operator-=(const LG_Matrix3D & M)
 	{
 		return *this = *this - M;
 	}
-	/************************************************************************/
-	/* Operador por igual de matriz											*/
-	/************************************************************************/
+
 	LG_Matrix3D& LG_Matrix3D::operator*=(const LG_Matrix3D& M)
 	{
 		return *this = *this * M;
-	}
-	/************************************************************************/
-	/* Operador entre igual de matriz                                       */
-	/************************************************************************/
-	LG_Matrix3D& LG_Matrix3D::operator/=(const LG_Matrix3D & M)
-	{
-		return *this = *this / M;
 	}
 
 	bool LG_Matrix3D::operator==(LG_Matrix3D M)
@@ -179,9 +139,7 @@ namespace LevelGenerator
 
 		return (count == 9);
 	}
-	/************************************************************************/
-	/* Matriz Inicializada en 0                                             */
-	/************************************************************************/
+
 	LG_Matrix3D LG_Matrix3D::Zero()
 	{
 		LG_Matrix3D mZero;
@@ -189,9 +147,7 @@ namespace LevelGenerator
 			mZero.LikeArray[i] = 0;
 		return mZero;
 	}
-	/************************************************************************/
-	/* Matriz identidad														*/
-	/************************************************************************/
+
 	LG_Matrix3D LG_Matrix3D::Identity()
 	{
 		LG_Matrix3D identity;
@@ -201,9 +157,7 @@ namespace LevelGenerator
 		identity.m.Z2 = 1;
 		return identity;
 	}
-	/************************************************************************/
-	/* Transpuesta de una matriz											*/
-	/************************************************************************/
+
 	LG_Matrix3D LG_Matrix3D::Transpose(const LG_Matrix3D & A)
 	{
 		LG_Matrix3D MatTemp;
@@ -253,25 +207,20 @@ namespace LevelGenerator
 		return (RotateX(fValue) * RotateY(fValue) * RotateZ(fValue));
 	}
 
-	/************************************************************************/
-	/* Matriz de translacion												*/
-	/************************************************************************/
 	LG_Matrix3D LG_Matrix3D::Translation(const LG_Vector3D & V)
 	{
 		return LG_Matrix3D(1, 0, 0,
 			0, 1, 0,
 			V.X, V.Y, V.Z);
 	}
-	/************************************************************************/
-	/* Matriz de escalacion													*/
-	/************************************************************************/
+
 	LG_Matrix3D LG_Matrix3D::Scaling(const LG_Vector3D & V)
 	{
 		return LG_Matrix3D(V.X, 0, 0,
 			0, V.Y, 0,
 			0, 0, V.Z);
 	}
-	
+
 	void LG_Matrix3D::Inverse()
 	{
 		float determinante = 0;
@@ -341,6 +290,4 @@ namespace LevelGenerator
 		float fElevated = LG_Math::Pow(-1.0f, (float)((iCol + 1) + (iRow + 1)));
 		return fElevated * (fValues[0] * fValues[3] - fValues[1] * fValues[2]);
 	}
-
-
 }
