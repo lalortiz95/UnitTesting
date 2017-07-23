@@ -264,6 +264,4 @@ namespace LevelGenerator
 		//TODO: Implementar el operador.
 		return 0.0f;
 	}
-
-	
 }

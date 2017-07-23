@@ -89,7 +89,7 @@ namespace LevelGenerator
 			Boundary.Init(m_pStart->m_Position, m_pEnd->m_Position, m_fRange);
 
 			/// we check collision with the true nodes of the isoline.
-			for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
+			for (int32 i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
 			{
 				/// If we're ahead of the first node.
 				if (i > m_pStart->m_iID && i < m_pEnd->m_iID)
@@ -138,7 +138,7 @@ namespace LevelGenerator
 		bool bChangeEnd = false;
 
 		/// We iterate thorugh the vector.
-		for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
+		for (int32 i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
 		{
 			/// Check if it can be deleted.
 			if (m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted)
@@ -173,7 +173,7 @@ namespace LevelGenerator
 	void LG_RDP::SetFlags()
 	{
 		/// Iterate the vector and set the flag.
-		for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
+		for (int32 i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
 		{
 			/// If the iterating node is before the start node, or after the end node
 			/// we set it's flag to false. Otherwise, meaning it's in between, we set
@@ -190,7 +190,7 @@ namespace LevelGenerator
 	//! Set the node's IDs.
 	void LG_RDP::SetIsolineID()
 	{
-		for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
+		for (int32 i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
 		{
 			m_OriginalIsoline.m_NodeVector[i].m_iID = i;
 		}

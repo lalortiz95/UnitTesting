@@ -35,12 +35,12 @@ namespace LevelGenerator
 		/**
 		 *	@brief This variable stores the height of the grid.
 		 */
-		int m_iHeight;
+		int32 m_iHeight;
 
 		/**
 		 *	@brief This variable stores the width of the grid.
 		 */
-		int m_iWidth;
+		int32 m_iWidth;
 
 		/**
 		 *	@brief Bidimensional array that stores the tiles.
@@ -55,19 +55,19 @@ namespace LevelGenerator
 		/**
 		 *	@brief This variable stores in a vector the reference of the tiles that have a case different than 0.
 		 */
-		std::vector<LG_Tile*> m_pListTilesInside;
+		Vector<LG_Tile*> m_pListTilesInside;
 
 	private:
 
 		/**
 		 *	@brief This variable stores the number of tiles in x.
 		 */
-		int m_iNumberPlanesX;
+		int32 m_iNumberPlanesX;
 
 		/**
 		 *	@brief This variable stores the number of tiles in y.
 		 */
-		int m_iNumberPlanesY;
+		int32 m_iNumberPlanesY;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */
@@ -76,10 +76,10 @@ namespace LevelGenerator
 	public:
 		/**
 		 *	@brief This function initialize all variables of the class.
-		 *	@param int iWidth: The width of the grid.
-		 *  @param int iHeight: The height of the grid.
+		 *	@param int32 iWidth: The width of the grid.
+		 *  @param int32 iHeight: The height of the grid.
 		 */
-		void Init(int iWidth, int iHeight);
+		void Init(int32 iWidth, int32 iHeight);
 
 
 		/**
@@ -95,13 +95,13 @@ namespace LevelGenerator
 		 *	@brief This function returns the number of tiles in the grid, in the X axis.
 		 *	@return the number of tiles in the X axis.
 		 */
-		int GetTilesX();
+		int32 GetTilesX();
 
 		 /**
 		  *	@brief This function returns the number of tiles in the grid, in the Y axis.
 		  *	@return the number of tiles in the Y axis.
 		  */
-		int GetTilesY();
+		int32 GetTilesY();
 	};
 }
 

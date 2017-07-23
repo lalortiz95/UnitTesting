@@ -3,9 +3,9 @@
 namespace LevelGenerator
 {
 	//! The constant that define the size per tile.
-	const int LG_Tile::SIZE_OF_TILE = 50;
+	const int32 LG_Tile::SIZE_OF_TILE = 50;
 	//! The constant that define the number of nodes in the tile.
-	const int LG_Tile::NUM_NODES_PER_TILE = 4;
+	const int32 LG_Tile::NUM_NODES_PER_TILE = 4;
 
 	//! Default constructor.
 	LG_Tile::LG_Tile()
@@ -56,7 +56,6 @@ namespace LevelGenerator
 	void LG_Tile::Destroy()
 	{
 		/// Release the memory.
-
 	}
 
 	void LG_Tile::CheckPlaneCase()

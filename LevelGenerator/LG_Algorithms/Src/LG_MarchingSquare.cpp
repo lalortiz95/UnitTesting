@@ -22,14 +22,12 @@ namespace LevelGenerator
 	{
 		/// Assign memory and initialize the grid.
 		m_pMap = gridToWorkWith;
-		//m_pMap = new LG_Grid();
-		//m_pMap->Init(20, 12);
 		/// Calculates how many circles there will be, which what sizes, and in which positions.
 		SetCircles();
 	}
 
 	//! This function initialize all variables of the class.
-	void LG_MarchingSquare::Init(float fRadius, LG_Vector3D position, int tilesX, int tilesY)
+	void LG_MarchingSquare::Init(float fRadius, LG_Vector3D position, int32 tilesX, int32 tilesY)
 	{
 		/// Assign memory and initialize the grid.
 		m_pMap = new LG_Grid();
@@ -63,9 +61,9 @@ namespace LevelGenerator
 		/// Meaning it's inside of one circle, and by so it's inserted in the it's list.
 		bool bFlag = false;
 		///We go through the TileMap, checking each one of it's nodes with a list circles.
-		for (int i = 0; i < m_pMap->GetTilesX(); ++i)
+		for (int32 i = 0; i < m_pMap->GetTilesX(); ++i)
 		{
-			for (int j = 0; j < m_pMap->GetTilesY(); ++j)
+			for (int32 j = 0; j < m_pMap->GetTilesY(); ++j)
 			{
 				/// We iterate through every node in the tile.
 				for (int k = 0; k < LG_Tile::NUM_NODES_PER_TILE; ++k)
@@ -91,7 +89,7 @@ namespace LevelGenerator
 	}
 
 	//! This function is the only one you need to generate marching squares algorithm.
-	void LG_MarchingSquare::Run(float fRadius, LG_Vector3D position, int iNumTilesX, int iNumTilesY)
+	void LG_MarchingSquare::Run(float fRadius, LG_Vector3D position, int32 iNumTilesX, int32 iNumTilesY)
 	{
 		/// Initialize the class' variables.
 		Init(fRadius, position, iNumTilesX, iNumTilesY);
@@ -102,12 +100,12 @@ namespace LevelGenerator
 		/// Meaning it's inside of one circle, and by so it's inserted in the it's list.
 		bool bFlag = false;
 		///We go through the TileMap, checking each one of it's nodes with a list circles.
-		for (int i = 0; i < m_pMap->GetTilesX(); ++i)
+		for (int32 i = 0; i < m_pMap->GetTilesX(); ++i)
 		{
-			for (int j = 0; j < m_pMap->GetTilesY(); ++j)
+			for (int32 j = 0; j < m_pMap->GetTilesY(); ++j)
 			{
 				/// We iterate through every node in the tile.
-				for (int k = 0; k < LG_Tile::NUM_NODES_PER_TILE; ++k)
+				for (int32 k = 0; k < LG_Tile::NUM_NODES_PER_TILE; ++k)
 				{
 					/// We assign the flag, that if inside it's true, otherwise it's false.
 					m_pMap->m_Grid[i][j].m_Nodes[k].m_bIsInside = IsTilesInsideOfCircles(m_pMap->m_Grid[i][j].m_Nodes[k]);
@@ -306,7 +304,7 @@ namespace LevelGenerator
 		}
 
 		/// Iterates through the circle list.
-		for (int i = 0; i < m_CircleList.size(); ++i)
+		for (int32 i = 0; i < m_CircleList.size(); ++i)
 		{
 			/// We calculate the distance between the actual node, and all  the circles.
 			fDistance = LG_Vector3D::StaticMagnitude(m_CircleList[i].m_Position - ActualNode.m_Position);
@@ -329,17 +327,17 @@ namespace LevelGenerator
 		/// The maximum size the radius could have.
 		float fMaxRadius = 0;
 		/// This variable sets a random number of circles.
-		int iAmount = rand() % 5 + 10;
+		int32 iAmount = rand() % 5 + 10;
 		/// We calculate the maximum size available for circle so that is not larger than the grid.
 		fMaxRadius = LG_Math::Min((float)m_pMap->m_iWidth / 2, (float)m_pMap->m_iHeight / 2);
 
 		/// We create all the circles calculated previously.
-		for (int i = 0; i < iAmount; ++i)
+		for (int32 i = 0; i < iAmount; ++i)
 		{
 			/// This vector stores where will the circle spawn.
 			LG_Vector3D SpawnPosition((float)(rand() % m_pMap->m_iWidth), (float)(rand() % m_pMap->m_iHeight), 0);
 			/// We calculate a random radius from one to the maximun radius.
-			float fTempRadius = rand() % (int)fMaxRadius;
+			float fTempRadius = rand() % (int32)fMaxRadius;
 			/// Set the position and the radius to the circle.
 			NewCircle.Init(SpawnPosition, fTempRadius);
 			/// Add the circle in the circles' list.
@@ -350,7 +348,6 @@ namespace LevelGenerator
 	//! This function set a random number of circles.
 	void LG_MarchingSquare::SetCircle(float fRadius, LG_Vector3D position)
 	{
-
 		/// This variable store the actual circle being created.
 		LG_Circle NewCircle;
 

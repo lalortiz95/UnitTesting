@@ -44,7 +44,7 @@ namespace LevelGenerator
 	LG_Matrix4D LG_Matrix4D::operator*(const LG_Matrix4D & M)
 	{
 		///enteros que se usan para los for.
-		int i, j, k;
+		int32 i, j, k;
 		///inicializamos en 0 la matriz.
 		LG_Matrix4D R = Zero();
 
@@ -85,9 +85,9 @@ namespace LevelGenerator
 
 		if (fValue != 0)
 		{
-			for (int i = 0; i < 4; ++i)
+			for (int32 i = 0; i < 4; ++i)
 			{
-				for (int j = 0; j < 4; ++j)
+				for (int32 j = 0; j < 4; ++j)
 				{
 					R.LikeMatrix[i][j] = LikeMatrix[i][j] / fValue;
 				}
@@ -115,7 +115,7 @@ namespace LevelGenerator
 	LG_Matrix4D LG_Matrix4D::Zero(void)
 	{
 		LG_Matrix4D mZero;
-		for (int i = 0; i < 9; i++)
+		for (int32 i = 0; i < 9; i++)
 			mZero.LikeArray[i] = 0;
 		return mZero;
 	}
@@ -174,8 +174,8 @@ namespace LevelGenerator
 		Adjunct = Zero();
 
 		///Calculamos cada lugar de la adjunta.
-		for (int i = 0; i < 4; ++i)
-			for (int j = 0; j < 4; ++j)
+		for (int32 i = 0; i < 4; ++i)
+			for (int32 j = 0; j < 4; ++j)
 				Adjunct.LikeMatrix[i][j] = GetDeterminant(M, i, j);
 
 		///La regresamos.
@@ -188,13 +188,13 @@ namespace LevelGenerator
 		LG_Matrix3D determinantMatrix;
 		float fValues[9];
 		///contador para llenar fValues
-		int iCount = 0;
+		int32 iCount = 0;
 		///
 		float fDeterminant = 0;
 
 		///guardamos los valores que no están en la columna ni en la fila dada.	
-		for (int i = 0; i < 4; ++i)
-			for (int j = 0; j < 4; ++j)
+		for (int32 i = 0; i < 4; ++i)
+			for (int32 j = 0; j < 4; ++j)
 			{
 				if (i != col && j != row)
 				{

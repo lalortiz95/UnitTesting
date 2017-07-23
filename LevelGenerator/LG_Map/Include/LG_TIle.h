@@ -32,7 +32,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief This value is used to identification the case of the tile.
 		 */
-		int m_iCase; 
+		int32 m_iCase; 
 
 		/**
 		 *	@brief The top node on the left of the tile.
@@ -63,12 +63,12 @@ namespace LevelGenerator
 		/**
 		 *	@brief The constant that define the size per tile..
 		 */
-		static const int SIZE_OF_TILE;
+		static const int32 SIZE_OF_TILE;
 
 		/**
 		 *	@brief The constant that define the number of nodes in the tile.
 		 */
-		static const int NUM_NODES_PER_TILE;
+		static const int32 NUM_NODES_PER_TILE;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */
@@ -89,7 +89,6 @@ namespace LevelGenerator
 		 * @brief This function assign the
 		 */
 		void CheckPlaneCase();
-
 	};
 
 }

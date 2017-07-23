@@ -6,7 +6,7 @@
 
 using namespace LevelGenerator;
 
-bool CompareTilesVector(int *CorrectTiles, std::vector<LG_Tile*> CalculatedTiles)
+bool CompareTilesVector(int32 *CorrectTiles, Vector<LG_Tile*> CalculatedTiles)
 {
 	/// We check that we have the same amount of tiles in both vectors.
 	if (9 != CalculatedTiles.size())
@@ -51,7 +51,7 @@ TEST(AlgorithmUnitTest, AreTilesInside)
 	LG_Vector3D posToSpawnCircle = { 275, 275, 0 };
 	/// This vector stores the nodes that should be inside, we'll compare this with whatever
 	/// Marching squares generate.
-	int CorrectCaseValue[9] = { 2,6,4,3,15,12,1,9,8 };
+	int32 CorrectCaseValue[9] = { 2,6,4,3,15,12,1,9,8 };
 
 	/// Call the algorithm with one given circle.
 	SpecificCase.Run(50, posToSpawnCircle, 10, 10);
@@ -61,8 +61,7 @@ TEST(AlgorithmUnitTest, AreTilesInside)
 
 	EXPECT_TRUE(CompareTilesVector(CorrectCaseValue, SpecificCase.m_pMap->m_pListTilesInside));
 
-
-	///
+	/// We generate a isoline.
 	LG_Isoline Isoline;
 	Isoline.Init();
 	Isoline.AddNode(LG_Vector3D(1, 1, 0));

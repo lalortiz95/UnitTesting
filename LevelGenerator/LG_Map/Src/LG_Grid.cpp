@@ -17,7 +17,7 @@ namespace LevelGenerator
 	}
 
 	//! This function initialize all variables of the class.
-	void LG_Grid::Init(int iPlaneAmoutX, int iPlaneAmoutY)
+	void LG_Grid::Init(int32 iPlaneAmoutX, int32 iPlaneAmoutY)
 	{
 		Destroy();
 		/// Stores the width and height in the member variable for future references.
@@ -39,7 +39,7 @@ namespace LevelGenerator
 		{
 			/// For each tile in x array, we assing a new tile in y.
 			m_Grid[i] = new LG_Tile[m_iNumberPlanesY];
-			for (int j = 0; j < m_iNumberPlanesY; ++j)
+			for (int32 j = 0; j < m_iNumberPlanesY; ++j)
 			{
 				/// Initialization of each tile in the grid.
 				m_Grid[i][j].Init(SpawnPosition);
@@ -59,9 +59,9 @@ namespace LevelGenerator
 		/// If the memory of the array of tiles isn't nullptr.
 		if (m_Grid != nullptr)
 		{
-			for (int i = m_iNumberPlanesX; i > 0; --i)
+			for (int32 i = m_iNumberPlanesX; i > 0; --i)
 			{
-				for (int j = m_iNumberPlanesY; i > 0; --j)
+				for (int32 j = m_iNumberPlanesY; i > 0; --j)
 				{
 					/// If the memory of the pointer isn't nullptr.
 					if (m_Grid[i] != nullptr)
@@ -75,14 +75,14 @@ namespace LevelGenerator
 	}
 
 	//! This function returns the number of tiles in the grid, in the X axis.
-	int LG_Grid::GetTilesX()
+	int32 LG_Grid::GetTilesX()
 	{
 		/// The number of tiles in X Axis.
 		return m_iNumberPlanesX;
 	}
 
 	//! This function returns the number of tiles in the grid, in the Y axis.
-	int LG_Grid::GetTilesY()
+	int32 LG_Grid::GetTilesY()
 	{
 		/// The number of tiles in Y Axis.
 		return m_iNumberPlanesY;
