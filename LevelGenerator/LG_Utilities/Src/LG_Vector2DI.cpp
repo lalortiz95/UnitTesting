@@ -23,13 +23,13 @@ namespace LevelGenerator
 	}
 
 	//! This function return the magnitud of the vector given in the parameter.
-	int LG_Vector2DI::Magnitud(const LG_Vector2DI & OtherVector)
+	int32 LG_Vector2DI::Magnitud(const LG_Vector2DI & OtherVector)
 	{
-		return (int)sqrt(pow(OtherVector.X, 2) + pow(OtherVector.Y, 2));
+		return (int32)sqrt(pow(OtherVector.X, 2) + pow(OtherVector.Y, 2));
 	}
 
 	//! This function realize the dot product between 2 vectors.
-	int LG_Vector2DI::Dot(const LG_Vector2DI& VectorA, const LG_Vector2DI& VectorB)
+	int32 LG_Vector2DI::Dot(const LG_Vector2DI& VectorA, const LG_Vector2DI& VectorB)
 	{
 		return VectorA | VectorB;
 	}
@@ -114,7 +114,7 @@ namespace LevelGenerator
 	}
 
 	//! This function compares if 2 vectors are the same.
-	bool LG_Vector2DI::Equals(const LG_Vector2DI& OtherVector, int Tolerance) const
+	bool LG_Vector2DI::Equals(const LG_Vector2DI& OtherVector, int32 Tolerance) const
 	{
 		return abs(X - OtherVector.X) < Tolerance && abs(Y - OtherVector.Y) < Tolerance;
 	}
@@ -163,13 +163,13 @@ namespace LevelGenerator
 	}
 
 	//!This operator return the dot product between this vector and other vector.
-	int LG_Vector2DI::operator|(const LG_Vector2DI& OtherVector) const
+	int32 LG_Vector2DI::operator|(const LG_Vector2DI& OtherVector) const
 	{
 		return (X * OtherVector.X) + (Y * OtherVector.Y);
 	}
 
 	//! This operator return the cross product between this vector and other vector.
-	int LG_Vector2DI::operator^(const LG_Vector2DI& OtherVector) const
+	int32 LG_Vector2DI::operator^(const LG_Vector2DI& OtherVector) const
 	{
 		return (X * OtherVector.Y) - (Y * OtherVector.X);
 	}

@@ -214,7 +214,7 @@ namespace LevelGenerator
 	{
 		bool bListFalse = true;
 
-		for (int i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
+		for (int32 i = 0; i < m_OriginalIsoline.m_NodeVector.size(); ++i)
 		{
 			if (m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted)
 			{

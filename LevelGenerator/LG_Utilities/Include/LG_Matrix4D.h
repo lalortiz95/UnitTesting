@@ -5,11 +5,11 @@
 
 namespace LevelGenerator
 {
+	///**************************************************************************/
+	///*						  Forward Declarations.							*/
+	///**************************************************************************/
 	class LG_Vector4D;
 	class LG_Vector3D;
-
-#pragma push(pack)
-#pragma pack(16)
 
 	/**
 	*	@brief This class is a 3 dimensional matrix.
@@ -218,5 +218,5 @@ namespace LevelGenerator
 		 */
 		static LG_Matrix4D RotateZ(float fvalue);
 	};
-#pragma pop(pack)
+
 }

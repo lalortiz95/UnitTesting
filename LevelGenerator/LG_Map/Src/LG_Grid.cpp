@@ -35,7 +35,7 @@ namespace LevelGenerator
 		/// Then we assing memory for each tile in x.
 		m_Grid = new LG_Tile*[m_iNumberPlanesX];
 		LG_Vector3D SpawnPosition(0, 0, 0);
-		for (int i = 0; i < m_iNumberPlanesX; ++i)
+		for (int32 i = 0; i < m_iNumberPlanesX; ++i)
 		{
 			/// For each tile in x array, we assing a new tile in y.
 			m_Grid[i] = new LG_Tile[m_iNumberPlanesY];

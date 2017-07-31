@@ -36,8 +36,8 @@ namespace LevelGenerator
 
 			/**
 			 *	@brief Constructor with parameters.
-			 *	@param int fPosX: Position in X axis.
-			 *	@param int fPosY: Position in Y axis.
+			 *	@param int32 fPosX: Position in X axis.
+			 *	@param int32 fPosY: Position in Y axis.
 			 */
 			LG_Vector2DI(int32 InX, int32 InY);
 
@@ -56,7 +56,7 @@ namespace LevelGenerator
 			 *	@param const LG_Vector2DI& OtherVector: The vector.
 			 *	@return the magnitud of the vector.
 			 */
-			int Magnitud(const LG_Vector2DI& OtherVector);
+			int32 Magnitud(const LG_Vector2DI& OtherVector);
 
 			/**
 			 *	@brief This function realize the dot product between 2 vectors.
@@ -64,7 +64,7 @@ namespace LevelGenerator
 			 *	@param const LG_Vector2DI& VectorB:
 			 *	@return The projection from VectorA with VectorB.
 			 */
-			int Dot(const LG_Vector2DI& VectorA, const LG_Vector2DI& VectorB);
+			int32 Dot(const LG_Vector2DI& VectorA, const LG_Vector2DI& VectorB);
 
 			/**
 			 *	@brief This function reduce the magnitud of the vector given between 0 and 1.
@@ -202,10 +202,10 @@ namespace LevelGenerator
 
 			/**
 			 *	@brief This operator divide the values from this vector with a value.
-			 *	@param int Value: The value to divide with this.
+			 *	@param int32 Value: The value to divide with this.
 			 *	@return this vector like a reference to actualize it's variables.
 			 */
-			LG_Vector2DI& operator/=(int Value);
+			LG_Vector2DI& operator/=(int32 Value);
 
 			/**
 			 *	@brief This operator multiply the values from other vector with this.
@@ -226,13 +226,13 @@ namespace LevelGenerator
 			 *	@param const LG_Vector2DI& OtherVector: The vector to apply the dot product with this.
 			 *	@return the result of the dot product.
 			 */
-			int operator|(const LG_Vector2DI& OtherVector) const;
+			int32 operator|(const LG_Vector2DI& OtherVector) const;
 
 			/**
 			 *	@brief This operator return the cross product between this vector and other vector.
 			 *	@param const LG_Vector2DI& OtherVector: The vector to apply the cross product with this.
 			 *	@return the result of the cross product.
 			 */
-			int operator^(const LG_Vector2DI& OtherVector) const;
+			int32 operator^(const LG_Vector2DI& OtherVector) const;
 	};
 }

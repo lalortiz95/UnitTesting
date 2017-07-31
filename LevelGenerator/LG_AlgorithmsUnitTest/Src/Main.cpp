@@ -16,7 +16,7 @@ bool CompareTilesVector(int32 *CorrectTiles, Vector<LG_Tile*> CalculatedTiles)
 	}
 
 	/// We go through the tiles' vector.
-	for (int i = 0; i < CalculatedTiles.size(); ++i)
+	for (int32 i = 0; i < CalculatedTiles.size(); ++i)
 	{
 		///If the case is different, we return true.
 		if (CorrectTiles[i] != CalculatedTiles[i]->m_iCase)
@@ -33,7 +33,7 @@ bool CompareTilesVector(int32 *CorrectTiles, Vector<LG_Tile*> CalculatedTiles)
 TEST(AlgorithmUnitTest, AreTilesInside)
 {
 	///Initializes the random.
-	srand(time(NULL));
+	srand((uint32)time(NULL));
 	///The variable used to call marching square functions.
 	LG_MarchingSquare MarchingSquare;
 	///The variable used to call marching square functions with a given circle.

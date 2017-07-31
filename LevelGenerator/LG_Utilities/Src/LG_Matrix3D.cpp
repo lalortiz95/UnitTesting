@@ -272,9 +272,7 @@ namespace LevelGenerator
 		float fValues[4];
 		///contador para llenar fValues
 		int32 iCount = 0;
-		///
-		float fDeterminant = 0;
-
+	
 		///guardamos los valores que no están en la columna ni en la fila dada.	
 		for (int32 i = 0; i < 3; ++i)
 			for (int32 j = 0; j < 3; ++j)

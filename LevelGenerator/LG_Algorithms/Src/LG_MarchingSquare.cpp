@@ -66,7 +66,7 @@ namespace LevelGenerator
 			for (int32 j = 0; j < m_pMap->GetTilesY(); ++j)
 			{
 				/// We iterate through every node in the tile.
-				for (int k = 0; k < LG_Tile::NUM_NODES_PER_TILE; ++k)
+				for (int32 k = 0; k < LG_Tile::NUM_NODES_PER_TILE; ++k)
 				{
 					/// We assign the flag, that if inside it's true, otherwise it's false.
 					m_pMap->m_Grid[i][j].m_Nodes[k].m_bIsInside = IsTilesInsideOfCircles(m_pMap->m_Grid[i][j].m_Nodes[k]);
@@ -97,7 +97,7 @@ namespace LevelGenerator
 		if (m_pMap == nullptr)	return;
 
 		/// Flag that indicates if a tile's got at least 1 node set as true.
-		/// Meaning it's inside of one circle, and by so it's inserted in the it's list.
+		/// Meaning it's inside of one circle, and by so it's inserted in the inside's list.
 		bool bFlag = false;
 		///We go through the TileMap, checking each one of it's nodes with a list circles.
 		for (int32 i = 0; i < m_pMap->GetTilesX(); ++i)
@@ -134,7 +134,7 @@ namespace LevelGenerator
 		if (m_pMap->m_pListTilesInside.size() != 0)
 		{
 			/// We go through the tiles that are inside of the circles.
-			for (int i = 0; i < m_pMap->m_pListTilesInside.size(); ++i)
+			for (int32 i = 0; i < m_pMap->m_pListTilesInside.size(); ++i)
 			{
 				/// Marching square's case 1.
 				if (!m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
@@ -297,7 +297,7 @@ namespace LevelGenerator
 		float fDistance;
 
 		/// We check that there are circles to check with.
-		if (m_CircleList.size() <= 0)
+		if (0 == m_CircleList.size())
 		{
 			///If not, we return false.
 			return false;
@@ -337,7 +337,7 @@ namespace LevelGenerator
 			/// This vector stores where will the circle spawn.
 			LG_Vector3D SpawnPosition((float)(rand() % m_pMap->m_iWidth), (float)(rand() % m_pMap->m_iHeight), 0);
 			/// We calculate a random radius from one to the maximun radius.
-			float fTempRadius = rand() % (int32)fMaxRadius;
+			float fTempRadius = (float)(rand() % (int32)fMaxRadius);
 			/// Set the position and the radius to the circle.
 			NewCircle.Init(SpawnPosition, fTempRadius);
 			/// Add the circle in the circles' list.

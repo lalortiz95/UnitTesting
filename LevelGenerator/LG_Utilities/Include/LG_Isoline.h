@@ -1,7 +1,6 @@
 #pragma once
 #include "LG_UtilitiesPrerequisites.h"
 #include "LG_Node.h"
-#include <vector>
 
 namespace LevelGenerator
 {

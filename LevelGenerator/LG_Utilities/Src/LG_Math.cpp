@@ -53,9 +53,9 @@ namespace LevelGenerator
 		return Loge(fValue) / Loge(fBase);
 	}
 
-	int LG_Math::Trunc(float fValue)
+	int32 LG_Math::Trunc(float fValue)
 	{
-		return (int)fValue;
+		return (int32)fValue;
 	}
 
 	float LG_Math::TruncFloat(float fValue)
@@ -63,17 +63,17 @@ namespace LevelGenerator
 		return (float)Trunc(fValue);
 	}
 
-	int LG_Math::Floor(float fValue)
+	int32 LG_Math::Floor(float fValue)
 	{
 		return Trunc(floorf(fValue));
 	}
 
-	int LG_Math::Round(float fValue)
+	int32 LG_Math::Round(float fValue)
 	{
 		return Floor(fValue + 0.5f);
 	}
 
-	int LG_Math::Ceil(float fValue)
+	int32 LG_Math::Ceil(float fValue)
 	{
 		{ return Trunc(ceilf(fValue)); }
 	}

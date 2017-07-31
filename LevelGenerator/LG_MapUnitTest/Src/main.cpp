@@ -4,9 +4,9 @@
 
 using namespace LevelGenerator;
 //! The Main.
-int main()
+int32 main()
 {
-	srand((size_t)time(NULL));
+	srand((uint32)time(NULL));
 	LG_Grid Grid2D;
 
 	Grid2D.Init(20, 12);
