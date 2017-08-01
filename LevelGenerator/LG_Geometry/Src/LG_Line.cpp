@@ -5,13 +5,13 @@ namespace LevelGenerator
 	//! Default Constructor.
 	LG_Line::LG_Line()
 	{
-
+		m_bIsInside = false;
 	}
 
 	//! Default Destructor.
 	LG_Line::~LG_Line()
 	{
-
+		Destroy();
 	}
 
 	//! This function initialize the member variables.
@@ -23,5 +23,6 @@ namespace LevelGenerator
 	//! This function releases memory and resources.
 	void LG_Line::Destroy()
 	{
+		m_bIsInside = false;
 	}
 }

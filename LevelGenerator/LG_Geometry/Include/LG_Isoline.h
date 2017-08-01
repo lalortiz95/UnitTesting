@@ -1,15 +1,16 @@
 #pragma once
-#include "LG_UtilitiesPrerequisites.h"
+#include "LG_GeometryPrerequisites.h"
 #include "LG_Node.h"
 
 namespace LevelGenerator
 {
-	/**
-	 *	@brief This class store 2 nodes that define a line.
+	/** 
+	 *	@brief This class creates a isoline by means of a list of points.
 	 */
-	class LG_UTILITIES_EXPORT LG_Line
+	class LG_GEOMETRY_EXPORT LG_Isoline
 	{
 	public:
+		
 		///************************************************************************/
 		///*                            Constructor & Destructor.                 */
 		///************************************************************************/
@@ -17,22 +18,21 @@ namespace LevelGenerator
 		/**
 		 *	@brief Default Constructor.
 		 */
-		LG_Line();
+		LG_Isoline();
 
 		/**
-		 *	@brief Default destructor.
+		 *	@brief Default Constructor.
 		 */
-		~LG_Line();
+		~LG_Isoline();
 
 		///**************************************************************************/
 		///*						  Member Variables.								*/
 		///**************************************************************************/
 
 		/**
-		 *	@brief This variable stores the start and end nodes of the line.
+		 *	@brief This variable stores the series of points that make up this line.
 		 */
-		LG_Node m_Nodes[2];
-
+		Vector<LG_Node> m_NodeVector;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */
@@ -44,9 +44,16 @@ namespace LevelGenerator
 		void Init();
 
 		/**
-		 *	@brief This function frees all the memory, and deletes the member variables.
+		 *	@brief This function free all memory of the class.
 		 */
 		void Destroy();
 
+		/**
+		 *	@brief This function adds a node to the isoline in a given position.
+		 *	@param LG_Vector3D position: the position to spawn the given vector.
+		 */
+		void AddNode(LG_Vector3D position);
 	};
 }
+
+

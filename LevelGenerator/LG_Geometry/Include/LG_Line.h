@@ -1,16 +1,15 @@
 #pragma once
-#include "LG_UtilitiesPrerequisites.h"
+#include "LG_GeometryPrerequisites.h"
 #include "LG_Node.h"
 
 namespace LevelGenerator
 {
-	/** 
-	 *	@brief This class creates a isoline by means of a list of points.
+	/**
+	 *	@brief This class store 2 nodes that define a line.
 	 */
-	class LG_UTILITIES_EXPORT LG_Isoline
+	class LG_GEOMETRY_EXPORT LG_Line
 	{
 	public:
-		
 		///************************************************************************/
 		///*                            Constructor & Destructor.                 */
 		///************************************************************************/
@@ -18,22 +17,26 @@ namespace LevelGenerator
 		/**
 		 *	@brief Default Constructor.
 		 */
-		LG_Isoline();
+		LG_Line();
 
 		/**
-		 *	@brief Default Constructor.
+		 *	@brief Default destructor.
 		 */
-		~LG_Isoline();
+		~LG_Line();
 
 		///**************************************************************************/
 		///*						  Member Variables.								*/
 		///**************************************************************************/
 
 		/**
-		 *	@brief This variable stores the series of points that make up this line.
+		 *	@brief This variable stores the start and end nodes of the line.
 		 */
-		Vector<LG_Node> m_NodeVector;
+		LG_Node m_Nodes[2];
 
+		/**
+		 *	@brief This variable tells us if the line's already been inserted to a isoline.
+		 */
+		bool m_bIsInside;
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
@@ -44,16 +47,9 @@ namespace LevelGenerator
 		void Init();
 
 		/**
-		 *	@brief This function free all memory of the class.
+		 *	@brief This function frees all the memory, and deletes the member variables.
 		 */
 		void Destroy();
 
-		/**
-		 *	@brief This function adds a node to the isoline in a given position.
-		 *	@param LG_Vector3D position: the position to spawn the given vector.
-		 */
-		void AddNode(LG_Vector3D position);
 	};
 }
-
-

@@ -1,13 +1,13 @@
 #pragma once
-#include "LG_UtilitiesPrerequisites.h"
-#include "LG_Vector3D.h"
+#include "LG_GeometryPrerequisites.h"
+#include <LG_Vector3D.h>
 
 namespace LevelGenerator
 {
 	/**
 	*	@brief This class has a vector3D which stores it's position. And a float for it's radius.
 	*/
-	class LG_UTILITIES_EXPORT LG_Circle
+	class LG_GEOMETRY_EXPORT LG_Circle
 	{
 	public:
 		///************************************************************************/

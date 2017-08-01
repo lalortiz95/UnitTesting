@@ -1,14 +1,14 @@
 #pragma once
-#include "LG_UtilitiesPrerequisites.h"
+#include "LG_GeometryPrerequisites.h"
 #include "LG_Node.h"
-#include "LG_Matrix3D.h"
+#include <LG_Matrix3D.h>
 
 namespace LevelGenerator
 {
 	/**
 	*	@brief This class is a rect.
 	*/
-	class LG_UTILITIES_EXPORT LG_Rect
+	class LG_GEOMETRY_EXPORT LG_Rect
 	{
 	public:
 		///************************************************************************/

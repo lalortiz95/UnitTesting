@@ -161,14 +161,9 @@
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Include\LG_Circle.h" />
-    <ClInclude Include="Include\LG_Isoline.h" />
-    <ClInclude Include="Include\LG_Line.h" />
     <ClInclude Include="Include\LG_Math.h" />
     <ClInclude Include="Include\LG_Matrix3D.h" />
     <ClInclude Include="Include\LG_Matrix4D.h" />
-    <ClInclude Include="Include\LG_Node.h" />
-    <ClInclude Include="Include\LG_Rect.h" />
     <ClInclude Include="Include\LG_StdHeaders.h" />
     <ClInclude Include="Include\LG_UtilitiesPrerequisites.h" />
     <ClInclude Include="Include\LG_UtilityMacro.h" />
@@ -180,14 +175,9 @@
     <ClInclude Include="Include\LG_Vector4D.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\LG_Circle.cpp" />
-    <ClCompile Include="Src\LG_Isoline.cpp" />
-    <ClCompile Include="Src\LG_Line.cpp" />
     <ClCompile Include="Src\LG_Math.cpp" />
     <ClCompile Include="Src\LG_Matrix3D.cpp" />
     <ClCompile Include="Src\LG_Matrix4D.cpp" />
-    <ClCompile Include="Src\LG_Node.cpp" />
-    <ClCompile Include="Src\LG_Rect.cpp" />
     <ClCompile Include="Src\LG_Vector2D.cpp" />
     <ClCompile Include="Src\LG_Vector2DI.cpp" />
     <ClCompile Include="Src\LG_Vector3D.cpp" />

@@ -1,5 +1,5 @@
 #pragma once
-#include "LG_UtilitiesPrerequisites.h"
+#include "LG_GeometryPrerequisites.h"
 #include <LG_Vector3D.h>
 
 namespace LevelGenerator
@@ -7,7 +7,7 @@ namespace LevelGenerator
 	/**
 	 *	@brief This class stores a node in a 3D space.
 	 */
-	class LG_UTILITIES_EXPORT LG_Node
+	class LG_GEOMETRY_EXPORT LG_Node
 	{
 	public:
 

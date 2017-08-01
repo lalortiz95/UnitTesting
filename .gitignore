@@ -17,3 +17,7 @@ VertexReduction/VertexReduction.VC.db
 *.lib
 *.user
 *.dll
+*.iobj
+*.ipdb
+*.tmp
+*.filters

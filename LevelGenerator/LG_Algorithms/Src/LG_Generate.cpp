@@ -39,16 +39,37 @@ namespace LevelGenerator
 		/// We run marching square with the generated grid.
 		m_MS.Run(m_pMap);
 
+
+		LG_Isoline Isoline;
 		//TODO: tomar los casos de marching square y con sus isolineas de los casos generados, ir acomodandolas desde un inicio hasta un fin.
 		// hacer lo mismo por todas las isolineas que tengamos.
-
-		//Para que esto funcione es necesario que marching square
-		// guarde en cada tile su respectiva isolinea, o isolineas.
-		m_MS.m_pMap->m_pListTilesInside;
+		for (int32 i = 0; i < m_MS.m_pMap->m_pListTilesInside.size(); ++i)
+		{
+			for (int32 j = 0; j < 2; ++j)
+			{
+				if (&m_MS.m_pMap->m_pListTilesInside[i]->m_pLines[j] != nullptr)
+				{
+					if (!m_MS.m_pMap->m_pListTilesInside[i]->m_pLines[j].m_Nodes[0].m_bIsInside)
+					{
+						Isoline.AddNode(m_MS.m_pMap->m_pListTilesInside[i]->m_pLines[j].m_Nodes[0].m_Position);
+						//TODO: llamar función que checa al que le sigue con los demás.
+					}
+				}
+			}
+		}
 		//TODO:
 		//	En el primer lugar de la lista de tiles dentro, ver su isolinea, y guardar el
 		//	primer punto.
 		//	y buscamos dentro de las isolineas del resto de los tiles, si es que hay
 		//	algùn otro nodo que comparta posición.
+		//	al encontrar el nodo que comparta la posición, se asigna ese como 
+		//	el tile actual y se vuelve a empezar.
+		//	De no encontrar a nadie que comparta posición, se inserta
+		//	ese nodo como el último de la isolinea y se pasa a llenar
+		//	la siguiente linea.
+		//	Si el tile que compara la posición tiene la misma posición que el
+		//	inicial de la isolinea, se pasaa la siguiente isolinea.
+		//	Todas las lineas están marcadas como false  en un inicio, conforme
+		//	se guardan, se van cambiando a true.
 	}
 }
