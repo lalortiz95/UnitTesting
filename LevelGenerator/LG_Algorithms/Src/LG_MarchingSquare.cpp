@@ -142,7 +142,13 @@ namespace LevelGenerator
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_1;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pDown,
+						*m_pMap->m_pListTilesInside[i]->m_pLeft);
+
 					continue;
 				}
 
@@ -152,7 +158,13 @@ namespace LevelGenerator
 					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_2;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pRight,
+						*m_pMap->m_pListTilesInside[i]->m_pDown);
+
 					continue;
 				}
 
@@ -162,7 +174,14 @@ namespace LevelGenerator
 					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_3;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pRight,
+						*m_pMap->m_pListTilesInside[i]->m_pLeft);
+
+
 					continue;
 				}
 
@@ -172,7 +191,13 @@ namespace LevelGenerator
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_4;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pUp,
+						*m_pMap->m_pListTilesInside[i]->m_pRight);
+
 					continue;
 				}
 
@@ -182,7 +207,14 @@ namespace LevelGenerator
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_5;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pUp,
+						*m_pMap->m_pListTilesInside[i]->m_pLeft,
+						*m_pMap->m_pListTilesInside[i]->m_pRight,
+						*m_pMap->m_pListTilesInside[i]->m_pDown);
 					continue;
 				}
 
@@ -192,7 +224,12 @@ namespace LevelGenerator
 					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_6;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pUp,
+						*m_pMap->m_pListTilesInside[i]->m_pDown);
 					continue;
 				}
 
@@ -202,7 +239,12 @@ namespace LevelGenerator
 					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_7;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pUp,
+						*m_pMap->m_pListTilesInside[i]->m_pLeft);
 					continue;
 				}
 
@@ -212,7 +254,12 @@ namespace LevelGenerator
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_8;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pUp,
+						*m_pMap->m_pListTilesInside[i]->m_pLeft);
 					continue;
 				}
 
@@ -222,7 +269,12 @@ namespace LevelGenerator
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_9;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pUp,
+						*m_pMap->m_pListTilesInside[i]->m_pDown);
 					continue;
 				}
 
@@ -232,7 +284,14 @@ namespace LevelGenerator
 					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_10;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pUp,
+						*m_pMap->m_pListTilesInside[i]->m_pRight,
+						*m_pMap->m_pListTilesInside[i]->m_pDown,
+						*m_pMap->m_pListTilesInside[i]->m_pLeft);
 					continue;
 				}
 
@@ -242,7 +301,12 @@ namespace LevelGenerator
 					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_11;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pUp,
+						*m_pMap->m_pListTilesInside[i]->m_pRight);
 					continue;
 				}
 
@@ -252,7 +316,12 @@ namespace LevelGenerator
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_12;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pRight,
+						*m_pMap->m_pListTilesInside[i]->m_pLeft);
 					continue;
 				}
 
@@ -262,7 +331,12 @@ namespace LevelGenerator
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_13;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pRight,
+						*m_pMap->m_pListTilesInside[i]->m_pDown);
 					continue;
 				}
 
@@ -272,7 +346,12 @@ namespace LevelGenerator
 					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_14;
+					/// Assign the lines of the tile.
+					m_pMap->m_pListTilesInside[i]->CreateLine(
+						*m_pMap->m_pListTilesInside[i]->m_pDown,
+						*m_pMap->m_pListTilesInside[i]->m_pLeft);
 					continue;
 				}
 
@@ -282,6 +361,7 @@ namespace LevelGenerator
 					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
 					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
 				{
+					/// Assign the case of the current tile.
 					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_15;
 					continue;
 				}

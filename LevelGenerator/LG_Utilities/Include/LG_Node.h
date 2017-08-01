@@ -70,5 +70,18 @@ namespace LevelGenerator
 		 *	@brief Function to realease memory and destroy objects.
 		 */
 		void Destroy();
+
+		///************************************************************************/
+		///*						  Assignment Operator.						  */
+		///************************************************************************/
+		
+		/**
+		 *	@brief This operator assigns the values from other node to this node.
+		 *	@param const LG_Node& OtherNode: The node that we want to assign it's values.
+		 *	@return the new values for this node.
+		 */
+		LG_Node& operator=(const LG_Node& OtherNode);
+
+		//TODO: Crear funciones accesoras set y get para poder poner privada la posicion del nodo.
 	};
 }

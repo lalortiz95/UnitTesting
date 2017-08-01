@@ -1,6 +1,6 @@
 #pragma once
 #include "LG_MapPrerequisites.h"
-#include "LG_Node.h"
+#include <LG_Line.h>
 
 namespace LevelGenerator
 {
@@ -35,6 +35,20 @@ namespace LevelGenerator
 		int32 m_iCase; 
 
 		/**
+		 *	@brief An array of nodes, one for each corner of the tile.
+		 */
+		LG_Node m_Nodes[4];
+
+		/**
+		 *	@brief An array of nodes, that define when we can draw a line that depending if it's true or false.
+		 */
+		LG_Node m_LinesNodes[4];
+
+		///**************************************************************************/
+		///*						  Member Pointers.								*/
+		///**************************************************************************/
+
+		/**
 		 *	@brief The top node on the left of the tile.
 		 */
 		LG_Node* m_pTopLeft;
@@ -53,13 +67,37 @@ namespace LevelGenerator
 		 *	@brief The bottom node on the left of the tile.
 		 */
 		LG_Node* m_pBottomLeft;
-		
-		 /**
-		  *	@brief An array of nodes, one for each corner of the tile.
-		  */
-		LG_Node m_Nodes[4];
 
+		/**
+		 *	@brief The Up node that define when we can draw a line, that depending if it's true or false.
+		 */
+		LG_Node* m_pUp;
+
+		/**
+		 *	@brief The Left node that define when we can draw a line, that depending if it's true or false.
+		 */
+		LG_Node* m_pLeft;
+
+		/**
+		 *	@brief The Right node that define when we can draw a line, that depending if it's true or false.
+		 */
+		LG_Node* m_pRight;
+
+		/**
+		 *	@brief The Down node that define when we can draw a line, that depending if it's true or false.
+		 */
+		LG_Node* m_pDown;
 		
+		/**
+		 *	@brief A Pointer of lines, that depending on the tile's case it could be 1 or 2.
+		 */
+		LG_Line* m_pLines;
+		
+		///**************************************************************************/
+		///*						 Static Member Variables.						*/
+		///**************************************************************************/
+
+
 		/**
 		 *	@brief The constant that define the size per tile..
 		 */
@@ -86,9 +124,20 @@ namespace LevelGenerator
 		void Destroy();
 
 		/**
-		 * @brief This function assign the
+		 *	@brief This function create a line of the tile, that depending of the tile's case.
+		 *	@param LG_Node StartNode: The node that have the start position of the line.
+		 *	@param LG_Node EndNode: The node that have the end position of the line.
 		 */
-		void CheckPlaneCase();
+		void CreateLine(LG_Node StartNode, LG_Node EndNode);
+
+		/**
+		*	@brief This function create a line of the tile, that depending of the tile's case.
+		*	@param LG_Node StartNode: The node that have the start position of the first line.
+		*	@param LG_Node EndNode: The node that have the end position of the first line.
+		*	@param LG_Node StartNode_2: The node that have the start position of the second line.
+		*	@param LG_Node EndNode_2: The node that have the end position of the second line.
+		*/
+		void CreateLine(LG_Node StartNode, LG_Node EndNode,LG_Node StartNode_2, LG_Node EndNode_2);
 	};
 
 }

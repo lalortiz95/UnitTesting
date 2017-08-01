@@ -29,9 +29,14 @@ namespace LevelGenerator
 		LG_Vector3D TempPosition = vPosition;
 
 		//! The position of each node is calculated upon the given position.
-		//! Whe assign to the first node the given position.
+		//! We assign to the first node the given position.
 		m_Nodes[0].m_Position = TempPosition;
 		m_pTopLeft = &m_Nodes[0];
+
+		//! We assign the up node.
+		m_LinesNodes[0].m_Position = m_Nodes[0].m_Position;
+		m_LinesNodes[0].m_Position.X += SIZE_OF_TILE / 2;
+		m_pUp = &m_LinesNodes[0];
 
 		//! Now we add the width to that position, so that it give us the next node position.
 		TempPosition.X += SIZE_OF_TILE;
@@ -39,17 +44,32 @@ namespace LevelGenerator
 		m_Nodes[1].m_Position = TempPosition;
 		m_pTopRight = &m_Nodes[1];
 
+		//! We assign the right node.
+		m_LinesNodes[1].m_Position = m_Nodes[1].m_Position;
+		m_LinesNodes[1].m_Position.Y += SIZE_OF_TILE / 2;
+		m_pRight = &m_LinesNodes[1];
+
 		//! Now the height is added to the Y component.
 		TempPosition.Y += SIZE_OF_TILE;
 		//! That new position is asigned to the next node (Bottom right).
 		m_Nodes[2].m_Position = TempPosition;
 		m_pBottomRight = &m_Nodes[2];
 
+		//! We assign the bottom node.
+		m_LinesNodes[2].m_Position = m_Nodes[2].m_Position;
+		m_LinesNodes[2].m_Position.X -= SIZE_OF_TILE / 2;
+		m_pDown = &m_LinesNodes[2];
+
 		//! We finally substract the width of the x component.
 		TempPosition.X -= SIZE_OF_TILE;
 		//! And we assign that final position to the last node (Bottom left).
 		m_Nodes[3].m_Position = TempPosition;
 		m_pBottomLeft = &m_Nodes[3];
+
+		//! We assign the left node.
+		m_LinesNodes[3].m_Position = m_Nodes[3].m_Position;
+		m_LinesNodes[3].m_Position.Y -= SIZE_OF_TILE / 2;
+		m_pLeft = &m_LinesNodes[3];
 	}
 
 	//! This function realeases the memory of the class.
@@ -58,7 +78,31 @@ namespace LevelGenerator
 		/// Release the memory.
 	}
 
-	void LG_Tile::CheckPlaneCase()
+	//! This function create a line of the tile, that depending of the tile's case.
+	void LG_Tile::CreateLine(LG_Node StartNode, LG_Node EndNode)
 	{
+		/// Assign memory to the array of lines according to the amount of lines.
+		m_pLines = new LG_Line();
+
+		/// We assign the start and end node to the line.
+		m_pLines->m_Nodes[0] = StartNode;
+		m_pLines->m_Nodes[1] = EndNode;
+
 	}
+
+	//! This function create a line of the tile, that depending of the tile's case.
+	void LG_Tile::CreateLine(LG_Node StartNode, LG_Node EndNode, LG_Node StartNode_2, LG_Node EndNode_2)
+	{
+		/// Assign memory to the array of lines according to the amount of lines.
+		m_pLines = new LG_Line[2]();
+
+		/// We assign the start and end node to the first line.
+		m_pLines[0].m_Nodes[0] = StartNode;
+		m_pLines[0].m_Nodes[1] = EndNode;
+
+		/// We assign the start and end node to the second line.
+		m_pLines[1].m_Nodes[0] = StartNode_2;
+		m_pLines[1].m_Nodes[1] = EndNode_2;
+	}
+
 }

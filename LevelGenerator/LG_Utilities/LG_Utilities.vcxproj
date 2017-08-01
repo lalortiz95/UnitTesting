@@ -163,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="Include\LG_Circle.h" />
     <ClInclude Include="Include\LG_Isoline.h" />
+    <ClInclude Include="Include\LG_Line.h" />
     <ClInclude Include="Include\LG_Math.h" />
     <ClInclude Include="Include\LG_Matrix3D.h" />
     <ClInclude Include="Include\LG_Matrix4D.h" />
@@ -181,6 +182,7 @@
   <ItemGroup>
     <ClCompile Include="Src\LG_Circle.cpp" />
     <ClCompile Include="Src\LG_Isoline.cpp" />
+    <ClCompile Include="Src\LG_Line.cpp" />
     <ClCompile Include="Src\LG_Math.cpp" />
     <ClCompile Include="Src\LG_Matrix3D.cpp" />
     <ClCompile Include="Src\LG_Matrix4D.cpp" />

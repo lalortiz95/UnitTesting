@@ -37,7 +37,7 @@ namespace LevelGenerator
 	 */
 	void LG_Node::Init()
 	{
-		
+
 	}
 
 
@@ -47,6 +47,16 @@ namespace LevelGenerator
 	void LG_Node::Destroy()
 	{
 
+	}
+
+	//! This operator assigns the values from other node to this node.
+	LG_Node& LG_Node::operator=(const LG_Node & OtherNode)
+	{
+		this->m_bCanDeleted = OtherNode.m_bCanDeleted;
+		this->m_bIsInside = OtherNode.m_bIsInside;
+		this->m_iID = OtherNode.m_iID;
+		this->m_Position = OtherNode.m_Position;
+		return *this;
 	}
 
 }

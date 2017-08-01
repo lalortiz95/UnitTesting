@@ -66,6 +66,9 @@
     <ClInclude Include="Include\LG_UtilityMacro.h">
       <Filter>Header Files\Prerequisites</Filter>
     </ClInclude>
+    <ClInclude Include="Include\LG_Line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_Vector2D.cpp">
@@ -99,6 +102,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\LG_Matrix4D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\LG_Line.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
