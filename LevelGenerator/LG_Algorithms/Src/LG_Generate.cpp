@@ -42,13 +42,19 @@ namespace LevelGenerator
 		//TODO: tomar los casos de marching square y con sus isolineas de los casos generados, ir acomodandolas desde un inicio hasta un fin.
 		// hacer lo mismo por todas las isolineas que tengamos.
 
-		//Para que esto funcione es necesario que marching square
-		// guarde en cada tile su respectiva isolinea, o isolineas.
 		m_MS.m_pMap->m_pListTilesInside;
 		//TODO:
-		//	En el primer lugar de la lista de tiles dentro, ver su isolinea, y guardar el
-		//	primer punto.
-		//	y buscamos dentro de las isolineas del resto de los tiles, si es que hay
-		//	algùn otro nodo que comparta posición.
+		//		En el primer lugar de la lista de tiles dentro, ver su isolinea, y guardar el
+		//		primer punto.
+		//		y buscamos dentro de las isolineas del resto de los tiles, si es que hay
+		//		algún otro nodo que comparta posición. Encontrado dicho nodo, se guarda el 
+		//		primer punto, y se busca uno que comparta posición con el segundo de la 
+		//		isolinea. //esto ya se repitió ojo.
+		//		Al no haber quien comparta posición con nuestro nodo actual, dicho nodo
+		//		se vuelve el nodo final, y se buscan más isolineas por formar.
+		//		Si por otro lado el nodo vuelve a tener la misma posición que la inicial
+		//		ese se guarda como el último nodo. y se buscan más isolineas.
+		//		Cuando se hayan generado todas las isolineas, les aplicamos RDP a cada una.
+		//		Al final debemos tener una lista de isolineas reducidas.
 	}
 }
