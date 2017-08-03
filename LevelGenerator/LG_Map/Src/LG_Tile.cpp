@@ -10,16 +10,24 @@ namespace LevelGenerator
 	//! Default constructor.
 	LG_Tile::LG_Tile()
 	{
-		m_pBottomLeft = 
-		m_pTopLeft = 
-		m_pTopRight = 
-		m_pBottomRight = nullptr;
+		m_pBottomLeft =
+		m_pTopLeft =
+		m_pTopRight =
+	 	m_pBottomRight = nullptr;
+
+		m_pDown =
+		m_pUp =
+		m_pRight =
+		m_pLeft = nullptr;
+
+		m_bIsChecked = false;
 		m_iCase = 0;
 	}
 
 	//! Default destructor.
 	LG_Tile::~LG_Tile()
 	{
+		Destroy();
 	}
 
 	//! Initializes the variables of the class.
@@ -75,34 +83,39 @@ namespace LevelGenerator
 	//! This function realeases the memory of the class.
 	void LG_Tile::Destroy()
 	{
-		/// Release the memory.
 	}
 
 	//! This function create a line of the tile, that depending of the tile's case.
 	void LG_Tile::CreateLine(LG_Node StartNode, LG_Node EndNode)
 	{
-		/// Assign memory to the array of lines according to the amount of lines.
-		m_pLines = new LG_Line();
+		/// The line that will be added to the lines vector.
+		LG_Line LineToAdd;
 
 		/// We assign the start and end node to the line.
-		m_pLines->m_Nodes[0] = StartNode;
-		m_pLines->m_Nodes[1] = EndNode;
+		LineToAdd.m_Nodes[0] = StartNode;
+		LineToAdd.m_Nodes[1] = EndNode;
 
+		/// Add the new line to the vector.
+		m_LinesVector.push_back(LineToAdd);
 	}
 
 	//! This function create a line of the tile, that depending of the tile's case.
 	void LG_Tile::CreateLine(LG_Node StartNode, LG_Node EndNode, LG_Node StartNode_2, LG_Node EndNode_2)
 	{
 		/// Assign memory to the array of lines according to the amount of lines.
-		m_pLines = new LG_Line[2]();
+		LG_Line LineToAdd;
 
 		/// We assign the start and end node to the first line.
-		m_pLines[0].m_Nodes[0] = StartNode;
-		m_pLines[0].m_Nodes[1] = EndNode;
+		LineToAdd.m_Nodes[0] = StartNode;
+		LineToAdd.m_Nodes[1] = EndNode;
+
+		m_LinesVector.push_back(LineToAdd);
 
 		/// We assign the start and end node to the second line.
-		m_pLines[1].m_Nodes[0] = StartNode_2;
-		m_pLines[1].m_Nodes[1] = EndNode_2;
+		LineToAdd.m_Nodes[0] = StartNode_2;
+		LineToAdd.m_Nodes[1] = EndNode_2;
+
+		m_LinesVector.push_back(LineToAdd);
 	}
 
 }

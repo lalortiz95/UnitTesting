@@ -1,5 +1,6 @@
 #pragma once
 #include <LG_MarchingSquare.h>
+#include <LG_Generate.h>
 #include <LG_RDP.h>
 #include <time.h>
 #include <gtest/gtest.h>
@@ -32,6 +33,11 @@ bool CompareTilesVector(int32 *CorrectTiles, Vector<LG_Tile*> CalculatedTiles)
 
 TEST(AlgorithmUnitTest, AreTilesInside)
 {
+	/// The algorithm that unificates the others.
+	LG_Generate GenerateAlgorithm;
+	/// Call its run.
+	GenerateAlgorithm.Run();
+
 	///Initializes the random.
 	srand((uint32)time(NULL));
 	///The variable used to call marching square functions.

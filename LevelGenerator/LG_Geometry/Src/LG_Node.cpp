@@ -37,7 +37,8 @@ namespace LevelGenerator
 	 */
 	void LG_Node::Init()
 	{
-
+		m_bIsInside = false;
+		m_bCanDeleted = true;
 	}
 
 

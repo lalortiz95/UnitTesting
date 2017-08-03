@@ -78,7 +78,10 @@ namespace LevelGenerator
 				}
 				///If there was a node set to true, we insert the tile in the list.
 				if (bFlag)
+				{
+					m_pMap->m_Grid[i][j].m_iID = m_pMap->m_pListTilesInside.size();
 					m_pMap->m_pListTilesInside.push_back(&m_pMap->m_Grid[i][j]);
+				}
 				/// Change the flag back to false so that the next tile could get in the list.
 				bFlag = false;
 			}
@@ -117,7 +120,10 @@ namespace LevelGenerator
 				}
 				///If there was a node set to true, we insert the tile in the list.
 				if (bFlag)
+				{
+					m_pMap->m_Grid[i][j].m_iID = m_pMap->m_pListTilesInside.size();
 					m_pMap->m_pListTilesInside.push_back(&m_pMap->m_Grid[i][j]);
+				}
 				/// Change the flag back to false so that the next tile could get in the list.
 				bFlag = false;
 			}

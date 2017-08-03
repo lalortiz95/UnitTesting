@@ -110,7 +110,6 @@ namespace LevelGenerator
 			/// If we can delete nodes in between the start and end nodes.
 			if (bCanDelete)
 			{
-
 				/// Adds the start to the final isoline, and sets the new start and end nodes.
 				AddNodeToFinalIsoline();
 			}

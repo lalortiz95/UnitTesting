@@ -30,9 +30,14 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This value is used to identification the case of the tile.
+		 *	@brief This value is used to identify the case of the tile.
 		 */
 		int32 m_iCase; 
+
+		/**
+		 *	@brief An identifier to the tile.
+		 */
+		int32 m_iID;
 
 		/**
 		 *	@brief An array of nodes, one for each corner of the tile.
@@ -43,6 +48,16 @@ namespace LevelGenerator
 		 *	@brief An array of nodes, that define when we can draw a line that depending if it's true or false.
 		 */
 		LG_Node m_LinesNodes[4];
+
+		/**
+		 *	@brief A vector of lines, that depending on the tile's case it's lengh could be 1 or 2.
+		 */
+		Vector<LG_Line> m_LinesVector;
+
+		/**
+		 *	@brief true when we have already added it to a final isoline in generate algorithm.
+		 */
+		bool m_bIsChecked;
 
 		///**************************************************************************/
 		///*						  Member Pointers.								*/
@@ -87,11 +102,6 @@ namespace LevelGenerator
 		 *	@brief The Down node that define when we can draw a line, that depending if it's true or false.
 		 */
 		LG_Node* m_pDown;
-		
-		/**
-		 *	@brief A Pointer of lines, that depending on the tile's case it could be 1 or 2.
-		 */
-		LG_Line* m_pLines;
 		
 		///**************************************************************************/
 		///*						 Static Member Variables.						*/
