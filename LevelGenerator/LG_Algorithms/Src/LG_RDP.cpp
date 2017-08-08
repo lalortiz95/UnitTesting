@@ -78,6 +78,7 @@ namespace LevelGenerator
 
 		bool bQuit = false;
 
+
 		while (!bQuit)
 		{
 			/// Reset the flag so that it can get inside again.

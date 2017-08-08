@@ -22,18 +22,17 @@ namespace LevelGenerator
 	{
 		/// Assign memory and initialize the grid.
 		m_pMap = gridToWorkWith;
-		/// Calculates how many circles there will be, which what sizes, and in which positions.
-		SetCircles();
+		SetCircles(rand() % 5 + 10);
 	}
 
 	//! This function initialize all variables of the class.
-	void LG_MarchingSquare::Init(float fRadius, LG_Vector3D position, int32 tilesX, int32 tilesY)
+	void LG_MarchingSquare::Init(int32 iCircleAmount, int32 tilesX, int32 tilesY)
 	{
 		/// Assign memory and initialize the grid.
 		m_pMap = new LG_Grid();
 		m_pMap->Init(tilesX, tilesY);
 
-		SetCircle(fRadius, position);
+		SetCircles(iCircleAmount);
 	}
 
 	//! This function free the memory of the class.
@@ -92,10 +91,10 @@ namespace LevelGenerator
 	}
 
 	//! This function is the only one you need to generate marching squares algorithm.
-	void LG_MarchingSquare::Run(float fRadius, LG_Vector3D position, int32 iNumTilesX, int32 iNumTilesY)
+	void LG_MarchingSquare::Run(int32 iCircleAmount, int32 iNumTilesX, int32 iNumTilesY)
 	{
 		/// Initialize the class' variables.
-		Init(fRadius, position, iNumTilesX, iNumTilesY);
+		Init(iCircleAmount, iNumTilesX, iNumTilesY);
 		///We see that the grid's got valid information.
 		if (m_pMap == nullptr)	return;
 
@@ -406,19 +405,18 @@ namespace LevelGenerator
 	}
 
 	//! This function set a given number of circles.
-	void LG_MarchingSquare::SetCircles()
+	void LG_MarchingSquare::SetCircles(int32 iCircleAmount)
 	{
 		/// This variable store the actual circle being created.
 		LG_Circle NewCircle;
 		/// The maximum size the radius could have.
 		float fMaxRadius = 0;
-		/// This variable sets a random number of circles.
-		int32 iAmount = rand() % 5 + 10;
+
 		/// We calculate the maximum size available for circle so that is not larger than the grid.
 		fMaxRadius = LG_Math::Min((float)m_pMap->m_iWidth / 2, (float)m_pMap->m_iHeight / 2);
 
 		/// We create all the circles calculated previously.
-		for (int32 i = 0; i < iAmount; ++i)
+		for (int32 i = 0; i < iCircleAmount; ++i)
 		{
 			/// This vector stores where will the circle spawn.
 			LG_Vector3D SpawnPosition((float)(rand() % m_pMap->m_iWidth), (float)(rand() % m_pMap->m_iHeight), 0);
@@ -431,15 +429,4 @@ namespace LevelGenerator
 		}
 	}
 
-	//! This function set a random number of circles.
-	void LG_MarchingSquare::SetCircle(float fRadius, LG_Vector3D position)
-	{
-		/// This variable store the actual circle being created.
-		LG_Circle NewCircle;
-
-		/// We initialize our new circle.
-		NewCircle.Init(position, fRadius);
-		/// We add it to the circle list.
-		m_CircleList.push_back(NewCircle);
-	}
 }

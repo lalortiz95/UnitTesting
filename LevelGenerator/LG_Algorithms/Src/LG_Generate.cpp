@@ -31,18 +31,13 @@ namespace LevelGenerator
 	//! This calls all the algorithms and put them together to generate a procedural level.
 	void LG_Generate::Run()
 	{
-		//TODO: with the generated cases make an isoiline.
-		//we apply then, RDP algorithm to reduce that isoloine.
-		//Now we have a reduced set of points, that will be used to 
-		//Generate delaunay triangulation.
-
 		/// Initialize the variables.
 		Initialize();
 		/// The position where the circle will spawn.
 		LG_Vector3D posToSpawnCircle = { 275, 275, 0 };
 
 		/// We run marching square with the generated grid.
-		m_MS.Run(50, posToSpawnCircle, 10, 10);
+		m_MS.Run(2, 10, 10);
 
 		/// Stores either a node that shares a position with the actual tile.
 		LG_Node ActualNode;
@@ -119,8 +114,11 @@ namespace LevelGenerator
 		/// We reduce our vector of isolines.
 		for (int32 i = 0; i < m_IsolineVector.size(); ++i)
 		{
-			m_RDP.Run(0.01f, m_IsolineVector[i]);
+			m_RDP.Run(0.f, m_IsolineVector[i]);
 		}
+
+		//Now we have a reduced set of points, that will be used to 
+		//Generate delaunay triangulation.
 	}
 
 	int32 LG_Generate::CompareTilesPosition(LG_Line ActualLine, LG_Isoline& ActualIsoline, int32 iteratingTile)

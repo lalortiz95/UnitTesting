@@ -37,8 +37,8 @@ namespace LevelGenerator
 		LG_MarchingSquare m_MS;
 
 		/**
-		*	@brief An object of the Ramer-Douglas-Peucker class. It's used to run it's algorithm.
-		*/
+		 *	@brief An object of the Ramer-Douglas-Peucker class. It's used to run it's algorithm.
+		 */
 		LG_RDP m_RDP;
 
 		/**
