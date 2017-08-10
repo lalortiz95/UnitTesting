@@ -33,13 +33,14 @@ bool CompareTilesVector(int32 *CorrectTiles, Vector<LG_Tile*> CalculatedTiles)
 
 TEST(AlgorithmUnitTest, AreTilesInside)
 {
+	///Initializes the random.
+	srand((uint32)time(NULL));
+
 	/// The algorithm that unificates the others.
 	LG_Generate GenerateAlgorithm;
 	/// Call its run.
 	GenerateAlgorithm.Run();
 
-	///Initializes the random.
-	srand((uint32)time(NULL));
 	///The variable used to call marching square functions.
 	LG_MarchingSquare MarchingSquare;
 	///The variable used to call marching square functions with a given circle.
@@ -51,7 +52,7 @@ TEST(AlgorithmUnitTest, AreTilesInside)
 	///Call the algorithm with a random amount of random circles.
 	MarchingSquare.Run(pMap);
 	/// We test that there are tiles inside of the generated circles.
-	EXPECT_TRUE(MarchingSquare.m_pMap->m_pListTilesInside.size() > 0);
+	EXPECT_TRUE(MarchingSquare.m_pTilesWithCase.size() > 0);
 
 	/// The position where the circle will spawn.
 	LG_Vector3D posToSpawnCircle = { 275, 275, 0 };
@@ -65,7 +66,7 @@ TEST(AlgorithmUnitTest, AreTilesInside)
 	/// We compare that both, the calculated tiles inside, and the ones we know that are inside.
 	/// Are the same.
 
-	EXPECT_TRUE(CompareTilesVector(CorrectCaseValue, SpecificCase.m_pMap->m_pListTilesInside));
+	EXPECT_TRUE(CompareTilesVector(CorrectCaseValue, SpecificCase.m_pTilesWithCase));
 
 	/// We generate a isoline.
 	LG_Isoline Isoline;

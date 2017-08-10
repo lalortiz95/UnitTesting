@@ -32,7 +32,7 @@ namespace LevelGenerator
 		m_pMap = new LG_Grid();
 		m_pMap->Init(tilesX, tilesY);
 
-		SetCircles(iCircleAmount);
+		SetCircles();
 	}
 
 	//! This function free the memory of the class.
@@ -78,8 +78,8 @@ namespace LevelGenerator
 				///If there was a node set to true, we insert the tile in the list.
 				if (bFlag)
 				{
-					m_pMap->m_Grid[i][j].m_iID = m_pMap->m_pListTilesInside.size();
-					m_pMap->m_pListTilesInside.push_back(&m_pMap->m_Grid[i][j]);
+					m_pMap->m_Grid[i][j].m_iID = m_pTilesWithCase.size();
+					m_pTilesWithCase.push_back(&m_pMap->m_Grid[i][j]);
 				}
 				/// Change the flag back to false so that the next tile could get in the list.
 				bFlag = false;
@@ -120,8 +120,8 @@ namespace LevelGenerator
 				///If there was a node set to true, we insert the tile in the list.
 				if (bFlag)
 				{
-					m_pMap->m_Grid[i][j].m_iID = m_pMap->m_pListTilesInside.size();
-					m_pMap->m_pListTilesInside.push_back(&m_pMap->m_Grid[i][j]);
+					m_pMap->m_Grid[i][j].m_iID = m_pTilesWithCase.size();
+					m_pTilesWithCase.push_back(&m_pMap->m_Grid[i][j]);
 				}
 				/// Change the flag back to false so that the next tile could get in the list.
 				bFlag = false;
@@ -136,241 +136,249 @@ namespace LevelGenerator
 	void LG_MarchingSquare::SetTilesCases()
 	{
 		/// If we have tiles inside of the circles, we give them a case.
-		if (m_pMap->m_pListTilesInside.size() != 0)
+		if (m_pTilesWithCase.size() != 0)
 		{
 			/// We go through the tiles that are inside of the circles.
-			for (int32 i = 0; i < m_pMap->m_pListTilesInside.size(); ++i)
+			for (int32 i = 0; i < m_pTilesWithCase.size(); ++i)
 			{
 				/// Marching square's case 1.
-				if (!m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (!m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_1;
+					m_pTilesWithCase[i]->m_iCase = CASE_1;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pDown,
-						*m_pMap->m_pListTilesInside[i]->m_pLeft);
-
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pDown,
+						*m_pTilesWithCase[i]->m_pLeft);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 2.
-				if (!m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (!m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_2;
+					m_pTilesWithCase[i]->m_iCase = CASE_2;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pRight,
-						*m_pMap->m_pListTilesInside[i]->m_pDown);
-
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pRight,
+						*m_pTilesWithCase[i]->m_pDown);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 3.
-				if (!m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (!m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_3;
+					m_pTilesWithCase[i]->m_iCase = CASE_3;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pRight,
-						*m_pMap->m_pListTilesInside[i]->m_pLeft);
-
-
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pRight,
+						*m_pTilesWithCase[i]->m_pLeft);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 4.
-				if (!m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (!m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_4;
+					m_pTilesWithCase[i]->m_iCase = CASE_4;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pUp,
-						*m_pMap->m_pListTilesInside[i]->m_pRight);
-
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pUp,
+						*m_pTilesWithCase[i]->m_pRight);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 5.
-				if (!m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (!m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_5;
+					m_pTilesWithCase[i]->m_iCase = CASE_5;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pUp,
-						*m_pMap->m_pListTilesInside[i]->m_pLeft,
-						*m_pMap->m_pListTilesInside[i]->m_pRight,
-						*m_pMap->m_pListTilesInside[i]->m_pDown);
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pUp,
+						*m_pTilesWithCase[i]->m_pLeft,
+						*m_pTilesWithCase[i]->m_pRight,
+						*m_pTilesWithCase[i]->m_pDown);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 6.
-				if (!m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (!m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_6;
+					m_pTilesWithCase[i]->m_iCase = CASE_6;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pUp,
-						*m_pMap->m_pListTilesInside[i]->m_pDown);
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pUp,
+						*m_pTilesWithCase[i]->m_pDown);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 7.
-				if (!m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (!m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_7;
+					m_pTilesWithCase[i]->m_iCase = CASE_7;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pUp,
-						*m_pMap->m_pListTilesInside[i]->m_pLeft);
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pUp,
+						*m_pTilesWithCase[i]->m_pLeft);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 8.
-				if (m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_8;
+					m_pTilesWithCase[i]->m_iCase = CASE_8;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pUp,
-						*m_pMap->m_pListTilesInside[i]->m_pLeft);
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pUp,
+						*m_pTilesWithCase[i]->m_pLeft);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 9.
-				if (m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_9;
+					m_pTilesWithCase[i]->m_iCase = CASE_9;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pUp,
-						*m_pMap->m_pListTilesInside[i]->m_pDown);
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pUp,
+						*m_pTilesWithCase[i]->m_pDown);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 10.
-				if (m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_10;
+					m_pTilesWithCase[i]->m_iCase = CASE_10;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pUp,
-						*m_pMap->m_pListTilesInside[i]->m_pRight,
-						*m_pMap->m_pListTilesInside[i]->m_pDown,
-						*m_pMap->m_pListTilesInside[i]->m_pLeft);
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pUp,
+						*m_pTilesWithCase[i]->m_pRight,
+						*m_pTilesWithCase[i]->m_pDown,
+						*m_pTilesWithCase[i]->m_pLeft);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 11.
-				if (m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_11;
+					m_pTilesWithCase[i]->m_iCase = CASE_11;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pUp,
-						*m_pMap->m_pListTilesInside[i]->m_pRight);
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pUp,
+						*m_pTilesWithCase[i]->m_pRight);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 12.
-				if (m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_12;
+					m_pTilesWithCase[i]->m_iCase = CASE_12;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pRight,
-						*m_pMap->m_pListTilesInside[i]->m_pLeft);
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pRight,
+						*m_pTilesWithCase[i]->m_pLeft);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 13.
-				if (m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_13;
+					m_pTilesWithCase[i]->m_iCase = CASE_13;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pRight,
-						*m_pMap->m_pListTilesInside[i]->m_pDown);
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pRight,
+						*m_pTilesWithCase[i]->m_pDown);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 14.
-				if (m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					!m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					!m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_14;
+					m_pTilesWithCase[i]->m_iCase = CASE_14;
 					/// Assign the lines of the tile.
-					m_pMap->m_pListTilesInside[i]->CreateLine(
-						*m_pMap->m_pListTilesInside[i]->m_pDown,
-						*m_pMap->m_pListTilesInside[i]->m_pLeft);
+					m_pTilesWithCase[i]->CreateLine(
+						*m_pTilesWithCase[i]->m_pDown,
+						*m_pTilesWithCase[i]->m_pLeft);
+					m_pEdgeTiles.push_back(m_pTilesWithCase[i]);
 					continue;
 				}
 
 				/// Marching square's case 15.
-				if (m_pMap->m_pListTilesInside[i]->m_Nodes[0].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[1].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[2].m_bIsInside &&
-					m_pMap->m_pListTilesInside[i]->m_Nodes[3].m_bIsInside)
+				if (m_pTilesWithCase[i]->m_Nodes[0].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[1].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[2].m_bIsInside &&
+					m_pTilesWithCase[i]->m_Nodes[3].m_bIsInside)
 				{
 					/// Assign the case of the current tile.
-					m_pMap->m_pListTilesInside[i]->m_iCase = CASE_15;
+					m_pTilesWithCase[i]->m_iCase = CASE_15;
 					continue;
 				}
-
 			}
 		}
 	}
@@ -429,4 +437,39 @@ namespace LevelGenerator
 		}
 	}
 
+	void LG_MarchingSquare::SetCircles()
+	{
+		/// This variable store the actual circle being created.
+		LG_Circle NewCircle;
+		/// The maximum size the radius could have.
+		float fRadius = 100;
+
+		/// This vector stores where will the circle spawn.
+		LG_Vector3D SpawnPosition(50, 50, 0);
+		/// Set the position and the radius to the circle.
+		NewCircle.Init(SpawnPosition, fRadius);
+		/// Add the circle in the circles' list.
+		m_CircleList.push_back(NewCircle);
+
+		/// This vector stores where will the circle spawn.
+		SpawnPosition = m_pMap->m_MapCenter.m_Position;
+		/// Set the position and the radius to the circle.
+		NewCircle.Init(SpawnPosition, fRadius);
+		/// Add the circle in the circles' list.
+		m_CircleList.push_back(NewCircle);
+
+		/// This vector stores where will the circle spawn.
+		SpawnPosition = { 150, 500, 0 };
+		/// Set the position and the radius to the circle.
+		NewCircle.Init(SpawnPosition, fRadius);
+		/// Add the circle in the circles' list.
+		m_CircleList.push_back(NewCircle);
+
+		/// This vector stores where will the circle spawn.
+		SpawnPosition = { 400, 150, 0 };
+		/// Set the position and the radius to the circle.
+		NewCircle.Init(SpawnPosition, fRadius);
+		/// Add the circle in the circles' list.
+		m_CircleList.push_back(NewCircle);
+	}
 }

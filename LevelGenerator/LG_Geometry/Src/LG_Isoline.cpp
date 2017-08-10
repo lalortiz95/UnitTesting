@@ -18,7 +18,6 @@ namespace LevelGenerator
 	void LG_Isoline::Init()
 	{
 		Destroy();
-		m_NodeVector.clear();
 	}
 
 	//! This function free all memory of the class.

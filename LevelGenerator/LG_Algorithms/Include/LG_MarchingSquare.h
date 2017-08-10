@@ -64,6 +64,16 @@ namespace LevelGenerator
 		Vector<LG_Circle>m_CircleList;
 
 		/**
+		*	@brief This variable stores in a vector the reference of the tiles that have a case different than 0.
+		*/
+		Vector<LG_Tile*> m_pTilesWithCase;
+
+		/**
+		*	@brief This variable stores in a vector the reference of the tiles that have a case different than 0 and 15.
+		*/
+		Vector<LG_Tile*> m_pEdgeTiles;
+
+		/**
 		 *	@brief The contour of the generated shape.
 		 */
 		LG_Isoline m_Outline;
@@ -122,5 +132,10 @@ namespace LevelGenerator
 		 */
 		void SetCircles(int32 iCircleAmount);
 
+		/**
+		 *	@brief This function set a random number of circles.
+		 *	@param int32 iCircleAmount: The amount of circles to create.
+		 */
+		void SetCircles();
 	};
 }

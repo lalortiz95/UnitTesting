@@ -56,6 +56,16 @@ namespace LevelGenerator
 		 */
 		Vector<LG_Tile*> m_TileVector;
 
+		/**
+		 *	@brief The current isoline being filled.
+		 */
+		LG_Isoline m_ActualIsoline;
+
+		/**
+		 *	@brief A pointer that define the actual tile.
+		 */
+		LG_Tile* m_pActualTile;
+
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
@@ -76,17 +86,41 @@ namespace LevelGenerator
 		void Run();
 
 		/**
-		 *	@brief compares a node with all of the others to see which one compares position.
-		 *	@param LG_Line ActualLine: A line that will compare it's node's position against the other nodes.
-		 *	@param LG_Isoline ActualIsoline: The isoline wwhere we store the sharing position nodes.
-		 *	@param int32 iteratingTile: The place in the vector of the tile being iterating.
-		 *	@return The ID of the new actual tile.
-		 */
-		int32 CompareTilesPosition(LG_Line ActualLine, LG_Isoline& ActualIsoline, int32 iteratingTile);
-
-
-		/**
 		 *	@brief This function check if exist other node with the same position that
 		 */
+		void GenerateIsoline();
+
+	private:
+
+		/**
+		 *	@brief This function check if the position of the actual tile's nodes against the iterating tile's nodes.
+		 *	@param LG_Node& StartNode: The first node of the iterating line.
+		 *	@param LG_Node& EndNode: The end node of the iterating line.
+		 *	@param int32 iIteratingLine: The number that defines the line that is being iterating.
+		 *	@return true if one of the iterating nodes have the same position that one of the actual tile's node.
+		 */
+		bool CheckNodePosition(LG_Node& StartNode, LG_Node& EndNode, int32 iIteratingLine);
+		
+		/**
+		 *	@brief This function check if the line isn't set yet.
+		 *	@param LG_Line& IteratingLine: The iterating line.
+		 *	@param int32 iIteratingLine: The number that defines the line that is being iterating.
+		 *	@return true when two nodes shared position.
+		 */
+		bool CheckLineIsInside(LG_Line& IteratingLine, int32 iIteratingLine);
+
+		/**
+		 *	@brief This function check if the tile has already been checked.
+		 *	@param LG_Line& IteratingLine: The iterating tile.
+		 *	@param int32 iIteratingLine: The number that defines the line that is being iterating.
+		 *	@return true when one or both lines of the tile have it's flag set as true.
+		 */
+		bool CheckTile(LG_Tile& IteratingTile, int32 iIteratingTile);
+
+		/**
+		 *	@brief This function tells if a isoline is finished.
+		 *	@return true if the isoline is finished.
+		 */
+		bool CheckIfIsolineIsFinish();
 	};
 }

@@ -52,11 +52,6 @@ namespace LevelGenerator
 		 */
 		 LG_Node m_MapCenter;
 
-		/**
-		 *	@brief This variable stores in a vector the reference of the tiles that have a case different than 0.
-		 */
-		Vector<LG_Tile*> m_pListTilesInside;
-
 	private:
 
 		/**
