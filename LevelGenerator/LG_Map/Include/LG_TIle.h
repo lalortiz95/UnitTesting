@@ -2,6 +2,9 @@
 #include "LG_MapPrerequisites.h"
 #include <LG_Line.h>
 
+#define FIRST_LINE 0		/// Number that define the first line of the tile.
+#define SECOND_LINE 1		/// Number that define the second line of the tile.
+
 namespace LevelGenerator
 {
 	/**

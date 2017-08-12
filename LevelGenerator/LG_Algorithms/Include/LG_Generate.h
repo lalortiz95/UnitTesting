@@ -94,33 +94,54 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief This function check if the position of the actual tile's nodes against the iterating tile's nodes.
-		 *	@param LG_Node& StartNode: The first node of the iterating line.
-		 *	@param LG_Node& EndNode: The end node of the iterating line.
-		 *	@param int32 iIteratingLine: The number that defines the line that is being iterating.
+		 *	@param int32 iCountLine: The number that defines the line that is being iterating.
+		 *	@param int32 iCountNode: The number that defines the node that is being iterating.
+		 *	@param LG_Node& NodeToCheck: The first node of the iterating line.
 		 *	@return true if one of the iterating nodes have the same position that one of the actual tile's node.
 		 */
-		bool CheckNodePosition(LG_Node& StartNode, LG_Node& EndNode, int32 iIteratingLine);
+		bool CheckNodePosition(int32 iCountLine, int32 iCountNode, LG_Node& NodeToCheck);
 		
 		/**
 		 *	@brief This function check if the line isn't set yet.
+		 *	@param int32 iCountLine: The number of lines being iterating.
 		 *	@param LG_Line& IteratingLine: The iterating line.
-		 *	@param int32 iIteratingLine: The number that defines the line that is being iterating.
 		 *	@return true when two nodes shared position.
 		 */
-		bool CheckLineIsInside(LG_Line& IteratingLine, int32 iIteratingLine);
+		bool CheckLineIsInside(int32 iCountLine, LG_Line& IteratingLine);
 
 		/**
 		 *	@brief This function check if the tile has already been checked.
 		 *	@param LG_Line& IteratingLine: The iterating tile.
-		 *	@param int32 iIteratingLine: The number that defines the line that is being iterating.
 		 *	@return true when one or both lines of the tile have it's flag set as true.
 		 */
-		bool CheckTile(LG_Tile& IteratingTile, int32 iIteratingTile);
+		bool CheckTile(LG_Tile& IteratingTile);
 
 		/**
 		 *	@brief This function tells if a isoline is finished.
 		 *	@return true if the isoline is finished.
 		 */
 		bool CheckIfIsolineIsFinish();
+
+		/**
+		 *	@brief This function set a new actual tile.
+		 */
+		void SetActualTile();
+
+		/**
+		 *	@brief This function set a line as true if the 2 node's of the line are true.
+		 *	@param int32 iCountLine: The number of line that we want set.
+		 */
+		void SetLineAs(int32 iCountLine);
+
+		/**
+		 *	@brief This function set a tile as true if 1 or 2 line's of the tile are true.
+		 */
+		void SetTileAs();
+
+		/**
+		 *	@brief This function check if all tiles in the vector are checked.
+		 *	@return true if all tiles in the vector are checked, otherwise false.
+		 */
+		bool AllTilesAreChecked();
 	};
 }
