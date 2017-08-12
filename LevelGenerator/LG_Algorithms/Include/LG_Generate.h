@@ -123,18 +123,18 @@ namespace LevelGenerator
 		bool CheckIfIsolineIsFinish();
 
 		/**
-		 *	@brief This function set a new actual tile.
+		 *	@brief This function sets a new actual tile.
 		 */
 		void SetActualTile();
 
 		/**
-		 *	@brief This function set a line as true if the 2 node's of the line are true.
-		 *	@param int32 iCountLine: The number of line that we want set.
+		 *	@brief This function that sets a line as true if the 2 nodes of the line are true.
+		 *	@param int32 iCountLine: The number of lines that we want to set.
 		 */
 		void SetLineAs(int32 iCountLine);
 
 		/**
-		 *	@brief This function set a tile as true if 1 or 2 line's of the tile are true.
+		 *	@brief This function set a tile as true if 1 or 2 lines of the tile are true.
 		 */
 		void SetTileAs();
 
