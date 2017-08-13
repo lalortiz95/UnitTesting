@@ -44,6 +44,7 @@ namespace LevelGenerator
 	//! This function free the memory of the class, and destroys it's variables.
 	void LG_RDP::Destroy()
 	{
+		m_FinalIsoline.m_NodeVector.clear();
 		/// If this pointer is diferent than nullptr it calls it's destroy function and frees memory.
 		if (m_pActualNode != nullptr)
 		{

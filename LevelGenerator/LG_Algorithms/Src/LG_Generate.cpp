@@ -50,10 +50,12 @@ namespace LevelGenerator
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
 
+		//TODO: arreglar ramer douglas, no está eliminando algunos nodos que debería.
 		/// We reduce our vector of isolines.
 		for (int32 i = 0; i < m_IsolineVector.size(); ++i)
 		{
 			m_RDP.Run(0.f, m_IsolineVector[i]);
+			m_RDP.Destroy();
 		}
 	}
 
