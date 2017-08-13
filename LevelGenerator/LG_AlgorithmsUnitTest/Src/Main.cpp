@@ -31,7 +31,7 @@ bool CompareTilesVector(int32 *CorrectTiles, Vector<LG_Tile*> CalculatedTiles)
 	return true;
 }
 
-TEST(AlgorithmUnitTest, AreTilesInside)
+TEST(Generate_Algorithm, GenerateCasesFromMS)
 {
 	///Initializes the random.
 	srand((uint32)time(NULL));
@@ -40,6 +40,17 @@ TEST(AlgorithmUnitTest, AreTilesInside)
 	LG_Generate GenerateAlgorithm;
 	/// Call its run.
 	GenerateAlgorithm.Run();
+
+	EXPECT_TRUE(GenerateAlgorithm.m_IsolineVector.size() == 3);
+	EXPECT_TRUE(GenerateAlgorithm.m_IsolineVector[0].m_NodeVector.size() == 10);
+	EXPECT_TRUE(GenerateAlgorithm.m_IsolineVector[1].m_NodeVector.size() == 11);
+	EXPECT_TRUE(GenerateAlgorithm.m_IsolineVector[2].m_NodeVector.size() == 29);
+}
+
+TEST(MarchingSquare_Algorithm, CheckCases)
+{
+	///Initializes the random.
+	srand((uint32)time(NULL));
 
 	///The variable used to call marching square functions.
 	LG_MarchingSquare MarchingSquare;
@@ -67,29 +78,30 @@ TEST(AlgorithmUnitTest, AreTilesInside)
 	/// Are the same.
 
 	EXPECT_TRUE(CompareTilesVector(CorrectCaseValue, SpecificCase.m_pTilesWithCase));
-
-	/// We generate a isoline.
-	LG_Isoline Isoline;
-	Isoline.Init();
-	Isoline.AddNode(LG_Vector3D(1, 1, 0));
-	Isoline.AddNode(LG_Vector3D(2, 2, 0));
-	Isoline.AddNode(LG_Vector3D(2, 4, 0));
-	Isoline.AddNode(LG_Vector3D(3, 6, 0));
-	Isoline.AddNode(LG_Vector3D(4, 5, 0));
-	Isoline.AddNode(LG_Vector3D(5, 5, 0));
-	Isoline.AddNode(LG_Vector3D(6, 5, 0));
-	Isoline.AddNode(LG_Vector3D(7, 5, 0));
-	Isoline.AddNode(LG_Vector3D(8, 5, 0));
-	Isoline.AddNode(LG_Vector3D(9, 7, 0));
-	Isoline.AddNode(LG_Vector3D(9, 9, 0));
-	Isoline.AddNode(LG_Vector3D(9, 10, 0));
-
-	LG_RDP RDP;
-	RDP.Run(0.3f, Isoline);
-	EXPECT_TRUE(RDP.m_FinalIsoline.m_NodeVector.size() == 7);
 }
 
 TEST(RDP_Algorithm, IsIsolineReduced)
 {
-	
+	///Initializes the random.
+	srand((uint32)time(NULL));
+
+	/// We generate a isoline.
+	LG_Isoline Isoline;
+	Isoline.Init();
+	Isoline.AddNodeBack(LG_Vector3D(1, 1, 0));
+	Isoline.AddNodeBack(LG_Vector3D(2, 2, 0));
+	Isoline.AddNodeBack(LG_Vector3D(2, 4, 0));
+	Isoline.AddNodeBack(LG_Vector3D(3, 6, 0));
+	Isoline.AddNodeBack(LG_Vector3D(4, 5, 0));
+	Isoline.AddNodeBack(LG_Vector3D(5, 5, 0));
+	Isoline.AddNodeBack(LG_Vector3D(6, 5, 0));
+	Isoline.AddNodeBack(LG_Vector3D(7, 5, 0));
+	Isoline.AddNodeBack(LG_Vector3D(8, 5, 0));
+	Isoline.AddNodeBack(LG_Vector3D(9, 7, 0));
+	Isoline.AddNodeBack(LG_Vector3D(9, 9, 0));
+	Isoline.AddNodeBack(LG_Vector3D(9, 10, 0));
+
+	LG_RDP RDP;
+	RDP.Run(0.3f, Isoline);
+	EXPECT_TRUE(RDP.m_FinalIsoline.m_NodeVector.size() == 7);
 }

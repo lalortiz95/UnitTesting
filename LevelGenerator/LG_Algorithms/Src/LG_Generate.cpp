@@ -7,6 +7,7 @@ namespace LevelGenerator
 	{
 		m_pActualTile = nullptr;
 		m_pMap = nullptr;
+		m_bInsertFront = false;
 	}
 
 	//! Default destructor.
@@ -49,15 +50,14 @@ namespace LevelGenerator
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
 
-		/*/// We reduce our vector of isolines.
+		/// We reduce our vector of isolines.
 		for (int32 i = 0; i < m_IsolineVector.size(); ++i)
 		{
 			m_RDP.Run(0.f, m_IsolineVector[i]);
-		}*/
-		//Now we have a reduced set of points, that will be used to 
-		//Generate delaunay triangulation.
+		}
 	}
 
+	//! This function generate a isoline from Marching Square Cases.
 	void LG_Generate::GenerateIsoline()
 	{
 
@@ -65,7 +65,7 @@ namespace LevelGenerator
 		bool bQuit = false;
 		/// Flag that indicate if we can change the actual tile.
 		bool bCheckTile = false;
-	
+
 		/// While will be broken once all the isolines are generated.
 		while (!bQuit)
 		{
@@ -81,7 +81,7 @@ namespace LevelGenerator
 					/// With one of the actual tile.
 					bCheckTile = CheckTile(*m_TileVector[i]);
 					/// See if it can already set the line as checked.
-					SetLineAs(FIRST_LINE);
+					SetLineAs(m_pActualTile->m_LinesVector[FIRST_LINE]);
 
 					/// If the tile have lines inside.
 					if (m_pActualTile->m_LinesVector.size() > 1)
@@ -89,11 +89,11 @@ namespace LevelGenerator
 						/// Check if the tile's information has already been inserted in the final isoline.
 						bCheckTile = CheckTile(*m_TileVector[i]);
 						/// See if it can already set the line as checked.
-						SetLineAs(SECOND_LINE);
+						SetLineAs(m_pActualTile->m_LinesVector[SECOND_LINE]);
 					}
 
 					/// See if we can already set 
-					SetTileAs();
+					SetTileAs(*m_pActualTile);
 					/// if it's true change the actual tile.
 					if (bCheckTile)
 					{
@@ -103,21 +103,33 @@ namespace LevelGenerator
 					}
 				}
 			}
-			/*/// If it's false.
-			if (CheckIfIsolineIsFinish())
+
+			/// If the actual tile didn't have any concidences of positions.
+			if (!bCheckTile)
 			{
-				/// Assign the actual isoline to the isoline vector.
-				m_IsolineVector.push_back(m_ActualIsoline);
-				/// Reset it's values.
-				m_ActualIsoline.Destroy();
-				/// Set a new Actual Tile.
-				SetActualTile();
-				break;
-			}*/
+				/// Check if there is an actual tile.
+				if (m_pActualTile != nullptr)
+				{
+
+					bool bChangeActualTile = false;
+					///Didn't find a node sharing position with the actual tile's nodes.
+					/// Inserts the edge node.
+					InsertEdgeNode(FIRST_LINE);
+					/// Check if the isoline have been filled.
+					bChangeActualTile = CheckIfIsolineIsFinished(FIRST_LINE);
+
+					/// If the actual tile have more than 1 line.
+					if (m_pActualTile->m_LinesVector.size() > 1)
+					{
+						/// Inserts the edge node.
+						InsertEdgeNode(SECOND_LINE);
+						/// Check if the isoline have been filled.
+						bChangeActualTile = CheckIfIsolineIsFinished(SECOND_LINE);
+					}
+				}
+			}
 			/// If all the tiles with cases have already been set to a isoline.
 			bQuit = AllTilesAreChecked();
-			// debugging purposes.
-			m_ActualIsoline = m_ActualIsoline;
 		}
 	}
 
@@ -137,8 +149,20 @@ namespace LevelGenerator
 				{
 					/// Set the flag of the node.
 					m_pActualTile->m_LinesVector[iCountLine].m_Nodes[iCountNode].m_bIsInside = true;
-					/// Add the actual node to the actual line.
-					m_ActualIsoline.AddNode(m_pActualTile->m_LinesVector[iCountLine].m_Nodes[iCountNode].m_Position);
+					/// Set the iterating node flag.
+					NodeToCheck.m_bIsInside = true;
+
+					/// See if we insert the node at the front or the back of the isoline.
+					if (!m_bInsertFront)
+					{
+						/// Add the actual node in the back of the actual line.
+						m_ActualIsoline.AddNodeBack(m_pActualTile->m_LinesVector[iCountLine].m_Nodes[iCountNode].m_Position);
+					}
+					else
+					{
+						/// Add the actual node in the front of the actual line.
+						m_ActualIsoline.AddNodeFront(m_pActualTile->m_LinesVector[iCountLine].m_Nodes[iCountNode].m_Position);
+					}
 					/// Returns true, meaning that it found a node that was sharing position.
 					return true;
 				}
@@ -184,6 +208,7 @@ namespace LevelGenerator
 				}
 			}
 		}
+
 		/// Return the flag's final value.
 		return bCheckNode;
 	}
@@ -198,53 +223,131 @@ namespace LevelGenerator
 		{
 			/// Checks if the line's got nodes that shares position with the actual tile.
 			bCheckLine = CheckLineIsInside(FIRST_LINE, IteratingTile.m_LinesVector[FIRST_LINE]);
+			SetLineAs(IteratingTile.m_LinesVector[FIRST_LINE]);
 			/// If it didn't have any sharing position's node, and the iterating tile's got another line.
 			if (!bCheckLine && IteratingTile.m_LinesVector.size() > 1)
 			{
 				/// We check if that other line's got a node that shares position.
 				bCheckLine = CheckLineIsInside(SECOND_LINE, IteratingTile.m_LinesVector[SECOND_LINE]);
+				SetLineAs(IteratingTile.m_LinesVector[SECOND_LINE]);
 			}
 
 		}
+
+		SetTileAs(IteratingTile);
 		/// Return the flag.
 		return bCheckLine;
 	}
 
-
-	//! This function tells if a isoline is finished.
-	bool LG_Generate::CheckIfIsolineIsFinish()
+	//! This function check if a isoline is finished.
+	bool LG_Generate::CheckIfIsolineIsFinished(int32 iCountLine)
 	{
-	
+		/// Go through the lines of each tile.
 		for (int32 i = 0; i < m_TileVector.size(); ++i)
 		{
-			/// If the iterating tile have not been checked.
-			if (!m_TileVector[i]->m_bIsChecked)
+			/// Check if the tile isn't checked.
+			if (!m_TileVector[i]->m_bIsChecked && (m_pActualTile->m_iID != m_TileVector[i]->m_iID))
 			{
-				if (!m_TileVector[i]->m_LinesVector[FIRST_LINE].m_bIsInside)
+				/// If any of the line's nodes has already been checked.
+				if (m_TileVector[i]->m_LinesVector[iCountLine].m_Nodes[FIRST_NODE].m_bIsInside ||
+					m_TileVector[i]->m_LinesVector[iCountLine].m_Nodes[SECOND_NODE].m_bIsInside)
 				{
-					if (m_TileVector[i]->m_LinesVector[FIRST_LINE].m_Nodes[FIRST_NODE].m_bIsInside ||
-						m_TileVector[i]->m_LinesVector[FIRST_LINE].m_Nodes[SECOND_NODE].m_bIsInside)
-					{
-						m_pActualTile = m_TileVector[i];
-						return true;
-					}
-				}
-				/// Check for every line of the tile.
-				if (m_TileVector[i]->m_LinesVector.size() > 1)
-				{
-					if (!m_TileVector[i]->m_LinesVector[SECOND_LINE].m_bIsInside)
-					{
-						if (m_TileVector[i]->m_LinesVector[SECOND_LINE].m_Nodes[FIRST_NODE].m_bIsInside ||
-							m_TileVector[i]->m_LinesVector[SECOND_LINE].m_Nodes[SECOND_NODE].m_bIsInside)
-						{
-							m_pActualTile = m_TileVector[i];
-							return true;
-						}
-					}
+					/// Set the flag that will allow to insert the nodes at the front of the vector.
+					m_bInsertFront = true;
+					/// Set the new actual tile.
+					m_pActualTile = m_TileVector[i];
+					return true;
 				}
 			}
 		}
 		return false;
+	}
+
+	//! This function check if all tiles in the vector are checked.
+	bool LG_Generate::AllTilesAreChecked()
+	{
+		/// Iterate to break the while if all the tiles in vector are checked.
+		for (int32 i = 0; i < m_TileVector.size(); ++i)
+		{
+			/// If even one isn't we return false.
+			if (!m_TileVector[i]->m_bIsChecked)
+			{
+				/// Told you.
+				return false;
+			}
+		}
+		/// If it get's to this point, that means that all the tiles have already been checked.
+		return true;
+	}
+
+	//! This functions inserts the edge node of a isoline.
+	void LG_Generate::InsertEdgeNode(int32 iCountLine)
+	{
+		/// Checks that the first node of the actual tile have already been set.
+		if (m_pActualTile->m_LinesVector[iCountLine].m_Nodes[FIRST_NODE].m_bIsInside)
+		{
+			/// Checks if the second node of the actual tile have already been set.
+			if (!m_pActualTile->m_LinesVector[iCountLine].m_Nodes[SECOND_NODE].m_bIsInside)
+			{
+				/// Set the flag of the node.
+				m_pActualTile->m_LinesVector[iCountLine].m_Nodes[SECOND_NODE].m_bIsInside = true;
+				/// See if we insert the node at the front or the back of the isoline.
+				if (!m_bInsertFront)
+				{
+					/// Add the actual node in the back of the actual line.
+					m_ActualIsoline.AddNodeBack(m_pActualTile->m_LinesVector[iCountLine].m_Nodes[SECOND_NODE].m_Position);
+				}
+				else
+				{
+					/// Add the actual node in the front of the actual line.
+					m_ActualIsoline.AddNodeFront(m_pActualTile->m_LinesVector[iCountLine].m_Nodes[SECOND_NODE].m_Position);
+				}
+			}
+
+			else
+			{
+				/// Add the finished isoline to the isoline vector.
+				m_IsolineVector.push_back(m_ActualIsoline);
+				/// Cleans the isoline so that it can be filled again.
+				m_ActualIsoline.Destroy();
+				/// Find a new actual tile to start filling another isoline.
+				SetActualTile();
+				/// Set the flag that define if we can insert in back of the line.
+				m_bInsertFront = false;
+			}
+		}
+		/// Checks that the second node of the actual tile have already been set.
+		else if (m_pActualTile->m_LinesVector[iCountLine].m_Nodes[SECOND_NODE].m_bIsInside)
+		{
+			/// Checks that the first node of the actual tile have already been set.
+			if (!m_pActualTile->m_LinesVector[iCountLine].m_Nodes[FIRST_NODE].m_bIsInside)
+			{
+				/// Set the flag of the node.
+				m_pActualTile->m_LinesVector[iCountLine].m_Nodes[FIRST_NODE].m_bIsInside = true;
+				/// See if we insert the node at the front or the back of the isoline.
+				if (!m_bInsertFront)
+				{
+					/// Add the actual node in the back of the actual line.
+					m_ActualIsoline.AddNodeBack(m_pActualTile->m_LinesVector[iCountLine].m_Nodes[FIRST_NODE].m_Position);
+				}
+				else
+				{
+					/// Add the actual node in the front of the actual line.
+					m_ActualIsoline.AddNodeFront(m_pActualTile->m_LinesVector[iCountLine].m_Nodes[FIRST_NODE].m_Position);
+				}
+			}
+			else
+			{
+				/// Add the finished isoline to the isoline vector.
+				m_IsolineVector.push_back(m_ActualIsoline);
+				/// Cleans the isoline so that it can be filled again.
+				m_ActualIsoline.Destroy();
+				/// Find a new actual tile to start filling another isoline.
+				SetActualTile();
+				/// Set the flag that define if we can insert in back of the line.
+				m_bInsertFront = false;
+			}
+		}
 	}
 
 	//! This function set a new actual tile.
@@ -265,66 +368,41 @@ namespace LevelGenerator
 	}
 
 	//! This function that sets a line as true if the 2 nodes of the line are true.
-	void LG_Generate::SetLineAs(int32 iCountLine)
+	void LG_Generate::SetLineAs(LG_Line& LineToChangeFlag)
 	{
-		/// If there's a actual tile.
-		if (m_pActualTile != nullptr)
+
+		/// See if both nodes of the line have already been set as checked.
+		if (LineToChangeFlag.m_Nodes[FIRST_NODE].m_bIsInside &&
+			LineToChangeFlag.m_Nodes[SECOND_NODE].m_bIsInside)
 		{
-			/// See if both nodes of the line have already been set as checked.
-			if (m_pActualTile->m_LinesVector[iCountLine].m_Nodes[FIRST_NODE].m_bIsInside &&
-				m_pActualTile->m_LinesVector[iCountLine].m_Nodes[SECOND_NODE].m_bIsInside)
-			{
-				/// If so, we also set the line as checked.
-				m_pActualTile->m_LinesVector[iCountLine].m_bIsInside = true;
-			}
+			/// If so, we also set the line as checked.
+			LineToChangeFlag.m_bIsInside = true;
 		}
 	}
 
 	//! This function set a tile as true if 1 or 2 lines of the tile are true.
-	void LG_Generate::SetTileAs()
+	void LG_Generate::SetTileAs(LG_Tile& TileToChangeFlag)
 	{
-		/// If there is a actual tile.
-		if (m_pActualTile != nullptr)
-		{
 			/// If the tile has got any lines.
-			if (m_pActualTile->m_LinesVector.size() > 1)
+			if (TileToChangeFlag.m_LinesVector.size() > 1)
 			{
 				/// If both lines of the tile have been checked.
-				if (m_pActualTile->m_LinesVector[FIRST_LINE].m_bIsInside &&
-					m_pActualTile->m_LinesVector[SECOND_LINE].m_bIsInside)
+				if (TileToChangeFlag.m_LinesVector[FIRST_LINE].m_bIsInside &&
+					TileToChangeFlag.m_LinesVector[SECOND_LINE].m_bIsInside)
 				{
 					/// Then we set the tile as true.
-					m_pActualTile->m_bIsChecked = true;
+					TileToChangeFlag.m_bIsChecked = true;
 				}
 			}
 			else
 			{
 				/// If the tile's line has already been checked.
-				if (m_pActualTile->m_LinesVector[FIRST_LINE].m_bIsInside)
+				if (TileToChangeFlag.m_LinesVector[FIRST_LINE].m_bIsInside)
 				{
 					/// Set the actual tile as true.
-					m_pActualTile->m_bIsChecked = true;
+					TileToChangeFlag.m_bIsChecked = true;
 				}
 			}
-		}
-	}
-
-	//! This function check if all tiles in the vector are checked.
-	bool LG_Generate::AllTilesAreChecked()
-	{
-		/// Iterate to break the while if all the tiles in vector are checked.
-		for (int32 i = 0; i < m_TileVector.size(); ++i)
-		{
-			/// If even one isn't we return false.
-			if (!m_TileVector[i]->m_bIsChecked)
-			{
-				/// Told you.
-				return false;
-			}
-		}
-		/// If it get's to this point, that means that all the tiles have already been checked.
-		return true;
-		///Congratulations, algorithm is over.
 	}
 
 }

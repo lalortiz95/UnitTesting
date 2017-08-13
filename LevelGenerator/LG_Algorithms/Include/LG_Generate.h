@@ -4,8 +4,6 @@
 #include "LG_RDP.h"
 #include <LG_Grid.h>
 
-#define ERROR_CODE 666
-
 namespace LevelGenerator
 {
 	/**
@@ -32,6 +30,11 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
+		 *	@brief Flag that determinate when we can insert a node in front or back of the isoline.
+		 */
+		bool m_bInsertFront;
+
+		/**
 		 *	@brief An object of the marching square class. It's used to run the algorithm.
 		 */
 		LG_MarchingSquare m_MS;
@@ -40,11 +43,6 @@ namespace LevelGenerator
 		 *	@brief An object of the Ramer-Douglas-Peucker class. It's used to run it's algorithm.
 		 */
 		LG_RDP m_RDP;
-
-		/**
-		 *	@brief A map where we generate marching square.
-		 */
-		LG_Grid* m_pMap;
 
 		/**
 		 *	@brief A vector of isolines where we store the marching square output.
@@ -60,6 +58,11 @@ namespace LevelGenerator
 		 *	@brief The current isoline being filled.
 		 */
 		LG_Isoline m_ActualIsoline;
+
+		/**
+		 *	@brief A map where we generate marching square.
+		 */
+		LG_Grid* m_pMap;
 
 		/**
 		 *	@brief A pointer that define the actual tile.
@@ -86,11 +89,15 @@ namespace LevelGenerator
 		void Run();
 
 		/**
-		 *	@brief This function check if exist other node with the same position that
+		 *	@brief This function generate a isoline from Marching Square Cases.
 		 */
 		void GenerateIsoline();
 
 	private:
+
+		///************************************************************************/
+		///*						   Assist Functions.						  */
+		///************************************************************************/
 
 		/**
 		 *	@brief This function check if the position of the actual tile's nodes against the iterating tile's nodes.
@@ -117,10 +124,23 @@ namespace LevelGenerator
 		bool CheckTile(LG_Tile& IteratingTile);
 
 		/**
-		 *	@brief This function tells if a isoline is finished.
-		 *	@return true if the isoline is finished.
+		 *	@brief This function check if a isoline is finished.
+		 *	@param int32 iCountLine: The number of line in the iterating tile.
+		 *	@return true if the actual tile change in this function, otherwise false.
 		 */
-		bool CheckIfIsolineIsFinish();
+		bool CheckIfIsolineIsFinished(int32 iCountLine);
+
+		/**
+		 *	@brief This function check if all tiles in the vector are checked.
+		 *	@return true if all tiles in the vector are checked, otherwise false.
+		 */
+		bool AllTilesAreChecked();
+
+		/**
+		 *	@brief This functions inserts the edge node of a isoline.
+		 *	@param int32 iCountLine: The number of line in the actual tile.
+		 */
+		void InsertEdgeNode(int32 iCountLine);
 
 		/**
 		 *	@brief This function sets a new actual tile.
@@ -129,19 +149,14 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief This function that sets a line as true if the 2 nodes of the line are true.
-		 *	@param int32 iCountLine: The number of lines that we want to set.
+		 *	@param LG_Line& LineToChangeFlag: The line that we want to change it's flag.
 		 */
-		void SetLineAs(int32 iCountLine);
+		void SetLineAs(LG_Line& LineToChangeFlag);
 
 		/**
 		 *	@brief This function set a tile as true if 1 or 2 lines of the tile are true.
+		 *	@param LG_Tile& TileToChangeFlag: The tile that we want to change it's flag.
 		 */
-		void SetTileAs();
-
-		/**
-		 *	@brief This function check if all tiles in the vector are checked.
-		 *	@return true if all tiles in the vector are checked, otherwise false.
-		 */
-		bool AllTilesAreChecked();
+		void SetTileAs(LG_Tile& TileToChangeFlag);
 	};
 }

@@ -27,10 +27,17 @@ namespace LevelGenerator
 		m_NodeVector.clear();
 	}
 
-	//! This function adds a node to the isoline in a given position.
-	void LG_Isoline::AddNode(LG_Vector3D Position)
+	//! This function adds a node in the back of the isoline.
+	void LG_Isoline::AddNodeBack(LG_Vector3D Position)
 	{
 		/// Insert the node in the node's vector.
 		m_NodeVector.push_back(LG_Node(Position));
+	}
+
+	//! This function adds a node in the front of the isoline.
+	void LG_Isoline::AddNodeFront(LG_Vector3D Position)
+	{
+		/// Insert the node in the node's vector.
+		m_NodeVector.insert(m_NodeVector.begin(), LG_Node(Position));
 	}
 }

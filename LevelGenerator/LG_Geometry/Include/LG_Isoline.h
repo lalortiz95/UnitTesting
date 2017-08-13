@@ -49,10 +49,16 @@ namespace LevelGenerator
 		void Destroy();
 
 		/**
-		 *	@brief This function adds a node to the isoline in a given position.
+		 *	@brief This function adds a node in the back of the isoline.
 		 *	@param LG_Vector3D position: the position to spawn the given vector.
 		 */
-		void AddNode(LG_Vector3D position);
+		void AddNodeBack(LG_Vector3D position);
+
+		/**
+		*	@brief This function adds a node in the front of the isoline.
+		*	@param LG_Vector3D position: the position to spawn the given vector.
+		*/
+		void AddNodeFront(LG_Vector3D position);
 	};
 }
 
