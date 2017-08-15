@@ -179,6 +179,7 @@
     <ClInclude Include="Include\LG_Line.h" />
     <ClInclude Include="Include\LG_Node.h" />
     <ClInclude Include="Include\LG_Rect.h" />
+    <ClInclude Include="Include\LG_Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_Circle.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="Src\LG_Line.cpp" />
     <ClCompile Include="Src\LG_Node.cpp" />
     <ClCompile Include="Src\LG_Rect.cpp" />
+    <ClCompile Include="Src\LG_Triangle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
