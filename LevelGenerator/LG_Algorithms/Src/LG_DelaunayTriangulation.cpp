@@ -15,8 +15,8 @@ namespace LevelGenerator
 	//! This function initialize all variables of the class.
 	void LG_DelaunayTriangulation::Init()
 	{
-		//TODO: Generar un triangulote, que genere un vector entre cada nodo de 
-		//Dicho triangulote, y cada uno de los nodos.
+		//TODO: Generar un triangulote, que esté fuera de todos los nodos que se
+		//tienen en la escena. Dividir el triangulote en 3, con cada uno de los nodos
 	}
 
 	//! This function releases memory and clears the variables.
