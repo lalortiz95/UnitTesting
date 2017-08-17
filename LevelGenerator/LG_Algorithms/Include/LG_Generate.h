@@ -46,6 +46,11 @@ namespace LevelGenerator
 		LG_RDP m_RDP;
 
 		/**
+		 *	@brief An object of the delaunay triangulation class. It's used to run it's algorithm.
+		 */
+		LG_DelaunayTriangulation m_DT;
+
+		/**
 		 *	@brief A vector of isolines where we store the marching square output.
 		 */
 		Vector<LG_Isoline> m_IsolineVector;

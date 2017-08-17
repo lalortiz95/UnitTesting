@@ -49,7 +49,10 @@ namespace LevelGenerator
 		/**
 		 *	@brief This variable store a actual triangle.
 		 */
-		LG_Triangle m_ActualTriangle;
+		LG_Triangle* m_pActualTriangle;
+
+
+		int32 m_iTrianglesAmount;
 
 
 		///************************************************************************/
