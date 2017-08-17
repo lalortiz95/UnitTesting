@@ -1,5 +1,6 @@
 #pragma once
 #include "LG_AlgorithmsPrerequisites.h"
+#include "LG_DelaunayTriangulation.h"
 #include "LG_MarchingSquare.h"
 #include "LG_RDP.h"
 #include <LG_Grid.h>
@@ -50,6 +51,11 @@ namespace LevelGenerator
 		Vector<LG_Isoline> m_IsolineVector;
 
 		/**
+		 *	@brief A vector of final isolines.
+		 */
+		Vector<LG_Isoline> m_FinalIsolineVector;
+
+		/**
 		 *	@brief A vector of tiles where we store the tiles inside of marching square.
 		 */
 		Vector<LG_Tile*> m_TileVector;
@@ -58,11 +64,6 @@ namespace LevelGenerator
 		 *	@brief The current isoline being filled.
 		 */
 		LG_Isoline m_ActualIsoline;
-
-		/**
-		 *	@brief A map where we generate marching square.
-		 */
-		LG_Grid* m_pMap;
 
 		/**
 		 *	@brief A pointer that define the actual tile.

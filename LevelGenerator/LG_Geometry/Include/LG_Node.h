@@ -30,7 +30,10 @@ namespace LevelGenerator
 		 */
 		LG_Node(LG_Vector3D vPosition);
 
-
+		/**
+		 *	@brief parameter Constructor.
+		 */
+		LG_Node(float fx, float fy, float fz);
 
 		///************************************************************************/
 		///*						  Member Variables.							  */
@@ -55,6 +58,11 @@ namespace LevelGenerator
 		 *	@brief This variable store's an ID.
 		 */
 		int32 m_iID;
+
+		/**
+		 *	@brief This vector stores a pointer of nodes.
+		 */
+		Vector<LG_Node*> m_PointerNodes;
 
 
 		///************************************************************************/

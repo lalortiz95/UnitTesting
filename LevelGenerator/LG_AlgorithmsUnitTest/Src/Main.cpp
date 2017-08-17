@@ -9,13 +9,6 @@ using namespace LevelGenerator;
 
 bool CompareTilesVector(int32 *CorrectTiles, Vector<LG_Tile*> CalculatedTiles)
 {
-	/// We check that we have the same amount of tiles in both vectors.
-	if (9 != CalculatedTiles.size())
-	{
-		/// If not, we return false.
-		return false;
-	}
-
 	/// We go through the tiles' vector.
 	for (int32 i = 0; i < CalculatedTiles.size(); ++i)
 	{
@@ -41,10 +34,23 @@ TEST(Generate_Algorithm, GenerateCasesFromMS)
 	/// Call its run.
 	GenerateAlgorithm.Run();
 
+	int32 iExpectedCases[47] = 
+	{
+		14,4,2,13,8,2,7,11,13,8,2,4,2,7,1,8,2,7,
+		14,4,1,11,2,7,14,4,1,11,3,13,8,1,2,7,13,8,
+		2,7,12,1,11,13,8,1,11,13,8
+	};
+
+	EXPECT_TRUE(CompareTilesVector(iExpectedCases, GenerateAlgorithm.m_TileVector));
+
 	EXPECT_TRUE(GenerateAlgorithm.m_IsolineVector.size() == 3);
 	EXPECT_TRUE(GenerateAlgorithm.m_IsolineVector[0].m_NodeVector.size() == 10);
 	EXPECT_TRUE(GenerateAlgorithm.m_IsolineVector[1].m_NodeVector.size() == 11);
 	EXPECT_TRUE(GenerateAlgorithm.m_IsolineVector[2].m_NodeVector.size() == 29);
+
+	EXPECT_TRUE(GenerateAlgorithm.m_FinalIsolineVector[0].m_NodeVector.size() == 4);
+	EXPECT_TRUE(GenerateAlgorithm.m_FinalIsolineVector[1].m_NodeVector.size() == 4);
+	EXPECT_TRUE(GenerateAlgorithm.m_FinalIsolineVector[2].m_NodeVector.size() == 11);
 }
 
 TEST(MarchingSquare_Algorithm, CheckCases)

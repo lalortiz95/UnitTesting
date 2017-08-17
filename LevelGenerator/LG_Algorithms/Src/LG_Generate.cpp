@@ -6,7 +6,6 @@ namespace LevelGenerator
 	LG_Generate::LG_Generate()
 	{
 		m_pActualTile = nullptr;
-		m_pMap = nullptr;
 		m_bInsertFront = false;
 	}
 
@@ -35,10 +34,6 @@ namespace LevelGenerator
 		/// Releases memory.
 		if (m_pActualTile != nullptr)
 			m_pActualTile->Destroy();
-
-		if (m_pMap != nullptr)
-			m_pMap->Destroy();
-
 	}
 
 	//! This calls all the algorithms and put them together to generate a procedural level.
@@ -50,13 +45,21 @@ namespace LevelGenerator
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
 
-		//TODO: checar bien que puntos generá, si faltan o no.
 		/// We reduce our vector of isolines.
 		for (int32 i = 0; i < m_IsolineVector.size(); ++i)
 		{
 			m_RDP.Run(0.1f, m_IsolineVector[i]);
+			m_FinalIsolineVector.push_back(m_RDP.m_FinalIsoline);
 			m_RDP.Destroy();
 		}
+
+		LG_DelaunayTriangulation DT;
+		
+			DT.Run(m_MS.m_pMap->m_iWidth,
+				m_MS.m_pMap->m_iHeight,
+				m_MS.m_pMap->m_MapCenter.m_Position,
+				m_FinalIsolineVector);
+		
 	}
 
 	//! This function generate a isoline from Marching Square Cases.

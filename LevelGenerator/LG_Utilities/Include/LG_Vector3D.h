@@ -88,7 +88,7 @@ namespace LevelGenerator
 		 *	@param const LG_Vector3D& OtherVector: The vector.
 		 *	@return the vector that is perpendicular.
 		 */
-		LG_Vector3D Cross3(const LG_Vector3D& V, const LG_Vector3D& B);
+		static LG_Vector3D Cross3(const LG_Vector3D& V, const LG_Vector3D& B);
 
 		/**
 		 *	@brief This function reduce the Magnitude of the vector given between 0 and 1.

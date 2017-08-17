@@ -32,6 +32,13 @@ namespace LevelGenerator
 		m_bCanDeleted = true;
 	}
 
+	LG_Node::LG_Node(float fx, float fy, float fz)
+	{
+		m_Position = { fx, fy, fz };
+		m_bIsInside = false;
+		m_bCanDeleted = true;
+	}
+
 	/**
 	 *	@brief Initialize resources of the node.
 	 */
