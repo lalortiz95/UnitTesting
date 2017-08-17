@@ -6,7 +6,7 @@
 namespace LevelGenerator
 {
 	/**
-	*	@brief This class is a rect.
+	*	@brief This class is a rectangle.
 	*/
 	class LG_GEOMETRY_EXPORT LG_Rect
 	{

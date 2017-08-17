@@ -6,7 +6,6 @@ namespace LevelGenerator
 	LG_Generate::LG_Generate()
 	{
 		m_pActualTile = nullptr;
-		m_pMap = nullptr;
 		m_bInsertFront = false;
 	}
 
@@ -35,10 +34,6 @@ namespace LevelGenerator
 		/// Releases memory.
 		if (m_pActualTile != nullptr)
 			m_pActualTile->Destroy();
-
-		if (m_pMap != nullptr)
-			m_pMap->Destroy();
-
 	}
 
 	//! This calls all the algorithms and put them together to generate a procedural level.
@@ -50,13 +45,19 @@ namespace LevelGenerator
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
 
-		//TODO: arreglar ramer douglas, no está eliminando algunos nodos que debería.
 		/// We reduce our vector of isolines.
 		for (int32 i = 0; i < m_IsolineVector.size(); ++i)
 		{
-			m_RDP.Run(0.f, m_IsolineVector[i]);
+			m_RDP.Run(0.1f, m_IsolineVector[i]);
+			m_FinalIsolineVector.push_back(m_RDP.m_FinalIsoline);
 			m_RDP.Destroy();
 		}
+
+		m_DT.Run(m_MS.m_pMap->m_iWidth,
+			m_MS.m_pMap->m_iHeight,
+			m_MS.m_pMap->m_MapCenter.m_Position,
+			m_FinalIsolineVector);
+
 	}
 
 	//! This function generate a isoline from Marching Square Cases.
@@ -385,26 +386,26 @@ namespace LevelGenerator
 	//! This function set a tile as true if 1 or 2 lines of the tile are true.
 	void LG_Generate::SetTileAs(LG_Tile& TileToChangeFlag)
 	{
-			/// If the tile has got any lines.
-			if (TileToChangeFlag.m_LinesVector.size() > 1)
+		/// If the tile has got any lines.
+		if (TileToChangeFlag.m_LinesVector.size() > 1)
+		{
+			/// If both lines of the tile have been checked.
+			if (TileToChangeFlag.m_LinesVector[FIRST_LINE].m_bIsInside &&
+				TileToChangeFlag.m_LinesVector[SECOND_LINE].m_bIsInside)
 			{
-				/// If both lines of the tile have been checked.
-				if (TileToChangeFlag.m_LinesVector[FIRST_LINE].m_bIsInside &&
-					TileToChangeFlag.m_LinesVector[SECOND_LINE].m_bIsInside)
-				{
-					/// Then we set the tile as true.
-					TileToChangeFlag.m_bIsChecked = true;
-				}
+				/// Then we set the tile as true.
+				TileToChangeFlag.m_bIsChecked = true;
 			}
-			else
+		}
+		else
+		{
+			/// If the tile's line has already been checked.
+			if (TileToChangeFlag.m_LinesVector[FIRST_LINE].m_bIsInside)
 			{
-				/// If the tile's line has already been checked.
-				if (TileToChangeFlag.m_LinesVector[FIRST_LINE].m_bIsInside)
-				{
-					/// Set the actual tile as true.
-					TileToChangeFlag.m_bIsChecked = true;
-				}
+				/// Set the actual tile as true.
+				TileToChangeFlag.m_bIsChecked = true;
 			}
+		}
 	}
 
 }

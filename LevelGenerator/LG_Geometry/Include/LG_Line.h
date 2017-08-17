@@ -2,11 +2,6 @@
 #include "LG_GeometryPrerequisites.h"
 #include "LG_Node.h"
 
-
-#define FIRST_NODE 0			/// Number that define the first node of the line.
-#define SECOND_NODE 1			/// Number that define the second node of the line.
-#define NODES_PER_LINE 2		/// Define a number of nodes per line.
-
 namespace LevelGenerator
 {
 

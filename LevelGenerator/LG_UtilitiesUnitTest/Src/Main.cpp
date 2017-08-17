@@ -35,4 +35,6 @@ TEST(UtilitiesUnitTest, Matrices)
 	EXPECT_TRUE(sizeof(uint32) == 4);
 	EXPECT_TRUE(sizeof(uint64) == 8);
 	EXPECT_TRUE(sizeof(uint128) == 16);
+
+	system("pause");
 }
