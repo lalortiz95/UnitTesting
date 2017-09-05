@@ -114,7 +114,7 @@ namespace LevelGenerator
 	//! Default constructor.
 	LG_Triangle::LG_Triangle()
 	{
-		m_bIsChecked = false;	
+		m_bIsChecked = false;
 	}
 
 	//! Default destructor.
@@ -154,6 +154,35 @@ namespace LevelGenerator
 		b3 = Sign(pPointToCompare, m_pVertices[THIRD_NODE], m_pVertices[FIRST_NODE]) < 0.0f;
 
 		return ((b1 == b2) && (b2 == b3));
+	}
+
+	//! Calculates the triangle's circumcentre.
+	void LG_Triangle::CalculateCircumcenter()
+	{
+		
+		LG_Vector3D	PerpendicularBisectorAB;
+		LG_Vector3D	PerpendicularBisectorBC;
+		LG_Vector3D	PerpendicularBisectorCA;
+
+		float fPendienteAB, fPendienteBC, fPendienceCA;
+		float fPendientePerpendicualAB, fPendientePerpendicualBC, fPendientePerpendicualCA;
+		float fX, fY, fXa, fYa, fXb, fYb, fXc, fYc;
+		LG_Vector3D PMab, PMbc, PMca;
+
+		fXa = m_pVertices[FIRST_NODE]->m_Position.X;
+		fYa = m_pVertices[FIRST_NODE]->m_Position.Y;
+
+		fXb = m_pVertices[SECOND_NODE]->m_Position.X;
+		fYb = m_pVertices[SECOND_NODE]->m_Position.Y;
+
+		fXc = m_pVertices[THIRD_NODE]->m_Position.X;
+		fYc = m_pVertices[THIRD_NODE]->m_Position.Y;
+
+		PMab.X = ((fXa + fXb) / 2);
+		PMab.Y = ((fYa + fYb) / 2);
+		fPendienteAB = ((fYb - fYa) / (fXb - fXa));
+
+
 	}
 
 	//! Perfroms a cross product between the aristas.

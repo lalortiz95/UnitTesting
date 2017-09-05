@@ -104,12 +104,17 @@ namespace LevelGenerator
 		LG_Arista m_Aristas[3];
 
 		/**
+		 *	@brief Where we store the triangle's circumcenter.
+		 */
+		LG_Node m_Circumcenter;
+
+		/**
 		 *	@brief True when all of the triangles inside of the triangle have already been checked.
 		 */
 		bool m_bIsChecked;
 
 		/**
-		 *	@brief The triangle's  ID.
+		 *	@brief The triangle's ID.
 		 */
 		int32 m_iID;
 
@@ -136,6 +141,11 @@ namespace LevelGenerator
 		 *	@return true if the node was inside, false otherwise.
 		 */
 		bool IsPointInside(LG_Node* pPointToCompare);
+
+		/**
+		 *	@brief Calculates the triangle's circumcentre.
+		 */
+		void CalculateCircumcenter();
 
 	private:
 
