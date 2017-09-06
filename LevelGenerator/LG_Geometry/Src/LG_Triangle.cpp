@@ -165,7 +165,7 @@ namespace LevelGenerator
 		LG_Vector3D	PerpendicularBisectorCA;
 
 		float fPendienteAB, fPendienteBC, fPendienceCA;
-		float fPendientePerpendicualAB, fPendientePerpendicualBC, fPendientePerpendicualCA;
+		float fPendientePerpendicualarAB, fPendientePerpendicualarBC, fPendientePerpendicualarCA;
 		float fX, fY, fXa, fYa, fXb, fYb, fXc, fYc;
 		LG_Vector3D PMab, PMbc, PMca;
 
@@ -181,8 +181,6 @@ namespace LevelGenerator
 		PMab.X = ((fXa + fXb) / 2);
 		PMab.Y = ((fYa + fYb) / 2);
 		fPendienteAB = ((fYb - fYa) / (fXb - fXa));
-
-
 	}
 
 	//! Perfroms a cross product between the aristas.

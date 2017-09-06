@@ -3,6 +3,7 @@
 #include <LG_UtilitiesPrerequisites.h>
 #include <string.h>
 #include <SDL.h>
+#include <SDL_image.h>
 
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
@@ -54,6 +55,11 @@ public:
 	 */
 	std::string m_sFileName;
 
+	/**
+	 *	@brief The SDL renderer.
+	 */
+	SDL_Renderer* m_Renderer;
+
 	///************************************************************************/
 	///*						   Class Functions.							  */
 	///************************************************************************/
@@ -91,4 +97,11 @@ public:
 	 *	@brief This function runs all the functions needed to have SDL working.
 	 */
 	void Run();
+
+private:
+
+	/**
+	 *	@brief Loads individual image as texture.
+	 */
+	SDL_Texture* loadTexture(std::string path);
 };
