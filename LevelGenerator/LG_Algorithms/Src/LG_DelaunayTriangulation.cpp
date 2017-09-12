@@ -12,7 +12,7 @@ namespace LevelGenerator
 	//! Default destructor.
 	LG_DelaunayTriangulation::~LG_DelaunayTriangulation()
 	{
-
+		Destroy();
 	}
 
 	//! This function initialize all variables of the class.
@@ -102,7 +102,7 @@ namespace LevelGenerator
 			if (!bBreakFirstFor)
 			{
 				/// If it didn't have dots inside we set that triangle as checked.
- 				m_pActualTriangle->m_bIsChecked = true;
+				m_pActualTriangle->m_bIsChecked = true;
 				/// Find a new actual triangle, starting from the last inserted triangle to the first one.
 				for (int32 i = 0; i < m_TrianglesVector.size(); ++i)
 				{
@@ -119,7 +119,14 @@ namespace LevelGenerator
 			bQuit = CheckifAllNodesAreTrue();
 		}
 
+		EliminateTriangles();
+		//debugging purposes
 		m_TrianglesVector = m_TrianglesVector;
+
+		for (int32 i = 0; i < m_TrianglesVector.size(); ++i)
+		{
+			m_TrianglesVector[i].CalculateCircumcenter();
+		}
 	}
 
 	//! This function create a 3 triangles from one triangle and a node.
@@ -155,7 +162,7 @@ namespace LevelGenerator
 	{
 		if (m_TrianglesVector.size() > 0)
 		{
-			m_TrianglesVector.erase(m_TrianglesVector.begin());
+			//m_TrianglesVector.erase(m_TrianglesVector.begin());
 		}
 
 		for (int32 i = 0; i < VERTEX_PER_TRIANGLE; ++i)
@@ -236,5 +243,61 @@ namespace LevelGenerator
 		}
 		/// Set the triangle as checked.
 		IteratingTriangle.m_bIsChecked = true;
+	}
+
+	//! This function sees if all the triangles from the vector have their flags set as false.
+	bool LG_DelaunayTriangulation::AreTrianglesFalse()
+	{
+		for (int32 i = 0; i < m_TrianglesVector.size(); i++)
+		{
+			if (m_TrianglesVector[i].m_bIsChecked)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//! This function deletes all of the triangles shared with the big triangle.
+	void LG_DelaunayTriangulation::EliminateTriangles()
+	{
+		/// We set all of our triangles' flag to false, in order to see which ones are going to be deleted.
+		for (int32 i = 0; i < m_TrianglesVector.size(); ++i)
+		{
+			m_TrianglesVector[i].m_bIsChecked = false;
+		}
+
+		/// We iterate and change the flag of the ones being deleted.
+		for (int32 i = 0; i < m_TrianglesVector.size(); ++i)
+		{
+			for (int32 j = 0; j < 3; ++j)
+			{
+				if (m_TrianglesVector[i].m_pVertices[j] == m_BigTriangle.m_pVertices[0] ||
+					m_TrianglesVector[i].m_pVertices[j] == m_BigTriangle.m_pVertices[1] ||
+					m_TrianglesVector[i].m_pVertices[j] == m_BigTriangle.m_pVertices[2])
+				{
+					m_TrianglesVector[i].m_bIsChecked = true;
+					break;
+				}
+			}
+		}
+
+		int32 it = 0;
+		while (!AreTrianglesFalse())
+		{
+			//eliminar el que tenga su bandera en true
+			if (m_TrianglesVector[it].m_bIsChecked)
+			{
+				///erases the triangle with it's flag set as true.
+				m_TrianglesVector.erase(m_TrianglesVector.begin() + it);
+				///Initialize again the iterator.
+				it = 0;
+			}
+			else
+			{
+				///Adds one to the counter.
+				++it;
+			}
+		}
 	}
 }

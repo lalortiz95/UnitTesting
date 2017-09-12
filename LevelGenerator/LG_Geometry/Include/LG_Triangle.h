@@ -1,6 +1,7 @@
 #pragma once
 #include "LG_GeometryPrerequisites.h"
 #include "LG_Node.h"
+#include <LG_Vector4D.h>
 
 namespace LevelGenerator
 {
@@ -106,7 +107,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief Where we store the triangle's circumcenter.
 		 */
-		LG_Node m_Circumcenter;
+		LG_Vector3D m_Circumcenter;
 
 		/**
 		 *	@brief True when all of the triangles inside of the triangle have already been checked.
@@ -157,5 +158,36 @@ namespace LevelGenerator
 		 *	@return The cross product of a 2D vector.
 		 */
 		float Sign(LG_Node* pNodeToCompare, LG_Node* pNode1, LG_Node* pNode2);
+
+		/**
+		 *	@brief This function find the middle point between 2 position.
+		 *	@param LG_Node NodeA: The first node.
+		 *	@param LG_Node NodeB: The second node.
+		 *	@return the middle point between the given vectors.
+		 */
+		LG_Vector3D FindMiddlePoint(LG_Node NodeA, LG_Node NodeB);
+
+		/**
+		 *	@brief This function find the slope between 2 position.
+		 *	@param LG_Node NodeA: The first node.
+		 *	@param LG_Node NodeB: The second node.
+		 *	@return the middle point between the given vectors.
+		 */
+		float FindSlope(LG_Node NodeA, LG_Node NodeB);
+
+		/**
+		 *	@brief A multiplication between two vectors, to get values that'll fill a matrix that gives us the incognites.
+		 *	@param LG_Vector3D M1: the first matrix.
+		 *	@param LG_Vector3D M2: the second matrix.
+		 *	@return The result to fill out the matrix.
+		 */
+		LG_Vector3D BuildMatrixFromEcuations(LG_Vector3D M1, LG_Vector3D M2);
+
+		/**
+		 *	@brief This function find the Axis X of the circumcenter.
+		 *
+		 *
+		 */
+		float FindAxisXCircumcenter();
 	};
 }

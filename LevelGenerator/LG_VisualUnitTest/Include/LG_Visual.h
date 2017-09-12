@@ -1,9 +1,17 @@
 #pragma once
-#include <iostream>
+
 #include <LG_UtilitiesPrerequisites.h>
+#include <iostream>
+#include <LG_Triangle.h>
+
+#include <LG_Circle.h>
+#include <LG_Vector3D.h>
 #include <string.h>
 #include <SDL.h>
 #include <SDL_image.h>
+
+using LevelGenerator::LG_Circle;
+using LevelGenerator::LG_Vector3D;
 
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
@@ -104,4 +112,20 @@ private:
 	 *	@brief Loads individual image as texture.
 	 */
 	SDL_Texture* loadTexture(std::string path);
+
+	/// Cambiar a triangulo
+	LevelGenerator::Vector<LG_Circle> m_Circles;
+
+	/**
+	 *	@brief From the triangle list, we generate circles that pass through all of the triangle's vertices.
+	 */
+	void GenerateCircles(LevelGenerator::Vector<LevelGenerator::LG_Triangle> TrianglesVector);
+
+	/**
+	 *	@brief Draws a circle.
+	 *	@param LG_Circle circle: the circle that is going to be drawn.
+	 *	@param LG_Vector3D color: the color that will have the circle.
+	 *	@param uint32 sides: the sides that the triangle will have.
+	 */
+	void DrawCircle(LG_Circle circle, LG_Vector3D color, LevelGenerator::uint32 sides);
 };

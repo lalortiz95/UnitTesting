@@ -83,6 +83,7 @@ namespace LevelGenerator
 	//! This function realeases the memory of the class.
 	void LG_Tile::Destroy()
 	{
+
 	}
 
 	//! This function create a line of the tile, that depending of the tile's case.

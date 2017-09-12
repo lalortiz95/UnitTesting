@@ -35,7 +35,7 @@ namespace LevelGenerator
 		 *	@brief where we store our triangulation.
 		 */
 		Vector<LG_Triangle> m_TrianglesVector;
-		
+
 		/**
 		 *	@brief The set of nodes that we want to triangulate.
 		 */
@@ -83,6 +83,7 @@ namespace LevelGenerator
 		 */
 		void Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud);
 
+	private:
 		/**
 		 *  @brief This function create a triangle from one triangle and a node.
 		 *	@param LG_Triangle ActualTriangle: The base triangle to generate 3 new triangles.
@@ -125,5 +126,16 @@ namespace LevelGenerator
 		 *	@param LG_Triangle& IteratingTriangle: The actual triangle.
 		 */
 		void SetTriangleFlag(LG_Triangle& IteratingTriangle);
+
+		/**
+		 *	@brief This function sees if all the triangles from the vector have their flags set as false.
+		 *	@return true when there are no triangles set as true;
+		 */
+		bool AreTrianglesFalse();
+
+		/**
+		 *	@brief This function deletes all of the triangles shared with the big triangle.
+		 */
+		void EliminateTriangles();
 	};
 }

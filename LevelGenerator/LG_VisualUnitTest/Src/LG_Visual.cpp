@@ -1,6 +1,8 @@
 #include "LG_Visual.h"
 #include <LG_DelaunayTriangulation.h>
 #include <LG_Generate.h>
+#include <LG_Vector2D.h>
+#include <LG_Math.h>
 
 //! Default constructor.
 LG_Visual::LG_Visual()
@@ -138,26 +140,51 @@ void LG_Visual::Renderer()
 
 	LevelGenerator::LG_Vector3D posToSpawn;
 	LevelGenerator::LG_Vector3D Secondpos;
+	LevelGenerator::LG_Vector3D CircumCenter;
 	///We draw a dot wherever there is a node, as an output of the performed Delaunay Triangulation algorithm.
+	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_TrianglesVector.size(); ++i)
+	{
+		for (LevelGenerator::int32 j = 0; j < 3; ++j)
+		{
+			/// the position of the trianle's vertices.
+			posToSpawn = AlgorithmGeneration.m_DT.m_TrianglesVector[i].m_pVertices[j]->m_Position;
+
+			/// Draw red dot
+			SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
+			/// en la posición de cada nodo dibujar un punto con SDL.
+			SDL_RenderDrawPoint(m_Renderer, posToSpawn.X, posToSpawn.Y);
+		}
+
+		/// the position of the triangle's circumcenter.
+		CircumCenter = AlgorithmGeneration.m_DT.m_TrianglesVector[i].m_Circumcenter;
+		/// Draw red dot
+		SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
+		/// en la posición de cada nodo dibujar un punto con SDL.
+		SDL_RenderDrawPoint(m_Renderer, CircumCenter.X, CircumCenter.Y);
+	}
+
+	/// We now draw the circles.
+	LG_Vector3D Color{ 0,255,0 };
+	GenerateCircles(AlgorithmGeneration.m_DT.m_TrianglesVector);
+	for (LevelGenerator::int32 i = 0; i < m_Circles.size(); ++i)
+	{
+		DrawCircle(m_Circles[i], Color, 50);
+	}
+
 	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_NodesCloud.size(); ++i)
 	{
 		posToSpawn = AlgorithmGeneration.m_DT.m_NodesCloud[i].m_Position;
-		// Draw red dot
-		SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
-		// en la posición de cada nodo dibujar un punto con SDL.
-		SDL_RenderDrawPoint(m_Renderer, posToSpawn.X, posToSpawn.Y);
 
-		//if (i < AlgorithmGeneration.m_DT.m_NodesCloud.size() - 1)
-		//{
-		//	Secondpos = AlgorithmGeneration.m_DT.m_NodesCloud[i + 1].m_Position;
-		//	// Draw red dot
-		//	SDL_SetRenderDrawColor(m_Renderer, 0x00, 0x00, 0xFF, 0xFF);
-		//	// en la posición de cada nodo dibujar un punto con SDL.
-		//	SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-		//}
+		if (i < AlgorithmGeneration.m_DT.m_NodesCloud.size() - 1)
+		{
+			Secondpos = AlgorithmGeneration.m_DT.m_NodesCloud[i + 1].m_Position;
+			//Draw blue line
+			SDL_SetRenderDrawColor(m_Renderer, 0x00, 0x00, 0xFF, 0xFF);
+			//en la posición de cada nodo dibujar un punto con SDL.
+			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+		}
 	}
 
-	//TODO: con la lista de aristas que nos da DT dibujar los triangulos.
 	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_TrianglesVector.size(); ++i)
 	{
 		for (LevelGenerator::int32 j = 0; j < 3; ++j)
@@ -165,13 +192,12 @@ void LG_Visual::Renderer()
 			posToSpawn = AlgorithmGeneration.m_DT.m_TrianglesVector[i].m_Aristas[j].m_pFirstNode->m_Position;
 			Secondpos = AlgorithmGeneration.m_DT.m_TrianglesVector[i].m_Aristas[j].m_pSecondNode->m_Position;
 
-			// Draw red dot
+			// Draw red line.
 			SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
 			// en la posición de cada nodo dibujar un punto con SDL.
 			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 		}
 	}
-
 	///Update screen
 	SDL_RenderPresent(m_Renderer);
 }
@@ -226,7 +252,7 @@ void LG_Visual::Run()
 		}
 
 		Update(2000);
-		Renderer();	
+		Renderer();
 	}
 
 	/// Releases the memory.
@@ -260,4 +286,67 @@ SDL_Texture * LG_Visual::loadTexture(std::string path)
 
 	///Returns the texture we've just created.
 	return newTexture;
+}
+
+//! 
+void LG_Visual::GenerateCircles(LevelGenerator::Vector<LevelGenerator::LG_Triangle> TrianglesVector)
+{
+	LG_Circle newCircle;
+	LG_Vector3D RadiusDistance;
+	float fRadius = 0;
+
+	/// 
+	for (LevelGenerator::int32 i = 0; i < TrianglesVector.size(); ++i)
+	{
+		RadiusDistance = TrianglesVector[i].m_pVertices[0]->m_Position - TrianglesVector[i].m_Circumcenter;
+		fRadius = RadiusDistance.Magnitude();
+		newCircle.Init(TrianglesVector[i].m_Circumcenter, fRadius);
+		m_Circles.push_back(newCircle);
+	}
+}
+
+//! Draws a circle.
+void LG_Visual::DrawCircle(LG_Circle circle, LG_Vector3D color, LevelGenerator::uint32 sides)
+{
+	/// The return value for the draw line function.
+	int ret;
+
+	/// Sees how long is every line gonna be.
+	if (sides == 0)
+	{
+		sides = LevelGenerator::LG_Math::PI2 * circle.m_fRadius / 2;
+	}
+
+	float d_a = LevelGenerator::LG_Math::PI2 / sides,
+		angle = d_a;
+
+	LevelGenerator::LG_Vector3D start, end;
+	/// Calculate the end point to draw on the circle.
+	end.X = circle.m_fRadius;
+	end.Y = 0.0f;
+	end.Z = 0.0f;
+	/// Move it so that it's at the right position.
+	end = end + circle.m_Position;
+
+	/// draw all the lines.
+	for (LevelGenerator::int32 i = 0; i != sides; i++)
+	{
+		start = end;
+		end.X = cos(angle) * circle.m_fRadius;
+		end.Y = sin(angle) * circle.m_fRadius;
+		end = end + circle.m_Position;
+		angle += d_a;
+
+		/// Set the color for the circle.
+		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 255);
+
+		/// Draw the lines that forms the circle.
+		ret =
+			SDL_RenderDrawLine(
+				m_Renderer, // SDL_Renderer* renderer: the renderer in which draw 
+				start.X,               // int x1: x of the starting point 
+				start.Y,          // int y1: y of the starting point 
+				end.X,                 // int x2: x of the end point 
+				end.Y);           // int y2: y of the end point 
+	}
 }

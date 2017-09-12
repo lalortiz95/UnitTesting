@@ -27,10 +27,10 @@ namespace LevelGenerator
 
 	LG_Matrix4D LG_Matrix4D::operator+(const LG_Matrix4D& M)
 	{
-		return LG_Matrix4D(	m.X0 + M.m.X0, m.Y0 + M.m.Y0, m.Z0 + M.m.Z0, m.W0 + M.m.W0,
-							m.X1 + M.m.X1, m.Y1 + M.m.Y1, m.Z1 + M.m.Z1, m.W1 + M.m.W1,
-							m.X2 + M.m.X2, m.Y2 + M.m.Y2, m.Z2 + M.m.Z2, m.W2 + M.m.W2,
-							m.X3 + M.m.X3, m.Y3 + M.m.Y3, m.Z3 + M.m.Z3, m.W3 + M.m.W3);
+		return LG_Matrix4D(m.X0 + M.m.X0, m.Y0 + M.m.Y0, m.Z0 + M.m.Z0, m.W0 + M.m.W0,
+			m.X1 + M.m.X1, m.Y1 + M.m.Y1, m.Z1 + M.m.Z1, m.W1 + M.m.W1,
+			m.X2 + M.m.X2, m.Y2 + M.m.Y2, m.Z2 + M.m.Z2, m.W2 + M.m.W2,
+			m.X3 + M.m.X3, m.Y3 + M.m.Y3, m.Z3 + M.m.Z3, m.W3 + M.m.W3);
 	}
 
 	LG_Matrix4D LG_Matrix4D::operator-(const LG_Matrix4D& M)
@@ -167,6 +167,84 @@ namespace LevelGenerator
 		}
 	}
 
+	//! Calculates the inverse of the matrix.
+	void LG_Matrix4D::GaussJordan(LG_Vector4D& Position)
+	{
+		/////
+		//float x, y;
+		///// counters used in the fors.
+		//int32 i, ii, j;
+		//float fdividendo;
+		///// iterates through the matrix.
+		//for (i = 0; i < 4; i++)
+		//{
+		//	for (ii = 0; ii < 4; ii++)
+		//	{
+		//		/// see that it's not in the same row and column
+		//		if (ii != i)
+		//		{
+		//			/// values to calculate the output.
+		//			x = -LikeMatrix[i][i];
+		//			y = LikeMatrix[ii][i];
+		//			for (j = 0; j < 4 + 1; j++)
+		//			{
+		//				fdividendo = y * x + LikeMatrix[i][j];
+		//				if (fdividendo > 0)
+		//				{
+		//					/// fills the matrix.
+		//					LikeMatrix[ii][j] = LikeMatrix[ii][j] / fdividendo;
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
+
+		float fAux, fPivote;
+		for (int32 i = 0; i < 3; ++i)
+		{
+			if (LikeMatrix[i][i] != 0)
+			{
+				///
+				fPivote = 1 / LikeMatrix[i][i];
+
+				for (int32 j = 0; j < 4; ++j)
+				{
+					/// 
+					//if (fPivote != 0.0)
+					//{
+					/// 
+					LikeMatrix[i][j] = fPivote * LikeMatrix[i][j];
+				}
+				for (int32 j = 0; j < 3; ++j)
+				{
+					///tomamos todas las columnas que no sean la que se itera en i.
+					if (j != i)
+					{
+						/// guardamos en un auxiliar el valor el la iteración.
+						fAux = -LikeMatrix[j][i];
+
+						for (int32 k = 0; k < 4; ++k)
+						{
+							///aquí no entendí que pedo.
+							LikeMatrix[j][k] = LikeMatrix[j][k] + (fAux * LikeMatrix[i][k]);
+							if (LikeMatrix[j][k] - LG_Math::DELTA <= 0 && 
+								LikeMatrix[j][k] + LG_Math::DELTA >= 0)
+							{
+								LikeMatrix[j][k] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		///guardamos el resultado final.
+		Position.X = LikeMatrix[0][3];
+		Position.Y = LikeMatrix[1][3];
+		Position.Z = LikeMatrix[2][3];
+		Position.W = 0.0f;
+	}
+
 	LG_Matrix4D LG_Matrix4D::GetAdjunct(LG_Matrix4D M)
 	{
 		LG_Matrix4D Adjunct;
@@ -189,7 +267,7 @@ namespace LevelGenerator
 		float fValues[9];
 		///contador para llenar fValues
 		int32 iCount = 0;
-	
+
 		///guardamos los valores que no están en la columna ni en la fila dada.	
 		for (int32 i = 0; i < 4; ++i)
 			for (int32 j = 0; j < 4; ++j)
@@ -243,18 +321,18 @@ namespace LevelGenerator
 
 	void LG_Matrix4D::Translation(const LG_Vector4D & V)
 	{
-		this->m.X0 = 1,   this->m.Y0 = 0,	this->m.Z0 = 0,   this->m.W0 = 0;
-		this->m.X1 = 0,   this->m.Y1 = 1,	this->m.Z1 = 0,	  this->m.W1 = 0;
-		this->m.X2 = 0,	  this->m.Y2 = 0,	this->m.Z2 = 1,	  this->m.W2 = 0;
+		this->m.X0 = 1, this->m.Y0 = 0, this->m.Z0 = 0, this->m.W0 = 0;
+		this->m.X1 = 0, this->m.Y1 = 1, this->m.Z1 = 0, this->m.W1 = 0;
+		this->m.X2 = 0, this->m.Y2 = 0, this->m.Z2 = 1, this->m.W2 = 0;
 		this->m.X3 = V.X, this->m.Y3 = V.Y, this->m.Z3 = V.Z, this->m.W3 = V.W;
 	}
 
 	void LG_Matrix4D::Scaling(const LG_Vector4D & V)
 	{
-		this->m.X0 = V.X, this->m.Y0 = 0,	this->m.Z0 = 0,		this->m.W0 = 0;
-		this->m.X1 = 0,	  this->m.Y1 = V.Y, this->m.Z1 = 0,		this->m.W1 = 0;
-		this->m.X2 = 0,	  this->m.Y2 = 0,	this->m.Z2 = V.Z,	this->m.W2 = 0;
-		this->m.X3 = 0,   this->m.Y3 = 0,	this->m.Z3 = 0,		this->m.W3 = V.W;
+		this->m.X0 = V.X, this->m.Y0 = 0, this->m.Z0 = 0, this->m.W0 = 0;
+		this->m.X1 = 0, this->m.Y1 = V.Y, this->m.Z1 = 0, this->m.W1 = 0;
+		this->m.X2 = 0, this->m.Y2 = 0, this->m.Z2 = V.Z, this->m.W2 = 0;
+		this->m.X3 = 0, this->m.Y3 = 0, this->m.Z3 = 0, this->m.W3 = V.W;
 
 	}
 
@@ -272,11 +350,11 @@ namespace LevelGenerator
 		/// The final rotation.
 		LG_Matrix4D FR;
 
-		FR.m.X0 = 1, FR.m.Y0 = 0,					  FR.m.Z0 = 0,						FR.m.W0 = 0;
-		FR.m.X1 = 0, FR.m.Y1 =  LG_Math::Cos(fValue), FR.m.Z1 = LG_Math::Sin(fValue),	FR.m.W1 = 0;
-		FR.m.X2 = 0, FR.m.Y2 = -LG_Math::Sin(fValue), FR.m.Z2 = LG_Math::Cos(fValue),	FR.m.W2 = 0;
-		FR.m.X3 = 0, FR.m.Y3 = 0,                     FR.m.Z3 = 0,						FR.m.W3 = 1;
-		
+		FR.m.X0 = 1, FR.m.Y0 = 0, FR.m.Z0 = 0, FR.m.W0 = 0;
+		FR.m.X1 = 0, FR.m.Y1 = LG_Math::Cos(fValue), FR.m.Z1 = LG_Math::Sin(fValue), FR.m.W1 = 0;
+		FR.m.X2 = 0, FR.m.Y2 = -LG_Math::Sin(fValue), FR.m.Z2 = LG_Math::Cos(fValue), FR.m.W2 = 0;
+		FR.m.X3 = 0, FR.m.Y3 = 0, FR.m.Z3 = 0, FR.m.W3 = 1;
+
 		return FR;
 	}
 
@@ -286,11 +364,11 @@ namespace LevelGenerator
 		/// The final rotation.
 		LG_Matrix4D FR;
 
-		FR.m.X0 = LG_Math::Cos(fValue),	FR.m.Y0 = 0, FR.m.Z0 = -LG_Math::Sin(fValue), FR.m.W0 = 0;
-		FR.m.X1 = 0,					FR.m.Y1 = 1, FR.m.Z1 = 0,					  FR.m.W1 = 0;
-		FR.m.X2 = LG_Math::Sin(fValue),	FR.m.Y2 = 0, FR.m.Z2 = LG_Math::Cos(fValue),  FR.m.W2 = 0;
-		FR.m.X3 = 0,					FR.m.Y3 = 0, FR.m.Z3 = 0,					  FR.m.W3 = 1;
-	
+		FR.m.X0 = LG_Math::Cos(fValue), FR.m.Y0 = 0, FR.m.Z0 = -LG_Math::Sin(fValue), FR.m.W0 = 0;
+		FR.m.X1 = 0, FR.m.Y1 = 1, FR.m.Z1 = 0, FR.m.W1 = 0;
+		FR.m.X2 = LG_Math::Sin(fValue), FR.m.Y2 = 0, FR.m.Z2 = LG_Math::Cos(fValue), FR.m.W2 = 0;
+		FR.m.X3 = 0, FR.m.Y3 = 0, FR.m.Z3 = 0, FR.m.W3 = 1;
+
 		return FR;
 	}
 
@@ -300,11 +378,11 @@ namespace LevelGenerator
 		/// The final rotation.
 		LG_Matrix4D FR;
 
-		FR.m.X0 =  LG_Math::Cos(fValue), FR.m.Y0 = LG_Math::Sin(fValue),	FR.m.Z0 = 0, FR.m.W0 = 0;
-		FR.m.X1 = -LG_Math::Sin(fValue), FR.m.Y1 = LG_Math::Cos(fValue),	FR.m.Z1 = 0, FR.m.W1 = 0;
-		FR.m.X2 = 0,					 FR.m.Y2 = 0,						FR.m.Z2 = 1, FR.m.W2 = 0;
-		FR.m.X3 = 0,					 FR.m.Y3 = 0,						FR.m.Z3 = 0, FR.m.W3 = 1;
-	
+		FR.m.X0 = LG_Math::Cos(fValue), FR.m.Y0 = LG_Math::Sin(fValue), FR.m.Z0 = 0, FR.m.W0 = 0;
+		FR.m.X1 = -LG_Math::Sin(fValue), FR.m.Y1 = LG_Math::Cos(fValue), FR.m.Z1 = 0, FR.m.W1 = 0;
+		FR.m.X2 = 0, FR.m.Y2 = 0, FR.m.Z2 = 1, FR.m.W2 = 0;
+		FR.m.X3 = 0, FR.m.Y3 = 0, FR.m.Z3 = 0, FR.m.W3 = 1;
+
 		return FR;
 	}
 
