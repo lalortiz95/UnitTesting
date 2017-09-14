@@ -4,11 +4,11 @@
 namespace LevelGenerator
 {
 	///************************************************************************/
-	///*                            Arista class			                  */
+	///*                            Edge class			                      */
 	///************************************************************************/
 
 	//! Default constructor.
-	LG_Triangle::LG_Arista::LG_Arista()
+	LG_Triangle::LG_Edge::LG_Edge()
 	{
 		m_pFirstNode = nullptr;
 		m_pSecondNode = nullptr;
@@ -16,7 +16,7 @@ namespace LevelGenerator
 	}
 
 	//! Parameter constructor.
-	LG_Triangle::LG_Arista::LG_Arista(LG_Node* pFirstNode, LG_Node* pSecondNode)
+	LG_Triangle::LG_Edge::LG_Edge(LG_Node* pFirstNode, LG_Node* pSecondNode, int32& EdgeID)
 	{
 		m_pFirstNode = nullptr;
 		m_pSecondNode = nullptr;
@@ -25,6 +25,7 @@ namespace LevelGenerator
 		/// We assign the nodes.
 		m_pFirstNode = pFirstNode;
 		m_pSecondNode = pSecondNode;
+		m_iID = EdgeID;
 
 		/// Assign the pointer of every node of the arista.
 		m_pFirstNode->m_PointerNodes.push_back(m_pSecondNode);
@@ -36,21 +37,24 @@ namespace LevelGenerator
 	}
 
 	//! Default destructor.
-	LG_Triangle::LG_Arista::~LG_Arista()
+	LG_Triangle::LG_Edge::~LG_Edge()
 	{
 		//Destroy();
 	}
 
-	//! This function initialize the variables in the arista class.
-	void LG_Triangle::LG_Arista::Init(LG_Node* pFirstNode, LG_Node* pSecondNode)
+	//! This function initialize the variables in the edge class.
+	void LG_Triangle::LG_Edge::Init(LG_Node* pFirstNode, LG_Node* pSecondNode, int32& EdgeID)
 	{
 		bool bNodeIsTheSame = false;
 		//Destroy();
+
 		/// We assign the nodes.
 		m_pFirstNode = pFirstNode;
 		m_pSecondNode = pSecondNode;
+		m_iID = EdgeID;
 
-		/// Assign the pointer of every node of the arista.
+
+		/// Assign the pointer of every node of the edge.
 		for (int32 i = 0; i < m_pFirstNode->m_PointerNodes.size(); ++i)
 		{
 			if (m_pSecondNode == m_pFirstNode->m_PointerNodes[i])
@@ -58,12 +62,13 @@ namespace LevelGenerator
 				bNodeIsTheSame = true;
 			}
 		}
+
 		if (!bNodeIsTheSame)
 		{
 			m_pFirstNode->m_PointerNodes.push_back(m_pSecondNode);
+			bNodeIsTheSame = false;
 		}
-		bNodeIsTheSame = false;
-		/// Assign the pointer of every node of the arista.
+		 ///Assign the pointer of every node of the edge.
 		for (int32 i = 0; i < m_pSecondNode->m_PointerNodes.size(); ++i)
 		{
 			if (m_pFirstNode == m_pSecondNode->m_PointerNodes[i])
@@ -76,13 +81,13 @@ namespace LevelGenerator
 			m_pSecondNode->m_PointerNodes.push_back(m_pFirstNode);
 		}
 
-		/// Calculate the magnitude of the arista, and store it.
+		/// Calculate the magnitude of the edge, and store it.
 		LG_Vector3D magnitude = pSecondNode->m_Position - pFirstNode->m_Position;
 		m_fDistance = magnitude.Magnitude();
 	}
 
 	//! This function realeases memory.
-	void LG_Triangle::LG_Arista::Destroy()
+	void LG_Triangle::LG_Edge::Destroy()
 	{
 		/// If the pointer is not nullptr.
 		if (m_pFirstNode != nullptr)
@@ -104,8 +109,23 @@ namespace LevelGenerator
 			/// Reset to nullptr.
 			m_pSecondNode = nullptr;
 		}
-		/// Reset the distance of the arista.
+		/// Reset the distance of the edges.
 		m_fDistance = 0.0f;
+	}
+
+	bool LG_Triangle::LG_Edge::CompareEdges(LG_Edge * EdgeToCompare)
+	{
+		/// If both nodes of the edge are the same that the node's of the edge to compare.
+		return m_iID == EdgeToCompare->m_iID;
+	}
+
+	//! This operator assign the values of the given edge in this edge.
+	LG_Triangle::LG_Edge& LG_Triangle::LG_Edge::operator=(const LG_Edge& OtherEdge)
+	{
+		m_fDistance = OtherEdge.m_fDistance;
+		m_pFirstNode = OtherEdge.m_pFirstNode;
+		m_pSecondNode = OtherEdge.m_pSecondNode;
+		return *this;
 	}
 
 	///************************************************************************/
@@ -125,18 +145,25 @@ namespace LevelGenerator
 	}
 
 	//! This function initialize all variables of the class.
-	void LG_Triangle::Init(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode)
+	void LG_Triangle::Init(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode, int32& TriangleID, int32& EdgeID)
 	{
 		//Destroy();
 
-		/// We give an inital value to the triangle's vertices.
+		/// We give an initial value to the triangle's vertex.
 		m_pVertices.push_back(pFirstNode);
 		m_pVertices.push_back(pSecondNode);
 		m_pVertices.push_back(pThirdNode);
+		m_iID = TriangleID;
+		TriangleID++;
 
-		m_Aristas[FIRST_ARISTA].Init(pFirstNode, pSecondNode);
-		m_Aristas[SECOND_ARISTA].Init(pFirstNode, pThirdNode);
-		m_Aristas[THIRD_ARISTA].Init(pSecondNode, pThirdNode);
+		m_Edges[FIRST_ARISTA].Init(pFirstNode, pSecondNode, EdgeID);
+		EdgeID++;
+		m_Edges[SECOND_ARISTA].Init(pFirstNode, pThirdNode, EdgeID);
+		EdgeID++;
+		m_Edges[THIRD_ARISTA].Init(pSecondNode, pThirdNode, EdgeID);
+		EdgeID++;
+
+		CalculateCircumcenter();
 	}
 
 	//! This function releases memory and clears the variables.
@@ -202,6 +229,9 @@ namespace LevelGenerator
 		fPerpendicualarSlope_AB = (-1.0f / fSlope_AB);
 		fPerpendicualarSlope_BC = (-1.0f / fSlope_BC);
 		fPerpendicualarSlope_CA = (-1.0f / fSlope_CA);
+		//TODO: resolver para cuando el slope sea 0 ó inifito.
+		// en dado caso, rotar el triangulo para que todas sus aristas tengan una pendiente.
+		// calcular dichas pendientes, resolver, y volver a rotar todo en conjunto.
 
 		/// calculates b from y = mx + 'b'
 		fB1 = -(fPerpendicualarSlope_AB * MiddlePoint_AB.X) + MiddlePoint_AB.Y;
@@ -214,6 +244,35 @@ namespace LevelGenerator
 		m_Circumcenter.X = (fB1 - fB2) / SlopesSubstraction;
 		m_Circumcenter.Y = fPerpendicualarSlope_AB * m_Circumcenter.X + fB1;
 		m_Circumcenter.Z = 0;
+
+		/// Generates the triangle's circle.
+		GenerateCircle();
+	}
+
+	//! This operator compares that 2 triangles are the same.
+	bool LG_Triangle::operator==(const LG_Triangle & OtherTriangle) const
+	{
+		if (m_iID == OtherTriangle.m_iID)
+		{
+			if (((m_pVertices[FIRST_NODE] == OtherTriangle.m_pVertices[FIRST_NODE]) ||
+				(m_pVertices[FIRST_NODE] == OtherTriangle.m_pVertices[SECOND_NODE]) ||
+				(m_pVertices[FIRST_NODE] == OtherTriangle.m_pVertices[THIRD_NODE])) &&
+				((m_pVertices[SECOND_NODE] == OtherTriangle.m_pVertices[FIRST_NODE]) ||
+				(m_pVertices[SECOND_NODE] == OtherTriangle.m_pVertices[SECOND_NODE]) ||
+					(m_pVertices[SECOND_NODE] == OtherTriangle.m_pVertices[THIRD_NODE])) &&
+					((m_pVertices[THIRD_NODE] == OtherTriangle.m_pVertices[FIRST_NODE]) ||
+				(m_pVertices[THIRD_NODE] == OtherTriangle.m_pVertices[SECOND_NODE]) ||
+						(m_pVertices[THIRD_NODE] == OtherTriangle.m_pVertices[THIRD_NODE])))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+
+		}
+		return false;
 	}
 
 	//! Performs a cross product between the aristas.
@@ -243,17 +302,16 @@ namespace LevelGenerator
 			(NodeB.m_Position.X - (NodeA.m_Position.X)));
 	}
 
-	LG_Vector3D LG_Triangle::BuildMatrixFromEcuations(LG_Vector3D M1, LG_Vector3D M2)
+	//! Generates the triangle's circumcircle circumference.
+	void LG_Triangle::GenerateCircle()
 	{
-		LG_Vector3D R;
-		R.X = (M1.X * M2.X) + (M1.X * M2.Y) + (M1.X * M2.Z);
-		R.Y = (M1.Y * M2.X) + (M1.Y * M2.Y) + (M1.Y * M2.Z);
-		R.Z = (M1.Z * M2.X) + (M1.Z * M2.Y) + (M1.Z * M2.Z);
-		return R;
-	}
+		LG_Vector3D RadiusDistance;
+		float fRadius = 0;
 
-	float LG_Triangle::FindAxisXCircumcenter()
-	{
-		return 0.0f;
+		/// Calculates the circle's radius.
+		RadiusDistance = m_pVertices[0]->m_Position - m_Circumcenter;
+		fRadius = RadiusDistance.Magnitude();
+		/// Creates the circle.
+		m_CircumcircleCircumference.Init(m_Circumcenter, fRadius);
 	}
 }

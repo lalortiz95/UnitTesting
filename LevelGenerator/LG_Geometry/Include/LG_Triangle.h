@@ -2,6 +2,9 @@
 #include "LG_GeometryPrerequisites.h"
 #include "LG_Node.h"
 #include <LG_Vector4D.h>
+#include "LG_Circle.h"
+
+#define NUM_EDGES_PER_TRIANGLE 3
 
 namespace LevelGenerator
 {
@@ -10,10 +13,11 @@ namespace LevelGenerator
 	*/
 	class LG_GEOMETRY_EXPORT LG_Triangle
 	{
+	public:
 		/**
-		*	@brief The triangle's arista.
-		*/
-		class LG_Arista
+		 *	@brief The triangle's edge.
+		 */
+		class LG_GEOMETRY_EXPORT LG_Edge
 		{
 		public:
 			///************************************************************************/
@@ -23,39 +27,44 @@ namespace LevelGenerator
 			/**
 			 *	@brief Default constructor.
 			 */
-			LG_Arista();
-	
+			LG_Edge();
+
 			/**
 			 *	@brief Parameter constructor.
 			 *	@param LG_Node* pFirstNode: The first pointer node of the arista.
 			 *	@param LG_Node* pSecondNode: The second pointer node of the arista.
+			 *	@param int32& EdgeID: The ID for the edge.
 			 */
-			LG_Arista(LG_Node* FirstNode, LG_Node* SecondNode);
+			LG_Edge(LG_Node* FirstNode, LG_Node* SecondNode, int32& EdgeID);
 
 			/**
 			 *	@brief Default destructor.
 			 */
-			~LG_Arista();
+			~LG_Edge();
 
 			///************************************************************************/
 			///*                           Member Variables.		                  */
 			///************************************************************************/
 
 			/**
-			 *	@brief First node pointer of the arista.
+			 *	@brief First node pointer of the edge.
 			 */
 			LG_Node* m_pFirstNode;
 
 			/**
-			 *	@brief Second node pointer of the arista.
+			 *	@brief Second node pointer of the edge.
 			 */
 			LG_Node* m_pSecondNode;
 
 			/**
-			 *	@brief The arista's magnitude.
+			 *	@brief The edge's magnitude.
 			 */
 			float m_fDistance;
 
+			/**
+			 *	@brief The edge's ID.
+			 */
+			int32 m_iID;
 			///************************************************************************/
 			///*                           Class Functions.						      */
 			///************************************************************************/
@@ -64,13 +73,32 @@ namespace LevelGenerator
 			 *  @brief This function initialize all variables of the class.
 			 *	@param LG_Node* pFirstNode: The first pointer node of the arista.
 			 *	@param LG_Node* pSecondNode: The second pointer node of the arista.
+			 *	@param int32& EdgeID: The ID for the edge.
 			 */
-			void Init(LG_Node* pFirstNode, LG_Node* pSecondNode);
+			void Init(LG_Node* pFirstNode, LG_Node* pSecondNode, int32& EdgeID);
 
 			/**
-			 *	@brief This function realeases memory.
+			 *	@brief This function releases memory.
 			 */
 			void Destroy();
+
+			/**
+			 *	@brief This function compare if 2 edges are the same.
+			 *	@param LG_Edge* EdgeToCompare: The edge that we want to compare with this.
+			 *	@return true if the 2 edges are the same, otherwise false.
+			 */
+			bool CompareEdges(LG_Edge* EdgeToCompare);
+
+			///************************************************************************/
+			///*					Compound Assignment Operators.				      */
+			///************************************************************************/
+
+			/**
+			 *	@brief This operator assign the values of the given edge in this edge.
+			 *	@param LG_Edge& OtherEdge: The edge that we want to assign to this.
+			 *	@return This edge with the new values.
+			 */
+			LG_Edge& operator=(const LG_Edge& OtherEdge);
 
 		};
 
@@ -98,16 +126,21 @@ namespace LevelGenerator
 		 *	@brief each vertex that makes the triangle.
 		 */
 		Vector<LG_Node*> m_pVertices;
-		
+
 		/**
-		 *	@brief Where we store all of the triangle's aristas.
+		 *	@brief Where we store all of the triangle's edges.
 		 */
-		LG_Arista m_Aristas[3];
+		LG_Edge m_Edges[3];
 
 		/**
 		 *	@brief Where we store the triangle's circumcenter.
 		 */
 		LG_Vector3D m_Circumcenter;
+
+		/**
+		 *	@brief Where we store the triangle's circumcircle circumference.
+		 */
+		LG_Circle m_CircumcircleCircumference;
 
 		/**
 		 *	@brief True when all of the triangles inside of the triangle have already been checked.
@@ -128,8 +161,10 @@ namespace LevelGenerator
 		 *	@param LG_Node* pFirstNode: The first node of the triangle.
 		 *	@param LG_Node* pSecondNode: The second node of the triangle.
 		 *	@param LG_Node* pThirdNode: The third node of the triangle.
+		 *	@param int32& TriangleID: The id for the triangle.
+		 *	@param int32& EdgeID: The id for the edge.
 		 */
-		void Init(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
+		void Init(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode, int32& TriangleID, int32& EdgeID);
 
 		/**
 		 *  @brief This function releases memory and clears the variables.
@@ -148,10 +183,21 @@ namespace LevelGenerator
 		 */
 		void CalculateCircumcenter();
 
+		///************************************************************************/
+		///*					Compound Assignment Operators.				      */
+		///************************************************************************/
+
+		/**
+		 *	@brief This operator compares that 2 triangles are the same.
+		 *	@param const LG_Triangle& OtherTriangle: The triangle to compare with this.
+		 *	@return true if the triangle is the same that this, otherwise false.
+		 */
+		bool operator==(const LG_Triangle& OtherTriangle) const;
+
 	private:
 
 		/**
-		 *  @brief Perfroms a cross product between the aristas.
+		 *  @brief Performs a cross product between the edges.
 		 *	@param LG_Node* pNodeToCompare: Node that doesn't belong to the triangle.
 		 *	@param LG_Node* pNode1: First node taken from the triangle.
 		 *	@param LG_Node* pNode2: Second node taken from the triangle.
@@ -176,18 +222,8 @@ namespace LevelGenerator
 		float FindSlope(LG_Node NodeA, LG_Node NodeB);
 
 		/**
-		 *	@brief A multiplication between two vectors, to get values that'll fill a matrix that gives us the incognites.
-		 *	@param LG_Vector3D M1: the first matrix.
-		 *	@param LG_Vector3D M2: the second matrix.
-		 *	@return The result to fill out the matrix.
+		 *	@brief Generates the triangle's circumcircle circumference.
 		 */
-		LG_Vector3D BuildMatrixFromEcuations(LG_Vector3D M1, LG_Vector3D M2);
-
-		/**
-		 *	@brief This function find the Axis X of the circumcenter.
-		 *
-		 *
-		 */
-		float FindAxisXCircumcenter();
+		void GenerateCircle();
 	};
 }

@@ -141,56 +141,35 @@ void LG_Visual::Renderer()
 	LevelGenerator::LG_Vector3D posToSpawn;
 	LevelGenerator::LG_Vector3D Secondpos;
 	LevelGenerator::LG_Vector3D CircumCenter;
-	///We draw a dot wherever there is a node, as an output of the performed Delaunay Triangulation algorithm.
-	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_TrianglesVector.size(); ++i)
-	{
-		for (LevelGenerator::int32 j = 0; j < 3; ++j)
-		{
-			/// the position of the trianle's vertices.
-			posToSpawn = AlgorithmGeneration.m_DT.m_TrianglesVector[i].m_pVertices[j]->m_Position;
 
-			/// Draw red dot
-			SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
-			/// en la posición de cada nodo dibujar un punto con SDL.
-			SDL_RenderDrawPoint(m_Renderer, posToSpawn.X, posToSpawn.Y);
-		}
+	/// Aqui se renderea la isolinea resultante de MS y RDP.
+	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_NodesCloud.size(); ++i)
+	//{
+	//	posToSpawn = AlgorithmGeneration.m_DT.m_NodesCloud[i].m_Position;
 
-		/// the position of the triangle's circumcenter.
-		CircumCenter = AlgorithmGeneration.m_DT.m_TrianglesVector[i].m_Circumcenter;
-		/// Draw red dot
-		SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
-		/// en la posición de cada nodo dibujar un punto con SDL.
-		SDL_RenderDrawPoint(m_Renderer, CircumCenter.X, CircumCenter.Y);
-	}
+	//	if (i < AlgorithmGeneration.m_DT.m_NodesCloud.size() - 1)
+	//	{
+	//		Secondpos = AlgorithmGeneration.m_DT.m_NodesCloud[i + 1].m_Position;
+	//		//Draw blue line
+	//		SDL_SetRenderDrawColor(m_Renderer, 0x00, 0x00, 0xFF, 0xFF);
+	//		//en la posición de cada nodo dibujar un punto con SDL.
+	//		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//	}
+	//}
 
-	/// We now draw the circles.
+	/// Aqui rendereamos los ciruclos creados a partir de cada triangulo de la triangulacion.
 	LG_Vector3D Color{ 0,255,0 };
-	GenerateCircles(AlgorithmGeneration.m_DT.m_TrianglesVector);
-	for (LevelGenerator::int32 i = 0; i < m_Circles.size(); ++i)
-	{
-		DrawCircle(m_Circles[i], Color, 50);
-	}
 
-	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_NodesCloud.size(); ++i)
+	/// Aqui se rendera los triangulos de la triangulacion.
+	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
 	{
-		posToSpawn = AlgorithmGeneration.m_DT.m_NodesCloud[i].m_Position;
-
-		if (i < AlgorithmGeneration.m_DT.m_NodesCloud.size() - 1)
-		{
-			Secondpos = AlgorithmGeneration.m_DT.m_NodesCloud[i + 1].m_Position;
-			//Draw blue line
-			SDL_SetRenderDrawColor(m_Renderer, 0x00, 0x00, 0xFF, 0xFF);
-			//en la posición de cada nodo dibujar un punto con SDL.
-			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-		}
-	}
-
-	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_TrianglesVector.size(); ++i)
-	{
+		 DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
+			Color,
+			50);
 		for (LevelGenerator::int32 j = 0; j < 3; ++j)
 		{
-			posToSpawn = AlgorithmGeneration.m_DT.m_TrianglesVector[i].m_Aristas[j].m_pFirstNode->m_Position;
-			Secondpos = AlgorithmGeneration.m_DT.m_TrianglesVector[i].m_Aristas[j].m_pSecondNode->m_Position;
+			posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_Edges[j].m_pFirstNode->m_Position;
+			Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_Edges[j].m_pSecondNode->m_Position;
 
 			// Draw red line.
 			SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
@@ -198,6 +177,57 @@ void LG_Visual::Renderer()
 			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 		}
 	}
+
+	/// Aqui se rendera los triangulos malos de la triangulacion.
+	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_IncorrectTriangles.size(); ++i)
+	//{
+	//	for (LevelGenerator::int32 j = 0; j < 3; ++j)
+	//	{
+	//		posToSpawn = AlgorithmGeneration.m_DT.m_IncorrectTriangles[i].m_Edges[j].m_pFirstNode->m_Position;
+	//		Secondpos = AlgorithmGeneration.m_DT.m_IncorrectTriangles[i].m_Edges[j].m_pSecondNode->m_Position;
+
+	//		// Draw blue line.
+	//		SDL_SetRenderDrawColor(m_Renderer, 0, 0, 255, 0xFF);
+	//		// en la posición de cada nodo dibujar un punto con SDL.
+	//		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//	}
+	//}
+
+	///// Aqui rendereamos el polygono.
+	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_Polygon.m_EdgeVector.size(); ++i)
+	//{
+	//	posToSpawn = AlgorithmGeneration.m_DT.m_Polygon.m_EdgeVector[i].m_pFirstNode->m_Position;
+	//	Secondpos = AlgorithmGeneration.m_DT.m_Polygon.m_EdgeVector[i].m_pSecondNode->m_Position;
+
+	//	// Draw red line.
+	//	SDL_SetRenderDrawColor(m_Renderer, 0, 0, 0, 0);
+	//	// en la posición de cada nodo dibujar un punto con SDL.
+	//	SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//}
+
+	/*///We draw a dot wherever there is a node, as an output of the performed Delaunay Triangulation algorithm.
+	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_TrianglesVector.size(); ++i)
+	{
+		/// Aqui rendereamos los vertices de cada triangulo.
+		for (LevelGenerator::int32 j = 0; j < 3; ++j)
+		{
+			/// the position of the trianle's vertices.
+			posToSpawn = AlgorithmGeneration.m_DT.m_TrianglesVector[i].m_pVertices[j]->m_Position;
+
+			/// Draw red dot
+			SDL_SetRenderDrawColor(m_Renderer, 0, 0, 0, 0);
+			/// en la posición de cada nodo dibujar un punto con SDL.
+			SDL_RenderDrawPoint(m_Renderer, posToSpawn.X, posToSpawn.Y);
+		}
+
+		/// Aqui se renderea los circuncentros de cada triangulo.
+		CircumCenter = AlgorithmGeneration.m_DT.m_TrianglesVector[i].m_Circumcenter;
+		/// Draw red dot
+		SDL_SetRenderDrawColor(m_Renderer, 0, 0, 0, 0);
+		/// en la posición de cada nodo dibujar un punto con SDL.
+		SDL_RenderDrawPoint(m_Renderer, CircumCenter.X, CircumCenter.Y);
+
+	}*/
 	///Update screen
 	SDL_RenderPresent(m_Renderer);
 }
@@ -286,23 +316,6 @@ SDL_Texture * LG_Visual::loadTexture(std::string path)
 
 	///Returns the texture we've just created.
 	return newTexture;
-}
-
-//! 
-void LG_Visual::GenerateCircles(LevelGenerator::Vector<LevelGenerator::LG_Triangle> TrianglesVector)
-{
-	LG_Circle newCircle;
-	LG_Vector3D RadiusDistance;
-	float fRadius = 0;
-
-	/// 
-	for (LevelGenerator::int32 i = 0; i < TrianglesVector.size(); ++i)
-	{
-		RadiusDistance = TrianglesVector[i].m_pVertices[0]->m_Position - TrianglesVector[i].m_Circumcenter;
-		fRadius = RadiusDistance.Magnitude();
-		newCircle.Init(TrianglesVector[i].m_Circumcenter, fRadius);
-		m_Circles.push_back(newCircle);
-	}
 }
 
 //! Draws a circle.

@@ -113,14 +113,6 @@ private:
 	 */
 	SDL_Texture* loadTexture(std::string path);
 
-	/// Cambiar a triangulo
-	LevelGenerator::Vector<LG_Circle> m_Circles;
-
-	/**
-	 *	@brief From the triangle list, we generate circles that pass through all of the triangle's vertices.
-	 */
-	void GenerateCircles(LevelGenerator::Vector<LevelGenerator::LG_Triangle> TrianglesVector);
-
 	/**
 	 *	@brief Draws a circle.
 	 *	@param LG_Circle circle: the circle that is going to be drawn.
