@@ -12,8 +12,8 @@ namespace LevelGenerator
 	class LG_Vector3D;
 
 	/**
-	*	@brief This class is a 3 dimensional matrix.
-	*/
+	 *	@brief This class is a 4 dimensional matrix.
+	 */
 	class LG_UTILITIES_EXPORT LG_Matrix4D
 	{
 	public:
@@ -155,6 +155,12 @@ namespace LevelGenerator
 		  *	@brief Calculates the inverse of the matrix.
 		  */
 		 void Inverse();
+
+		 /**
+		  *	@brief Calculates the inverse of the matrix.
+		  *	@param LG_Vector4D& Position: The position to store the result.
+		  */
+		 void GaussJordan(LG_Vector4D& Position);
 
 		/**
 		 *	@brief Gets the adjunct of a given matrix.

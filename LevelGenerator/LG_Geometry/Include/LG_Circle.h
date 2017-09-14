@@ -53,6 +53,13 @@ namespace LevelGenerator
 		 *	@brief This function frees all the memory, and deletes the member variables. 
 		 */
 		void Destroy();
+
+		/**
+		 *	@brief Checks if there is a dot inside of the circle.
+		 *	@param LG_Node dotToCheck:  the node that we want to know if it's inside.
+		 *	@return true when the dot was inside.
+		 */
+		bool IsDotInside(LG_Vector3D dotToCheck);
 	};
 
 }

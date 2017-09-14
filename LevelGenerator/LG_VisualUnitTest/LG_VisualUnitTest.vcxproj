@@ -18,37 +18,44 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\LG_Visual.cpp" />
+    <ClCompile Include="Src\Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\LG_Visual.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{353CAAB5-D25C-4249-A3DD-49BA0CAA3561}</ProjectGuid>
-    <RootNamespace>LG_Geometry</RootNamespace>
+    <ProjectGuid>{1B521505-6F56-47D9-82B6-84E15B8CE656}</ProjectGuid>
+    <RootNamespace>LG_VisualUnitTest</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -69,64 +76,60 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
+    <IncludePath>$(SDL_DIR_LIB)SDL2\include\;$(SDL_DIR_LIB)SDL2_image\include\;$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Algorithms\Include\;$(SolutionDir)LG_Geometry\Include\;$(SolutionDir)LG_Map\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SDL_DIR_LIB)SDL2\lib\$(PlatformTarget)\;$(SDL_DIR_LIB)SDL2_image\lib\$(PlatformTarget);$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
+    <IncludePath>$(SDL_DIR_LIB)SDL2\include\;$(SDL_DIR_LIB)SDL2_image\include\;$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Algorithms\Include\;$(SolutionDir)LG_Geometry\Include\;$(SolutionDir)LG_Map\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SDL_DIR_LIB)SDL2\lib\$(PlatformTarget)\;$(SDL_DIR_LIB)SDL2_image\lib\$(PlatformTarget);$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
+    <IncludePath>$(SDL_DIR_LIB)SDL2\include\;$(SDL_DIR_LIB)SDL2_image\include\;$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Algorithms\Include\;$(SolutionDir)LG_Geometry\Include\;$(SolutionDir)LG_Map\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SDL_DIR_LIB)SDL2\lib\$(PlatformTarget)\;$(SDL_DIR_LIB)SDL2_image\lib\$(PlatformTarget);$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
+    <IncludePath>$(SDL_DIR_LIB)SDL2\include\;$(SDL_DIR_LIB)SDL2_image\include\;$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Algorithms\Include\;$(SolutionDir)LG_Geometry\Include\;$(SolutionDir)LG_Map\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SDL_DIR_LIB)SDL2\lib\$(PlatformTarget)\;$(SDL_DIR_LIB)SDL2_image\lib\$(PlatformTarget);$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LG_GEOMETRY_EXPORTS;_WINDLL%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include\;$(SDL_DIR_LIB)SDL2\include\;$(SDL_DIR_LIB)SDL2_image\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SDL_DIR_LIB)SDL2\lib\$(PlatformTarget)\;$(SDL_DIR_LIB)SDL2_image\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;LG_Utilities.lib;LG_Geometry.lib;LG_Map.lib;LG_Algorithms.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
     </BuildLog>
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>LG_Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
-      <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LG_GEOMETRY_EXPORTS;_WINDLL%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include\;$(SDL_DIR_LIB)SDL2\include\;$(SDL_DIR_LIB)SDL2_image\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SDL_DIR_LIB)SDL2\lib\$(PlatformTarget)\;$(SDL_DIR_LIB)SDL2_image\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;LG_Utilities.lib;LG_Geometry.lib;LG_Map.lib;LG_Algorithms.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
     </BuildLog>
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>LG_Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
-      <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -135,16 +138,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LG_GEOMETRY_EXPORTS;_WINDLL%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include\;$(SDL_DIR_LIB)SDL2\include\;$(SDL_DIR_LIB)SDL2_image\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>LG_Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
-      <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
+      <AdditionalLibraryDirectories>$(SDL_DIR_LIB)SDL2\lib\$(PlatformTarget)\;$(SDL_DIR_LIB)SDL2_image\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;LG_Utilities.lib;LG_Geometry.lib;LG_Map.lib;LG_Algorithms.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
@@ -157,40 +158,19 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LG_GEOMETRY_EXPORTS;_WINDLL%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include\;$(SDL_DIR_LIB)SDL2\include\;$(SDL_DIR_LIB)SDL2_image\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>LG_Utilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
-      <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
+      <AdditionalLibraryDirectories>$(SDL_DIR_LIB)SDL2\lib\$(PlatformTarget)\;$(SDL_DIR_LIB)SDL2_image\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;LG_Utilities.lib;LG_Geometry.lib;LG_Map.lib;LG_Algorithms.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Include\LG_Circle.h" />
-    <ClInclude Include="Include\LG_GeometryPrerequisites.h" />
-    <ClInclude Include="Include\LG_Isoline.h" />
-    <ClInclude Include="Include\LG_Line.h" />
-    <ClInclude Include="Include\LG_Node.h" />
-    <ClInclude Include="Include\LG_Polygon.h" />
-    <ClInclude Include="Include\LG_Rect.h" />
-    <ClInclude Include="Include\LG_Triangle.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Src\LG_Circle.cpp" />
-    <ClCompile Include="Src\LG_Isoline.cpp" />
-    <ClCompile Include="Src\LG_Line.cpp" />
-    <ClCompile Include="Src\LG_Node.cpp" />
-    <ClCompile Include="Src\LG_Polygon.cpp" />
-    <ClCompile Include="Src\LG_Rect.cpp" />
-    <ClCompile Include="Src\LG_Triangle.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -12,7 +12,7 @@ namespace LevelGenerator
 	public:
 
 		///************************************************************************/
-		///*                        Constructor & Destructor.					  */
+		///*                        Constructors & Destructors.					  */
 		///************************************************************************/
 
 		/**
@@ -26,12 +26,17 @@ namespace LevelGenerator
 		~LG_Node();
 
 		/**
+		 *	@brief Copy constructor.
+		 */
+		LG_Node(LG_Node *node);
+
+		/**
 		 *	@brief Parameters Constructor.
 		 */
 		LG_Node(LG_Vector3D vPosition);
 
 		/**
-		 *	@brief parameter Constructor.
+		 *	@brief Parameter Constructor.
 		 */
 		LG_Node(float fx, float fy, float fz);
 
@@ -75,7 +80,7 @@ namespace LevelGenerator
 		void Init();
 
 		/**
-		 *	@brief Function to realease memory and destroy objects.
+		 *	@brief Function to release memory and destroy objects.
 		 */
 		void Destroy();
 
@@ -89,6 +94,17 @@ namespace LevelGenerator
 		 *	@return the new values for this node.
 		 */
 		LG_Node& operator=(const LG_Node& OtherNode);
+
+		///************************************************************************/
+		///*					Compound Assignment Operators.				      */
+		///************************************************************************/
+
+		/**
+		 *	@brief This operator compares that 2 Nodes are the same.
+		 *	@param const LG_Triangle& OtherNode: The Node to compare with this.
+		 *	@return true if the Node is the same that this, otherwise false.
+		 */
+		bool operator==(const LG_Node& OtherNode) const;
 
 		//TODO: Crear funciones accesoras set y get para poder poner privada la posicion del nodo.
 	};

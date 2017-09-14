@@ -1,9 +1,10 @@
 #pragma once
 #include "LG_AlgorithmsPrerequisites.h"
 
-#include <LG_Triangle.h>
 #include <LG_Vector3D.h>
 #include <LG_Isoline.h>
+#include <LG_Triangle.h>
+#include <LG_Polygon.h>
 
 namespace LevelGenerator
 {
@@ -34,8 +35,13 @@ namespace LevelGenerator
 		/**
 		 *	@brief where we store our triangulation.
 		 */
-		Vector<LG_Triangle> m_TrianglesVector;
-		
+		Vector<LG_Triangle*> m_pTrianglesVector;
+
+		/**
+		 *	@brief a vector to store the incorrect triangles.
+		 */
+		Vector<LG_Triangle*> m_pBadTriangles;
+
 		/**
 		 *	@brief The set of nodes that we want to triangulate.
 		 */
@@ -44,16 +50,22 @@ namespace LevelGenerator
 		/**
 		 *	@brief A big triangle to make an initial triangulation from the nodes given.
 		 */
-		LG_Triangle m_BigTriangle;
+		LG_Triangle* m_pBigTriangle;
 
 		/**
-		 *	@brief This variable store a actual triangle.
+		 *	@brief The Polygon to create.
 		 */
-		LG_Triangle* m_pActualTriangle;
+		LG_Polygon m_Polygon;
 
-
+		/**
+		 *	@brief This variable stores a counter of the amount of triangles.
+		 */
 		int32 m_iTrianglesAmount;
 
+		/**
+		 *	@brief This variable stores a counter of the amount of edges.
+		 */
+		int32 m_iEdgeAmount;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */
@@ -70,8 +82,8 @@ namespace LevelGenerator
 		void Init(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> PointsCloud);
 
 		/**
-		*  @brief This function releases memory and clears the variables.
-		*/
+		 *  @brief This function releases memory and clears the variables.
+		 */
 		void Destroy();
 
 		/**
@@ -83,20 +95,26 @@ namespace LevelGenerator
 		 */
 		void Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud);
 
-		/**
-		 *  @brief This function create a triangle from one triangle and a node.
-		 *	@param LG_Triangle ActualTriangle: The base triangle to generate 3 new triangles.
-		 *	@param LG_Node* pNodeInside: The node used to make the 3 new triangles.
-		 *	@param int32 iCountNode: The node number iteration that we want to use of the triangle.
-		 */
-		void CreateTriangle(LG_Triangle ActualTriangle, LG_Node* pNodeInside, int32 iCountNode);
+	private:
 
 		/**
-		 *  @brief This function create a 3 triangles from one triangle and a node.
-		 *	@param LG_Triangle ActualTriangle: The base triangle to generate 3 new triangles.
-		 *	@param LG_Node* pNodeInside: The node used to make the 3 new triangles.
+		 *	@brief This function create a new triangles from the given node.
+		 *	@param LG_Node* pIteratingNode: The node that we want to create a new triangles.
 		 */
-		void CreateTriangles(LG_Triangle ActualTriangle, LG_Node* pNodeInside);
+		void CreateNewTriangles(LG_Node* IteratingNode);
+
+
+		/**
+		 *	@brief This function adds a bad triangle if it haves the iterating node inside of it.
+		 *	@param const LG_Node& IteratingNode: the iterating node that will be compared.
+		 */
+		void CreateBadTriangles(const LG_Node& IteratingNode);
+
+		/**
+		 *	@brief This function check if one node is inside of one circle.
+		 *	@param LG_Triangle ActualTriangle: the iterating triangle that will be used to check if it's circle has a node inside.
+		 */
+		bool CheckNodeInsideOfCircle(LG_Triangle ActualTriangle);
 
 		/**
 		 *	@brief This function create a big triangle.
@@ -107,12 +125,6 @@ namespace LevelGenerator
 		void CreateBigTriangle(int32 iWidth, int32 iHeight, LG_Vector3D GridCenter);
 
 		/**
-		 *	@brief This function determine when we can stop the triangulation.
-		 *	@return true if all nodes flags bInside are true, otherwise false.
-		 */
-		bool CheckifAllNodesAreTrue();
-
-		/**
 		 *	@brief This function compares the iterating node's position with any of the iterating triangle's node.
 		 *	@param LG_Triangle IteratingTriangle: The actual triangle.
 		 *	@param LG_Node IteratingNode: The actual iterating node.
@@ -121,9 +133,44 @@ namespace LevelGenerator
 		bool CheckIfSharesPosition(LG_Triangle IteratingTriangle, LG_Node IteratingNode);
 
 		/**
-		 *	@brief This function set the triangle as check when it doesn't have any node inside.
-		 *	@param LG_Triangle& IteratingTriangle: The actual triangle.
+		 *	@brief This function sees if all the triangles from the vector have their flags set as false.
+		 *	@return true when there are no triangles set as true;
 		 */
-		void SetTriangleFlag(LG_Triangle& IteratingTriangle);
+		bool AreTrianglesFalse();
+
+		/**
+		 *	@brief This function deletes all of the triangles shared with the big triangle.
+		 */
+		void EliminateTriangles();
+
+		/**
+		 *	@brief This function create a polygon.
+		 */
+		void CreatePolygon();
+
+		/**
+		 *	@brief This function create the vector of bad triangles.
+		 */
+		void CreateBadTriangles();
+
+		/**
+		 *	@brief This function eliminate the bad triangles in the vector of triangles.
+		 */
+		void EliminateBadTrianglesFromTriangulation();
+
+		/**
+		 *	@brief Check if the triangle already exist in the bad triangle vector.
+		 *	@param int32 TriangleID: The id of the triangle that we want to check if is already in the vector.
+		 *	@return true if the triangle already exist, otherwise false.
+		 */
+		bool CheckIfBadTriangleExist(int32 TriangleID);
+
+		/**
+		 *	@brief Check if the triangle already exist in the triangle vector.
+		 *	@param int32 TriangleID: The id of the triangle that we want to check if is already in the vector.
+		 *	@param true if the triangle already exist, otherwise false.
+	     */
+		bool CheckIfTriangleExist(int32 TriangleID);
+
 	};
 }

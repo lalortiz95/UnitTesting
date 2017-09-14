@@ -36,5 +36,23 @@ TEST(UtilitiesUnitTest, Matrices)
 	EXPECT_TRUE(sizeof(uint64) == 8);
 	EXPECT_TRUE(sizeof(uint128) == 16);
 
+	//TODO: hacer el unit test del gauss jordan
+	LG_Vector4D Result;
+	LG_Matrix4D GaussJ =
+	{ 3, 2,-3,-13,
+	  4,-3, 6, 7,
+	  1, 0,-1,-5,
+  	  0, 0, 0, 0 };
+
+	GaussJ.GaussJordan(Result);
+
+	GaussJ =
+	{ 3, 6,-3,-13,
+		4,-3, 6, 7,
+		-2, 5,-3,4,
+		0, 0, 0, 0 };
+
+	GaussJ.GaussJordan(Result);
+
 	system("pause");
 }

@@ -53,7 +53,7 @@ TEST(Generate_Algorithm, GenerateCasesFromMS)
 	EXPECT_TRUE(GenerateAlgorithm.m_FinalIsolineVector[2].m_NodeVector.size() == 11);
 
 	//Debe generar 39 triangulos.
-	EXPECT_TRUE(GenerateAlgorithm.m_DT.m_TrianglesVector.size() == 39);
+	EXPECT_TRUE(GenerateAlgorithm.m_DT.m_pTrianglesVector.size() == 39);
 }
 
 TEST(MarchingSquare_Algorithm, CheckCases)

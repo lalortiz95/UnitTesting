@@ -26,4 +26,13 @@ namespace LevelGenerator
 	{
 
 	}
+
+	//! Checks if there is a dot inside of the circle.
+	bool LG_Circle::IsDotInside(LG_Vector3D dotToCheck)
+	{
+		/// Generates a new vector between the dot and the circle's position.
+		LG_Vector3D Mag = dotToCheck - m_Position;
+		/// see if it's inside.
+		return (Mag.Magnitude() <= m_fRadius);
+	}
 }
