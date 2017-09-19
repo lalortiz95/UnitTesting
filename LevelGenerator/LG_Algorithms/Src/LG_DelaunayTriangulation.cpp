@@ -74,25 +74,30 @@ namespace LevelGenerator
 		
 	}
 
+	//! This function checks if one edge of the given trinagle is already in the polygon's edge vector.
 	void LG_DelaunayTriangulation::CheckIfEdgeIsInside(LG_Triangle& IteratingTriangle)
 	{
+		/// Create a flag to determinate when we can add a edge to the polygon.
 		bool bCanAddEdge = true;
+		/// Iterate for each edge of the triangle.
 		for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
 		{
+			/// Iterate for each edge of the polygon.
 			for (int32 j = 0; j < m_Polygon.m_pEdgeVector.size(); ++j)
 			{
-				
+				/// Compare the iterating edge of the given triangle with the iterating polygon's edge.
 				if (IteratingTriangle.m_Edges[i].CompareIndex(*m_Polygon.m_pEdgeVector[j]))
 				{
+					/// Set the flag to false.
 					bCanAddEdge = false;
 				}
 			}
+			/// If this flag is still true, we add the iterating edge to the polygon.
 			if (bCanAddEdge)
 			{
+				/// The iterating edge is added to the polygon edge vector.
 				m_Polygon.InsertEdgeToVector(&IteratingTriangle.m_Edges[i]);
-			}
-			else
-			{
+				/// Set the flag as true.
 				bCanAddEdge = true;
 			}
 		}
@@ -105,14 +110,14 @@ namespace LevelGenerator
 			LG_Triangle* pTriangle;
 		for (int32 i = 0; i < m_Polygon.m_pEdgeVector.size(); ++i)
 		{
-			/// create a new triangle from the iterating edge from the polygon
-			/// to the iterating node.
+			/// create a new triangle from the polygon's iterating edge to the iterating node.
 			pTriangle = new LG_Triangle();
+			/// Call the triangle's initialize function.
 			pTriangle->Init(m_Polygon.m_pEdgeVector[i]->m_pFirstNode,
 				m_Polygon.m_pEdgeVector[i]->m_pSecondNode,
 				pIteratingNode);
 
-			/// Adds the triangle to the vector.
+			/// Adds the new triangle to the vector.
 			m_pTrianglesVector.push_back(pTriangle);
 		}
 	}
@@ -122,6 +127,7 @@ namespace LevelGenerator
 	{
 		int32 iInitialSize = m_pTrianglesVector.size();
 		int32 iCount = 0;
+		LG_Triangle* pTriangle = nullptr;
 
 		while (iCount < iInitialSize)
 		{
@@ -137,14 +143,14 @@ namespace LevelGenerator
 					if ((*itt)->m_CircumcircleCircumference.IsDotInside(
 						IteratingNode.m_Position))
 					{
-						LG_Triangle* pTriangle = *itt;
+						pTriangle = *itt;
 						m_pTrianglesVector.erase(itt);
 						m_pBadTriangles.push_back(pTriangle);
-						iCount++;
+						++iCount;
 						break;
 					}
 				}
-				iCount++;
+				++iCount;
 			}
 		}
 

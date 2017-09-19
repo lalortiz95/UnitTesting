@@ -87,10 +87,8 @@ namespace LevelGenerator
 
 	private:
 
-		//////////////////////////////////////////////////////////////////////////
-
 		/**
-		 *	@brief This function check if one edge of the iteratingTriangle is inside of the polygon edge vector.
+		 *	@brief //! This function checks if one edge of the given trinagle is already in the polygon's edge vector.
 		 *	@param LG_Triangle& IteratingTriangle: The triangle that we want to check.
 		 */
 		void CheckIfEdgeIsInside(LG_Triangle& IteratingTriangle);
@@ -101,20 +99,11 @@ namespace LevelGenerator
 		 */
 		void SetTriangleAsBadTriangle(const LG_Node& IteratingNode);
 
-
-		//////////////////////////////////////////////////////////////////////////
-
 		/**
 		 *	@brief This function create a new triangles from the given node.
 		 *	@param LG_Node* pIteratingNode: The node that we want to create a new triangles.
 		 */
 		void CreateNewTriangles(LG_Node* IteratingNode);
-
-		/**
-		 *	@brief This function check if one node is inside of one circle.
-		 *	@param LG_Triangle ActualTriangle: the iterating triangle that will be used to check if it's circle has a node inside.
-		 */
-		bool CheckNodeInsideOfCircle(LG_Triangle ActualTriangle);
 
 		/**
 		 *	@brief This function create a big triangle.
@@ -125,20 +114,6 @@ namespace LevelGenerator
 		void CreateBigTriangle(int32 iWidth, int32 iHeight, LG_Vector3D GridCenter);
 
 		/**
-		 *	@brief This function compares the iterating node's position with any of the iterating triangle's node.
-		 *	@param LG_Triangle IteratingTriangle: The actual triangle.
-		 *	@param LG_Node IteratingNode: The actual iterating node.
-		 *	@return true if one of the triangle's nodes shares position with the iterating node.
-		 */
-		bool CheckIfSharesPosition(LG_Triangle IteratingTriangle, LG_Node IteratingNode);
-
-		/**
-		 *	@brief This function sees if all the triangles from the vector have their flags set as false.
-		 *	@return true when there are no triangles set as true;
-		 */
-		bool AreTrianglesFalse();
-
-		/**
 		 *	@brief This function deletes all of the triangles shared with the big triangle.
 		 */
 		void EliminateTriangles();
@@ -147,25 +122,5 @@ namespace LevelGenerator
 		 *	@brief This function create a polygon.
 		 */
 		void CreatePolygon();
-
-		/**
-		 *	@brief This function create the vector of bad triangles.
-		 */
-		void CreateBadTriangles();
-
-		/**
-		 *	@brief Check if the triangle already exist in the bad triangle vector.
-		 *	@param int32 TriangleID: The id of the triangle that we want to check if is already in the vector.
-		 *	@return true if the triangle already exist, otherwise false.
-		 */
-		bool CheckIfBadTriangleExist(int32 TriangleID);
-
-		/**
-		 *	@brief Check if the triangle already exist in the triangle vector.
-		 *	@param int32 TriangleID: The id of the triangle that we want to check if is already in the vector.
-		 *	@param true if the triangle already exist, otherwise false.
-	     */
-		bool CheckIfTriangleExist(int32 TriangleID);
-
 	};
 }
