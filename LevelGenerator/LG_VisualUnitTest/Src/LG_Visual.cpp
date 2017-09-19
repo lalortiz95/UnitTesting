@@ -160,31 +160,31 @@ void LG_Visual::Renderer()
 	/// Aqui rendereamos los ciruclos creados a partir de cada triangulo de la triangulacion.
 	LG_Vector3D Color{ 0,255,0 };
 
-	/// Aqui se rendera los triangulos de la triangulacion.
-	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
-	{
-		 DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
-			Color,
-			50);
-		for (LevelGenerator::int32 j = 0; j < 3; ++j)
-		{
-			posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_Edges[j].m_pFirstNode->m_Position;
-			Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_Edges[j].m_pSecondNode->m_Position;
+	///// Aqui se rendera los triangulos de la triangulacion.
+	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
+	//{
+	//	 DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
+	//		Color,
+	//		50);
+	//	for (LevelGenerator::int32 j = 0; j < 3; ++j)
+	//	{
+	//		posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_Edges[j].m_pFirstNode->m_Position;
+	//		Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_Edges[j].m_pSecondNode->m_Position;
 
-			// Draw red line.
-			SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
-			// en la posición de cada nodo dibujar un punto con SDL.
-			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-		}
-	}
+	//		// Draw red line.
+	//		SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
+	//		// en la posición de cada nodo dibujar un punto con SDL.
+	//		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//	}
+	//}
 
-	/// Aqui se rendera los triangulos malos de la triangulacion.
-	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_IncorrectTriangles.size(); ++i)
+	// ///Aqui se rendera los triangulos malos de la triangulacion.
+	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pBadTriangles.size(); ++i)
 	//{
 	//	for (LevelGenerator::int32 j = 0; j < 3; ++j)
 	//	{
-	//		posToSpawn = AlgorithmGeneration.m_DT.m_IncorrectTriangles[i].m_Edges[j].m_pFirstNode->m_Position;
-	//		Secondpos = AlgorithmGeneration.m_DT.m_IncorrectTriangles[i].m_Edges[j].m_pSecondNode->m_Position;
+	//		posToSpawn = AlgorithmGeneration.m_DT.m_pBadTriangles[i]->m_Edges[j].m_pFirstNode->m_Position;
+	//		Secondpos = AlgorithmGeneration.m_DT.m_pBadTriangles[i]->m_Edges[j].m_pSecondNode->m_Position;
 
 	//		// Draw blue line.
 	//		SDL_SetRenderDrawColor(m_Renderer, 0, 0, 255, 0xFF);
@@ -193,17 +193,17 @@ void LG_Visual::Renderer()
 	//	}
 	//}
 
-	///// Aqui rendereamos el polygono.
-	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_Polygon.m_EdgeVector.size(); ++i)
-	//{
-	//	posToSpawn = AlgorithmGeneration.m_DT.m_Polygon.m_EdgeVector[i].m_pFirstNode->m_Position;
-	//	Secondpos = AlgorithmGeneration.m_DT.m_Polygon.m_EdgeVector[i].m_pSecondNode->m_Position;
+	/// Aqui rendereamos el polygono.
+	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_Polygon.m_pEdgeVector.size(); ++i)
+	{
+		posToSpawn = AlgorithmGeneration.m_DT.m_Polygon.m_pEdgeVector[i]->m_pFirstNode->m_Position;
+		Secondpos = AlgorithmGeneration.m_DT.m_Polygon.m_pEdgeVector[i]->m_pSecondNode->m_Position;
 
-	//	// Draw red line.
-	//	SDL_SetRenderDrawColor(m_Renderer, 0, 0, 0, 0);
-	//	// en la posición de cada nodo dibujar un punto con SDL.
-	//	SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-	//}
+		// Draw red line.
+		SDL_SetRenderDrawColor(m_Renderer, 0, 0, 0, 0);
+		// en la posición de cada nodo dibujar un punto con SDL.
+		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	}
 
 	/*///We draw a dot wherever there is a node, as an output of the performed Delaunay Triangulation algorithm.
 	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_TrianglesVector.size(); ++i)

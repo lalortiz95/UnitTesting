@@ -174,6 +174,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Include\LG_Circle.h" />
+    <ClInclude Include="Include\LG_Edge.h" />
     <ClInclude Include="Include\LG_GeometryPrerequisites.h" />
     <ClInclude Include="Include\LG_Isoline.h" />
     <ClInclude Include="Include\LG_Line.h" />
@@ -184,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_Circle.cpp" />
+    <ClCompile Include="Src\LG_Edge.cpp" />
     <ClCompile Include="Src\LG_Isoline.cpp" />
     <ClCompile Include="Src\LG_Line.cpp" />
     <ClCompile Include="Src\LG_Node.cpp" />

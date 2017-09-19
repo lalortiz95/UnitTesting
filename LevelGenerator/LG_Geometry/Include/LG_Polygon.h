@@ -31,7 +31,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief A vector of nodes.
 		 */
-		Vector<LG_Triangle::LG_Edge> m_EdgeVector;
+		Vector<LG_Edge*> m_pEdgeVector;
 
 		///**************************************************************************/
 		///*						  Class Functions.								*/
@@ -41,7 +41,7 @@ namespace LevelGenerator
 		 *	@brief This function add a edge to the vector of edges.
 		 *	@param LG_Triangle::LG_Edge* EdgeToAdd: Edge that we want to add.
 		 */
-		void InsertEdgeToVector(LG_Triangle::LG_Edge* EdgeToAdd);
+		void InsertEdgeToVector(LG_Edge* EdgeToAdd);
 
 	};
 }

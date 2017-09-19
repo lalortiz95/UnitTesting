@@ -57,16 +57,6 @@ namespace LevelGenerator
 		 */
 		LG_Polygon m_Polygon;
 
-		/**
-		 *	@brief This variable stores a counter of the amount of triangles.
-		 */
-		int32 m_iTrianglesAmount;
-
-		/**
-		 *	@brief This variable stores a counter of the amount of edges.
-		 */
-		int32 m_iEdgeAmount;
-
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
@@ -97,18 +87,28 @@ namespace LevelGenerator
 
 	private:
 
-		/**
-		 *	@brief This function create a new triangles from the given node.
-		 *	@param LG_Node* pIteratingNode: The node that we want to create a new triangles.
-		 */
-		void CreateNewTriangles(LG_Node* IteratingNode);
+		//////////////////////////////////////////////////////////////////////////
 
+		/**
+		 *	@brief This function check if one edge of the iteratingTriangle is inside of the polygon edge vector.
+		 *	@param LG_Triangle& IteratingTriangle: The triangle that we want to check.
+		 */
+		void CheckIfEdgeIsInside(LG_Triangle& IteratingTriangle);
 
 		/**
 		 *	@brief This function adds a bad triangle if it haves the iterating node inside of it.
 		 *	@param const LG_Node& IteratingNode: the iterating node that will be compared.
 		 */
-		void CreateBadTriangles(const LG_Node& IteratingNode);
+		void SetTriangleAsBadTriangle(const LG_Node& IteratingNode);
+
+
+		//////////////////////////////////////////////////////////////////////////
+
+		/**
+		 *	@brief This function create a new triangles from the given node.
+		 *	@param LG_Node* pIteratingNode: The node that we want to create a new triangles.
+		 */
+		void CreateNewTriangles(LG_Node* IteratingNode);
 
 		/**
 		 *	@brief This function check if one node is inside of one circle.
@@ -152,11 +152,6 @@ namespace LevelGenerator
 		 *	@brief This function create the vector of bad triangles.
 		 */
 		void CreateBadTriangles();
-
-		/**
-		 *	@brief This function eliminate the bad triangles in the vector of triangles.
-		 */
-		void EliminateBadTrianglesFromTriangulation();
 
 		/**
 		 *	@brief Check if the triangle already exist in the bad triangle vector.

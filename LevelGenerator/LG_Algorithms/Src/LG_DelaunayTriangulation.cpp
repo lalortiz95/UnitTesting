@@ -21,8 +21,6 @@ namespace LevelGenerator
 	{
 		Destroy();
 
-		m_iTrianglesAmount = 0;
-		m_iEdgeAmount = 0;
 		/// Store in the nodes cloud all of the nodes in the isoline vector.
 		for (int32 i = 0; i < NodesCloud.size(); ++i)
 		{
@@ -65,100 +63,54 @@ namespace LevelGenerator
 		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
 		{
 			/// If the node is inside of the circumcircle circumference.
-			CreateBadTriangles(m_NodesCloud[i]);
+			SetTriangleAsBadTriangle(m_NodesCloud[i]);
 			/// 
 			CreatePolygon();
-			/// 
-			EliminateBadTrianglesFromTriangulation();
 			///
 			CreateNewTriangles(&m_NodesCloud[i]);
 		}
 		EliminateTriangles();
 
-		/*///We now check that none of the triangle's vertices share position with one of the big triangles.
-		Vector<LG_Triangle>::iterator itt = m_TrianglesVector.begin();
-		for (int32 i = 0; i < m_TrianglesVector.size(); ++i)
+		
+	}
+
+	void LG_DelaunayTriangulation::CheckIfEdgeIsInside(LG_Triangle& IteratingTriangle)
+	{
+		bool bCanAddEdge = true;
+		for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
 		{
-			for (int32 j = 0; j < NUM_EDGES_PER_TRIANGLE; ++j)
+			for (int32 j = 0; j < m_Polygon.m_pEdgeVector.size(); ++j)
 			{
-				for (int32 k = 0; k < NUM_EDGES_PER_TRIANGLE; ++k)
+				
+				if (IteratingTriangle.m_Edges[i].CompareIndex(*m_Polygon.m_pEdgeVector[j]))
 				{
-					/// If any of the nodes in the triangulation shares position with a vertex of the big triangle, we eliminate such triangle.
-					if (m_TrianglesVector[i].m_pVertices[j]->m_Position ==
-						m_BigTriangle.m_pVertices[k]->m_Position)
-					{
-						/// Delete the triangle.
-						m_TrianglesVector.erase(itt);
-					}
+					bCanAddEdge = false;
 				}
 			}
-			/// change the iterator.
-			++itt;
-		}*/
-
-		///// Start the while cycle.
-		//while (!bQuit)
-		//{
-		//	/// Reset the flags.
-		//	bQuit = true;
-		//	bBreakFirstFor = false;
-		//	/// Iterate the node's cloud.
-		//	for (int32 j = 0; j < m_NodesCloud.size(); ++j)
-		//	{
-		//		/// Check if the iterating node is inside of the iterating triangle and
-		//		/// the iterating triangle is not checked. And we also check that it doesn't compare
-		//		/// against itself.
-		//		if (m_pActualTriangle->IsPointInside(&m_NodesCloud[j]) &&
-		//			!m_pActualTriangle->m_bIsChecked &&
-		//			!CheckIfSharesPosition(*m_pActualTriangle, m_NodesCloud[j]) &&
-		//			!m_NodesCloud[j].m_bIsInside)
-		//		{
-		//			/// Create 3 new triangles.
-		//			CreateTriangles(*m_pActualTriangle, &m_NodesCloud[j]);
-		//			//SetTriangleFlag(*m_pActualTriangle);
-		//			/// We set as actaual tile the last inserted node.
-		//			m_pActualTriangle = &m_TrianglesVector.front();
-		//			/// Set the flag to break the first for.
-		//			bBreakFirstFor = true;
-		//			/// Break the second for.
-		//			break;
-		//		}
-		//	}
-		//	if (!bBreakFirstFor)
-		//	{
-		//		/// If it didn't have dots inside we set that triangle as checked.
-		//		m_pActualTriangle->m_bIsChecked = true;
-		//		/// Find a new actual triangle, starting from the last inserted triangle to the first one.
-		//		for (int32 i = 0; i < m_TrianglesVector.size(); ++i)
-		//		{
-		//			/// If the triangle haven't been checked.
-		//			if (!m_TrianglesVector[i].m_bIsChecked)
-		//			{
-		//				/// Set the new actual tile.
-		//				m_pActualTriangle = &m_TrianglesVector[i];
-		//				break;
-		//			}
-		//		}
-		//	}
-		//	/// Assign the new value to this flag if it's true, finish the cycle.
-		//	bQuit = CheckifAllNodesAreTrue();
-		//}
+			if (bCanAddEdge)
+			{
+				m_Polygon.InsertEdgeToVector(&IteratingTriangle.m_Edges[i]);
+			}
+			else
+			{
+				bCanAddEdge = true;
+			}
+		}
 	}
 
 	//! This function create a new triangles from the given node.
 	void LG_DelaunayTriangulation::CreateNewTriangles(LG_Node* pIteratingNode)
 	{
-		//TODO: checar que nohayan edges duplicados
 		/// Creates a triangle from the polygon's edges and the iterating node.
 			LG_Triangle* pTriangle;
-		for (int32 i = 0; i < m_Polygon.m_EdgeVector.size(); ++i)
+		for (int32 i = 0; i < m_Polygon.m_pEdgeVector.size(); ++i)
 		{
 			/// create a new triangle from the iterating edge from the polygon
 			/// to the iterating node.
 			pTriangle = new LG_Triangle();
-			pTriangle->Init(m_Polygon.m_EdgeVector[i].m_pFirstNode,
-				m_Polygon.m_EdgeVector[i].m_pSecondNode,
-				pIteratingNode, m_iTrianglesAmount, m_iEdgeAmount);
+			pTriangle->Init(m_Polygon.m_pEdgeVector[i]->m_pFirstNode,
+				m_Polygon.m_pEdgeVector[i]->m_pSecondNode,
+				pIteratingNode);
 
 			/// Adds the triangle to the vector.
 			m_pTrianglesVector.push_back(pTriangle);
@@ -166,53 +118,44 @@ namespace LevelGenerator
 	}
 
 	//! 
-	void LG_DelaunayTriangulation::CreateBadTriangles(const LG_Node& IteratingNode)
+	void LG_DelaunayTriangulation::SetTriangleAsBadTriangle(const LG_Node& IteratingNode)
 	{
-		///
-		for (int32 j = 0; j < m_pTrianglesVector.size(); ++j)
-		{
-			/// check if the node is inside of the circle.
-			if (m_pTrianglesVector[j]->m_CircumcircleCircumference.IsDotInside(
-				IteratingNode.m_Position))
-			{
-				/// Add the triangle to the incorrect triangle's vector.
-				m_pBadTriangles.push_back(m_pTrianglesVector[j]);
-			}
-		}
-	}
+		int32 iInitialSize = m_pTrianglesVector.size();
+		int32 iCount = 0;
 
-	//! This function check if one node is inside of one circle.
-	bool LG_DelaunayTriangulation::CheckNodeInsideOfCircle(LG_Triangle ActualTriangle)
-	{
-		uint32 DotsInside = 0;
-		/// iterate through the nodde cloud.
-		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+		while (iCount < iInitialSize)
 		{
-			/// check if the node is inside of the circle.
-			if (ActualTriangle.m_CircumcircleCircumference.IsDotInside(
-				m_NodesCloud[i].m_Position))
+			///
+			for (Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin(); itt != m_pTrianglesVector.end(); ++itt)
 			{
-				/// Add one to the counter.
-				++DotsInside;
-				/// if it have more than 3 nodes inside, it means its an incorrect triangle.
-				if (DotsInside > 3)
+
+				if (((*itt)->m_NodeIndex[FIRST_INDEX] != IteratingNode.m_iID) &&
+					((*itt)->m_NodeIndex[SECOND_INDEX] != IteratingNode.m_iID) &&
+					((*itt)->m_NodeIndex[THIRD_INDEX] != IteratingNode.m_iID))
 				{
-					return true;
+					/// check if the node is inside of the circle.
+					if ((*itt)->m_CircumcircleCircumference.IsDotInside(
+						IteratingNode.m_Position))
+					{
+						LG_Triangle* pTriangle = *itt;
+						m_pTrianglesVector.erase(itt);
+						m_pBadTriangles.push_back(pTriangle);
+						iCount++;
+						break;
+					}
 				}
+				iCount++;
 			}
 		}
 
-		/// If the code got to this point, the triangle is correct.
-		return false;
 	}
-
-
 
 	//! This function create a big triangle.
 	void LG_DelaunayTriangulation::CreateBigTriangle(int32 iWidth, int32 iHeight, LG_Vector3D GridCenter)
 	{
 		/// X * 2 = the lenght of the triangle's arista. This only works when the grid is a square.
 		float AristaSize = float(iWidth * 2);
+		int32 iCountNode = 0;
 
 		/// We set the center of the grid to start off.
 		LG_Node* pNodePosition1 = new LG_Node();
@@ -225,43 +168,42 @@ namespace LevelGenerator
 		pNodePosition1->m_Position.Y -= iHeight / 2;
 		/// Substract half of the size of the arista to the left.
 		pNodePosition1->m_Position.X -= AristaSize / 2;
+		/// Assign the ID for the node.
+		pNodePosition1->m_iID = iCountNode;
+		/// Add one to the counter node.
+		iCountNode++;
+
 
 		/// 
 		pNodePosition2->m_Position = pNodePosition1->m_Position;
 		/// Add the whole size of the arista for the next node.
 		pNodePosition2->m_Position.X += AristaSize;
 		pNodePosition2->m_Position.Y -= 1;
+		/// Assign the ID for the node.
+		pNodePosition2->m_iID = iCountNode;
+		/// Add one to the counter node.
+		iCountNode++;
 
 		/// 
 		pNodePosition3->m_Position = pNodePosition2->m_Position;
 		pNodePosition3->m_Position.X = GridCenter.X;
 		/// Get the last top node.
 		pNodePosition3->m_Position.Y += AristaSize + 1;
+		/// Assign the ID for the node.
+		pNodePosition3->m_iID = iCountNode;
+		/// Add one to the counter node.
+		iCountNode++;
+
 
 		m_pBigTriangle = new LG_Triangle();
-		m_pBigTriangle->Init(pNodePosition1, pNodePosition2, pNodePosition3, m_iTrianglesAmount, m_iEdgeAmount);
+		m_pBigTriangle->Init(pNodePosition1, pNodePosition2, pNodePosition3);
 
-	}
-
-	//! This function compares the iterating node's position with any of the iterating triangle's node.
-	bool LG_DelaunayTriangulation::CheckIfSharesPosition(LG_Triangle IteratingTriangle, LG_Node IteratingNode)
-	{
-		return ((IteratingTriangle.m_pVertices[FIRST_NODE]->m_Position == IteratingNode.m_Position) ||
-			(IteratingTriangle.m_pVertices[SECOND_NODE]->m_Position == IteratingNode.m_Position) ||
-			(IteratingTriangle.m_pVertices[THIRD_NODE]->m_Position == IteratingNode.m_Position));
-	}
-
-	//! This function sees if all the triangles from the vector have their flags set as false.
-	bool LG_DelaunayTriangulation::AreTrianglesFalse()
-	{
-		for (int32 i = 0; i < m_pTrianglesVector.size(); i++)
+		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
 		{
-			if (m_pTrianglesVector[i]->m_bIsChecked)
-			{
-				return false;
-			}
+			m_NodesCloud[i].m_iID = iCountNode;
+			iCountNode++;
 		}
-		return true;
+
 	}
 
 	//! This function deletes all of the triangles shared with the big triangle.
@@ -278,9 +220,9 @@ namespace LevelGenerator
 		{
 			for (int32 j = 0; j < 3; ++j)
 			{
-				if (m_pTrianglesVector[i]->m_pVertices[j] == m_pBigTriangle->m_pVertices[0] ||
-					m_pTrianglesVector[i]->m_pVertices[j] == m_pBigTriangle->m_pVertices[1] ||
-					m_pTrianglesVector[i]->m_pVertices[j] == m_pBigTriangle->m_pVertices[2])
+				if (m_pTrianglesVector[i]->m_pVertices[j] == m_pBigTriangle->m_pVertices[FIRST_NODE] ||
+					m_pTrianglesVector[i]->m_pVertices[j] == m_pBigTriangle->m_pVertices[SECOND_NODE] ||
+					m_pTrianglesVector[i]->m_pVertices[j] == m_pBigTriangle->m_pVertices[THIRD_NODE])
 				{
 					m_pTrianglesVector[i]->m_bIsChecked = true;
 					break;
@@ -309,10 +251,12 @@ namespace LevelGenerator
 	//! This function creates a polygon.
 	void LG_DelaunayTriangulation::CreatePolygon()
 	{
+
+		bool bCanAddEdge = false;
 		//TODO: meter esto al init
 		if (m_pBadTriangles.size() == 1)
 		{
-			for (int32 i = 0; i < NUM_EDGES_PER_TRIANGLE; ++i)
+			for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
 			{
 				/// The edge that didn't share position is added to the polygon.
 				m_Polygon.InsertEdgeToVector(&m_pBadTriangles[0]->m_Edges[i]);
@@ -320,70 +264,9 @@ namespace LevelGenerator
 			return;
 		}
 
-		//TODO: crear el poligono, wtf.
-		// checar en el poligono los edges que tiene, y le aventamos un edge para comparar
-		//
-	}
-
-	//! This function create the vector of bad triangles.
-	void LG_DelaunayTriangulation::CreateBadTriangles()
-	{
-		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
-		{
-			/// Verify that there are no dots inside of the triangle's circle.
-			if (CheckNodeInsideOfCircle(*m_pTrianglesVector[i]))
-			{
-				/// Set it's flag to false.
-				m_pTrianglesVector[i]->m_bIsChecked = false;
-				/// add the incorrect triangle to it's corresponding list.
-				m_pBadTriangles.push_back(m_pTrianglesVector[i]);
-			}
-		}
-	}
-
-	//! This function eliminate the bad triangles in the vector of triangles.
-	void LG_DelaunayTriangulation::EliminateBadTrianglesFromTriangulation()
-	{
-		/// An iterator to know what triangle to erase.
-		Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin();
-
-		/// Iterate through the incorrect triangles.
 		for (int32 i = 0; i < m_pBadTriangles.size(); ++i)
 		{
-			/// Assign an initial value for the iterator.
-			itt = m_pTrianglesVector.begin();
-			/// Iterate the correct triangles.
-			for (int32 j = 0; itt != m_pTrianglesVector.end(); ++itt)
-			{
-				/// when we find the same triangle we delete from the correct list.
-				if (m_pBadTriangles[i] == m_pTrianglesVector[j])
-				{
-					m_pTrianglesVector.erase(itt);
-					break;
-				}
-				/// Add one to the counter.
-				++j;
-			}
+			CheckIfEdgeIsInside(*m_pBadTriangles[i]);
 		}
-	}
-
-	//! Check if the triangle already exist in the bad triangle vector.
-	bool LG_DelaunayTriangulation::CheckIfBadTriangleExist(int32 TriangleID)
-	{
-		for (int32 i = 0; i < m_pBadTriangles.size(); ++i)
-		{
-			if (m_pBadTriangles[i]->m_iID == TriangleID) return true;
-		}
-		return false;
-	}
-
-	//! Check if the triangle already exist in the triangle vector.
-	bool LG_DelaunayTriangulation::CheckIfTriangleExist(int32 TriangleID)
-	{
-		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
-		{
-			if (m_pTrianglesVector[i]->m_iID == TriangleID) return true;
-		}
-		return false;
 	}
 }

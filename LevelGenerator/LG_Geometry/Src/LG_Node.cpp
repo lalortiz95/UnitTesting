@@ -62,7 +62,9 @@ namespace LevelGenerator
 	//! This operator compares that 2 Nodes are the same.
 	bool LG_Node::operator==(const LG_Node & OtherNode) const
 	{
-		return m_iID == OtherNode.m_iID;
+		/// Return true if the given node is the same that this.
+		return ((m_Position == OtherNode.m_Position) &&
+			(m_iID == OtherNode.m_iID));
 	}
 
 }

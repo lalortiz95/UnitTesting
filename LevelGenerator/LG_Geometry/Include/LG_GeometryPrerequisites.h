@@ -5,12 +5,22 @@
 #define SECOND_NODE 1			/// Number that define the second node of the line, or triangle.
 #define THIRD_NODE 2			/// A third node, used in a triangle.
 
-#define FIRST_ARISTA 0
-#define SECOND_ARISTA 1	
-#define THIRD_ARISTA 2	
+#define FIRST_EDGE 0
+#define SECOND_EDGE 1	
+#define THIRD_EDGE 2	
+
+#define FIRST_INDEX 0
+#define SECOND_INDEX 1
+#define THIRD_INDEX 2
+
+#define INDEX_PER_EDGE 2
 
 #define NODES_PER_LINE 2		/// Define a number of nodes per line.
-#define VERTEX_PER_TRIANGLE 3	/// Define a number of vertex per triangles.
+#define NODES_PER_EDGE 2		/// Define a number of nodes per edge.
+
+#define EDGES_PER_TRIANGLE 3	/// Define a number of edges per triangle.
+#define VERTEX_PER_TRIANGLE 3	/// Define a number of vertex per triangle.
+#define INDEX_PER_TRIANGLE 3    /// Define a number of index per triangle.
 
 #if defined(LG_GEOMETRY_EXPORTS)
 #	define LG_GEOMETRY_EXPORT __declspec(dllexport)

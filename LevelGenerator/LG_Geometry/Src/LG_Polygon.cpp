@@ -13,8 +13,8 @@ namespace LevelGenerator
 	}
 
 	//! This function add a edge to the vector of edges.
-	void LG_Polygon::InsertEdgeToVector(LG_Triangle::LG_Edge* EdgeToAdd)
+	void LG_Polygon::InsertEdgeToVector(LG_Edge* EdgeToAdd)
 	{
-		m_EdgeVector.push_back(*EdgeToAdd);
+		m_pEdgeVector.push_back(EdgeToAdd);
 	}
 }
