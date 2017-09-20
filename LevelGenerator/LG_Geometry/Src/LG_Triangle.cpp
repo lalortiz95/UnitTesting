@@ -16,6 +16,23 @@ namespace LevelGenerator
 		//Destroy();
 	}
 
+	void LG_Triangle::Init(LG_Edge* pFirstEdge, LG_Edge* pSecondEdge, LG_Edge* pThirdEdge)
+	{
+		m_pEdges[FIRST_EDGE] = pFirstEdge;
+		m_pEdges[SECOND_EDGE] = pSecondEdge;
+		m_pEdges[THIRD_EDGE] = pThirdEdge;
+
+		m_pVertices[FIRST_NODE] = pFirstEdge->m_pFirstNode;
+		m_pVertices[SECOND_NODE] = pFirstEdge->m_pSecondNode;
+		m_pVertices[THIRD_NODE] = pSecondEdge->m_pSecondNode;
+
+		m_NodeIndex[FIRST_INDEX] = m_pVertices[FIRST_NODE]->m_iID;
+		m_NodeIndex[SECOND_INDEX] = m_pVertices[SECOND_NODE]->m_iID;
+		m_NodeIndex[THIRD_INDEX] = m_pVertices[THIRD_NODE]->m_iID;
+
+		CalculateCircumcenter();
+	}
+
 	//! This function initialize all variables of the class.
 	void LG_Triangle::Init(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode)
 	{
@@ -30,9 +47,13 @@ namespace LevelGenerator
 		m_NodeIndex[SECOND_INDEX] = pSecondNode->m_iID;
 		m_NodeIndex[THIRD_INDEX] = pThirdNode->m_iID;
 
-		m_Edges[FIRST_EDGE].Init(pFirstNode, pSecondNode);
-		m_Edges[SECOND_EDGE].Init(pFirstNode, pThirdNode);
-		m_Edges[THIRD_EDGE].Init(pSecondNode, pThirdNode);
+		m_pEdges[FIRST_EDGE] = new LG_Edge();
+		m_pEdges[SECOND_EDGE] = new LG_Edge();
+		m_pEdges[THIRD_EDGE] = new LG_Edge();
+
+		m_pEdges[FIRST_EDGE]->Init(pFirstNode, pSecondNode);
+		m_pEdges[SECOND_EDGE]->Init(pFirstNode, pThirdNode);
+		m_pEdges[THIRD_EDGE]->Init(pSecondNode, pThirdNode);
 
 		CalculateCircumcenter();
 	}

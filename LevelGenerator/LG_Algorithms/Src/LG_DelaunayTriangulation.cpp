@@ -34,6 +34,10 @@ namespace LevelGenerator
 		/// Create a triangle that is outside of the node's cloud.
 		CreateBigTriangle(iGridWidth, iGridHeight, GridCenter);
 		m_pTrianglesVector.push_back(m_pBigTriangle);
+		for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
+		{
+			m_pEdgeVector.push_back(m_pBigTriangle->m_pEdges[i]);
+		}
 
 	}
 	//! This function releases memory and clears the variables.
@@ -65,17 +69,17 @@ namespace LevelGenerator
 			/// If the node is inside of the circumcircle circumference.
 			SetTriangleAsBadTriangle(m_NodesCloud[i]);
 			/// 
-			CreatePolygon();
+			AddEdgesToPolygon();
 			///
 			CreateNewTriangles(&m_NodesCloud[i]);
 		}
-		EliminateTriangles();
+		//EliminateTriangles();
 
-		
+
 	}
 
 	//! This function checks if one edge of the given trinagle is already in the polygon's edge vector.
-	void LG_DelaunayTriangulation::CheckIfEdgeIsInside(LG_Triangle& IteratingTriangle)
+	void LG_DelaunayTriangulation::CheckIfEdgeIsInside(LG_Triangle* pIteratingTriangle)
 	{
 		/// Create a flag to determinate when we can add a edge to the polygon.
 		bool bCanAddEdge = true;
@@ -86,17 +90,17 @@ namespace LevelGenerator
 			for (int32 j = 0; j < m_Polygon.m_pEdgeVector.size(); ++j)
 			{
 				/// Compare the iterating edge of the given triangle with the iterating polygon's edge.
-				if (IteratingTriangle.m_Edges[i].CompareIndex(*m_Polygon.m_pEdgeVector[j]))
+				if (pIteratingTriangle->m_pEdges[i]->CompareIndex(*m_Polygon.m_pEdgeVector[j]))
 				{
 					/// Set the flag to false.
-					bCanAddEdge = false;
+					bCanAddEdge = EdgeIsNotInTriangleVector(pIteratingTriangle->m_pEdges[i]);
 				}
 			}
 			/// If this flag is still true, we add the iterating edge to the polygon.
 			if (bCanAddEdge)
 			{
 				/// The iterating edge is added to the polygon edge vector.
-				m_Polygon.InsertEdgeToVector(&IteratingTriangle.m_Edges[i]);
+				m_Polygon.InsertEdgeToVector(pIteratingTriangle->m_pEdges[i]);
 				/// Set the flag as true.
 				bCanAddEdge = true;
 			}
@@ -107,19 +111,33 @@ namespace LevelGenerator
 	void LG_DelaunayTriangulation::CreateNewTriangles(LG_Node* pIteratingNode)
 	{
 		/// Creates a triangle from the polygon's edges and the iterating node.
-			LG_Triangle* pTriangle;
+		LG_Triangle* pTriangle;
 		for (int32 i = 0; i < m_Polygon.m_pEdgeVector.size(); ++i)
 		{
 			/// create a new triangle from the polygon's iterating edge to the iterating node.
-			pTriangle = new LG_Triangle();
-			/// Call the triangle's initialize function.
-			pTriangle->Init(m_Polygon.m_pEdgeVector[i]->m_pFirstNode,
+			pTriangle =	ManageEdges(m_Polygon.m_pEdgeVector[i]->m_pFirstNode,
 				m_Polygon.m_pEdgeVector[i]->m_pSecondNode,
 				pIteratingNode);
 
 			/// Adds the new triangle to the vector.
 			m_pTrianglesVector.push_back(pTriangle);
 		}
+	}
+
+	//! This function checks if the given edge is the same that anyone edge of the triangle's edges in Triangles Vector.
+	bool LG_DelaunayTriangulation::EdgeIsNotInTriangleVector(LG_Edge * IteratingEdge)
+	{
+		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		{
+			for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
+			{
+				if (IteratingEdge->CompareIndex(*m_pTrianglesVector[i]->m_pEdges[j]))
+				{
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	//! 
@@ -255,7 +273,7 @@ namespace LevelGenerator
 	}
 
 	//! This function creates a polygon.
-	void LG_DelaunayTriangulation::CreatePolygon()
+	void LG_DelaunayTriangulation::AddEdgesToPolygon()
 	{
 
 		bool bCanAddEdge = false;
@@ -265,14 +283,55 @@ namespace LevelGenerator
 			for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
 			{
 				/// The edge that didn't share position is added to the polygon.
-				m_Polygon.InsertEdgeToVector(&m_pBadTriangles[0]->m_Edges[i]);
+				m_Polygon.InsertEdgeToVector(m_pBadTriangles[0]->m_pEdges[i]);
 			}
 			return;
 		}
 
 		for (int32 i = 0; i < m_pBadTriangles.size(); ++i)
 		{
-			CheckIfEdgeIsInside(*m_pBadTriangles[i]);
+			CheckIfEdgeIsInside(m_pBadTriangles[i]);
 		}
+	}
+
+	LG_Triangle* LG_DelaunayTriangulation::ManageEdges(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode)
+	{
+	
+		///
+		LG_Triangle* pNewTriangle = new LG_Triangle();
+
+		///
+		LG_Edge* pFirstEdge = new LG_Edge();
+		LG_Edge* pSecondEdge = new LG_Edge();
+		LG_Edge* pThirdEdge = new LG_Edge();
+
+		/// Initialize the edges.
+		pFirstEdge->Init(pFirstNode, pSecondNode);
+		pSecondEdge->Init(pFirstNode, pThirdNode);
+		pThirdEdge->Init(pSecondNode, pThirdNode);
+
+		for (int32 i = 0; i < m_pEdgeVector.size(); ++i)
+		{
+			if (pFirstEdge->CompareIndex(*m_pEdgeVector[i]))
+			{
+				delete pFirstEdge;
+				pFirstEdge = m_pEdgeVector[i];
+			}
+
+			else if (pSecondEdge->CompareIndex(*m_pEdgeVector[i]))
+			{
+				delete pSecondEdge;
+				pSecondEdge = m_pEdgeVector[i];
+			}
+
+			else if (pThirdEdge->CompareIndex(*m_pEdgeVector[i]))
+			{
+				delete pThirdEdge;
+				pThirdEdge = m_pEdgeVector[i];
+			}
+		}
+
+		pNewTriangle->Init(pFirstEdge, pSecondEdge, pThirdEdge);
+		return pNewTriangle;
 	}
 }

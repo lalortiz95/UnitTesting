@@ -43,6 +43,11 @@ namespace LevelGenerator
 		Vector<LG_Triangle*> m_pBadTriangles;
 
 		/**
+		 *	@brief A vector to store edges that we need for create a triangle.
+		 */
+		Vector<LG_Edge*> m_pEdgeVector;
+
+		/**
 		 *	@brief The set of nodes that we want to triangulate.
 		 */
 		Vector<LG_Node> m_NodesCloud;
@@ -88,10 +93,17 @@ namespace LevelGenerator
 	private:
 
 		/**
-		 *	@brief //! This function checks if one edge of the given trinagle is already in the polygon's edge vector.
-		 *	@param LG_Triangle& IteratingTriangle: The triangle that we want to check.
+		 *	@brief This function checks if one edge of the given triangle is already in the polygon's edge vector.
+		 *	@param LG_Triangle* pIteratingTriangle: The triangle that we want to check.
 		 */
-		void CheckIfEdgeIsInside(LG_Triangle& IteratingTriangle);
+		void CheckIfEdgeIsInside(LG_Triangle* pIteratingTriangle);
+
+		/**
+		 *	@brief This function checks if the given edge is the same that anyone edge of the triangle's edges in Triangles Vector.
+		 *	@param LG_Edge* pIteratingEdge: The Edge that we want to check.
+		 *	@return true if the edge is the same that anyone, otherwise false.
+		 */
+		bool EdgeIsNotInTriangleVector(LG_Edge* pIteratingEdge);
 
 		/**
 		 *	@brief This function adds a bad triangle if it haves the iterating node inside of it.
@@ -119,8 +131,13 @@ namespace LevelGenerator
 		void EliminateTriangles();
 
 		/**
-		 *	@brief This function create a polygon.
+		 *	@brief This function add edges to the polygon.
 		 */
-		void CreatePolygon();
+		void AddEdgesToPolygon();
+
+		/**
+		 *	@brief 
+		 */
+		LG_Triangle* ManageEdges(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
 	};
 }

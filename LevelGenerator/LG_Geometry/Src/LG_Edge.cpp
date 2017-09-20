@@ -135,6 +135,8 @@ namespace LevelGenerator
 		m_fDistance = OtherEdge.m_fDistance;
 		m_pFirstNode = OtherEdge.m_pFirstNode;
 		m_pSecondNode = OtherEdge.m_pSecondNode;
+		m_NodeIndex[FIRST_INDEX] = OtherEdge.m_NodeIndex[FIRST_INDEX];
+		m_NodeIndex[SECOND_INDEX] = OtherEdge.m_NodeIndex[SECOND_INDEX];
 		return *this;
 	}
 }

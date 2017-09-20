@@ -41,7 +41,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief Where we store all of the triangle's edges.
 		 */
-		LG_Edge m_Edges[EDGES_PER_TRIANGLE];
+		LG_Edge* m_pEdges[EDGES_PER_TRIANGLE];
 
 		/**
 		 *	@brief Where we store the triangle's circumcircle circumference.
@@ -74,6 +74,14 @@ namespace LevelGenerator
 		 *	@param LG_Node* pThirdNode: The third node of the triangle.
 		 */
 		void Init(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
+
+		/**
+		 *	@brief This function initialize all variables of the class.
+		 *	@param LG_Edge* pFirstEdge: The first edge of the triangle.
+		 *	@param LG_Edge* pSecondEdge: The second edge of the triangle.
+		 *	@param LG_Edge* pThirdEdge: The third edge of the triangle.
+		 */
+		void Init(LG_Edge* pFirstEdge, LG_Edge* pSecondEdge, LG_Edge* pThirdEdge);
 
 		/**
 		 *  @brief This function releases memory and clears the variables.
