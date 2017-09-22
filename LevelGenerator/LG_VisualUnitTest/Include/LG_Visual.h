@@ -1,6 +1,7 @@
 #pragma once
 
 #include <LG_UtilitiesPrerequisites.h>
+#include <time.h>
 #include <iostream>
 #include <LG_Triangle.h>
 
@@ -10,8 +11,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-using LevelGenerator::LG_Circle;
-using LevelGenerator::LG_Vector3D;
+using namespace LevelGenerator;
+
 
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
@@ -68,6 +69,38 @@ public:
 	 */
 	SDL_Renderer* m_Renderer;
 
+	//////////////////////////////////////////////////////////////////////////
+	/**
+	*	@brief A pointer to the SDL_Window object to use a second window.
+	*/
+	SDL_Window* m_SecondWindow;
+
+	/**
+	*	@brief A Pointer to the SDL_Surface object.
+	*/
+	SDL_Surface* m_SecondScreenSurface;
+
+	/**
+	*	@brief A Pointer to the SDL_Surface object.
+	*/
+	SDL_Surface* m_SecondDisplayImage;
+
+	/**
+	*	@brief The SDL renderer to use a second renderer.
+	*/
+	SDL_Renderer* m_SecondRenderer;
+
+	/**
+	 *	@brief 
+	 */
+	Vector<LG_Node> m_NodesCloud;
+
+	/**
+	 *	@brief Init second window.
+	 */
+	bool m_bInitSecondWindow;
+	//////////////////////////////////////////////////////////////////////////
+
 	///************************************************************************/
 	///*						   Class Functions.							  */
 	///************************************************************************/
@@ -94,6 +127,11 @@ public:
 	 *	@brief This function renderer the system.
 	 */
 	void Renderer();
+
+	/**
+	 *	@brief This function render a delaunayTriangulation.
+	 */
+	void RenderDelaunay();
 
 	/**
 	 *	@brief This function update the system.

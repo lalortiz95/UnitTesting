@@ -3,7 +3,9 @@
 #include "LG_GeometryPrerequisites.h"
 #include "LG_Edge.h"
 #include "LG_Circle.h"
+#include <LG_Vector2D.h>
 #include <LG_Vector4D.h>
+
 
 
 namespace LevelGenerator
@@ -36,7 +38,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief each vertex that makes the triangle.
 		 */
-		LG_Node* m_pVertices[VERTEX_PER_TRIANGLE];
+		LG_Node* m_pVertices[NODES_PER_TRIANGLE];
 
 		/**
 		 *	@brief Where we store all of the triangle's edges.
@@ -119,20 +121,36 @@ namespace LevelGenerator
 		float Sign(LG_Node* pNodeToCompare, LG_Node* pNode1, LG_Node* pNode2);
 
 		/**
-		*	@brief This function find the middle point between 2 position.
-		*	@param LG_Node NodeA: The first node.
-		*	@param LG_Node NodeB: The second node.
-		*	@return the middle point between the given vectors.
-		*/
+		 *	@brief This function find the middle point between 2 position.
+		 *	@param LG_Node NodeA: The first node.
+		 *	@param LG_Node NodeB: The second node.
+		 *	@return the middle point between the given vectors.
+		 */
 		LG_Vector3D FindMiddlePoint(LG_Node NodeA, LG_Node NodeB);
 
 		/**
-		*	@brief This function find the slope between 2 position.
-		*	@param LG_Node NodeA: The first node.
-		*	@param LG_Node NodeB: The second node.
-		*	@return the middle point between the given vectors.
-		*/
+		 *	@brief This function find the middle point between 2 position.
+		 *	@param LG_Vector2D PositionA: The first position.
+		 *	@param LG_Vector2D PositionB: The second position.
+		 *	@return the middle point between the given vectors.
+		 */
+		LG_Vector3D FindMiddlePoint(LG_Vector2D PositionA, LG_Vector2D PositionB);
+
+		/**
+		 *	@brief This function find the slope between 2 position.
+		 *	@param LG_Node NodeA: The first node.
+		 *	@param LG_Node NodeB: The second node.
+		 *	@return the middle point between the given vectors.
+		 */
 		float FindSlope(LG_Node NodeA, LG_Node NodeB);
+
+		/**
+		 *	@brief This function find the slope between 2 position.
+		 *	@param LG_Vector2D PositionA: The first position.
+		 *	@param LG_Vector2D PositionB: The second position.
+		 *	@return the middle point between the given vectors.
+		 */
+		float FindSlope(LG_Vector2D PositionA, LG_Vector2D PositionB);
 
 		/**
 		*	@brief Generates the triangle's circumcircle circumference.

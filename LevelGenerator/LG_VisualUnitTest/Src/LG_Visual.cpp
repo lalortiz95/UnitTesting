@@ -10,6 +10,14 @@ LG_Visual::LG_Visual()
 	m_Window = nullptr;
 	m_DisplayImage = nullptr;
 	m_ScreenSurface = nullptr;
+	m_Renderer = nullptr;
+
+	m_SecondWindow = nullptr;
+	m_SecondDisplayImage = nullptr;
+	m_SecondScreenSurface = nullptr;
+	m_SecondRenderer = nullptr;
+
+	m_bInitSecondWindow = true;
 	m_sFileName = "Resources\\Textures\\HelloWorld.bmp";
 }
 
@@ -22,6 +30,7 @@ LG_Visual::~LG_Visual()
 //! This function initialize the SDL API.
 bool LG_Visual::Init()
 {
+	srand(time(NULL));
 	/// Initialization flag
 	bool success = true;
 	/// 
@@ -79,7 +88,67 @@ bool LG_Visual::Init()
 				<< SDL_GetError() << std::endl;
 			success = false;
 		}
+
+		//////////////////////////////////////////////////////////////////////////
+		if (m_bInitSecondWindow)
+		{
+			/// Create Second window
+			m_SecondWindow = SDL_CreateWindow(
+				"Visual UnitTest",
+				SDL_WINDOWPOS_UNDEFINED,
+				SDL_WINDOWPOS_UNDEFINED,
+				SCREEN_WIDTH,
+				SCREEN_HEIGHT,
+				SDL_WINDOW_SHOWN);
+
+			/// Create the renderer.
+			m_SecondRenderer = SDL_CreateRenderer(m_SecondWindow, -1, SDL_RENDERER_ACCELERATED);
+
+			if (m_SecondRenderer == nullptr)
+			{
+				std::cout << "Renderer could not be created! SDL Error: " << SDL_GetError() << std::endl;
+				success = false;
+			}
+			else
+			{
+				//Initialize renderer color
+				SDL_SetRenderDrawColor(m_SecondRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
+				//Initialize PNG loading
+				int imgFlags = IMG_INIT_PNG;
+				if (!(IMG_Init(imgFlags) & imgFlags))
+				{
+					std::cout << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
+					success = false;
+				}
+			}
+
+			if (m_SecondWindow != nullptr)
+			{
+				m_SecondScreenSurface = SDL_GetWindowSurface(m_SecondWindow);
+
+				SDL_FillRect(m_SecondScreenSurface, nullptr, SDL_MapRGB(
+					m_SecondScreenSurface->format, 0xFF, 0xFF, 0xFF));
+			}
+			else
+			{
+				std::cout << "Window could not be created! SDL_Error:"
+					<< SDL_GetError() << std::endl;
+				success = false;
+			}
+		}
+		//////////////////////////////////////////////////////////////////////////
 	}
+
+	//////////////////////////////////////////////////////////////////////////
+	for (int32 i = 0; i < 20; ++i)
+	{
+		LG_Node newNode;
+		newNode.m_Position = LG_Vector3D(rand() % (SCREEN_WIDTH / 4), rand() % (SCREEN_HEIGHT / 4), 0);
+		m_NodesCloud.push_back(newNode);
+	}
+
+	//////////////////////////////////////////////////////////////////////////
 
 	return success;
 }
@@ -107,16 +176,46 @@ bool LG_Visual::LoadImageFromFile(std::string sFileName)
 void LG_Visual::Destroy()
 {
 	/// Deallocate the image to display.
-	SDL_FreeSurface(m_DisplayImage);
-	m_DisplayImage = nullptr;
+	if (m_DisplayImage != nullptr)
+	{
+		SDL_FreeSurface(m_DisplayImage);
+		m_DisplayImage = nullptr;
+	}
 
 	/// Deallocate the screen surface.
-	SDL_FreeSurface(m_ScreenSurface);
-	m_ScreenSurface = nullptr;
+	if (m_ScreenSurface != nullptr)
+	{
+		SDL_FreeSurface(m_ScreenSurface);
+		m_ScreenSurface = nullptr;
+	}
 
 	/// Destroy window
-	SDL_DestroyWindow(m_Window);
-	m_Window = nullptr;
+	if (m_Window != nullptr)
+	{
+		SDL_DestroyWindow(m_Window);
+		m_Window = nullptr;
+	}
+
+	/// Deallocate the image to display.
+	if (m_SecondDisplayImage != nullptr)
+	{
+		SDL_FreeSurface(m_SecondDisplayImage);
+		m_SecondDisplayImage = nullptr;
+	}
+
+	/// Deallocate the screen surface.
+	if (m_SecondScreenSurface != nullptr)
+	{
+		SDL_FreeSurface(m_SecondScreenSurface);
+		m_SecondScreenSurface = nullptr;
+	}
+
+	/// Destroy window
+	if (m_SecondWindow != nullptr)
+	{
+		SDL_DestroyWindow(m_SecondWindow);
+		m_SecondWindow = nullptr;
+	}
 
 	m_sFileName = "";
 
@@ -163,9 +262,7 @@ void LG_Visual::Renderer()
 	/// Aqui se rendera los triangulos de la triangulacion.
 	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
 	{
-		 DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
-			Color,
-			50);
+
 		for (LevelGenerator::int32 j = 0; j < 3; ++j)
 		{
 			posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_pEdges[j]->m_pFirstNode->m_Position;
@@ -176,6 +273,9 @@ void LG_Visual::Renderer()
 			// en la posición de cada nodo dibujar un punto con SDL.
 			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 		}
+		DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
+			Color,
+			50);
 	}
 
 	// ///Aqui se rendera los triangulos malos de la triangulacion.
@@ -232,11 +332,154 @@ void LG_Visual::Renderer()
 	SDL_RenderPresent(m_Renderer);
 }
 
+void LG_Visual::RenderDelaunay()
+{
+	///Clear screen
+	SDL_RenderClear(m_Renderer);
+	/// Aqui rendereamos los ciruclos creados a partir de cada triangulo de la triangulacion.
+	LG_Vector3D posToSpawn;
+	LG_Vector3D Secondpos;
+	LG_Vector3D CircumCenter;
+
+	LevelGenerator::LG_DelaunayTriangulation Triangulation;
+	Triangulation.Init(m_NodesCloud, LG_Vector3D((SCREEN_WIDTH / 8) + (SCREEN_WIDTH - SCREEN_WIDTH),
+		(SCREEN_HEIGHT / 8) + (SCREEN_HEIGHT - SCREEN_HEIGHT), 0),
+		(SCREEN_WIDTH / 4) + (SCREEN_WIDTH - SCREEN_WIDTH),
+		(SCREEN_HEIGHT / 4) + (SCREEN_HEIGHT - SCREEN_HEIGHT));
+
+	///// Rendereamos la nube de puntos.
+	//for (int32 i = 0; i < Triangulation.m_NodesCloud.size(); ++i)
+	//{
+	//	posToSpawn = Triangulation.m_NodesCloud[i].m_Position;
+	//	Secondpos = Triangulation.m_NodesCloud[i].m_Position;
+
+	//	// Color negro
+	//	SDL_SetRenderDrawColor(m_Renderer, 0, 0, 0, 0);
+	//	// en la posición de cada nodo dibujar un punto con SDL.
+	//	SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//	///Update screen
+	//	SDL_RenderPresent(m_Renderer);
+	//	///
+	//	SDL_Delay(400);
+	//}
+
+	/// 
+	for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+	{
+
+
+		/// If the node is inside of the circumcircle circumference.
+		while (Triangulation.SetTriangleAsBadTriangle(Triangulation.m_NodesCloud[i]));
+
+		/// Aqui se rendera los triangulos de la triangulacion.
+		for (LevelGenerator::int32 j = 0; j < Triangulation.m_pTrianglesVector.size(); ++j)
+		{
+
+			for (LevelGenerator::int32 k = 0; k < 3; ++k)
+			{
+				posToSpawn = Triangulation.m_pTrianglesVector[j]->m_pEdges[k]->m_pFirstNode->m_Position;
+				Secondpos = Triangulation.m_pTrianglesVector[j]->m_pEdges[k]->m_pSecondNode->m_Position;
+
+				// Draw red line.
+				SDL_SetRenderDrawColor(m_SecondRenderer, 0xFF, 0x00, 0x00, 0xFF);
+				// en la posición de cada nodo dibujar un punto con SDL.
+				SDL_RenderDrawLine(m_SecondRenderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+				///Update screen
+				SDL_RenderPresent(m_SecondRenderer);
+				///
+				SDL_Delay(200);
+			}
+			DrawCircle(Triangulation.m_pTrianglesVector[j]->m_CircumcircleCircumference,
+				LG_Vector3D(0, 255, 0),
+				50);
+			///Update screen
+			SDL_RenderPresent(m_SecondRenderer);
+			///
+			SDL_Delay(500);
+		}
+
+		Triangulation.AddEdgesToPolygon();
+
+
+		for (int32 j = 0; j < Triangulation.m_Polygon.m_pEdgeVector.size(); ++j)
+		{
+			/// Creates a triangle from the polygon's edges and the iterating node.
+			LG_Triangle* pTriangle;
+
+			pTriangle = Triangulation.ManageEdges(Triangulation.m_Polygon.m_pEdgeVector[j]->m_pFirstNode,
+				Triangulation.m_Polygon.m_pEdgeVector[j]->m_pSecondNode,
+				&m_NodesCloud[i]);
+
+			for (LevelGenerator::int32 k = 0; k < 3; ++k)
+			{
+				posToSpawn = pTriangle->m_pEdges[k]->m_pFirstNode->m_Position;
+				Secondpos = pTriangle->m_pEdges[k]->m_pSecondNode->m_Position;
+
+				// Draw red line.
+				SDL_SetRenderDrawColor(m_Renderer, 255, 0, 0, 0);
+				// en la posición de cada nodo dibujar un punto con SDL.
+				SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+				///Update screen
+				SDL_RenderPresent(m_Renderer);
+				///
+				SDL_Delay(200);
+			}
+			DrawCircle(pTriangle->m_CircumcircleCircumference,
+				LG_Vector3D(0, 255, 0),
+				50);
+			///Update screen
+			SDL_RenderPresent(m_Renderer);
+			///
+			SDL_Delay(500);
+			/// Adds the new triangle to the vector.
+			Triangulation.m_pTrianglesVector.push_back(pTriangle);
+		}
+
+
+
+	}
+	Triangulation.EliminateTriangles();
+
+	/// Aqui se rendera los triangulos de la triangulacion.
+	for (LevelGenerator::int32 j = 0; j < Triangulation.m_pTrianglesVector.size(); ++j)
+	{
+
+		for (LevelGenerator::int32 k = 0; k < 3; ++k)
+		{
+			posToSpawn = Triangulation.m_pTrianglesVector[j]->m_pEdges[k]->m_pFirstNode->m_Position;
+			Secondpos = Triangulation.m_pTrianglesVector[j]->m_pEdges[k]->m_pSecondNode->m_Position;
+
+			// Draw red line.
+			SDL_SetRenderDrawColor(m_SecondRenderer, 0xFF, 0x00, 0x00, 0xFF);
+			// en la posición de cada nodo dibujar un punto con SDL.
+			SDL_RenderDrawLine(m_SecondRenderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+			///Update screen
+			SDL_RenderPresent(m_SecondRenderer);
+			///
+			SDL_Delay(200);
+		}
+		DrawCircle(Triangulation.m_pTrianglesVector[j]->m_CircumcircleCircumference,
+			LG_Vector3D(0, 255, 0),
+			50);;
+	}
+
+	//Update screen
+	SDL_RenderPresent(m_Renderer);
+	///Update screen
+	SDL_RenderPresent(m_SecondRenderer);
+	///
+	SDL_Delay(500);
+}
+
 //! This function update the system.
 void LG_Visual::Update(float fTime)
 {
 	/// Update the surface
-	SDL_UpdateWindowSurface(m_Window);
+	if (m_Window != nullptr)
+		SDL_UpdateWindowSurface(m_Window);
+	/// Update the second window
+	if (m_SecondWindow != nullptr)
+		SDL_UpdateWindowSurface(m_SecondWindow);
 }
 
 //! This function runs all the functions needed to have SDL working.
@@ -268,7 +511,6 @@ void LG_Visual::Run()
 		}
 	}
 
-	//TODO: revisar porque no se pintan los puntos.
 	while (!bQuit)
 	{
 		///Handle events on queue
@@ -282,7 +524,16 @@ void LG_Visual::Run()
 		}
 
 		Update(2000);
-		Renderer();
+
+		if (m_bInitSecondWindow)
+		{
+			RenderDelaunay();
+		}
+
+		else
+		{
+			Renderer();
+		}
 	}
 
 	/// Releases the memory.
@@ -351,7 +602,7 @@ void LG_Visual::DrawCircle(LG_Circle circle, LG_Vector3D color, LevelGenerator::
 		angle += d_a;
 
 		/// Set the color for the circle.
-		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 255);
+		SDL_SetRenderDrawColor(m_Renderer, color.X, color.Y, color.Z, 0);
 
 		/// Draw the lines that forms the circle.
 		ret =

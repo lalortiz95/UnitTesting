@@ -52,6 +52,11 @@ namespace LevelGenerator
 		float m_fDistance;
 
 		/**
+		 *	@brief This flag is used to determinated when a edge is checked.
+		 */
+		bool m_bIsChecked;
+
+		/**
 		 *	@brief The edge's ID.
 		 */
 		int32 m_iID;

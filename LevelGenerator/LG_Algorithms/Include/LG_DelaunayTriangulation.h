@@ -62,11 +62,15 @@ namespace LevelGenerator
 		 */
 		LG_Polygon m_Polygon;
 
+		/**
+		 *	@brief This variable counts the number of triangles created.
+		 */
+		int32 m_iTrianglesCount;
+
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
-		//TODO: Cambiar todos los parametros de funciones por un puntero a generate para usar el mismo objeto.
-
+	
 		/**
 		 *  @brief This function initialize all variables of the class.
 		 *	@param int32 iGridWidth: The width of the grid.
@@ -76,6 +80,16 @@ namespace LevelGenerator
 		 */
 		void Init(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> PointsCloud);
 
+		/**
+		 *  @brief This function initialize all variables of the class.
+		 *	@param Vector<LG_Node> PointsCloud: The nodes cloud that we used to generate a triangulation.
+		 *	@param LG_Vector3D:	The center of the grid.
+		 *	@param int32 iGridWidth: The width of the grid.
+		 *	@param int32 iGridHeight: The height of the grid.
+		 */
+		void Init(Vector<LG_Node> PointsCloud, LG_Vector3D GridCenter, int32 iGridWidth, int32 iGridHeight);
+
+		
 		/**
 		 *  @brief This function releases memory and clears the variables.
 		 */
@@ -90,7 +104,7 @@ namespace LevelGenerator
 		 */
 		void Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud);
 
-	private:
+	//private:
 
 		/**
 		 *	@brief This function checks if one edge of the given triangle is already in the polygon's edge vector.
@@ -108,8 +122,9 @@ namespace LevelGenerator
 		/**
 		 *	@brief This function adds a bad triangle if it haves the iterating node inside of it.
 		 *	@param const LG_Node& IteratingNode: the iterating node that will be compared.
+		 *	@param return true if the bad Triangle Vector had changes, otherwise false.
 		 */
-		void SetTriangleAsBadTriangle(const LG_Node& IteratingNode);
+		bool SetTriangleAsBadTriangle(const LG_Node& IteratingNode);
 
 		/**
 		 *	@brief This function create a new triangles from the given node.

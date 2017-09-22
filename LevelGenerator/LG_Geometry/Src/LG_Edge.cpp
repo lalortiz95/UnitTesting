@@ -8,6 +8,7 @@ namespace LevelGenerator
 	{
 		m_pFirstNode = nullptr;
 		m_pSecondNode = nullptr;
+		m_bIsChecked = false;
 		m_fDistance = 0.0f;
 	}
 

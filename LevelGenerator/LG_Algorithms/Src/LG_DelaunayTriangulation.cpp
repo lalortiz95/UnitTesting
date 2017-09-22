@@ -8,6 +8,7 @@ namespace LevelGenerator
 		m_pBigTriangle = nullptr;
 		m_pTrianglesVector.clear();
 		m_pBadTriangles.clear();
+		m_iTrianglesCount = 0;
 	}
 
 	//! Default destructor.
@@ -33,6 +34,8 @@ namespace LevelGenerator
 
 		/// Create a triangle that is outside of the node's cloud.
 		CreateBigTriangle(iGridWidth, iGridHeight, GridCenter);
+		m_pBigTriangle->m_iID = m_iTrianglesCount;
+		m_iTrianglesCount++;
 		m_pTrianglesVector.push_back(m_pBigTriangle);
 		for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
 		{
@@ -40,40 +43,54 @@ namespace LevelGenerator
 		}
 
 	}
-	//! This function releases memory and clears the variables.
-	void LG_DelaunayTriangulation::Destroy()
+
+	//! Overload Init
+	void LG_DelaunayTriangulation::Init(Vector<LG_Node> PointsCloud, LG_Vector3D GridCenter, int32 iGridWidth, int32 iGridHeight)
 	{
-		if (m_pBigTriangle != nullptr)
+		Destroy();
+
+		/// Store in the nodes cloud all of the nodes in the isoline vector.
+		for (int32 i = 0; i < PointsCloud.size(); ++i)
 		{
-			m_pBigTriangle->Destroy();
-			delete m_pBigTriangle;
-			m_pBigTriangle = nullptr;
+			PointsCloud[i].Init();
+			m_NodesCloud.push_back(PointsCloud[i]);
 		}
 
-		if (m_pTrianglesVector.size() != 0)
+		/// Create a triangle that is outside of the node's cloud.
+		CreateBigTriangle(iGridWidth, iGridHeight, GridCenter);
+		m_pBigTriangle->m_iID = m_iTrianglesCount;
+		m_iTrianglesCount++;
+		m_pTrianglesVector.push_back(m_pBigTriangle);
+		for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
 		{
+			m_pEdgeVector.push_back(m_pBigTriangle->m_pEdges[i]);
 		}
 	}
 
 	//! This function performs the algorithm.
 	void LG_DelaunayTriangulation::Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud)
 	{
-		/// Flag to determinate if we should break the first for.
-		bool bBreakFirstFor = false;
+
 		/// Initialize the start parameters.
 		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
 
 		/// 
 		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
 		{
+
 			/// If the node is inside of the circumcircle circumference.
-			SetTriangleAsBadTriangle(m_NodesCloud[i]);
+			while (SetTriangleAsBadTriangle(m_NodesCloud[i]));
+
 			/// 
 			AddEdgesToPolygon();
 			///
 			CreateNewTriangles(&m_NodesCloud[i]);
+			/*for (int32 i = 0; i < m_Polygon.m_pEdgeVector.size(); ++i)
+			{
+				m_Polygon.m_pEdgeVector[i]->m_bIsChecked = true;
+			}*/
 		}
-		//EliminateTriangles();
+		EliminateTriangles();
 
 
 	}
@@ -90,10 +107,16 @@ namespace LevelGenerator
 			for (int32 j = 0; j < m_Polygon.m_pEdgeVector.size(); ++j)
 			{
 				/// Compare the iterating edge of the given triangle with the iterating polygon's edge.
-				if (pIteratingTriangle->m_pEdges[i]->CompareIndex(*m_Polygon.m_pEdgeVector[j]))
+				if (!pIteratingTriangle->m_pEdges[i]->CompareIndex(*m_Polygon.m_pEdgeVector[j]))
 				{
 					/// Set the flag to false.
 					bCanAddEdge = EdgeIsNotInTriangleVector(pIteratingTriangle->m_pEdges[i]);
+					if (!bCanAddEdge)break;
+				}
+				else
+				{
+					bCanAddEdge = false;
+					break;
 				}
 			}
 			/// If this flag is still true, we add the iterating edge to the polygon.
@@ -101,9 +124,9 @@ namespace LevelGenerator
 			{
 				/// The iterating edge is added to the polygon edge vector.
 				m_Polygon.InsertEdgeToVector(pIteratingTriangle->m_pEdges[i]);
-				/// Set the flag as true.
-				bCanAddEdge = true;
 			}
+			/// Set the flag as true.
+			bCanAddEdge = true;
 		}
 	}
 
@@ -115,12 +138,15 @@ namespace LevelGenerator
 		for (int32 i = 0; i < m_Polygon.m_pEdgeVector.size(); ++i)
 		{
 			/// create a new triangle from the polygon's iterating edge to the iterating node.
-			pTriangle =	ManageEdges(m_Polygon.m_pEdgeVector[i]->m_pFirstNode,
+			//TODO: Checar despues esto de la bandera de cada edge del poligono.
+
+			pTriangle = ManageEdges(m_Polygon.m_pEdgeVector[i]->m_pFirstNode,
 				m_Polygon.m_pEdgeVector[i]->m_pSecondNode,
 				pIteratingNode);
 
 			/// Adds the new triangle to the vector.
 			m_pTrianglesVector.push_back(pTriangle);
+
 		}
 	}
 
@@ -141,37 +167,29 @@ namespace LevelGenerator
 	}
 
 	//! 
-	void LG_DelaunayTriangulation::SetTriangleAsBadTriangle(const LG_Node& IteratingNode)
+	bool LG_DelaunayTriangulation::SetTriangleAsBadTriangle(const LG_Node& IteratingNode)
 	{
-		int32 iInitialSize = m_pTrianglesVector.size();
-		int32 iCount = 0;
 		LG_Triangle* pTriangle = nullptr;
-
-		while (iCount < iInitialSize)
+		for (Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin(); itt != m_pTrianglesVector.end(); ++itt)
 		{
-			///
-			for (Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin(); itt != m_pTrianglesVector.end(); ++itt)
+
+			if (((*itt)->m_NodeIndex[FIRST_INDEX] != IteratingNode.m_iID) &&
+				((*itt)->m_NodeIndex[SECOND_INDEX] != IteratingNode.m_iID) &&
+				((*itt)->m_NodeIndex[THIRD_INDEX] != IteratingNode.m_iID))
 			{
-
-				if (((*itt)->m_NodeIndex[FIRST_INDEX] != IteratingNode.m_iID) &&
-					((*itt)->m_NodeIndex[SECOND_INDEX] != IteratingNode.m_iID) &&
-					((*itt)->m_NodeIndex[THIRD_INDEX] != IteratingNode.m_iID))
+				/// check if the node is inside of the circle.
+				if ((*itt)->m_CircumcircleCircumference.IsDotInside(
+					IteratingNode.m_Position))
 				{
-					/// check if the node is inside of the circle.
-					if ((*itt)->m_CircumcircleCircumference.IsDotInside(
-						IteratingNode.m_Position))
-					{
-						pTriangle = *itt;
-						m_pTrianglesVector.erase(itt);
-						m_pBadTriangles.push_back(pTriangle);
-						++iCount;
-						break;
-					}
+					pTriangle = *itt;
+					m_pTrianglesVector.erase(itt);
+					m_pBadTriangles.push_back(pTriangle);
+					return true;
 				}
-				++iCount;
 			}
-		}
 
+		}
+		return false;
 	}
 
 	//! This function create a big triangle.
@@ -202,7 +220,6 @@ namespace LevelGenerator
 		pNodePosition2->m_Position = pNodePosition1->m_Position;
 		/// Add the whole size of the arista for the next node.
 		pNodePosition2->m_Position.X += AristaSize;
-		pNodePosition2->m_Position.Y -= 1;
 		/// Assign the ID for the node.
 		pNodePosition2->m_iID = iCountNode;
 		/// Add one to the counter node.
@@ -212,7 +229,7 @@ namespace LevelGenerator
 		pNodePosition3->m_Position = pNodePosition2->m_Position;
 		pNodePosition3->m_Position.X = GridCenter.X;
 		/// Get the last top node.
-		pNodePosition3->m_Position.Y += AristaSize + 1;
+		pNodePosition3->m_Position.Y += AristaSize;
 		/// Assign the ID for the node.
 		pNodePosition3->m_iID = iCountNode;
 		/// Add one to the counter node.
@@ -242,7 +259,7 @@ namespace LevelGenerator
 		/// We iterate and change the flag of the ones being deleted.
 		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
 		{
-			for (int32 j = 0; j < 3; ++j)
+			for (int32 j = 0; j < NODES_PER_TRIANGLE; ++j)
 			{
 				if (m_pTrianglesVector[i]->m_pVertices[j] == m_pBigTriangle->m_pVertices[FIRST_NODE] ||
 					m_pTrianglesVector[i]->m_pVertices[j] == m_pBigTriangle->m_pVertices[SECOND_NODE] ||
@@ -257,7 +274,7 @@ namespace LevelGenerator
 		Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin();
 		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
 		{
-			if (m_pTrianglesVector[i]->m_bIsChecked)
+			if ((*itt)->m_bIsChecked)
 			{
 				///erases the triangle with it's flag set as true.
 				m_pTrianglesVector.erase(itt);
@@ -296,7 +313,7 @@ namespace LevelGenerator
 
 	LG_Triangle* LG_DelaunayTriangulation::ManageEdges(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode)
 	{
-	
+
 		///
 		LG_Triangle* pNewTriangle = new LG_Triangle();
 
@@ -332,6 +349,23 @@ namespace LevelGenerator
 		}
 
 		pNewTriangle->Init(pFirstEdge, pSecondEdge, pThirdEdge);
+		pNewTriangle->m_iID = m_iTrianglesCount;
+		m_iTrianglesCount++;
 		return pNewTriangle;
+	}
+
+	//! This function releases memory and clears the variables.
+	void LG_DelaunayTriangulation::Destroy()
+	{
+		if (m_pBigTriangle != nullptr)
+		{
+			m_pBigTriangle->Destroy();
+			delete m_pBigTriangle;
+			m_pBigTriangle = nullptr;
+		}
+
+		if (m_pTrianglesVector.size() != 0)
+		{
+		}
 	}
 }

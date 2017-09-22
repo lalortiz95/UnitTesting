@@ -19,7 +19,7 @@
 #define NODES_PER_EDGE 2		/// Define a number of nodes per edge.
 
 #define EDGES_PER_TRIANGLE 3	/// Define a number of edges per triangle.
-#define VERTEX_PER_TRIANGLE 3	/// Define a number of vertex per triangle.
+#define NODES_PER_TRIANGLE 3	/// Define a number of vertex per triangle.
 #define INDEX_PER_TRIANGLE 3    /// Define a number of index per triangle.
 
 #if defined(LG_GEOMETRY_EXPORTS)
