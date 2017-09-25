@@ -52,9 +52,14 @@ namespace LevelGenerator
 		float m_fDistance;
 
 		/**
-		 *	@brief This flag is used to determinated when a edge is checked.
+		 *	@brief This flag is used to determinate when a edge is checked.
 		 */
 		bool m_bIsChecked;
+
+		/**
+		 *	@brief This flag is used to determinate when a edge is legal. That comes in handy when working with DT.
+		 */
+		bool m_bIsLegal;
 
 		/**
 		 *	@brief The edge's ID.

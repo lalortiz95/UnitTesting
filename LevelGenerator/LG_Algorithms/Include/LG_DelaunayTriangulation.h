@@ -58,6 +58,11 @@ namespace LevelGenerator
 		LG_Triangle* m_pBigTriangle;
 
 		/**
+		 *	@brief The actual triangle being created.
+		 */
+		LG_Triangle* m_pActualTriangle;
+
+		/**
 		 *	@brief The Polygon to create.
 		 */
 		LG_Polygon m_Polygon;
@@ -113,6 +118,22 @@ namespace LevelGenerator
 		void CheckIfEdgeIsInside(LG_Triangle* pIteratingTriangle);
 
 		/**
+		 *  @brief This function create a triangle from one triangle and a node.
+		 *  @param LG_Triangle ActualTriangle: The base triangle to generate 3 new triangles.
+		 *  @param LG_Node* pNodeInside: The node used to make the 3 new triangles.
+		 *  @param int32 iCountNode: The node number iteration that we want to use of the triangle.
+		 */
+		void CreateTriangle(LG_Triangle ActualTriangle, LG_Node* pNodeInside, int32 iCountNode);
+
+		/**
+		 *  @brief This function create a 3 triangles from one triangle and a node.
+		 *  @param LG_Triangle ActualTriangle: The base triangle to generate 3 new triangles.
+		 *  @param LG_Node* pNodeInside: The node used to make the 3 new triangles.
+		 */
+		void CreateTriangles(LG_Triangle ActualTriangle, LG_Node* pNodeInside);
+
+
+		/**
 		 *	@brief This function checks if the given edge is the same that anyone edge of the triangle's edges in Triangles Vector.
 		 *	@param LG_Edge* pIteratingEdge: The Edge that we want to check.
 		 *	@return true if the edge is the same that anyone, otherwise false.
@@ -125,6 +146,21 @@ namespace LevelGenerator
 		 *	@param return true if the bad Triangle Vector had changes, otherwise false.
 		 */
 		bool SetTriangleAsBadTriangle(const LG_Node& IteratingNode);
+
+		/**
+		 *  @brief This function determine when we can stop the triangulation.
+		 *	@return true if all nodes flags bInside are true, otherwise false.
+		 */
+		bool CheckifAllNodesAreTrue();
+
+		/**
+		 *  @brief This function compares the iterating node's position with any of the iterating triangle's node.
+		 *  @param LG_Triangle IteratingTriangle: The actual triangle.
+		 *  @param LG_Node IteratingNode: The actual iterating node.
+		 *  @return true if one of the triangle's nodes shares position with the iterating node.
+		 */
+		bool CheckIfSharesPosition(LG_Triangle IteratingTriangle, LG_Node IteratingNode);
+
 
 		/**
 		 *	@brief This function create a new triangles from the given node.

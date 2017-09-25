@@ -17,7 +17,7 @@ LG_Visual::LG_Visual()
 	m_SecondScreenSurface = nullptr;
 	m_SecondRenderer = nullptr;
 
-	m_bInitSecondWindow = true;
+	m_bInitSecondWindow = false;
 	m_sFileName = "Resources\\Textures\\HelloWorld.bmp";
 }
 

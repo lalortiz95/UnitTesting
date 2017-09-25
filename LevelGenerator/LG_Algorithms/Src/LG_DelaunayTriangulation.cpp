@@ -36,11 +36,20 @@ namespace LevelGenerator
 		CreateBigTriangle(iGridWidth, iGridHeight, GridCenter);
 		m_pBigTriangle->m_iID = m_iTrianglesCount;
 		m_iTrianglesCount++;
-		m_pTrianglesVector.push_back(m_pBigTriangle);
-		for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
+		/// Create 3 new triangles.
+		if (m_pBigTriangle->IsPointInside(&m_NodesCloud[FIRST_NODE]))
 		{
-			m_pEdgeVector.push_back(m_pBigTriangle->m_pEdges[i]);
+			CreateTriangles(*m_pBigTriangle, &m_NodesCloud[FIRST_NODE]);
 		}
+
+		/// Set the actual triangle to compare with nodes iterating.
+		m_pActualTriangle = m_pTrianglesVector.front();
+
+		//m_pTrianglesVector.push_back(m_pBigTriangle);
+		//for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
+		//{
+		//	m_pEdgeVector.push_back(m_pBigTriangle->m_pEdges[i]);
+		//}
 
 	}
 
@@ -70,27 +79,110 @@ namespace LevelGenerator
 	//! This function performs the algorithm.
 	void LG_DelaunayTriangulation::Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud)
 	{
+		//TODO: hcaer triangulación incremental.
+		// una vez teniendo una triangulación, empezamos a tomar cada edge de cada triangulo, y tomamos los 2 triangulos unidos por esa arista.
+		// con esos triangulos revisamos que sólo tengan 3 nodos dentro, de lo contrario hacemos un cambio de arista, eliminando los 2 triangulos
+		// anteriores y creando 2 nuevos con los mismos puntos, pero unidos por el otro edge posible, y verificar que cumpla con la regla de delaunay.
+		// al cumplir con dicha regla se marca como revisado, así mismo el triangulo se queda como revisado, para que no se vuelva a tomar.
+		// Repetir hasta que todos los edges estén marcados como revisados.
 
-		/// Initialize the start parameters.
+		bool bQuit = false;
+		bool bBreakFirstFor;
+		/// 
 		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
 
-		/// 
-		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+		int32 i = 0;
+
+		LG_Triangle newTriangle;
+
+		/// we perform incremental triangulation
+		while (!bQuit)
 		{
-
-			/// If the node is inside of the circumcircle circumference.
-			while (SetTriangleAsBadTriangle(m_NodesCloud[i]));
-
-			/// 
-			AddEdgesToPolygon();
-			///
-			CreateNewTriangles(&m_NodesCloud[i]);
-			/*for (int32 i = 0; i < m_Polygon.m_pEdgeVector.size(); ++i)
+			//Crear un  nuevo triangulo entre cada edge y el punto.
+			for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
 			{
-				m_Polygon.m_pEdgeVector[i]->m_bIsChecked = true;
-			}*/
+				//TODO: revisar que no se repitan los edges, revisar que la función que lo hace esté al 100 viejon.
+				// una vez hecho esto, se crean los triangulos sin repetir edges, 3 triagnulos. Entre el triangulote y el nodo.
+
+
+				m_pTrianglesVector.push_back(
+					ManageEdges(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
+					m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
+					&m_NodesCloud[i]));
+
+
+				//newTriangle.Init(m_pActualTriangle->m_pEdges[j]->m_pFirstNode, 
+				//	m_pActualTriangle->m_pEdges[j]->m_pSecondNode, 
+				//	&m_NodesCloud[i]);
+			}
+			++i;
 		}
-		EliminateTriangles();
+		//while (!bQuit)
+		//{
+		//	/// Reset the flag.
+		//	bBreakFirstFor = false;
+		//	/// Iterate the node's cloud.
+		//	for (int32 j = 0; j < m_NodesCloud.size(); ++j)
+		//	{
+		//		/// Check if the iterating node is inside of the iterating triangle and
+		//		/// the iterating triangle is not checked. And we also check that it doesn't compare
+		//		/// against itself.
+		//		if (m_pActualTriangle->IsPointInside(&m_NodesCloud[j]) &&
+		//			!m_pActualTriangle->m_bIsChecked &&
+		//			!CheckIfSharesPosition(*m_pActualTriangle, m_NodesCloud[j]) &&
+		//			!m_NodesCloud[j].m_bIsInside)
+		//		{
+		//			/// Create 3 new triangles.
+		//			CreateTriangles(*m_pActualTriangle, &m_NodesCloud[j]);
+		//			//SetTriangleFlag(*m_pActualTriangle);
+		//			/// We set as actaual tile the last inserted node.
+		//			m_pActualTriangle = m_pTrianglesVector.front();
+		//			/// Set the flag to break the first for.
+		//			bBreakFirstFor = true;
+		//			/// Break the second for.
+		//			break;
+		//		}
+		//	}
+		//	if (!bBreakFirstFor)
+		//	{
+		//		/// If it didn't have dots inside we set that triangle as checked.
+		//		m_pActualTriangle->m_bIsChecked = true;
+		//		/// Find a new actual triangle, starting from the last inserted triangle to the first one.
+		//		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		//		{
+		//			/// If the triangle haven't been checked.
+		//			if (!m_pTrianglesVector[i]->m_bIsChecked)
+		//			{
+		//				/// Set the new actual tile.
+		//				m_pActualTriangle = m_pTrianglesVector[i];
+		//				break;
+		//			}
+		//		}
+		//	}
+		//	/// Assign the new value to this flag if it's true, finish the cycle.
+		//	bQuit = CheckifAllNodesAreTrue();
+		//}
+
+		///// Initialize the start parameters.
+		//Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
+
+		///// 
+		//for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+		//{
+
+		//	/// If the node is inside of the circumcircle circumference.
+		//	while (SetTriangleAsBadTriangle(m_NodesCloud[i]));
+
+		//	/// 
+		//	AddEdgesToPolygon();
+		//	///
+		//	CreateNewTriangles(&m_NodesCloud[i]);
+		//	/*for (int32 i = 0; i < m_Polygon.m_pEdgeVector.size(); ++i)
+		//	{
+		//		m_Polygon.m_pEdgeVector[i]->m_bIsChecked = true;
+		//	}*/
+		//}
+		//EliminateTriangles();
 
 
 	}
@@ -129,6 +221,64 @@ namespace LevelGenerator
 			bCanAddEdge = true;
 		}
 	}
+
+	//! This function create a 3 triangles from one triangle and a node.
+	void LG_DelaunayTriangulation::CreateTriangle(LG_Triangle ActualTriangle, LG_Node* pNodeInside, int32 iNode)
+	{
+		/// 
+		LG_Triangle Triangle;
+
+		if (iNode == 2)
+		{
+			/// Initialize a new triangle with the node given.
+			Triangle.Init(m_pBigTriangle->m_pVertices[iNode],
+				m_pBigTriangle->m_pVertices[FIRST_NODE],
+				pNodeInside);
+		}
+
+		else
+		{
+			/// Initialize a new triangle with the node given.
+			Triangle.Init(m_pBigTriangle->m_pVertices[iNode],
+				m_pBigTriangle->m_pVertices[iNode + 1],
+				pNodeInside);
+		}
+		/// Add the new triangle in the triangles vector.
+		m_pTrianglesVector.push_back(&Triangle);
+	}
+
+	//! This function create a 3 triangles from one triangle and a node.
+	void LG_DelaunayTriangulation::CreateTriangles(LG_Triangle ActualTriangle, LG_Node * pNodeInside)
+	{
+		for (int32 i = 0; i < NODES_PER_TRIANGLE; ++i)
+		{
+			CreateTriangle(ActualTriangle, pNodeInside, i);
+		}
+		pNodeInside->m_bIsInside = true;
+	}
+
+
+	//! This function determine when we can stop the triangulation.
+	bool LG_DelaunayTriangulation::CheckifAllNodesAreTrue()
+	{
+		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		{
+			if (!m_pTrianglesVector[i]->m_bIsChecked)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//! This function compares the iterating node's position with any of the iterating triangle's node.
+	bool LG_DelaunayTriangulation::CheckIfSharesPosition(LG_Triangle IteratingTriangle, LG_Node IteratingNode)
+	{
+		return ((IteratingTriangle.m_pVertices[FIRST_NODE]->m_Position == IteratingNode.m_Position) ||
+			(IteratingTriangle.m_pVertices[SECOND_NODE]->m_Position == IteratingNode.m_Position) ||
+			(IteratingTriangle.m_pVertices[THIRD_NODE]->m_Position == IteratingNode.m_Position));
+	}
+
 
 	//! This function create a new triangles from the given node.
 	void LG_DelaunayTriangulation::CreateNewTriangles(LG_Node* pIteratingNode)
@@ -313,44 +463,69 @@ namespace LevelGenerator
 
 	LG_Triangle* LG_DelaunayTriangulation::ManageEdges(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode)
 	{
-
+		/// This flags tells us if we are to add a new edge to the edge's vector.
+		bool bIsFirstEdgeNew, bIsSecondEdgeNew, bIsThridEdgeNew;
+		bIsFirstEdgeNew = bIsSecondEdgeNew = bIsThridEdgeNew = true;
 		///
 		LG_Triangle* pNewTriangle = new LG_Triangle();
 
-		///
+		/// Assigns memory.
 		LG_Edge* pFirstEdge = new LG_Edge();
 		LG_Edge* pSecondEdge = new LG_Edge();
 		LG_Edge* pThirdEdge = new LG_Edge();
 
-		/// Initialize the edges.
+		/// Initialize 3 new edges.
 		pFirstEdge->Init(pFirstNode, pSecondNode);
 		pSecondEdge->Init(pFirstNode, pThirdNode);
 		pThirdEdge->Init(pSecondNode, pThirdNode);
 
+		/// Checks if the edge haven't been inserted already. If so it gives a reference of the memory.
 		for (int32 i = 0; i < m_pEdgeVector.size(); ++i)
 		{
 			if (pFirstEdge->CompareIndex(*m_pEdgeVector[i]))
 			{
 				delete pFirstEdge;
 				pFirstEdge = m_pEdgeVector[i];
+				/// We are not creating a new edge for the vector.
+				bIsFirstEdgeNew = false;
 			}
 
 			else if (pSecondEdge->CompareIndex(*m_pEdgeVector[i]))
 			{
 				delete pSecondEdge;
 				pSecondEdge = m_pEdgeVector[i];
+				/// We are not creating a new edge for the vector.
+				bIsSecondEdgeNew = false;
 			}
 
 			else if (pThirdEdge->CompareIndex(*m_pEdgeVector[i]))
 			{
 				delete pThirdEdge;
 				pThirdEdge = m_pEdgeVector[i];
+				/// We are not creating a new edge for the vector.
+				bIsThridEdgeNew = false;
 			}
 		}
 
+		/// Check if it is needed to add new edges.
+		if (bIsFirstEdgeNew)
+		{
+			m_pEdgeVector.push_back(pFirstEdge);
+		}
+		if (bIsSecondEdgeNew)
+		{
+			m_pEdgeVector.push_back(pSecondEdge);
+		}
+		if (bIsThridEdgeNew)
+		{
+			m_pEdgeVector.push_back(pThirdEdge);
+		}
+
+		/// Creates a new triangle, and initializes it.
 		pNewTriangle->Init(pFirstEdge, pSecondEdge, pThirdEdge);
 		pNewTriangle->m_iID = m_iTrianglesCount;
 		m_iTrianglesCount++;
+		/// Returns the new created triangle.
 		return pNewTriangle;
 	}
 
