@@ -109,7 +109,10 @@ namespace LevelGenerator
 		 */
 		void Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud);
 
-	//private:
+		/**
+		 *	@brief This function performs an initial triangulation that works as a base for the rest of the algorithm.
+		 */
+		void IncrementalTriangulation();
 
 		/**
 		 *	@brief This function checks if one edge of the given triangle is already in the polygon's edge vector.
@@ -154,6 +157,12 @@ namespace LevelGenerator
 		bool CheckifAllNodesAreTrue();
 
 		/**
+		 *  @brief This function determine when we can stop the triangulation.
+		 *	@return true if all the triangles in the triangulation are true.
+		 */
+		bool CheckIfAllTrianglesAreTrue();
+
+		/**
 		 *  @brief This function compares the iterating node's position with any of the iterating triangle's node.
 		 *  @param LG_Triangle IteratingTriangle: The actual triangle.
 		 *  @param LG_Node IteratingNode: The actual iterating node.
@@ -161,7 +170,12 @@ namespace LevelGenerator
 		 */
 		bool CheckIfSharesPosition(LG_Triangle IteratingTriangle, LG_Node IteratingNode);
 
-
+		/**
+		 *  @brief This function checks if the triangle is already checked.
+		 *	@param LG_Triangle tri: the triangle we want to see if is checked.
+		 */
+		void CheckIfTriangleIsChecked(LG_Triangle* tri);
+		
 		/**
 		 *	@brief This function create a new triangles from the given node.
 		 *	@param LG_Node* pIteratingNode: The node that we want to create a new triangles.

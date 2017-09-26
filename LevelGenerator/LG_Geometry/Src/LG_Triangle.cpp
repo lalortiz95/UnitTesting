@@ -283,7 +283,7 @@ namespace LevelGenerator
 	}
 
 	//! This function find the middle point between 2 position.
-	LG_Vector3D LG_Triangle::FindMiddlePoint(LG_Node NodeA, LG_Node NodeB)
+	LG_Vector3D LG_Triangle::FindMiddlePoint(const LG_Node& NodeA,const LG_Node& NodeB)
 	{
 		LG_Vector3D MiddlePoint{ 0,0,0 };
 		/// We obtain the middle point between two positions.
@@ -294,7 +294,7 @@ namespace LevelGenerator
 	}
 
 	//! This function find the middle point between 2 position. 
-	LG_Vector3D LG_Triangle::FindMiddlePoint(LG_Vector2D PositionA, LG_Vector2D PositionB)
+	LG_Vector3D LG_Triangle::FindMiddlePoint(const LG_Vector2D& PositionA, const LG_Vector2D& PositionB)
 	{
 		LG_Vector3D MiddlePoint{ 0,0,0 };
 		/// We obtain the middle point between two positions.
@@ -305,14 +305,14 @@ namespace LevelGenerator
 	}
 
 	//! This function find the slope between 2 positions.
-	float LG_Triangle::FindSlope(LG_Node NodeA, LG_Node NodeB)
+	float LG_Triangle::FindSlope(const LG_Node& NodeA,const LG_Node& NodeB)
 	{
 		return((NodeB.m_Position.Y - (NodeA.m_Position.Y)) /
 			(NodeB.m_Position.X - (NodeA.m_Position.X)));
 	}
 
 	//! This function find the slope between 2 positions.
-	float LG_Triangle::FindSlope(LG_Vector2D PositionA, LG_Vector2D PositionB)
+	float LG_Triangle::FindSlope(const LG_Vector2D& PositionA, const LG_Vector2D& PositionB)
 	{
 
 		return((PositionB.Y - (PositionA.Y)) /
@@ -320,7 +320,7 @@ namespace LevelGenerator
 	}
 
 	//! Generates the triangle's circumcircle circumference.
-	void LG_Triangle::GenerateCircle(LG_Vector3D Position)
+	void LG_Triangle::GenerateCircle(const LG_Vector3D& Position)
 	{
 		LG_Vector3D RadiusDistance;
 		float fRadius = 0;

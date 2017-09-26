@@ -60,6 +60,11 @@ namespace LevelGenerator
 		bool m_bCanDeleted;
 
 		/**
+		 *	@brief This flag determinates if the node has already been used.
+		 */
+		bool m_bIsChecked;
+
+		/**
 		 *	@brief This variable store's an ID.
 		 */
 		int32 m_iID;

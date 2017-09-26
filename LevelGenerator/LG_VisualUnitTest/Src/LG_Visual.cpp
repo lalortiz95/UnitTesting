@@ -273,9 +273,9 @@ void LG_Visual::Renderer()
 			// en la posición de cada nodo dibujar un punto con SDL.
 			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 		}
-		DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
-			Color,
-			50);
+		//DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
+		//	Color,
+		//	50);
 	}
 
 	// ///Aqui se rendera los triangulos malos de la triangulacion.

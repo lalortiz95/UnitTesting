@@ -36,11 +36,13 @@ namespace LevelGenerator
 		CreateBigTriangle(iGridWidth, iGridHeight, GridCenter);
 		m_pBigTriangle->m_iID = m_iTrianglesCount;
 		m_iTrianglesCount++;
-		/// Create 3 new triangles.
-		if (m_pBigTriangle->IsPointInside(&m_NodesCloud[FIRST_NODE]))
-		{
-			CreateTriangles(*m_pBigTriangle, &m_NodesCloud[FIRST_NODE]);
-		}
+		/// Insert the big triangle to the vector.
+		m_pTrianglesVector.push_back(m_pBigTriangle);
+		// Create 3 new triangles.
+		//if (m_pBigTriangle->IsPointInside(&m_NodesCloud[FIRST_NODE]))
+		//{
+		//	CreateTriangles(*m_pBigTriangle, &m_NodesCloud[FIRST_NODE]);
+		//}
 
 		/// Set the actual triangle to compare with nodes iterating.
 		m_pActualTriangle = m_pTrianglesVector.front();
@@ -86,37 +88,11 @@ namespace LevelGenerator
 		// al cumplir con dicha regla se marca como revisado, así mismo el triangulo se queda como revisado, para que no se vuelva a tomar.
 		// Repetir hasta que todos los edges estén marcados como revisados.
 
-		bool bQuit = false;
-		bool bBreakFirstFor;
 		/// 
 		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
 
-		int32 i = 0;
-
-		LG_Triangle newTriangle;
-
-		/// we perform incremental triangulation
-		while (!bQuit)
-		{
-			//Crear un  nuevo triangulo entre cada edge y el punto.
-			for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
-			{
-				//TODO: revisar que no se repitan los edges, revisar que la función que lo hace esté al 100 viejon.
-				// una vez hecho esto, se crean los triangulos sin repetir edges, 3 triagnulos. Entre el triangulote y el nodo.
-
-
-				m_pTrianglesVector.push_back(
-					ManageEdges(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
-					m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
-					&m_NodesCloud[i]));
-
-
-				//newTriangle.Init(m_pActualTriangle->m_pEdges[j]->m_pFirstNode, 
-				//	m_pActualTriangle->m_pEdges[j]->m_pSecondNode, 
-				//	&m_NodesCloud[i]);
-			}
-			++i;
-		}
+		IncrementalTriangulation();
+		
 		//while (!bQuit)
 		//{
 		//	/// Reset the flag.
@@ -165,14 +141,11 @@ namespace LevelGenerator
 
 		///// Initialize the start parameters.
 		//Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
-
 		///// 
 		//for (int32 i = 0; i < m_NodesCloud.size(); ++i)
 		//{
-
 		//	/// If the node is inside of the circumcircle circumference.
 		//	while (SetTriangleAsBadTriangle(m_NodesCloud[i]));
-
 		//	/// 
 		//	AddEdgesToPolygon();
 		//	///
@@ -183,8 +156,78 @@ namespace LevelGenerator
 		//	}*/
 		//}
 		//EliminateTriangles();
+	}
 
+	//! This function performs an initial triangulation that works as a base for the rest of the algorithm.
+	void LG_DelaunayTriangulation::IncrementalTriangulation()
+	{
+		bool bQuit = false;
+		bool bHasNoDotsInside = true;
 
+		/// Variable used to add triangles into the vector.
+		LG_Triangle newTriangle;
+
+		/// we perform incremental triangulation
+		while (!bQuit)
+		{
+			/// We will compare the actual triangle against all of the nodes in the node cloud.
+			for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+			{
+				/// If there is a dot inside of the triangle
+				if (m_pActualTriangle->IsPointInside(&m_NodesCloud[i]) && !m_NodesCloud[i].m_bIsChecked)
+				{
+					///Creates 3 new triangles between each edge of the actual triangle, and the iterating node.
+					for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
+					{
+							m_pTrianglesVector.push_back(
+								ManageEdges(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
+									m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
+									&m_NodesCloud[i]));
+						
+					}
+					/// Set the node that we just used as checked.
+					m_NodesCloud[i].m_bIsChecked = true;
+					/// set that there were dots inside of the triangle.
+					bHasNoDotsInside = false;
+					/// 
+					m_pEdgeVector = m_pEdgeVector;
+					/// Ends the iteration because now is time to get a new actual triangle.
+					break;
+				}
+			}
+
+			/// It didn't have any dots inside.
+			if (bHasNoDotsInside)
+			{
+				/// We set that triangle as true.
+				m_pActualTriangle->m_bIsChecked = true;
+			}
+
+			// Siempre que itere buscará un nuevo actual, ya sea porque hizo nuevos triangulos, o porque ya no podía hacer triangulos.
+			/// Iterates throough the triangles vector.
+			for (int32 i = m_pTrianglesVector.size() - 1; i >= 0; --i)
+			{
+				/// We find the new actual triangle.
+				if (!m_pTrianglesVector[i]->m_bIsChecked && m_pActualTriangle != m_pTrianglesVector[i])
+				{
+					/// set the new triangle.
+					m_pActualTriangle = m_pTrianglesVector[i];
+					break;
+				}
+			}
+
+			/// Checks if the triangles are already checked.
+			for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+			{
+				CheckIfTriangleIsChecked(m_pTrianglesVector[i]);
+			}
+
+			/// once all the triangles have been checked, we finish the incremental triangulation.
+			if (CheckIfAllTrianglesAreTrue())
+			{
+				bQuit = true;
+			}
+		}
 	}
 
 	//! This function checks if one edge of the given trinagle is already in the polygon's edge vector.
@@ -261,13 +304,28 @@ namespace LevelGenerator
 	//! This function determine when we can stop the triangulation.
 	bool LG_DelaunayTriangulation::CheckifAllNodesAreTrue()
 	{
-		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
 		{
-			if (!m_pTrianglesVector[i]->m_bIsChecked)
+			if (!m_NodesCloud[i].m_bIsChecked)
 			{
 				return false;
 			}
 		}
+		return true;
+	}
+
+	bool LG_DelaunayTriangulation::CheckIfAllTrianglesAreTrue()
+	{
+		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		{
+			/// Check if the triangle isn't checked.
+			if (!m_pTrianglesVector[i]->m_bIsChecked)
+			{
+				/// If even one of the triangles is false, we return.
+				return false;
+			}
+		}
+		/// All triangles were checked.
 		return true;
 	}
 
@@ -277,6 +335,33 @@ namespace LevelGenerator
 		return ((IteratingTriangle.m_pVertices[FIRST_NODE]->m_Position == IteratingNode.m_Position) ||
 			(IteratingTriangle.m_pVertices[SECOND_NODE]->m_Position == IteratingNode.m_Position) ||
 			(IteratingTriangle.m_pVertices[THIRD_NODE]->m_Position == IteratingNode.m_Position));
+	}
+
+	//! This function checks if the triangle is already checked.
+	void LG_DelaunayTriangulation::CheckIfTriangleIsChecked(LG_Triangle* tri)
+	{
+		int32 DotsInside, DotsChecked;
+		DotsInside = DotsChecked = 0;
+
+		/// Iterates through the nodes cloud.
+		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+		{
+			/// Check if the iterating node is inside of the actual triangle.
+			if (tri->IsPointInside(&m_NodesCloud[i]))
+			{
+				/// add one to the dots inside counter.
+				++DotsInside;
+				/// Check that the node inside is checked
+				if (m_NodesCloud[i].m_bIsChecked)
+				{
+					/// add one to the nodes checked counter.
+					++DotsChecked;
+				}
+			}
+		}
+
+		/// if the nodes inside of the triangle are the same amount of dots checked.
+		tri->m_bIsChecked = (DotsChecked == DotsInside);
 	}
 
 
@@ -482,7 +567,8 @@ namespace LevelGenerator
 		/// Checks if the edge haven't been inserted already. If so it gives a reference of the memory.
 		for (int32 i = 0; i < m_pEdgeVector.size(); ++i)
 		{
-			if (pFirstEdge->CompareIndex(*m_pEdgeVector[i]))
+			/// We also check that the boolean is still true, so that it doesn't get inside twice and deletes an object of the vector.
+			if (pFirstEdge->CompareIndex(*m_pEdgeVector[i]) && bIsFirstEdgeNew)
 			{
 				delete pFirstEdge;
 				pFirstEdge = m_pEdgeVector[i];
@@ -490,7 +576,7 @@ namespace LevelGenerator
 				bIsFirstEdgeNew = false;
 			}
 
-			else if (pSecondEdge->CompareIndex(*m_pEdgeVector[i]))
+			else if (pSecondEdge->CompareIndex(*m_pEdgeVector[i]) && bIsSecondEdgeNew)
 			{
 				delete pSecondEdge;
 				pSecondEdge = m_pEdgeVector[i];
@@ -498,7 +584,7 @@ namespace LevelGenerator
 				bIsSecondEdgeNew = false;
 			}
 
-			else if (pThirdEdge->CompareIndex(*m_pEdgeVector[i]))
+			else if (pThirdEdge->CompareIndex(*m_pEdgeVector[i]) && bIsThridEdgeNew)
 			{
 				delete pThirdEdge;
 				pThirdEdge = m_pEdgeVector[i];

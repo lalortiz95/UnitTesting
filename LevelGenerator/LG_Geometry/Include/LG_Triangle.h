@@ -122,41 +122,41 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief This function find the middle point between 2 position.
-		 *	@param LG_Node NodeA: The first node.
-		 *	@param LG_Node NodeB: The second node.
+		 *	@param const LG_Node& NodeA: The first node.
+		 *	@param const LG_Node& NodeB: The second node.
 		 *	@return the middle point between the given vectors.
 		 */
-		LG_Vector3D FindMiddlePoint(LG_Node NodeA, LG_Node NodeB);
+		LG_Vector3D FindMiddlePoint(const LG_Node& NodeA, const LG_Node& NodeB);
 
 		/**
 		 *	@brief This function find the middle point between 2 position.
-		 *	@param LG_Vector2D PositionA: The first position.
-		 *	@param LG_Vector2D PositionB: The second position.
+		 *	@param const LG_Vector2D& PositionA: The first position.
+		 *	@param const LG_Vector2D& PositionB: The second position.
 		 *	@return the middle point between the given vectors.
 		 */
-		LG_Vector3D FindMiddlePoint(LG_Vector2D PositionA, LG_Vector2D PositionB);
+		LG_Vector3D FindMiddlePoint(const LG_Vector2D& PositionA, const LG_Vector2D& PositionB);
 
 		/**
 		 *	@brief This function find the slope between 2 position.
-		 *	@param LG_Node NodeA: The first node.
-		 *	@param LG_Node NodeB: The second node.
+		 *	@param const LG_Node& NodeA: The first node.
+		 *	@param const LG_Node& NodeB: The second node.
 		 *	@return the middle point between the given vectors.
 		 */
-		float FindSlope(LG_Node NodeA, LG_Node NodeB);
+		float FindSlope(const LG_Node& NodeA, const LG_Node& NodeB);
 
 		/**
 		 *	@brief This function find the slope between 2 position.
-		 *	@param LG_Vector2D PositionA: The first position.
-		 *	@param LG_Vector2D PositionB: The second position.
+		 *	@param const LG_Vector2D& PositionA: The first position.
+		 *	@param const LG_Vector2D& PositionB: The second position.
 		 *	@return the middle point between the given vectors.
 		 */
-		float FindSlope(LG_Vector2D PositionA, LG_Vector2D PositionB);
+		float FindSlope(const LG_Vector2D& PositionA, const LG_Vector2D& PositionB);
 
 		/**
 		*	@brief Generates the triangle's circumcircle circumference.
-		*	@param LG_Vector3D Position: The position of center of the circle.
+		*	@param const LG_Vector3D& Position: The position of center of the circle.
 		*/
-		void GenerateCircle(LG_Vector3D Position);
+		void GenerateCircle(const LG_Vector3D& Position);
 
 		///************************************************************************/
 		///*					Compound Assignment Operators.				      */

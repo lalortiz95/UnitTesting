@@ -38,6 +38,7 @@ namespace LevelGenerator
 	{
 		m_bIsInside = false;
 		m_bCanDeleted = true;
+		m_bIsChecked = false;
 	}
 
 	//! Free and delete memory.
@@ -45,7 +46,11 @@ namespace LevelGenerator
 	{
 		if (m_PointerNodes.size() != 0)
 		{
-			//TODO: Liberar memoria.
+			for (int32 i = 0; i < m_PointerNodes.size(); ++i)
+			{
+				delete m_PointerNodes[i];
+			}
+			m_PointerNodes.clear();
 		}
 	}
 
