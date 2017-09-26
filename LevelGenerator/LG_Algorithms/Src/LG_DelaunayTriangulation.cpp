@@ -38,21 +38,9 @@ namespace LevelGenerator
 		m_iTrianglesCount++;
 		/// Insert the big triangle to the vector.
 		m_pTrianglesVector.push_back(m_pBigTriangle);
-		// Create 3 new triangles.
-		//if (m_pBigTriangle->IsPointInside(&m_NodesCloud[FIRST_NODE]))
-		//{
-		//	CreateTriangles(*m_pBigTriangle, &m_NodesCloud[FIRST_NODE]);
-		//}
 
 		/// Set the actual triangle to compare with nodes iterating.
 		m_pActualTriangle = m_pTrianglesVector.front();
-
-		//m_pTrianglesVector.push_back(m_pBigTriangle);
-		//for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
-		//{
-		//	m_pEdgeVector.push_back(m_pBigTriangle->m_pEdges[i]);
-		//}
-
 	}
 
 	//! Overload Init
@@ -81,8 +69,7 @@ namespace LevelGenerator
 	//! This function performs the algorithm.
 	void LG_DelaunayTriangulation::Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud)
 	{
-		//TODO: hcaer triangulación incremental.
-		// una vez teniendo una triangulación, empezamos a tomar cada edge de cada triangulo, y tomamos los 2 triangulos unidos por esa arista.
+		//TODO: una vez teniendo una triangulación, empezamos a tomar cada edge de cada triangulo, y tomamos los 2 triangulos unidos por esa arista.
 		// con esos triangulos revisamos que sólo tengan 3 nodos dentro, de lo contrario hacemos un cambio de arista, eliminando los 2 triangulos
 		// anteriores y creando 2 nuevos con los mismos puntos, pero unidos por el otro edge posible, y verificar que cumpla con la regla de delaunay.
 		// al cumplir con dicha regla se marca como revisado, así mismo el triangulo se queda como revisado, para que no se vuelva a tomar.
@@ -92,7 +79,17 @@ namespace LevelGenerator
 		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
 
 		IncrementalTriangulation();
-		
+
+		/// Iterates through every edge from every triangle.
+		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		{
+			for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
+			{
+				//TODO: tomar los 2 triangulos unidos por cada edge y ver si su arista es legal.
+				m_pTrianglesVector[i]->m_pEdges[j];
+			}
+		}
+
 		//while (!bQuit)
 		//{
 		//	/// Reset the flag.
@@ -179,11 +176,11 @@ namespace LevelGenerator
 					///Creates 3 new triangles between each edge of the actual triangle, and the iterating node.
 					for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
 					{
-							m_pTrianglesVector.push_back(
-								ManageEdges(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
-									m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
-									&m_NodesCloud[i]));
-						
+						m_pTrianglesVector.push_back(
+							ManageEdges(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
+								m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
+								&m_NodesCloud[i]));
+
 					}
 					/// Set the node that we just used as checked.
 					m_NodesCloud[i].m_bIsChecked = true;

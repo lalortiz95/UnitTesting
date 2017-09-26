@@ -46,9 +46,10 @@ namespace LevelGenerator
 	{
 		if (m_PointerNodes.size() != 0)
 		{
-			for (int32 i = 0; i < m_PointerNodes.size(); ++i)
+			for (Vector<LG_Node*>::iterator itt = m_PointerNodes.begin(); itt != m_PointerNodes.end(); ++itt)
 			{
-				delete m_PointerNodes[i];
+				(*itt) = nullptr;
+				delete (*itt);
 			}
 			m_PointerNodes.clear();
 		}

@@ -30,6 +30,9 @@
     <ClInclude Include="Include\LG_DelaunayTriangulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LG_Voronoi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_MarchingSquare.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\LG_DelaunayTriangulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LG_Voronoi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

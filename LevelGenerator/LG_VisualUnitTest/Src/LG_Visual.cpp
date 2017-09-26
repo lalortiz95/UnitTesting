@@ -136,17 +136,19 @@ bool LG_Visual::Init()
 					<< SDL_GetError() << std::endl;
 				success = false;
 			}
+			for (int32 i = 0; i < 20; ++i)
+			{
+				LG_Node newNode;
+				newNode.m_Position = LG_Vector3D(rand() % (SCREEN_WIDTH / 4), rand() % (SCREEN_HEIGHT / 4), 0);
+				m_NodesCloud.push_back(newNode);
+			}
+
 		}
+
+		
 		//////////////////////////////////////////////////////////////////////////
 	}
 
-	//////////////////////////////////////////////////////////////////////////
-	for (int32 i = 0; i < 20; ++i)
-	{
-		LG_Node newNode;
-		newNode.m_Position = LG_Vector3D(rand() % (SCREEN_WIDTH / 4), rand() % (SCREEN_HEIGHT / 4), 0);
-		m_NodesCloud.push_back(newNode);
-	}
 
 	//////////////////////////////////////////////////////////////////////////
 

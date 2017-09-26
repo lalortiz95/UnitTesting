@@ -178,8 +178,10 @@
     <ClInclude Include="Include\LG_Generate.h" />
     <ClInclude Include="Include\LG_MarchingSquare.h" />
     <ClInclude Include="Include\LG_RDP.h" />
+    <ClInclude Include="LG_Voronoi.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="LG_Voronoi.cpp" />
     <ClCompile Include="Src\LG_DelaunayTriangulation.cpp" />
     <ClCompile Include="Src\LG_Generate.cpp" />
     <ClCompile Include="Src\LG_MarchingSquare.cpp" />
