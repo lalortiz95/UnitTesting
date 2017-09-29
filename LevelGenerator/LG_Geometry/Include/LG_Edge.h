@@ -101,6 +101,13 @@ namespace LevelGenerator
 		 */
 		bool CompareIndex(const LG_Edge& OtherEdge);
 
+		/**
+		 *	@brief This function change the values of the edge.
+		 *	@param LG_Node* pFirstNode: The new first node of the edge.
+		 *	@param LG_Node* pSecondNode: The new second node of the edge.
+		 */
+		void Legalize(LG_Node* pFirstNode, LG_Node* pSecondNode);
+
 		///************************************************************************/
 		///*					Compound Assignment Operators.				      */
 		///************************************************************************/

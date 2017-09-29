@@ -31,4 +31,9 @@ namespace LevelGenerator
 	{
 
 	}
+
+	void LG_Voronoi::Run()
+	{
+	
+	}
 }

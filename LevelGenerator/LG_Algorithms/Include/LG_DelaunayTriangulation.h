@@ -204,5 +204,15 @@ namespace LevelGenerator
 		 *	@brief 
 		 */
 		LG_Triangle* ManageEdges(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
+
+		/**
+		 *	@brief This function finds the triangle that we want to legalize it's edges.
+		 *	@param LG_Node* pFirstNode: The first node.
+		 *	@param LG_Node* pSecondNode: The second node.
+		 *	@param LG_Node* pThirdNode: The third node.
+		 *	@return a triangle reference.
+		 */
+		LG_Triangle* FindTriangleToLegalize(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
+
 	};
 }

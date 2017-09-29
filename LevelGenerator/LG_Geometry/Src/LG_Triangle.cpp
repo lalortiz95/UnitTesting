@@ -90,6 +90,19 @@ namespace LevelGenerator
 					(m_NodeIndex[THIRD_INDEX] == OtherTriangle.m_NodeIndex[THIRD_INDEX])));
 	}
 
+	bool LG_Triangle::CompareIndex(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode)
+	{
+		return (((m_NodeIndex[FIRST_INDEX] == pFirstNode->m_iID) ||
+			(m_NodeIndex[FIRST_INDEX] == pSecondNode->m_iID) ||
+			(m_NodeIndex[FIRST_INDEX] == pThirdNode->m_iID)) &&
+			((m_NodeIndex[SECOND_INDEX] == pFirstNode->m_iID) ||
+			(m_NodeIndex[SECOND_INDEX] == pSecondNode->m_iID) ||
+				(m_NodeIndex[SECOND_INDEX] == pThirdNode->m_iID)) &&
+				((m_NodeIndex[THIRD_INDEX] == pFirstNode->m_iID) ||
+			(m_NodeIndex[THIRD_INDEX] == pSecondNode->m_iID) ||
+					(m_NodeIndex[THIRD_INDEX] == pThirdNode->m_iID)));
+	}
+
 	//! Calculates the triangle's circumcentre.
 	void LG_Triangle::CalculateCircumcenter()
 	{

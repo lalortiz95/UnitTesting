@@ -22,6 +22,9 @@
 #define NODES_PER_TRIANGLE 3	/// Define a number of vertex per triangle.
 #define INDEX_PER_TRIANGLE 3    /// Define a number of index per triangle.
 
+#define TRIANGLE_0 0
+#define TRIANGLE_1 1
+
 #if defined(LG_GEOMETRY_EXPORTS)
 #	define LG_GEOMETRY_EXPORT __declspec(dllexport)
 #elif defined(LG_GEOMETRY_STATIC)

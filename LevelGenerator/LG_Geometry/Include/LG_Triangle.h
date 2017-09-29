@@ -105,6 +105,15 @@ namespace LevelGenerator
 		bool CompareIndex(const LG_Triangle& OtherTriangle);
 
 		/**
+		 *	@brief This function compare if the index of given nodes are the same.
+		 *	@param LG_Node* pFirstNode: The first node that we want to check it ID.
+		 *	@param LG_Node* pSecondNode: The second node that we want to check it ID.
+		 *	@param LG_Node* pThirdNode: The third node that we want to check it ID.
+		 *	@return true if its the same index, otherwise false.
+		 */
+		bool CompareIndex(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
+
+		/**
 		 *	@brief Calculates the triangle's circumcentre.
 		 */
 		void CalculateCircumcenter();

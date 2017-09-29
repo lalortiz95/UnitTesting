@@ -531,7 +531,6 @@ void LG_Visual::Run()
 		{
 			RenderDelaunay();
 		}
-
 		else
 		{
 			Renderer();
