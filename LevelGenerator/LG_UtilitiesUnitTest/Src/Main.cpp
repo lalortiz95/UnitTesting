@@ -42,7 +42,7 @@ TEST(UtilitiesUnitTest, Matrices)
 	{ 3, 2,-3,-13,
 	  4,-3, 6, 7,
 	  1, 0,-1,-5,
-  	  0, 0, 0, 0 };
+	  0, 0, 0, 0 };
 
 	GaussJ.GaussJordan(Result);
 
@@ -53,6 +53,53 @@ TEST(UtilitiesUnitTest, Matrices)
 		0, 0, 0, 0 };
 
 	GaussJ.GaussJordan(Result);
+
+	system("pause");
+}
+
+TEST(MathUnitTest, Functions)
+{
+	LG_Math math;
+
+	EXPECT_TRUE(math.Sqrt(25) == 5);
+	EXPECT_TRUE(math.InvSqrt(25) == 1.0f / 5);
+	EXPECT_TRUE(math.Exp(5) == 148.413162f);
+	EXPECT_TRUE(math.Pow(3, 3) == 27);
+	EXPECT_TRUE(math.Loge(25) == 3.21887589f);
+	//EXPECT_TRUE(math.LogX(25, 5) == 5);
+	EXPECT_TRUE(math.Trunc(LG_Math::PI) == 3);
+	EXPECT_TRUE(math.TruncFloat(LG_Math::PI) == 3.0f);
+	EXPECT_TRUE(math.Floor(LG_Math::PI) == 3);
+	EXPECT_TRUE(math.Round(LG_Math::PI) == 3);
+	EXPECT_TRUE(math.Ceil(LG_Math::PI) == 4);
+
+	EXPECT_TRUE(math.Sin(LG_Math::PI_HALF) == 1);
+	EXPECT_TRUE(math.Cos(LG_Math::PI * 2) == 1);
+	EXPECT_TRUE(math.Tan(LG_Math::PI) <= LG_Math::DELTA && math.Tan(LG_Math::PI) >= -LG_Math::DELTA);
+
+	///max
+	EXPECT_TRUE(math.Max(5, 2) == 5);
+	///mmin 
+	EXPECT_TRUE(math.Min(5, 2) == 2);
+
+	///max3
+	EXPECT_TRUE(math.Max3(5, 2, 9) == 9);
+	///mmin3 
+	EXPECT_TRUE(math.Min3(5, 2, 1) == 1);
+
+	system("pause");
+}
+
+TEST(VectorsUnitTest, Vectors)
+{
+	LG_Vector2D vec2D(0, 1);
+	EXPECT_TRUE(LG_Vector2D::Dot(LG_Vector2D(-6, 8), LG_Vector2D(5, 12)) == 66);
+	EXPECT_TRUE(vec2D.Equals(LG_Vector2D(0, 1), LG_Math::DELTA));
+	EXPECT_TRUE(vec2D.Normalize() <= 1 && vec2D.Normalize() >= 0);
+	vec2D = { 0, 5 };
+	EXPECT_TRUE(vec2D.Magnitude() == 5);
+
+	//TODO: testear vectores 2DI, 3D y 4D.
 
 	system("pause");
 }

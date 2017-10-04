@@ -88,94 +88,94 @@ namespace LevelGenerator
 		LG_Triangle* pTempTriangle[2];
 
 		LG_Edge* pEdgeToChange = nullptr;
-
+		m_NodesCloud;
 		//Este código lo que hace es encontrar 2 nodos para hacer el cambio de aristas.
 		//TODO: con los 2 nodos que se encontraron, sacar los triangulos de los que forman parte,  verificar que no hayan más de 3 puntos dentros, o hacer la legalización.
 		/// Iterates through every edge from every triangle.
-		//for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
-		//{
-		//	for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
-		//	{
-		//		///  restart this from every edge.
-		//		NodesFound = 0;
-		//		pEdgeToChange = m_pTrianglesVector[i]->m_pEdges[j];
-		//		for (int32 k = 0; k < pEdgeToChange->m_pFirstNode->m_PointerNodes.size(); ++k)
-		//		{
+			for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		{
+			for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
+			{
+				///  restart this from every edge.
+				NodesFound = 0;
+				pEdgeToChange = m_pTrianglesVector[i]->m_pEdges[j];
+				for (int32 k = 0; k < pEdgeToChange->m_pFirstNode->m_PointerNodes.size(); ++k)
+				{
 
-		//			//TODO: tomar los 2 triangulos unidos por cada edge y ver si su arista es legal.
-		//				/// Aquí revisamos cual de los nodos que apuntan al primer nodo, los busca el que apunte al segundo nodo.
-		//			if (pEdgeToChange->m_pFirstNode->m_PointerNodes[k] == pEdgeToChange->m_pSecondNode)
-		//			{
-		//				//Aquí debe entrar 2 veces.
-		//				/// we store the first node that makes the triangle we want.
-		//				FillNodes[NodesFound] = pEdgeToChange->m_pFirstNode->m_PointerNodes[k];
-		//				/// we create a triangle with the nodes found.
-		//				pTempTriangle[NodesFound] = FindTriangleToLegalize(
-		//					pEdgeToChange->m_pFirstNode,
-		//					pEdgeToChange->m_pSecondNode,
-		//					FillNodes[NodesFound]);
-		//				++NodesFound;
-		//			}
-		//		}
-		//		/// If at least one of the nodes was inside the circle we change the arista for a legal one.
-		//		if (pTempTriangle[TRIANGLE_1]->m_CircumcircleCircumference.IsDotInside(FillNodes[TRIANGLE_0]->m_Position) ||
-		//			pTempTriangle[TRIANGLE_0]->m_CircumcircleCircumference.IsDotInside(FillNodes[TRIANGLE_1]->m_Position))
-		//		{
-		//			LG_Edge* pFirstEdgeFirstTriangle = nullptr;
-		//			LG_Edge* pSecondEdgeFirstTriangle = nullptr;
-		//			LG_Edge* pFirstEdgeSecondTriangle = nullptr;
-		//			LG_Edge* pSecondEdgeSecondTriangle = nullptr;
+					//TODO: tomar los 2 triangulos unidos por cada edge y ver si su arista es legal.
+						/// Aquí revisamos cual de los nodos que apuntan al primer nodo, los busca el que apunte al segundo nodo.
+					if (pEdgeToChange->m_pFirstNode->m_PointerNodes[k] == pEdgeToChange->m_pSecondNode)
+					{
+						//Aquí debe entrar 2 veces.
+						/// we store the first node that makes the triangle we want.
+						FillNodes[NodesFound] = pEdgeToChange->m_pFirstNode->m_PointerNodes[k];
+						/// we create a triangle with the nodes found.
+						pTempTriangle[NodesFound] = FindTriangleToLegalize(
+							pEdgeToChange->m_pFirstNode,
+							pEdgeToChange->m_pSecondNode,
+							FillNodes[NodesFound]);
+						++NodesFound;
+					}
+				}
+				/// If at least one of the nodes was inside the circle we change the arista for a legal one.
+				if (pTempTriangle[TRIANGLE_1]->m_CircumcircleCircumference.IsDotInside(FillNodes[TRIANGLE_0]->m_Position) ||
+					pTempTriangle[TRIANGLE_0]->m_CircumcircleCircumference.IsDotInside(FillNodes[TRIANGLE_1]->m_Position))
+				{
+					LG_Edge* pFirstEdgeFirstTriangle = nullptr;
+					LG_Edge* pSecondEdgeFirstTriangle = nullptr;
+					LG_Edge* pFirstEdgeSecondTriangle = nullptr;
+					LG_Edge* pSecondEdgeSecondTriangle = nullptr;
 
-		//			if (pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE]->CompareIndex(*pEdgeToChange))
-		//			{
-		//				pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[FIRST_NODE]);
-		//				pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[SECOND_NODE]);
-		//				pFirstEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE];
-		//				pSecondEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE];
-		//			}
-		//			else if (pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE]->CompareIndex(*pEdgeToChange))
-		//			{
-		//				pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[FIRST_NODE]);
-		//				pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[SECOND_NODE]);
-		//				pFirstEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE];
-		//				pSecondEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE];
-		//			}
-		//			else
-		//			{
-		//				pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[FIRST_NODE]);
-		//				pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[SECOND_NODE]);
-		//				pFirstEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE];
-		//				pSecondEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE];
-		//			}
+					if (pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE]->CompareIndex(*pEdgeToChange))
+					{
+						pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[FIRST_NODE]);
+						pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[SECOND_NODE]);
+						pFirstEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE];
+						pSecondEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE];
+					}
+					else if (pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE]->CompareIndex(*pEdgeToChange))
+					{
+						pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[FIRST_NODE]);
+						pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[SECOND_NODE]);
+						pFirstEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE];
+						pSecondEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE];
+					}
+					else
+					{
+						pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[FIRST_NODE]);
+						pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[SECOND_NODE]);
+						pFirstEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE];
+						pSecondEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE];
+					}
 
-		//			if (pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE]->CompareIndex(*pEdgeToChange))
-		//			{
-		//				pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[FIRST_NODE]);
-		//				pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[SECOND_NODE]);
-		//				pFirstEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE];
-		//				pSecondEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE];
-		//			}
-		//			else if (pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE]->CompareIndex(*pEdgeToChange))
-		//			{
-		//				pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[FIRST_NODE]);
-		//				pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[SECOND_NODE]);
-		//				pFirstEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE];
-		//				pSecondEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE];
-		//			}
-		//			else
-		//			{
-		//				pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[FIRST_NODE]);
-		//				pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[SECOND_NODE]);
-		//				pFirstEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE];
-		//				pSecondEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE];
-		//			}
-		//			pEdgeToChange->Legalize(FillNodes[FIRST_NODE], FillNodes[SECOND_NODE]);
+					if (pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE]->CompareIndex(*pEdgeToChange))
+					{
+						pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[FIRST_NODE]);
+						pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[SECOND_NODE]);
+						pFirstEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE];
+						pSecondEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE];
+					}
+					else if (pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE]->CompareIndex(*pEdgeToChange))
+					{
+						pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[FIRST_NODE]);
+						pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[SECOND_NODE]);
+						pFirstEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE];
+						pSecondEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE];
+					}
+					else
+					{
+						pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[FIRST_NODE]);
+						pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[SECOND_NODE]);
+						pFirstEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE];
+						pSecondEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE];
+					}
+					pEdgeToChange->Legalize(FillNodes[FIRST_NODE], FillNodes[SECOND_NODE]);
 
-		//			pTempTriangle[TRIANGLE_0]->Init(pFirstEdgeFirstTriangle, pSecondEdgeFirstTriangle, pEdgeToChange);
-		//			pTempTriangle[TRIANGLE_1]->Init(pFirstEdgeSecondTriangle, pSecondEdgeSecondTriangle, pEdgeToChange);
-		//		}
-		//	}
-		//}
+					pTempTriangle[TRIANGLE_0]->Init(pFirstEdgeFirstTriangle, pSecondEdgeFirstTriangle, pEdgeToChange);
+					pTempTriangle[TRIANGLE_1]->Init(pFirstEdgeSecondTriangle, pSecondEdgeSecondTriangle, pEdgeToChange);
+				}
+			}
+		}
 
 		//while (!bQuit)
 		//{

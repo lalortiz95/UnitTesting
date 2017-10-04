@@ -22,21 +22,38 @@ namespace LevelGenerator
 	}
 
 	//! This function return the magnitud of the vector given in the parameter.
-	float LG_Vector2D::Magnitud(const LG_Vector2D & OtherVector)
+	float LG_Vector2D::Magnitude(const LG_Vector2D & OtherVector)
 	{
 		return sqrt(pow(OtherVector.X, 2) + pow(OtherVector.Y, 2));
+	}
+
+	float LG_Vector2D::Magnitude()
+	{
+		return sqrt(pow(X, 2) + pow(Y, 2));
 	}
 	
 	//! This function reduce the magnitud of the vector given between 0 and 1.
 	LG_Vector2D LG_Vector2D::Normalize(const LG_Vector2D & OtherVector)
 	{
-		return OtherVector / Magnitud(OtherVector);
+		return OtherVector / Magnitude(OtherVector);
+	}
+
+	//! This function reduce the magnitud of the vector given between 0 and 1.
+	LG_Vector2D LG_Vector2D::Normalize()
+	{
+		return *this / Magnitude();
 	}
 
 	//! This function realize the dot product between 2 vectors.
 	float LG_Vector2D::Dot(const LG_Vector2D& VectorA, const LG_Vector2D& VectorB)
 	{
 		return VectorA | VectorB;
+	}
+
+	//! This function realizes the dot product between 2 vectors.
+	float LG_Vector2D::Dot(const LG_Vector2D & VectorB)
+	{
+		return *this | VectorB;
 	}
 
 	//! This is an operator to use + between 2 vectors.
@@ -93,11 +110,23 @@ namespace LevelGenerator
 	{
 		return X < OtherVector.X && Y < OtherVector.Y;
 	}
+
+	//!  This operator compares that a  vector is less greater than a value.
+	bool LG_Vector2D::operator<(float fValue) const
+	{
+		return  X < fValue && Y < fValue;
+	}
 	
 	//! This operator compares that this vector is greater than other vector.
 	bool LG_Vector2D::operator>(const LG_Vector2D& OtherVector) const
 	{
 		return X > OtherVector.X && Y > OtherVector.Y;
+	}
+
+	//! This operator compares if a value is greater than other vector.
+	bool LG_Vector2D::operator>(float fValue) const
+	{
+		return X > fValue && Y > fValue;
 	}
 	
 	//! This operator compares that this vector is lesser or equal than other vector.
@@ -106,10 +135,20 @@ namespace LevelGenerator
 		return X <= OtherVector.X && Y <= OtherVector.Y;
 	}
 
+	bool LG_Vector2D::operator<=(float fValue) const
+	{
+		return X <= fValue && Y <= fValue;
+	}
+
 	//! This operator compares that this vector is greater or equal than other vector.
 	bool LG_Vector2D::operator>=(const LG_Vector2D& OtherVector) const
 	{
 		return X >= OtherVector.X && Y >= OtherVector.Y;
+	}
+
+	bool LG_Vector2D::operator>=(float fValue) const
+	{
+		return  X >= fValue && Y >= fValue;
 	}
 	
 	//! This function compares if 2 vectors are the same.

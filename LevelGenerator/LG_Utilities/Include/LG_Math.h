@@ -76,7 +76,6 @@ namespace LevelGenerator
 		 *	@brief The square root of a given value.
 		 *	@params float fValue: the value given to calculate it's square root.
 		 */
-
 		static float Sqrt(float fValue);
 
 		/**

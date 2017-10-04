@@ -4,11 +4,10 @@
 namespace LevelGenerator
 {
 	/**
-	 *	@brief Class to use a Vector in a 2D space with integer.
+	 *	@brief Class to use a Vector in a 2D space with integers.
 	 */
 	class LG_UTILITIES_EXPORT LG_Vector2DI
-	{
-	
+	{	
 		public:
 
 			///**************************************************************************/
@@ -52,11 +51,17 @@ namespace LevelGenerator
 			///************************************************************************/
 
 			/**
-			 *	@brief This function return the magnitud of the vector given in the parameter.
+			 *	@brief This function return the magnitude of the vector given in the parameter.
 			 *	@param const LG_Vector2DI& OtherVector: The vector.
-			 *	@return the magnitud of the vector.
+			 *	@return the magnitude of the vector.
 			 */
-			int32 Magnitud(const LG_Vector2DI& OtherVector);
+			static int32 Magnitude(const LG_Vector2DI& OtherVector);
+
+			/**
+			 *	@brief This function return the magnitude of a vector.
+			 *	@return the magnitude of the vector.
+			 */
+			int32 Magnitude();
 
 			/**
 			 *	@brief This function realize the dot product between 2 vectors.
@@ -64,14 +69,27 @@ namespace LevelGenerator
 			 *	@param const LG_Vector2DI& VectorB:
 			 *	@return The projection from VectorA with VectorB.
 			 */
-			int32 Dot(const LG_Vector2DI& VectorA, const LG_Vector2DI& VectorB);
+			static int32 Dot(const LG_Vector2DI& VectorA, const LG_Vector2DI& VectorB);
 
 			/**
-			 *	@brief This function reduce the magnitud of the vector given between 0 and 1.
+			 *	@brief This function realize the dot product between 2 vectors.
+			 *	@param const LG_Vector2DI& VectorB:
+			 *	@return The projection from VectorA with VectorB.
+			 */
+			int32 Dot(const LG_Vector2DI& VectorB);
+
+			/**
+			 *	@brief This function reduce the magnitude of the vector given between 0 and 1.
 			 *	@param const LG_Vector2DI& OtherVector: The vector.
 			 *	@return The normalized vector.
 			 */
-			LG_Vector2DI Normalize(const LG_Vector2DI& OtherVector);
+			static LG_Vector2DI Normalize(const LG_Vector2DI& OtherVector);
+
+			/**
+			 *	@brief This function reduces the magnitude a vector to something between 0 and 1.
+			 *	@return The normalized vector.
+			 */
+			LG_Vector2DI Normalize();
 
 			///************************************************************************/
 			///*						Arithmetic Operators.				          */

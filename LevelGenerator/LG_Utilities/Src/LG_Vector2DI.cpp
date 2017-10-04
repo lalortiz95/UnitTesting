@@ -23,9 +23,15 @@ namespace LevelGenerator
 	}
 
 	//! This function return the magnitud of the vector given in the parameter.
-	int32 LG_Vector2DI::Magnitud(const LG_Vector2DI & OtherVector)
+	int32 LG_Vector2DI::Magnitude(const LG_Vector2DI & OtherVector)
 	{
 		return (int32)sqrt(pow(OtherVector.X, 2) + pow(OtherVector.Y, 2));
+	}
+
+	//! This function return the magnitude of a vector.
+	int32 LG_Vector2DI::Magnitude()
+	{
+		return (int32)sqrt(pow(X, 2) + pow(Y, 2));
 	}
 
 	//! This function realize the dot product between 2 vectors.
@@ -34,10 +40,22 @@ namespace LevelGenerator
 		return VectorA | VectorB;
 	}
 
+	//! This function realize the dot product between 2 vectors.
+	int32 LG_Vector2DI::Dot(const LG_Vector2DI & VectorB)
+	{
+		return *this | VectorB;
+	}
+
 	//! This function reduce the magnitud of the vector given between 0 and 1.
 	LG_Vector2DI LG_Vector2DI::Normalize(const LG_Vector2DI & OtherVector)
 	{
-		return OtherVector / Magnitud(OtherVector);
+		return OtherVector / Magnitude(OtherVector);
+	}
+
+	//! This function reduces the magnitude a vector to something between 0 and 1.
+	LG_Vector2DI LG_Vector2DI::Normalize()
+	{
+		return *this / Magnitude();
 	}
 
 	//! This is an operator to use + between 2 vectors.
