@@ -150,11 +150,25 @@ namespace LevelGenerator
 			bool operator==(const LG_Vector2DI& OtherVector) const;
 
 			/**
-			 *	@brief This operator compares that 2 vectors are diferents
+			 *	@brief This operator compares that a vector and a value are the same.
+			 *	@param int32 iValue: The value to compare with.
+			 *	@return true if the value is the same that this, if not false.
+			 */
+			bool operator==(int32 iValue) const;
+
+			/**
+			 *	@brief This operator compares that 2 vectors are different.
 			 *	@param const LG_Vector2DI& OtherVector: The vector to compare with this.
-			 *	@return true if the vector is diferent that this, if not, false.
+			 *	@return true if the vector is different than this, if not, false.
 			 */
 			bool operator!=(const LG_Vector2DI& OtherVector) const;
+
+			/**
+			 *	@brief This operator compares that a vector and a value are different.
+			 *	@param int32 iValue: The value to compare with.
+			 *	@return true if the value is different than this, if not, false.
+			 */
+			bool operator!=(int32 iValue) const;
 
 			/**
 			 *	@brief This operator compares that this vector is lesser than other vector.
@@ -164,11 +178,25 @@ namespace LevelGenerator
 			bool operator<(const LG_Vector2DI& OtherVector) const;
 
 			/**
+			 *	@brief This operator compares that a value is less greater than a vector.
+			 *	@param int32 iValue: The value to compare with.
+			 *	@return true if a value is less greater than a vector, if not, false.
+			 */
+			bool operator<(int32 iValue) const;
+
+			/**
 			 *	@brief This operator compares that this vector is greater than other vector.
 			 *	@param const LG_Vector2DI& OtherVector: The vector to compare with this.
 			 *	@return true if this vector is greater than the other vector, if not, false.
 			 */
 			bool operator>(const LG_Vector2DI& OtherVector) const;
+
+			/**
+			 *	@brief This operator compares that a value is greater than a vector.
+			 *	@param int32 iValue: The value to compare with.
+			 *	@return true if a value is greater than a vector, if not, false.
+			 */
+			bool operator>(int32 iValue) const;
 
 			/**
 			 *	@brief This operator compares that this vector is lesser or equal than other vector.
@@ -178,11 +206,25 @@ namespace LevelGenerator
 			bool operator<=(const LG_Vector2DI& OtherVector) const;
 
 			/**
+			 *	@brief This operator compares that a value is less greater or equal to a vector.
+			 *	@param int32 iValue: The value to compare with.
+			 *	@return true if a value is less greater or equal to a vector, if not, false.
+			 */
+			bool operator<=(int32 iValue) const;
+
+			/**
 			 *	@brief This operator compares that this vector is greater or equal than other vector.
 			 *	@param const LG_Vector2DI& OtherVector: The vector to compare with this.
 			 *	@return true if this vector is greater or equal than the other vector, if not, false.
 			 */
 			bool operator>=(const LG_Vector2DI& OtherVector) const;
+
+			/**
+			 *	@brief This operator compares that a value is greater or equal to a vector.
+			 *	@param int32 iValue: The value to compare with.
+			 *	@return true if a value is greater or equal to a vector, if not, false.
+			 */
+			bool operator>=(int32 iValue) const;
 
 			/**
 			 *	@brief This function compares if 2 vectors are the same.

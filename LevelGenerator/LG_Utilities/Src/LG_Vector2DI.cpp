@@ -101,10 +101,21 @@ namespace LevelGenerator
 		return X == OtherVector.X && Y == OtherVector.Y;
 	}
 
+	//! This operator compares that a vector and a value are the same.
+	bool LG_Vector2DI::operator==(int32 iValue) const
+	{
+		return X == iValue && Y == iValue;
+	}
+
 	//! This operator compares that 2 vectors are diferents.
 	bool LG_Vector2DI::operator!=(const LG_Vector2DI& OtherVector) const
 	{
 		return X != OtherVector.X || Y != OtherVector.Y;
+	}
+
+	bool LG_Vector2DI::operator!=(int32 iValue) const
+	{
+		return X != iValue || Y != iValue;
 	}
 
 	//! This operator compares that this vector is lesser than other vector.
@@ -113,10 +124,22 @@ namespace LevelGenerator
 		return X < OtherVector.X && Y < OtherVector.Y;
 	}
 
+	//! This operator compares that a value is less greater than a vector.
+	bool LG_Vector2DI::operator<(int32 iValue) const
+	{
+		return X < iValue && Y < iValue;
+	}
+
 	//! This operator compares that this vector is greater than other vector.
 	bool LG_Vector2DI::operator>(const LG_Vector2DI& OtherVector) const
 	{
 		return X > OtherVector.X && Y > OtherVector.Y;
+	}
+
+	//! This operator compares that a value is greater than a vector.
+	bool LG_Vector2DI::operator>(int32 iValue) const
+	{
+		return X > iValue && Y > iValue;
 	}
 
 	//! This operator compares that this vector is lesser or equal than other vector.
@@ -125,10 +148,21 @@ namespace LevelGenerator
 		return X <= OtherVector.X && Y <= OtherVector.Y;
 	}
 
+	//! This operator compares that a value is less greater or equal to a vector.
+	bool LG_Vector2DI::operator<=(int32 iValue) const
+	{
+		return X <= iValue && Y <= iValue;
+	}
+
 	//! This operator compares that this vector is greater or equal than other vector.
 	bool LG_Vector2DI::operator>=(const LG_Vector2DI& OtherVector) const
 	{
 		return X >= OtherVector.X && Y >= OtherVector.Y;
+	}
+
+	bool LG_Vector2DI::operator>=(int32 iValue) const
+	{
+		return X >= iValue && Y >= iValue;
 	}
 
 	//! This function compares if 2 vectors are the same.

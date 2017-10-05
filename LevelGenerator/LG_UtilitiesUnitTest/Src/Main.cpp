@@ -99,7 +99,14 @@ TEST(VectorsUnitTest, Vectors)
 	vec2D = { 0, 5 };
 	EXPECT_TRUE(vec2D.Magnitude() == 5);
 
-	//TODO: testear vectores 2DI, 3D y 4D.
+	LG_Vector2DI vec2DI(0, 1);
+	EXPECT_TRUE(LG_Vector2DI::Dot(LG_Vector2DI(-6, 8), LG_Vector2DI(5, 12)) == 66);
+	EXPECT_TRUE(vec2DI.Equals(LG_Vector2DI(0, 1), 1));
+	EXPECT_TRUE(vec2DI.Normalize() <= 1 && vec2D.Normalize() >= 0);
+	vec2DI = { 0, 5 };
+	EXPECT_TRUE(vec2DI.Magnitude() == 5);
+
+	//TODO: testear vectores 3D y 4D.
 
 	system("pause");
 }
