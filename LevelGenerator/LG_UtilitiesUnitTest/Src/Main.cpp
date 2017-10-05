@@ -106,7 +106,19 @@ TEST(VectorsUnitTest, Vectors)
 	vec2DI = { 0, 5 };
 	EXPECT_TRUE(vec2DI.Magnitude() == 5);
 
-	//TODO: testear vectores 3D y 4D.
+	LG_Vector3D vec3D(0, 1, 666);
+	EXPECT_TRUE(LG_Vector3D::Dot(LG_Vector3D(1, 2, 3), LG_Vector3D(6, 7, 8)) == 44);
+	EXPECT_TRUE(vec3D.Equals(LG_Vector3D(0, 1, 666), 1));
+	EXPECT_TRUE(vec3D.Normalize() <= 1 && vec3D.Normalize() >= 0);
+	vec3D = { 0, 5, 0 };
+	EXPECT_TRUE(vec3D.Magnitude() == 5);
+
+	LG_Vector4D vec4D(0, 1, 666, 4);
+	EXPECT_TRUE(LG_Vector4D::Dot(LG_Vector4D(1, 2, 3, 4), LG_Vector4D(6, 7, 8, 9)) == 80);
+	EXPECT_TRUE(vec4D.Equals(LG_Vector4D(0, 1, 666, 4), 1));
+	EXPECT_TRUE(LG_Vector4D::Normalize(vec4D) <= 1 && LG_Vector4D::Normalize(vec4D) >= 0);
+	vec4D = { 0, 5, 0, 0 };
+	EXPECT_TRUE(vec4D.Magnitude() == 5);
 
 	system("pause");
 }

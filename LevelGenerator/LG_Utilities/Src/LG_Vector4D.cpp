@@ -24,7 +24,7 @@ namespace LevelGenerator
 	}
 
 	//! This function return the magnitud of the vector given in the parameter.
-	float LG_Vector4D::Magnitud(const LG_Vector4D & OtherVector)
+	float LG_Vector4D::Magnitude(const LG_Vector4D & OtherVector)
 	{
 		return sqrt(pow(OtherVector.X, 2) +
 					pow(OtherVector.Y, 2) + 
@@ -32,13 +32,37 @@ namespace LevelGenerator
 					pow(OtherVector.W, 2));
 	}
 
+	float LG_Vector4D::Magnitude()
+	{
+		return sqrt(pow(X, 2) +
+			pow(Y, 2) +
+			pow(Z, 2) +
+			pow(W, 2));
+	}
+
+	//! This function realize the dot product between 2 vectors.
+	float LG_Vector4D::Dot(const LG_Vector4D & VectorA, const LG_Vector4D & VectorB)
+	{
+		float escalar = (VectorA.X * VectorB.X) +
+			(VectorA.Y * VectorB.Y) +
+			(VectorA.Z * VectorB.Z) +
+			(VectorA.W * VectorB.W);
+
+		if (escalar <= DELTA && escalar >= 0 - DELTA)
+		{
+			escalar = 0;
+		}
+
+		return escalar;
+	}
+
 	//! This function realize the dot product between 2 vectors.
 	float LG_Vector4D::Dot(const LG_Vector4D& OtherVector)
 	{
-		float escalar = (this->X * OtherVector.X) + 
-						(this->Y * OtherVector.Y) + 
-						(this->Z * OtherVector.Z) + 
-						(this->W * OtherVector.W);
+		float escalar = (X * OtherVector.X) + 
+						(Y * OtherVector.Y) + 
+						(Z * OtherVector.Z) + 
+						(W * OtherVector.W);
 
 		if (escalar <= DELTA && escalar >= 0 - DELTA)
 		{
@@ -57,10 +81,24 @@ namespace LevelGenerator
 							0);
 	}
 
+	//! This function return a perpendicular vector between 2 vectors.
+	LG_Vector4D LG_Vector4D::Cross(const LG_Vector4D & V)
+	{
+		return LG_Vector4D((Y * V.Z - Z * V.Y),
+			(Z * V.X - X * V.Z),
+			(X * V.Y - Y * V.X),
+			0);
+	}
+
 	//! This function reduce the magnitud of the vector given between 0 and 1.
 	LG_Vector4D LG_Vector4D::Normalize(const LG_Vector4D & OtherVector)
 	{
-		return OtherVector / Magnitud(OtherVector);
+		return OtherVector / Magnitude(OtherVector);
+	}
+
+	void LG_Vector4D::Normalize()
+	{
+		*this /= Magnitude();
 	}
 
 	//! This function compares if 2 vectors are the same.
@@ -153,6 +191,14 @@ namespace LevelGenerator
 				Z < OtherVector.Z && 
 				W < OtherVector.W;
 	}
+
+	bool LG_Vector4D::operator<(float fValue) const
+	{
+		return 	X < fValue &&
+			Y < fValue &&
+			Z < fValue &&
+			W < fValue;
+	}
 	
 	//! his operator compares that this vector is greater than other vector.
 	bool LG_Vector4D::operator>(const LG_Vector4D& OtherVector) const
@@ -161,6 +207,14 @@ namespace LevelGenerator
 				Y > OtherVector.Y && 
 				Z > OtherVector.Z && 
 				W > OtherVector.W;
+	}
+
+	bool LG_Vector4D::operator>(float fValue) const
+	{
+		return	X > fValue &&
+			Y > fValue &&
+			Z > fValue &&
+			W > fValue;
 	}
 	
 	//! This operator compares that this vector is lesser or equal than other vector.
@@ -171,6 +225,14 @@ namespace LevelGenerator
 				Z <= OtherVector.Z && 
 				W <= OtherVector.W;
 	}
+
+	bool LG_Vector4D::operator<=(float fValue) const
+	{
+		return 	X <= fValue &&
+			Y <= fValue &&
+			Z <= fValue &&
+			W <= fValue;
+	}
 	
 	//! This operator compares that this vector is greater or equal than other vector.
 	bool LG_Vector4D::operator>=(const LG_Vector4D& OtherVector) const
@@ -179,6 +241,14 @@ namespace LevelGenerator
 				Y >= OtherVector.Y &&
 				Z >= OtherVector.Z && 
 				W >= OtherVector.W;
+	}
+
+	bool LG_Vector4D::operator>=(float fValue) const
+	{
+		return	X >= fValue &&
+			Y >= fValue &&
+			Z >= fValue &&
+			W >= fValue;
 	}
 	
 	//! This operator add the values from other vector with this.
