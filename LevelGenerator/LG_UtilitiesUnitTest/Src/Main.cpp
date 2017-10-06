@@ -19,7 +19,6 @@ TEST(UtilitiesUnitTest, Matrices)
 	};
 	LG_Matrix3D InverseM = M;
 	InverseM.Inverse();
-	LG_Matrix3D X = M * InverseM;
 
 	EXPECT_TRUE(M * InverseM == LG_Matrix3D::Identity());
 
