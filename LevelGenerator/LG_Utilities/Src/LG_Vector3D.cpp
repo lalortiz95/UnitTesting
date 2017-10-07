@@ -33,7 +33,7 @@ namespace LevelGenerator
 					pow(this->Z, 2));
 	}
 	//! This function return the magnitude of the vector given in the parameter.
-	float LG_Vector3D::StaticMagnitude(const LG_Vector3D OtherVector)
+	float LG_Vector3D::Magnitude(const LG_Vector3D OtherVector)
 	{
 		return sqrt(pow(OtherVector.X, 2) +
 			pow(OtherVector.Y, 2) +
@@ -46,6 +46,12 @@ namespace LevelGenerator
 		return VectorA | VectorB;
 	}
 
+	//! This function realize the dot product between 2 vectors.
+	float LG_Vector3D::Dot(const LG_Vector3D & VectorB)
+	{
+		return *this | VectorB;
+	}
+
 	//! This function return a perpendicular vector between 2 vectors.
 	LG_Vector3D LG_Vector3D::Cross3(const LG_Vector3D& VectorA, const LG_Vector3D& VectorB)
 	{
@@ -54,10 +60,24 @@ namespace LevelGenerator
 			(VectorA.X * VectorB.Y - VectorA.Y * VectorB.X));
 	}
 
-	//! This function reduce the magnitud of the vector given between 0 and 1.
-	void LG_Vector3D::Normalize()
+	//! This function return a perpendicular vector between 2 vectors.
+	LG_Vector3D LG_Vector3D::Cross3(const LG_Vector3D & V)
 	{
-		 *this /= StaticMagnitude(*this);
+		return LG_Vector3D((V.Y * Z - V.Z * Y),
+			(-1 * (V.X * Z - V.Z * X)),
+			(V.X * Y - V.Y * X));
+	}
+
+	//! This function reduce the Magnitude of the vector given between 0 and 1.
+	LG_Vector3D LG_Vector3D::Normalize(const LG_Vector3D & V)
+	{
+		return V / Magnitude(V);;
+	}
+
+	//! This function reduce the magnitud of the vector given between 0 and 1.
+	LG_Vector3D LG_Vector3D::Normalize()
+	{
+			return *this /= Magnitude();
 	}
 
 	//! This function compares if 2 vectors are the same.
@@ -148,12 +168,28 @@ namespace LevelGenerator
 			Z < OtherVector.Z;
 	}
 
+	//! This operator compares that this vector is less greater than a value.
+	bool LG_Vector3D::operator<(float fValue) const
+	{
+		return X < fValue &&
+			Y < fValue &&
+			Z < fValue;
+	}
+
 	//! This operator compares that this vector is greater than other vector.
 	bool LG_Vector3D::operator>(const LG_Vector3D& OtherVector) const
 	{
 		return	X > OtherVector.X &&
 			Y > OtherVector.Y &&
 			Z > OtherVector.Z;
+	}
+
+	//! This operator compares that this vector is greater than a value.
+	bool LG_Vector3D::operator>(float fValue) const
+	{
+		return 	X > fValue &&
+			Y > fValue &&
+			Z > fValue;
 	}
 
 	//! This operator compares that this vector is lesser or equal than other vector.
@@ -164,12 +200,28 @@ namespace LevelGenerator
 			Z <= OtherVector.Z;
 	}
 
+	//! This operator compares that this vector is less greater or equal than a value.
+	bool LG_Vector3D::operator<=(float fValue) const
+	{
+		return	X <= fValue &&
+			Y <= fValue &&
+			Z <= fValue;
+	}
+
 	//! This operator compares that this vector is greater or equal than other vector.
 	bool LG_Vector3D::operator>=(const LG_Vector3D& OtherVector) const
 	{
 		return	X >= OtherVector.X &&
 			Y >= OtherVector.Y &&
 			Z >= OtherVector.Z;
+	}
+
+	//! This operator compares that this vector is greater or equal than a value.
+	bool LG_Vector3D::operator>=(float fValue) const
+	{
+		return	X >= fValue &&
+			Y >= fValue &&
+			Z >= fValue;
 	}
 
 	//! This operator assigns the values from other vector with this.

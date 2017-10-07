@@ -73,27 +73,51 @@ namespace LevelGenerator
 		 *	@param const LG_Vector3D& VectorA: The given vector.
 		 *	@return the magnitude of two vectors.
 		 */
-		 static float StaticMagnitude(const LG_Vector3D VectorA);
+		 static float Magnitude(const LG_Vector3D VectorA);
 
 		/**
-		 *	@brief This function realize the dot product between 2 vectors.
+		 *	@brief This function realizes the dot product between 2 vectors.
 		 *	@param const LG_Vector3D& VectorA:
 		 *	@param const LG_Vector3D& VectorB:
 		 *	@return The projection from VectorA with VectorB.
 		 */
-		float Dot(const LG_Vector3D& VectorA, const LG_Vector3D& VectorB);
+		static float Dot(const LG_Vector3D& VectorA, const LG_Vector3D& VectorB);
+
+		/**
+		 *	@brief This function realize the dot product between 2 vectors.
+		 *	@param const LG_Vector3D& VectorB: The other vector to work with.
+		 *	@return The projection from this with VectorB.
+		 */
+		float Dot(const LG_Vector3D& VectorB);
 
 		/**
 		 *	@brief This function return a perpendicular vector between 2 vectors.
-		 *	@param const LG_Vector3D& OtherVector: The vector.
+		 *	@param const LG_Vector3D& V: The first vector to cross product with.
+		 *	@param const LG_Vector3D& B: The second vector to cross product with.
 		 *	@return the vector that is perpendicular.
 		 */
 		static LG_Vector3D Cross3(const LG_Vector3D& V, const LG_Vector3D& B);
 
+
+		/**
+		 *	@brief This function return a perpendicular vector between 2 vectors.
+		 *	@param const LG_Vector3D& V: The vector to cross product with.
+		 *	@return the vector that is perpendicular.
+		 */
+		LG_Vector3D Cross3(const LG_Vector3D& V);
+
 		/**
 		 *	@brief This function reduce the Magnitude of the vector given between 0 and 1.
+		 *	@param const LG_Vector3D& V: the vector to normalize.
+		 *	@return the normalized vector.
 		 */
-		void Normalize();
+		static LG_Vector3D Normalize(const LG_Vector3D& V);
+
+		/**
+		 *	@brief This function reduce the Magnitude of the vector given between 0 and 1.
+		 *	@return the normalized vector.
+		 */
+		LG_Vector3D Normalize();
 
 		/**
 1		 *	@brief This function compares if 2 vectors are the same.
@@ -183,11 +207,25 @@ namespace LevelGenerator
 		bool operator<(const LG_Vector3D& OtherVector) const;
 
 		/**
+		 *	@brief This operator compares that this vector is less greater than a value.
+		 *	@param float fValue: The value to compare with.
+		 *	@return true if this vector is less greater than the other vector, if not, false.
+		 */
+		bool operator<(float fValue) const;
+
+		/**
 		 *	@brief This operator compares that this vector is greater than other vector.
-		 *	@param const LG_Vector3D& OtherVector: The vector to compare with this.
+		 *	@param const LG_Vector3D& OtherVector: The vector to compare with.
 		 *	@return true if this vector is greater than the other vector, if not, false.
 		 */
 		bool operator>(const LG_Vector3D& OtherVector) const;
+
+		/**
+		 *	@brief This operator compares that this vector is greater than a value.
+		 *	@param float fValue: The vector to compare with.
+		 *	@return true if this vector is greater than the value, if not, false.
+		 */
+		bool operator>(float fValue) const;
 
 		/**
 		 *	@brief This operator compares that this vector is lesser or equal than other vector.
@@ -197,11 +235,26 @@ namespace LevelGenerator
 		bool operator<=(const LG_Vector3D& OtherVector) const;
 
 		/**
+		*	@brief This operator compares that this vector is less greater or equal than a value.
+		*	@param float fValue: The value to compare with.
+		*	@return true if this vector is less greater or equal than the other vector, if not, false.
+		*/
+		bool operator<=(float fValue) const;
+
+		/**
 		 *	@brief This operator compares that this vector is greater or equal than other vector.
 		 *	@param const LG_Vector3D& OtherVector: The vector to compare with this.
 		 *	@return true if this vector is greater or equal than the other vector, if not, false.
 		 */
 		bool operator>=(const LG_Vector3D& OtherVector) const;
+
+
+		/**
+		 *	@brief This operator compares that this vector is greater or equal than a value.
+		 *	@param float fValue: The vector to compare with.
+		 *	@return true if this vector is greater or equal than the value, if not, false.
+		 */
+		bool operator>=(float fValue) const;
 
 		///************************************************************************/
 		///*					Compound Assignment Operators.				      */

@@ -145,9 +145,9 @@ namespace LevelGenerator
 			if (m_OriginalIsoline.m_NodeVector[i].m_bCanDeleted)
 			{
 				/// We calculate the distance between the actual iterating node and the first node of the isoline.
-				fStartDistance = LG_Vector3D::StaticMagnitude(m_OriginalIsoline.m_NodeVector[i].m_Position - m_pStart->m_Position);
+				fStartDistance = LG_Vector3D::Magnitude(m_OriginalIsoline.m_NodeVector[i].m_Position - m_pStart->m_Position);
 				/// We calculate the distance between the actual iterating node and the last node of the isoline.
-				fEndDistance = LG_Vector3D::StaticMagnitude(m_OriginalIsoline.m_NodeVector[i].m_Position - m_pEnd->m_Position);
+				fEndDistance = LG_Vector3D::Magnitude(m_OriginalIsoline.m_NodeVector[i].m_Position - m_pEnd->m_Position);
 				/// We add both distances.
 				fNewDistance = fStartDistance + fEndDistance;
 

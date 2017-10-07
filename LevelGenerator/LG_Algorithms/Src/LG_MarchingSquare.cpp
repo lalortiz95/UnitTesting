@@ -400,7 +400,7 @@ namespace LevelGenerator
 		for (int32 i = 0; i < m_CircleList.size(); ++i)
 		{
 			/// We calculate the distance between the actual node, and all  the circles.
-			fDistance = LG_Vector3D::StaticMagnitude(m_CircleList[i].m_Position - ActualNode.m_Position);
+			fDistance = LG_Vector3D::Magnitude(m_CircleList[i].m_Position - ActualNode.m_Position);
 			/// Check if it's inside of the actual circle.
 			if (fDistance <= m_CircleList[i].m_fRadius)
 			{
