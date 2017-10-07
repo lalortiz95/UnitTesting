@@ -72,6 +72,11 @@ namespace LevelGenerator
 		 */
 		int32 m_iTrianglesCount;
 
+		/**
+		 *	@brief This variable counts the number of edges created.
+		 */
+		int32 m_iEdgesCount;
+
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
@@ -201,6 +206,13 @@ namespace LevelGenerator
 		void AddEdgesToPolygon();
 
 		/**
+		 *	@brief This function sets all the triangles' flags in vector triangles as false.
+		 */
+		void SetTrianglesAsFalse();
+
+		
+
+		/**
 		 *	@brief 
 		 */
 		LG_Triangle* ManageEdges(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
@@ -213,6 +225,26 @@ namespace LevelGenerator
 		 *	@return a triangle reference.
 		 */
 		LG_Triangle* FindTriangleToLegalize(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
+
+		/**
+		 *	@brief This function finds the triangles that we want to legalize it's edges.
+		 *	@param LG_Edge* ActualEdge: The actual edge.
+		 *	@param LG_Triangle* pFirstTriangle: The firstTriangle.
+		 *	@param LG_Triangle* pThirdNode: The second triangle.
+		 *	@return true if found 2 triangles, otherwise false.
+		 */
+		bool FindTrianglesToLegalize(LG_Edge* ActualEdge, LG_Triangle** pFirstTriangle, LG_Triangle** pSecondTriangle);
+
+		/**
+		 *	@brief This function finds the polygon with the triangles given.
+		 *	@param LG_Edge* pActualEdge: The iterating edge.
+		 *	@param LG_Triangle* pFirstTriangle: The first triangle.
+		 *	@param LG_Triangle* pSecondTriangle: The second triangle.
+		 *	@param LG_Node* pFirstNode: The first node that we want to found.
+		 *	@param LG_Node* pSecondNode: The second node that we want to found.
+		 */
+		void FindNodesToCreatePolygon(LG_Edge* pActualEdge, LG_Triangle* pFirstTriangle, LG_Triangle* pSecondTriangle, LG_Node** pFirstNode, LG_Node** pSecondNode);
+
 
 	};
 }

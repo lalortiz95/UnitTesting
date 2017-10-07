@@ -9,6 +9,7 @@ namespace LevelGenerator
 		m_pTrianglesVector.clear();
 		m_pBadTriangles.clear();
 		m_iTrianglesCount = 0;
+		m_iEdgesCount = 0;
 	}
 
 	//! Default destructor.
@@ -69,112 +70,118 @@ namespace LevelGenerator
 	//! This function performs the algorithm.
 	void LG_DelaunayTriangulation::Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud)
 	{
-		//TODO: una vez teniendo una triangulación, empezamos a tomar cada edge de cada triangulo, y tomamos los 2 triangulos unidos por esa arista.
-		// con esos triangulos revisamos que sólo tengan 3 nodos dentro, de lo contrario hacemos un cambio de arista, eliminando los 2 triangulos
-		// anteriores y creando 2 nuevos con los mismos puntos, pero unidos por el otro edge posible, y verificar que cumpla con la regla de delaunay.
-		// al cumplir con dicha regla se marca como revisado, así mismo el triangulo se queda como revisado, para que no se vuelva a tomar.
-		// Repetir hasta que todos los edges estén marcados como revisados.
+
 
 		/// 
 		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
-
 		IncrementalTriangulation();
+		SetTrianglesAsFalse();
 
-		/// This variables are used to do the arista legalization. They will be checked along with 2 more nodes from an edge.
-		LG_Node* FillNodes[2];
+
+		LG_Node* pFirstNode = nullptr;
+		LG_Node* pSecondNode = nullptr;
+
+		LG_Triangle* pFirstTriangle = nullptr;
+		LG_Triangle* pSecondTriangle = nullptr;
 
 		int32 NodesFound = 0;
 
-		LG_Triangle* pTempTriangle[2];
-
 		LG_Edge* pEdgeToChange = nullptr;
-		m_NodesCloud;
-		//Este código lo que hace es encontrar 2 nodos para hacer el cambio de aristas.
-		//TODO: con los 2 nodos que se encontraron, sacar los triangulos de los que forman parte,  verificar que no hayan más de 3 puntos dentros, o hacer la legalización.
-		/// Iterates through every edge from every triangle.
-			for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		LG_Triangle* pActualTriangle = m_pTrianglesVector.front();
+		bool bCanStop = false;
+
+		while (!bCanStop)
 		{
+			bCanStop = true;
+			for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+			{
+				if (!m_pTrianglesVector[i]->m_bIsChecked)
+				{
+					pActualTriangle = m_pTrianglesVector[i];
+					break;
+				}
+			}
+
 			for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
 			{
 				///  restart this from every edge.
 				NodesFound = 0;
-				pEdgeToChange = m_pTrianglesVector[i]->m_pEdges[j];
-				for (int32 k = 0; k < pEdgeToChange->m_pFirstNode->m_PointerNodes.size(); ++k)
+				pEdgeToChange = pActualTriangle->m_pEdges[j];
+				if (FindTrianglesToLegalize(pEdgeToChange, &pFirstTriangle, &pSecondTriangle))
 				{
 
-					//TODO: tomar los 2 triangulos unidos por cada edge y ver si su arista es legal.
-						/// Aquí revisamos cual de los nodos que apuntan al primer nodo, los busca el que apunte al segundo nodo.
-					if (pEdgeToChange->m_pFirstNode->m_PointerNodes[k] == pEdgeToChange->m_pSecondNode)
+					FindNodesToCreatePolygon(pEdgeToChange, pFirstTriangle, pSecondTriangle, &pFirstNode, &pSecondNode);
+					/// If at least one of the nodes was inside the circle we change the arista for a legal one.
+					if (pSecondTriangle->m_CircumcircleCircumference.IsDotInside(pFirstNode->m_Position) ||
+						pFirstTriangle->m_CircumcircleCircumference.IsDotInside(pSecondNode->m_Position))
 					{
-						//Aquí debe entrar 2 veces.
-						/// we store the first node that makes the triangle we want.
-						FillNodes[NodesFound] = pEdgeToChange->m_pFirstNode->m_PointerNodes[k];
-						/// we create a triangle with the nodes found.
-						pTempTriangle[NodesFound] = FindTriangleToLegalize(
-							pEdgeToChange->m_pFirstNode,
-							pEdgeToChange->m_pSecondNode,
-							FillNodes[NodesFound]);
-						++NodesFound;
+						LG_Edge* pFirstEdgeFirstTriangle = nullptr;
+						LG_Edge* pSecondEdgeFirstTriangle = nullptr;
+						LG_Edge* pFirstEdgeSecondTriangle = nullptr;
+						LG_Edge* pSecondEdgeSecondTriangle = nullptr;
+
+						if (pFirstTriangle->m_pEdges[FIRST_EDGE]->CompareIndex(*pEdgeToChange))
+						{
+							pFirstTriangle->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, pFirstNode);
+							pFirstTriangle->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, pSecondNode);
+							pFirstEdgeFirstTriangle = pFirstTriangle->m_pEdges[SECOND_EDGE];
+							pSecondEdgeFirstTriangle = pFirstTriangle->m_pEdges[THIRD_EDGE];
+						}
+						else if (pFirstTriangle->m_pEdges[SECOND_EDGE]->CompareIndex(*pEdgeToChange))
+						{
+							pFirstTriangle->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, pFirstNode);
+							pFirstTriangle->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, pSecondNode);
+							pFirstEdgeFirstTriangle = pFirstTriangle->m_pEdges[FIRST_EDGE];
+							pSecondEdgeFirstTriangle = pFirstTriangle->m_pEdges[THIRD_EDGE];
+						}
+						else
+						{
+							pFirstTriangle->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, pFirstNode);
+							pFirstTriangle->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, pSecondNode);
+							pFirstEdgeFirstTriangle = pFirstTriangle->m_pEdges[FIRST_EDGE];
+							pSecondEdgeFirstTriangle = pFirstTriangle->m_pEdges[SECOND_EDGE];
+						}
+
+						if (pSecondTriangle->m_pEdges[FIRST_EDGE]->CompareIndex(*pEdgeToChange))
+						{
+							pSecondTriangle->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, pFirstNode);
+							pSecondTriangle->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, pSecondNode);
+							pFirstEdgeSecondTriangle = pSecondTriangle->m_pEdges[SECOND_EDGE];
+							pSecondEdgeSecondTriangle = pSecondTriangle->m_pEdges[THIRD_EDGE];
+						}
+						else if (pSecondTriangle->m_pEdges[SECOND_EDGE]->CompareIndex(*pEdgeToChange))
+						{
+							pSecondTriangle->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, pFirstNode);
+							pSecondTriangle->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, pSecondNode);
+							pFirstEdgeSecondTriangle = pSecondTriangle->m_pEdges[FIRST_EDGE];
+							pSecondEdgeSecondTriangle = pSecondTriangle->m_pEdges[THIRD_EDGE];
+						}
+						else
+						{
+							pSecondTriangle->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, pFirstNode);
+							pSecondTriangle->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, pSecondNode);
+							pFirstEdgeSecondTriangle = pSecondTriangle->m_pEdges[FIRST_EDGE];
+							pSecondEdgeSecondTriangle = pSecondTriangle->m_pEdges[SECOND_EDGE];
+						}
+						pEdgeToChange->Legalize(pFirstNode, pSecondNode);
+
+						pFirstTriangle->Init(pFirstEdgeFirstTriangle, pSecondEdgeFirstTriangle, pEdgeToChange);
+						pSecondTriangle->Init(pFirstEdgeSecondTriangle, pSecondEdgeSecondTriangle, pEdgeToChange);
+
+						/// Set their flags as checked.
+						pFirstTriangle->m_bIsChecked = true;
+						pSecondTriangle->m_bIsChecked = true;
 					}
 				}
-				/// If at least one of the nodes was inside the circle we change the arista for a legal one.
-				if (pTempTriangle[TRIANGLE_1]->m_CircumcircleCircumference.IsDotInside(FillNodes[TRIANGLE_0]->m_Position) ||
-					pTempTriangle[TRIANGLE_0]->m_CircumcircleCircumference.IsDotInside(FillNodes[TRIANGLE_1]->m_Position))
+				else
 				{
-					LG_Edge* pFirstEdgeFirstTriangle = nullptr;
-					LG_Edge* pSecondEdgeFirstTriangle = nullptr;
-					LG_Edge* pFirstEdgeSecondTriangle = nullptr;
-					LG_Edge* pSecondEdgeSecondTriangle = nullptr;
-
-					if (pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE]->CompareIndex(*pEdgeToChange))
-					{
-						pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[FIRST_NODE]);
-						pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[SECOND_NODE]);
-						pFirstEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE];
-						pSecondEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE];
-					}
-					else if (pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE]->CompareIndex(*pEdgeToChange))
-					{
-						pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[FIRST_NODE]);
-						pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[SECOND_NODE]);
-						pFirstEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE];
-						pSecondEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[THIRD_EDGE];
-					}
-					else
-					{
-						pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[FIRST_NODE]);
-						pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pFirstNode, FillNodes[SECOND_NODE]);
-						pFirstEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[FIRST_EDGE];
-						pSecondEdgeFirstTriangle = pTempTriangle[TRIANGLE_0]->m_pEdges[SECOND_EDGE];
-					}
-
-					if (pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE]->CompareIndex(*pEdgeToChange))
-					{
-						pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[FIRST_NODE]);
-						pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[SECOND_NODE]);
-						pFirstEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE];
-						pSecondEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE];
-					}
-					else if (pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE]->CompareIndex(*pEdgeToChange))
-					{
-						pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[FIRST_NODE]);
-						pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[SECOND_NODE]);
-						pFirstEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE];
-						pSecondEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[THIRD_EDGE];
-					}
-					else
-					{
-						pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[FIRST_NODE]);
-						pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE]->Legalize(pEdgeToChange->m_pSecondNode, FillNodes[SECOND_NODE]);
-						pFirstEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[FIRST_EDGE];
-						pSecondEdgeSecondTriangle = pTempTriangle[TRIANGLE_1]->m_pEdges[SECOND_EDGE];
-					}
-					pEdgeToChange->Legalize(FillNodes[FIRST_NODE], FillNodes[SECOND_NODE]);
-
-					pTempTriangle[TRIANGLE_0]->Init(pFirstEdgeFirstTriangle, pSecondEdgeFirstTriangle, pEdgeToChange);
-					pTempTriangle[TRIANGLE_1]->Init(pFirstEdgeSecondTriangle, pSecondEdgeSecondTriangle, pEdgeToChange);
+					continue;
 				}
+
+				if (pActualTriangle->m_bIsChecked)break;
 			}
+			pActualTriangle->m_bIsChecked = true;
+			bCanStop = CheckIfAllTrianglesAreTrue();
 		}
 
 		//while (!bQuit)
@@ -247,10 +254,8 @@ namespace LevelGenerator
 	{
 		bool bQuit = false;
 		bool bHasNoDotsInside = true;
-
-		/// Variable used to add triangles into the vector.
-		LG_Triangle newTriangle;
-
+		int32 iPosTriangle = 0;
+		Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin();
 		/// we perform incremental triangulation
 		while (!bQuit)
 		{
@@ -273,8 +278,8 @@ namespace LevelGenerator
 					m_NodesCloud[i].m_bIsChecked = true;
 					/// set that there were dots inside of the triangle.
 					bHasNoDotsInside = false;
-					/// 
-					m_pEdgeVector = m_pEdgeVector;
+					itt = m_pTrianglesVector.begin() + iPosTriangle;
+					m_pTrianglesVector.erase(itt);
 					/// Ends the iteration because now is time to get a new actual triangle.
 					break;
 				}
@@ -296,6 +301,7 @@ namespace LevelGenerator
 				{
 					/// set the new triangle.
 					m_pActualTriangle = m_pTrianglesVector[i];
+					iPosTriangle = m_pTrianglesVector.size() - (i + 1);
 					break;
 				}
 			}
@@ -558,6 +564,20 @@ namespace LevelGenerator
 		m_pBigTriangle = new LG_Triangle();
 		m_pBigTriangle->Init(pNodePosition1, pNodePosition2, pNodePosition3);
 
+		m_pBigTriangle->m_pEdges[FIRST_EDGE]->m_iID = m_iEdgesCount;
+		++m_iEdgesCount;
+
+		m_pBigTriangle->m_pEdges[SECOND_EDGE]->m_iID = m_iEdgesCount;
+		++m_iEdgesCount;
+
+		m_pBigTriangle->m_pEdges[THIRD_EDGE]->m_iID = m_iEdgesCount;
+		++m_iEdgesCount;
+
+		for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
+		{
+			m_pEdgeVector.push_back(m_pBigTriangle->m_pEdges[i]);
+		}
+
 		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
 		{
 			m_NodesCloud[i].m_iID = iCountNode;
@@ -630,6 +650,15 @@ namespace LevelGenerator
 		}
 	}
 
+	//! This function sets all the triangles' flags in vector triangles as false.
+	void LG_DelaunayTriangulation::SetTrianglesAsFalse()
+	{
+		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		{
+			m_pTrianglesVector[i]->m_bIsChecked = false;
+		}
+	}
+
 	LG_Triangle* LG_DelaunayTriangulation::ManageEdges(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode)
 	{
 		/// This flags tells us if we are to add a new edge to the edge's vector.
@@ -645,8 +674,16 @@ namespace LevelGenerator
 
 		/// Initialize 3 new edges.
 		pFirstEdge->Init(pFirstNode, pSecondNode);
+		pFirstEdge->m_iID = m_iEdgesCount;
+		++m_iEdgesCount;
+
 		pSecondEdge->Init(pFirstNode, pThirdNode);
+		pSecondEdge->m_iID = m_iEdgesCount;
+		++m_iEdgesCount;
+
 		pThirdEdge->Init(pSecondNode, pThirdNode);
+		pThirdEdge->m_iID = m_iEdgesCount;
+		++m_iEdgesCount;
 
 		/// Checks if the edge haven't been inserted already. If so it gives a reference of the memory.
 		for (int32 i = 0; i < m_pEdgeVector.size(); ++i)
@@ -677,6 +714,12 @@ namespace LevelGenerator
 			}
 		}
 
+
+		/// Creates a new triangle, and initializes it.
+		pNewTriangle->Init(pFirstEdge, pSecondEdge, pThirdEdge);
+		pNewTriangle->m_iID = m_iTrianglesCount;
+		m_iTrianglesCount++;
+
 		/// Check if it is needed to add new edges.
 		if (bIsFirstEdgeNew)
 		{
@@ -690,11 +733,6 @@ namespace LevelGenerator
 		{
 			m_pEdgeVector.push_back(pThirdEdge);
 		}
-
-		/// Creates a new triangle, and initializes it.
-		pNewTriangle->Init(pFirstEdge, pSecondEdge, pThirdEdge);
-		pNewTriangle->m_iID = m_iTrianglesCount;
-		m_iTrianglesCount++;
 		/// Returns the new created triangle.
 		return pNewTriangle;
 	}
@@ -710,7 +748,73 @@ namespace LevelGenerator
 		return nullptr;
 	}
 
+	bool LG_DelaunayTriangulation::FindTrianglesToLegalize(LG_Edge * ActualEdge, LG_Triangle** pFirstTriangle, LG_Triangle** pSecondTriangle)
+	{
+		int32 iCountTriangle = 0;
+		LG_Triangle* pTest[7];
 
+		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		{
+			for (int32 j = 0; j < EDGES_PER_TRIANGLE; j++)
+			{
+				if (m_pTrianglesVector[i]->m_pEdges[j]->CompareIndex(*ActualEdge))
+				{
+					if (0 == iCountTriangle)
+					{
+						*pFirstTriangle = m_pTrianglesVector[i];
+						/// Test
+						pTest[iCountTriangle] = m_pTrianglesVector[i];
+					}
+
+					else
+					{
+						*pSecondTriangle = m_pTrianglesVector[i];
+						/// Test 
+						pTest[iCountTriangle] = m_pTrianglesVector[i];
+					}
+					++iCountTriangle;
+					break;
+				}
+
+				if (iCountTriangle >= 2)
+				{
+					iCountTriangle = iCountTriangle;
+				}
+			}
+		}
+		if (2 == iCountTriangle) return true;
+		return false;
+	}
+
+	void LevelGenerator::LG_DelaunayTriangulation::FindNodesToCreatePolygon(LG_Edge* pActualEdge, LG_Triangle * pFirstTriangle, LG_Triangle * pSecondTriangle, LG_Node** pFirstNode, LG_Node** pSecondNode)
+	{
+
+		for (int32 i = 0; i < NODES_PER_TRIANGLE; ++i)
+		{
+			if ((pFirstTriangle->m_pVertices[i] != pActualEdge->m_pFirstNode) &&
+				(pFirstTriangle->m_pVertices[i] != pActualEdge->m_pSecondNode))
+			{
+				*pFirstNode = pFirstTriangle->m_pVertices[i];
+			}
+			else
+			{
+				continue;
+			}
+		}
+
+		for (int32 i = 0; i < NODES_PER_TRIANGLE; ++i)
+		{
+			if ((pSecondTriangle->m_pVertices[i] != pActualEdge->m_pFirstNode) &&
+				(pSecondTriangle->m_pVertices[i] != pActualEdge->m_pSecondNode))
+			{
+				*pSecondNode = pSecondTriangle->m_pVertices[i];
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
 
 	//! This function releases memory and clears the variables.
 	void LG_DelaunayTriangulation::Destroy()
