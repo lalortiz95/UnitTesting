@@ -70,8 +70,6 @@ namespace LevelGenerator
 	//! This function performs the algorithm.
 	void LG_DelaunayTriangulation::Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud)
 	{
-
-
 		/// 
 		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
 		IncrementalTriangulation();
@@ -272,14 +270,16 @@ namespace LevelGenerator
 							ManageEdges(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
 								m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
 								&m_NodesCloud[i]));
-
 					}
 					/// Set the node that we just used as checked.
 					m_NodesCloud[i].m_bIsChecked = true;
 					/// set that there were dots inside of the triangle.
 					bHasNoDotsInside = false;
+					// TODO: Verificar que se borre el triangulo que esperamos.
 					itt = m_pTrianglesVector.begin() + iPosTriangle;
 					m_pTrianglesVector.erase(itt);
+					//TODO: tomar un triangulo y verificar que no hayan 3 triangulos que compartan edge.
+					// si lo hacen se debe borrar ese triangulo, porque ya está conformado por otros triángulos.
 					/// Ends the iteration because now is time to get a new actual triangle.
 					break;
 				}
@@ -301,7 +301,8 @@ namespace LevelGenerator
 				{
 					/// set the new triangle.
 					m_pActualTriangle = m_pTrianglesVector[i];
-					iPosTriangle = m_pTrianglesVector.size() - (i + 1);
+					//ESTO está muy mal porque no empieza en 0.
+					iPosTriangle = i/*m_pTrianglesVector.size() - (i + 1)*/;
 					break;
 				}
 			}
@@ -523,6 +524,8 @@ namespace LevelGenerator
 		/// X * 2 = the lenght of the triangle's arista. This only works when the grid is a square.
 		float AristaSize = float(iWidth * 2);
 		int32 iCountNode = 0;
+		/// The offset is used to make the triangle just a notch larger, this in order to prevent that there are nodes at the arista.
+		int iOffset = 50;
 
 		/// We set the center of the grid to start off.
 		LG_Node* pNodePosition1 = new LG_Node();
@@ -531,20 +534,20 @@ namespace LevelGenerator
 
 		pNodePosition1->m_Position = GridCenter;
 
-		/// Substract half the height in the Y axis so that it's at the base of que grid.
-		pNodePosition1->m_Position.Y -= iHeight / 2;
+		/// Substract half the height in the Y axis so that it's at the grid's base.
+		pNodePosition1->m_Position.Y -= (iHeight / 2) + iOffset;
 		/// Substract half of the size of the arista to the left.
-		pNodePosition1->m_Position.X -= AristaSize / 2;
+		pNodePosition1->m_Position.X -= (AristaSize / 2) + iOffset;
 		/// Assign the ID for the node.
 		pNodePosition1->m_iID = iCountNode;
 		/// Add one to the counter node.
-		iCountNode++;
-
+		++iCountNode;
 
 		/// 
 		pNodePosition2->m_Position = pNodePosition1->m_Position;
 		/// Add the whole size of the arista for the next node.
-		pNodePosition2->m_Position.X += AristaSize;
+		///Here we add twice the offset to the arista size, to set it back in the original position it's meant to be, and to add an extra offset.
+		pNodePosition2->m_Position.X += AristaSize + (iOffset * 2);
 		/// Assign the ID for the node.
 		pNodePosition2->m_iID = iCountNode;
 		/// Add one to the counter node.
@@ -554,7 +557,7 @@ namespace LevelGenerator
 		pNodePosition3->m_Position = pNodePosition2->m_Position;
 		pNodePosition3->m_Position.X = GridCenter.X;
 		/// Get the last top node.
-		pNodePosition3->m_Position.Y += AristaSize;
+		pNodePosition3->m_Position.Y += AristaSize + iOffset;
 		/// Assign the ID for the node.
 		pNodePosition3->m_iID = iCountNode;
 		/// Add one to the counter node.
