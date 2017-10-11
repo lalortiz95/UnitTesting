@@ -52,6 +52,7 @@ namespace LevelGenerator
 		m_NodeIndex[THIRD_INDEX] = m_pVertices[THIRD_NODE]->m_iID;
 
 		CalculateCircumcenter();
+		CalculateAngles();
 	}
 
 	//! This function initialize all variables of the class.
@@ -77,6 +78,7 @@ namespace LevelGenerator
 		m_pEdges[THIRD_EDGE]->Init(pSecondNode, pThirdNode);
 
 		CalculateCircumcenter();
+		CalculateAngles();
 	}
 
 	//! This function releases memory and clears the variables.
@@ -172,30 +174,6 @@ namespace LevelGenerator
 		fSlope_BC = FindSlope(*m_pVertices[SECOND_NODE], *m_pVertices[THIRD_NODE]);
 		fSlope_CA = FindSlope(*m_pVertices[THIRD_NODE], *m_pVertices[FIRST_NODE]);
 
-		/*if ((0 == fSlope_AB) || (0 == fSlope_BC) || (0 == fSlope_CA))
-		{
-			/// Rotate all nodes of the triangle.
-			fXa *= fXa * LG_Math::Cos(0.1f) - fYa * LG_Math::Sin(0.1f);
-			fYa *= fXa * LG_Math::Sin(0.1f) + fYa * LG_Math::Cos(0.1f);
-
-			fXb *= fXb * LG_Math::Cos(0.1f) - fYb * LG_Math::Sin(0.1f);
-			fYb *= fXb * LG_Math::Sin(0.1f) + fYb * LG_Math::Cos(0.1f);
-
-			fXc *= fXc * LG_Math::Cos(0.1f) - fYc * LG_Math::Sin(0.1f);
-			fYc *= fXc * LG_Math::Sin(0.1f) + fYc * LG_Math::Cos(0.1f);
-
-			/// Recalculate all variables of the triangle.
-
-			/// We obtain the middle point between 2 node's position.
-			MiddlePoint_AB = FindMiddlePoint(LG_Vector2D(fXa, fYa), LG_Vector2D(fXb, fYb));
-			MiddlePoint_BC = FindMiddlePoint(LG_Vector2D(fXb, fYb), LG_Vector2D(fXc, fYc));
-			MiddlePoint_CA = FindMiddlePoint(LG_Vector2D(fXc, fYc), LG_Vector2D(fXa, fYa));
-
-			fSlope_AB = FindSlope(LG_Vector2D(fXa, fYa), LG_Vector2D(fXb, fYb));
-			fSlope_BC = FindSlope(LG_Vector2D(fXb, fYb), LG_Vector2D(fXc, fYc));
-			fSlope_CA = FindSlope(LG_Vector2D(fXc, fYc), LG_Vector2D(fXa, fYa));
-		}*/
-
 		if (0 == fSlope_AB)
 		{
 			fPerpendicualarSlope_BC = (-1.0f / fSlope_BC);
@@ -288,6 +266,15 @@ namespace LevelGenerator
 		}
 	}
 
+	//! Calculates the triangle's intrinsic angles.
+	void LG_Triangle::CalculateAngles()
+	{
+		/// We calculate the intrinsic angles
+		m_fAngles[0] = GetAngle(*m_pEdges[0], *m_pEdges[1]);
+		m_fAngles[1] = GetAngle(*m_pEdges[1], *m_pEdges[2]);
+		m_fAngles[2] = GetAngle(*m_pEdges[2], *m_pEdges[0]);
+	}
+
 	//! This operator compares that 2 triangles are the same.
 	bool LG_Triangle::operator==(const LG_Triangle & OtherTriangle) const
 	{
@@ -314,6 +301,58 @@ namespace LevelGenerator
 		return false;
 	}
 
+	float LG_Triangle::GetAngle(const LG_Edge & EdgeA, const LG_Edge & EdgeB)
+	{
+		/// We'll take the angle from these 2 vectors.
+		LG_Vector3D FirstVector;
+		LG_Vector3D SecondVector;
+		/// Here we store which nodes will be substracted firstand which second, in order to calculate the vectors
+		/// Correctly.
+		LG_Node* FirstArista;
+		LG_Node* SecondArista;
+		/// The angle between the vectors.
+		float fAngle;
+
+		/// We want to calculate the angle between two vectors, There has got to be one node shared by those two.
+		/// Since we can't know which one  of the nodes is the shared one, we need to calculate it.
+		/// Here we assign which node will be the first, and which will be the second.
+		if (EdgeA.m_pFirstNode->m_Position == EdgeB.m_pFirstNode->m_Position ||
+			EdgeA.m_pFirstNode->m_Position == EdgeB.m_pSecondNode->m_Position)
+		{
+			FirstArista  = EdgeA.m_pFirstNode;
+			SecondArista = EdgeA.m_pSecondNode;
+		}
+		else if (EdgeA.m_pSecondNode->m_Position == EdgeB.m_pFirstNode->m_Position ||
+				 EdgeA.m_pSecondNode->m_Position == EdgeB.m_pSecondNode->m_Position)
+		{
+			FirstArista  = EdgeA.m_pSecondNode;
+			SecondArista = EdgeA.m_pFirstNode;
+		}
+		/// We calculate the first vectors to get the angle.
+		FirstVector = FirstArista->m_Position - SecondArista->m_Position;
+
+		/// Now we see which nodes will be first and second for the second vector.
+		if (EdgeB.m_pFirstNode->m_Position == EdgeA.m_pFirstNode->m_Position ||
+			EdgeB.m_pFirstNode->m_Position == EdgeA.m_pSecondNode->m_Position)
+		{
+			FirstArista  = EdgeB.m_pFirstNode;
+			SecondArista = EdgeB.m_pSecondNode;
+		}
+		else if (EdgeB.m_pSecondNode->m_Position == EdgeA.m_pFirstNode->m_Position ||
+				 EdgeB.m_pSecondNode->m_Position == EdgeA.m_pSecondNode->m_Position)
+		{
+			FirstArista =  EdgeB.m_pSecondNode;
+			SecondArista = EdgeB.m_pFirstNode;
+		}
+		/// We calculate the second vector to get the angle.
+		SecondVector = FirstArista->m_Position - SecondArista->m_Position;
+
+		/// We now calculate the intrinsic angle.
+		fAngle = SecondVector.Dot(FirstVector) / (FirstVector.Magnitude() * SecondVector.Magnitude());
+		/// We return the arc cosine of the obtained value, that our angle.
+		return LG_Math::Acos(fAngle);
+	}
+
 	//! Performs a cross product between the aristas.
 	float LG_Triangle::Sign(LG_Node* pNodeToCompare, LG_Node* pNode1, LG_Node* pNode2)
 	{
@@ -324,7 +363,7 @@ namespace LevelGenerator
 	}
 
 	//! This function find the middle point between 2 position.
-	LG_Vector3D LG_Triangle::FindMiddlePoint(const LG_Node& NodeA,const LG_Node& NodeB)
+	LG_Vector3D LG_Triangle::FindMiddlePoint(const LG_Node& NodeA, const LG_Node& NodeB)
 	{
 		LG_Vector3D MiddlePoint{ 0,0,0 };
 		/// We obtain the middle point between two positions.
@@ -346,7 +385,7 @@ namespace LevelGenerator
 	}
 
 	//! This function find the slope between 2 positions.
-	float LG_Triangle::FindSlope(const LG_Node& NodeA,const LG_Node& NodeB)
+	float LG_Triangle::FindSlope(const LG_Node& NodeA, const LG_Node& NodeB)
 	{
 		return((NodeB.m_Position.Y - (NodeA.m_Position.Y)) /
 			(NodeB.m_Position.X - (NodeA.m_Position.X)));

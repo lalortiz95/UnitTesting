@@ -277,7 +277,6 @@ namespace LevelGenerator
 				}
 			}
 		}
-
 		/// if the nodes inside of the triangle are the same amount of dots checked.
 		pActualTriangle->m_bIsChecked = (DotsChecked == DotsInside);
 	}
