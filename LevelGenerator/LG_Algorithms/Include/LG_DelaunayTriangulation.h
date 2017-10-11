@@ -38,11 +38,6 @@ namespace LevelGenerator
 		Vector<LG_Triangle*> m_pTrianglesVector;
 
 		/**
-		 *	@brief a vector to store the incorrect triangles.
-		 */
-		Vector<LG_Triangle*> m_pBadTriangles;
-
-		/**
 		 *	@brief A vector to store edges that we need for create a triangle.
 		 */
 		Vector<LG_Edge*> m_pEdgeVector;
@@ -61,11 +56,6 @@ namespace LevelGenerator
 		 *	@brief The actual triangle being created.
 		 */
 		LG_Triangle* m_pActualTriangle;
-
-		/**
-		 *	@brief The Polygon to create.
-		 */
-		LG_Polygon m_Polygon;
 
 		/**
 		 *	@brief This variable counts the number of triangles created.
@@ -120,60 +110,10 @@ namespace LevelGenerator
 		void IncrementalTriangulation();
 
 		/**
-		 *	@brief This function checks if one edge of the given triangle is already in the polygon's edge vector.
-		 *	@param LG_Triangle* pIteratingTriangle: The triangle that we want to check.
-		 */
-		void CheckIfEdgeIsInside(LG_Triangle* pIteratingTriangle);
-
-		/**
-		 *  @brief This function create a triangle from one triangle and a node.
-		 *  @param LG_Triangle ActualTriangle: The base triangle to generate 3 new triangles.
-		 *  @param LG_Node* pNodeInside: The node used to make the 3 new triangles.
-		 *  @param int32 iCountNode: The node number iteration that we want to use of the triangle.
-		 */
-		void CreateTriangle(LG_Triangle ActualTriangle, LG_Node* pNodeInside, int32 iCountNode);
-
-		/**
-		 *  @brief This function create a 3 triangles from one triangle and a node.
-		 *  @param LG_Triangle ActualTriangle: The base triangle to generate 3 new triangles.
-		 *  @param LG_Node* pNodeInside: The node used to make the 3 new triangles.
-		 */
-		void CreateTriangles(LG_Triangle ActualTriangle, LG_Node* pNodeInside);
-
-
-		/**
-		 *	@brief This function checks if the given edge is the same that anyone edge of the triangle's edges in Triangles Vector.
-		 *	@param LG_Edge* pIteratingEdge: The Edge that we want to check.
-		 *	@return true if the edge is the same that anyone, otherwise false.
-		 */
-		bool EdgeIsNotInTriangleVector(LG_Edge* pIteratingEdge);
-
-		/**
-		 *	@brief This function adds a bad triangle if it haves the iterating node inside of it.
-		 *	@param const LG_Node& IteratingNode: the iterating node that will be compared.
-		 *	@param return true if the bad Triangle Vector had changes, otherwise false.
-		 */
-		bool SetTriangleAsBadTriangle(const LG_Node& IteratingNode);
-
-		/**
-		 *  @brief This function determine when we can stop the triangulation.
-		 *	@return true if all nodes flags bInside are true, otherwise false.
-		 */
-		bool CheckifAllNodesAreTrue();
-
-		/**
 		 *  @brief This function determine when we can stop the triangulation.
 		 *	@return true if all the triangles in the triangulation are true.
 		 */
 		bool CheckIfAllTrianglesAreTrue();
-
-		/**
-		 *  @brief This function compares the iterating node's position with any of the iterating triangle's node.
-		 *  @param LG_Triangle IteratingTriangle: The actual triangle.
-		 *  @param LG_Node IteratingNode: The actual iterating node.
-		 *  @return true if one of the triangle's nodes shares position with the iterating node.
-		 */
-		bool CheckIfSharesPosition(LG_Triangle IteratingTriangle, LG_Node IteratingNode);
 
 		/**
 		 *  @brief This function checks if the triangle is already checked.
@@ -182,12 +122,6 @@ namespace LevelGenerator
 		void CheckIfTriangleIsChecked(LG_Triangle* tri);
 		
 		/**
-		 *	@brief This function create a new triangles from the given node.
-		 *	@param LG_Node* pIteratingNode: The node that we want to create a new triangles.
-		 */
-		void CreateNewTriangles(LG_Node* IteratingNode);
-
-		/**
 		 *	@brief This function create a big triangle.
 		 *	@param int32 iWidth: The width of the grid.
 		 *	@param int32 iHeight: The height of the grid.
@@ -195,36 +129,25 @@ namespace LevelGenerator
 		 */
 		void CreateBigTriangle(int32 iWidth, int32 iHeight, LG_Vector3D GridCenter);
 
-		/**
-		 *	@brief This function deletes all of the triangles shared with the big triangle.
-		 */
-		void EliminateTriangles();
-
-		/**
-		 *	@brief This function add edges to the polygon.
-		 */
-		void AddEdgesToPolygon();
 
 		/**
 		 *	@brief This function sets all the triangles' flags in vector triangles as false.
 		 */
 		void SetTrianglesAsFalse();
 
-		
+		/**
+		 *	@brief This function delete all triangles that have one or more nodes of the big triangle.
+		 */
+		void EliminateTriangles();
 
 		/**
-		 *	@brief 
+		 *	@brief This function create a new triangle with the given nodes.
+		 *	@param LG_Node* pFirstNode: The first node that we need to create a triangle.
+		 *	@param LG_Node* pSecondNode: The second node that we need to create a triangle.
+		 *	@param LG_Node* pThirdNode: The third node that we need to create a triangle.
+		 *	@return The new triangle.
 		 */
-		LG_Triangle* ManageEdges(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
-
-		/**
-		 *	@brief This function finds the triangle that we want to legalize it's edges.
-		 *	@param LG_Node* pFirstNode: The first node.
-		 *	@param LG_Node* pSecondNode: The second node.
-		 *	@param LG_Node* pThirdNode: The third node.
-		 *	@return a triangle reference.
-		 */
-		LG_Triangle* FindTriangleToLegalize(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
+		LG_Triangle* CreateTriangle(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
 
 		/**
 		 *	@brief This function finds the triangles that we want to legalize it's edges.

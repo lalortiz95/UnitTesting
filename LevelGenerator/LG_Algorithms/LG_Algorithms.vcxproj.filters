@@ -27,10 +27,10 @@
     <ClInclude Include="Include\LG_Generate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\LG_DelaunayTriangulation.h">
+    <ClInclude Include="Include\LG_Voronoi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LG_Voronoi.h">
+    <ClInclude Include="Include\LG_DelaunayTriangulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,10 +44,10 @@
     <ClCompile Include="Src\LG_Generate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\LG_DelaunayTriangulation.cpp">
+    <ClCompile Include="Src\LG_Voronoi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LG_Voronoi.cpp">
+    <ClCompile Include="Src\LG_DelaunayTriangulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

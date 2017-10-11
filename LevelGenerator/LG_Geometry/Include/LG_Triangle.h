@@ -177,7 +177,6 @@ namespace LevelGenerator
 		 *	@return true if the triangle is the same that this, otherwise false.
 		 */
 		bool operator==(const LG_Triangle& OtherTriangle) const;
-
 	
 	};
 }
