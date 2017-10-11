@@ -6,8 +6,6 @@
 #include <LG_Vector2D.h>
 #include <LG_Vector4D.h>
 
-
-
 namespace LevelGenerator
 {
 	/**
@@ -36,32 +34,37 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief each vertex that makes the triangle.
+		 *	@var each vertex that makes the triangle.
 		 */
 		LG_Node* m_pVertices[NODES_PER_TRIANGLE];
 
 		/**
-		 *	@brief Where we store all of the triangle's edges.
+		 *	@var Where we store all of the triangle's edges.
 		 */
 		LG_Edge* m_pEdges[EDGES_PER_TRIANGLE];
 
 		/**
-		 *	@brief Where we store the triangle's circumcircle circumference.
+		 *	@var Where we store the triangle's circumcircle circumference.
 		 */
 		LG_Circle m_CircumcircleCircumference;
 
 		/**
-		 *	@brief True when all of the triangles inside of the triangle have already been checked.
+		 *	@var True when all of the triangles inside of the triangle have already been checked.
 		 */
 		bool m_bIsChecked;
 
 		/**
-		 *	@brief The triangle's ID.
+		 *	@var An array where we store the intrinsic angles.
+		 */
+		float m_fAngles[NODES_PER_TRIANGLE];
+
+		/**
+		 *	@var The triangle's ID.
 		 */
 		int32 m_iID;
 
 		/**
-		 *	@brief The indiex of the three nodes in the triangle.
+		 *	@var The indiex of the three nodes in the triangle.
 		 */
 		int32 m_NodeIndex[INDEX_PER_TRIANGLE];
 
@@ -125,15 +128,28 @@ namespace LevelGenerator
 		 */
 		void CalculateCircumcenter();
 
+		/**
+		 *	@brief Calculates the triangle's intrinsic angles.
+		 */
+		void CalculateAngles();
+
 	private:
 
 		/**
-		*  @brief Performs a cross product between the edges.
-		*	@param LG_Node* pNodeToCompare: Node that doesn't belong to the triangle.
-		*	@param LG_Node* pNode1: First node taken from the triangle.
-		*	@param LG_Node* pNode2: Second node taken from the triangle.
-		*	@return The cross product of a 2D vector.
-		*/
+		 *	@brief This function finds the angle between 2 edges.
+		 *	@param const LG_Edge& NodeA: The first edge.
+		 *	@param const LG_Edge& NodeB: The second edge.
+		 *	@return the angle between the vectors.
+		 */
+		float GetAngle(const LG_Edge& NodeA, const LG_Edge& NodeB);
+
+		/**
+		 *  @brief Performs a cross product between the edges.
+		 *	@param LG_Node* pNodeToCompare: Node that doesn't belong to the triangle.
+		 *	@param LG_Node* pNode1: First node taken from the triangle.
+		 *	@param LG_Node* pNode2: Second node taken from the triangle.
+		 *	@return The cross product of a 2D vector.
+		 */
 		float Sign(LG_Node* pNodeToCompare, LG_Node* pNode1, LG_Node* pNode2);
 
 		/**
@@ -169,9 +185,9 @@ namespace LevelGenerator
 		float FindSlope(const LG_Vector2D& PositionA, const LG_Vector2D& PositionB);
 
 		/**
-		*	@brief Generates the triangle's circumcircle circumference.
-		*	@param const LG_Vector3D& Position: The position of center of the circle.
-		*/
+		 *	@brief Generates the triangle's circumcircle circumference.
+		 *	@param const LG_Vector3D& Position: The position of center of the circle.
+		 */
 		void GenerateCircle(const LG_Vector3D& Position);
 
 		///************************************************************************/
