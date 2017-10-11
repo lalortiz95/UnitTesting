@@ -24,7 +24,28 @@ namespace LevelGenerator
 
 		m_pVertices[FIRST_NODE] = pFirstEdge->m_pFirstNode;
 		m_pVertices[SECOND_NODE] = pFirstEdge->m_pSecondNode;
-		m_pVertices[THIRD_NODE] = pSecondEdge->m_pSecondNode;
+
+		if ((pThirdEdge->m_pFirstNode != m_pVertices[FIRST_NODE]) &&
+			(pThirdEdge->m_pFirstNode != m_pVertices[SECOND_NODE]))
+		{
+			m_pVertices[THIRD_NODE] = pThirdEdge->m_pFirstNode;
+		}
+		else if ((pThirdEdge->m_pSecondNode != m_pVertices[FIRST_NODE]) &&
+			(pThirdEdge->m_pSecondNode != m_pVertices[SECOND_NODE]))
+		{
+			m_pVertices[THIRD_NODE] = pThirdEdge->m_pSecondNode;
+		}
+
+		else if ((pSecondEdge->m_pFirstNode != m_pVertices[FIRST_NODE]) &&
+			(pSecondEdge->m_pFirstNode != m_pVertices[SECOND_NODE]))
+		{
+			m_pVertices[THIRD_NODE] = pSecondEdge->m_pFirstNode;
+		}
+		else if ((pSecondEdge->m_pSecondNode != m_pVertices[FIRST_NODE]) &&
+			(pSecondEdge->m_pSecondNode != m_pVertices[SECOND_NODE]))
+		{
+			m_pVertices[THIRD_NODE] = pSecondEdge->m_pSecondNode;
+		}
 
 		m_NodeIndex[FIRST_INDEX] = m_pVertices[FIRST_NODE]->m_iID;
 		m_NodeIndex[SECOND_INDEX] = m_pVertices[SECOND_NODE]->m_iID;
@@ -101,6 +122,13 @@ namespace LevelGenerator
 				((m_NodeIndex[THIRD_INDEX] == pFirstNode->m_iID) ||
 			(m_NodeIndex[THIRD_INDEX] == pSecondNode->m_iID) ||
 					(m_NodeIndex[THIRD_INDEX] == pThirdNode->m_iID)));
+	}
+
+	bool LG_Triangle::CompareOneIndex(LG_Node * pOtherNode)
+	{
+		return ((m_NodeIndex[FIRST_INDEX] == pOtherNode->m_iID) ||
+			(m_NodeIndex[SECOND_INDEX] == pOtherNode->m_iID) ||
+			(m_NodeIndex[THIRD_INDEX] == pOtherNode->m_iID));
 	}
 
 	//! Calculates the triangle's circumcentre.

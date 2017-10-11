@@ -114,6 +114,13 @@ namespace LevelGenerator
 		bool CompareIndex(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
 
 		/**
+		 *	@brief This function compare if the index of given node with the index of the triangle.
+		 *	@param LG_Node* pOtherNode: The node that we want to check it ID.
+		 *	@return true if the ID of the given node is the same that one of the triangle index.
+		 */
+		bool CompareOneIndex(LG_Node* pOtherNode);
+
+		/**
 		 *	@brief Calculates the triangle's circumcentre.
 		 */
 		void CalculateCircumcenter();

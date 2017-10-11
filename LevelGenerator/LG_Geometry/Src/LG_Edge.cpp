@@ -130,6 +130,12 @@ namespace LevelGenerator
 			(m_NodeIndex[SECOND_INDEX] == OtherEdge.m_NodeIndex[SECOND_INDEX])));
 	}
 
+	bool LG_Edge::CompareOneIndex(LG_Node* pOtherNode)
+	{
+		return ((m_NodeIndex[FIRST_INDEX] ==  pOtherNode->m_iID) ||
+			(m_NodeIndex[SECOND_INDEX] == pOtherNode->m_iID));
+	}
+
 	//! This function chanfge the values of the edge.
 	void LG_Edge::Legalize(LG_Node * pFirstNode, LG_Node * pSecondNode)
 	{

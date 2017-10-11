@@ -265,7 +265,7 @@ void LG_Visual::Renderer()
 	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
 	{
 
-		for (LevelGenerator::int32 j = 0; j < 3; ++j)
+		for (LevelGenerator::int32 j = 0; j < NODES_PER_TRIANGLE; ++j)
 		{
 			posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_pEdges[j]->m_pFirstNode->m_Position;
 			Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_pEdges[j]->m_pSecondNode->m_Position;
@@ -274,10 +274,15 @@ void LG_Visual::Renderer()
 			SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
 			// en la posición de cada nodo dibujar un punto con SDL.
 			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+			///Update screen
+			SDL_RenderPresent(m_Renderer);
+			SDL_Delay(300);
 		}
-		//DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
-		//	Color,
-		//	50);
+		DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
+			Color,
+			50);
+		///Update screen
+		SDL_RenderPresent(m_Renderer);
 	}
 
 	// ///Aqui se rendera los triangulos malos de la triangulacion.

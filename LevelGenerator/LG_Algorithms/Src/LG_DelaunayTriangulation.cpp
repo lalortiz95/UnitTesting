@@ -115,7 +115,7 @@ namespace LevelGenerator
 					{
 
 						LG_Triangle* pNewFirstTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pFirstNode);
-						LG_Triangle* pNewSecondTriangle =CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pSecondNode);
+						LG_Triangle* pNewSecondTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pSecondNode);
 						pNewFirstTriangle->m_bIsChecked = true;
 						pNewSecondTriangle->m_bIsChecked = true;
 						m_pTrianglesVector.push_back(pNewFirstTriangle);
@@ -126,7 +126,7 @@ namespace LevelGenerator
 						{
 							if ((*itt) == pFirstTriangle)
 							{
-								(*itt) = nullptr;
+								delete *itt;
 								m_pTrianglesVector.erase(itt);
 								break;
 							}
@@ -136,7 +136,7 @@ namespace LevelGenerator
 						{
 							if ((*itt) == pSecondTriangle)
 							{
-								(*itt) = nullptr;
+								delete *itt;
 								m_pTrianglesVector.erase(itt);
 								break;
 							}
@@ -146,11 +146,12 @@ namespace LevelGenerator
 						{
 							if ((*itt) == pActualEdge)
 							{
-								(*itt) = nullptr;
+								delete *itt;
 								m_pEdgeVector.erase(itt);
 								break;
 							}
 						}
+						break;
 
 					}
 				}
@@ -158,13 +159,17 @@ namespace LevelGenerator
 				{
 					continue;
 				}
-
-				if (pActualTriangle->m_bIsChecked)break;
 			}
 			pActualTriangle->m_bIsChecked = true;
 			bCanStop = CheckIfAllTrianglesAreTrue();
 		}
 
+		/// Eliminate the edges of the big triangle from de edges' vector.
+		EliminateEdgesBigTriangle();
+		/// Eliminate the triangles that shares position with the big triangle.
+		while (EliminateTriangles());
+		/// Eliminate the edges that shares position with the big triangle.
+		while (EliminateEdges());
 	}
 
 	//! This function performs an initial triangulation that works as a base for the rest of the algorithm.
@@ -218,7 +223,7 @@ namespace LevelGenerator
 				{
 					/// set the new triangle.
 					m_pActualTriangle = m_pTrianglesVector[i];
-					
+
 					iPosTriangle = i;
 					break;
 				}
@@ -251,7 +256,7 @@ namespace LevelGenerator
 	}
 
 	//! This function checks if the triangle is already checked.
-	void LG_DelaunayTriangulation::CheckIfTriangleIsChecked(LG_Triangle* tri)
+	void LG_DelaunayTriangulation::CheckIfTriangleIsChecked(LG_Triangle* pActualTriangle)
 	{
 		int32 DotsInside, DotsChecked;
 		DotsInside = DotsChecked = 0;
@@ -260,7 +265,7 @@ namespace LevelGenerator
 		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
 		{
 			/// Check if the iterating node is inside of the actual triangle.
-			if (tri->IsPointInside(&m_NodesCloud[i]))
+			if (pActualTriangle->IsPointInside(&m_NodesCloud[i]))
 			{
 				/// add one to the dots inside counter.
 				++DotsInside;
@@ -274,7 +279,7 @@ namespace LevelGenerator
 		}
 
 		/// if the nodes inside of the triangle are the same amount of dots checked.
-		tri->m_bIsChecked = (DotsChecked == DotsInside);
+		pActualTriangle->m_bIsChecked = (DotsChecked == DotsInside);
 	}
 
 	//! This function create a big triangle.
@@ -357,6 +362,70 @@ namespace LevelGenerator
 		}
 	}
 
+	bool LG_DelaunayTriangulation::EliminateTriangles()
+	{
+		/// Erases the triangle that belongs to the legalized edge.
+		for (Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin(); itt != m_pTrianglesVector.end(); ++itt)
+		{
+			for (int32 i = 0; i < NODES_PER_TRIANGLE; ++i)
+			{
+				if ((*itt)->CompareOneIndex(m_pBigTriangle->m_pVertices[i]))
+				{
+					delete *itt;
+					m_pTrianglesVector.erase(itt);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	bool LG_DelaunayTriangulation::EliminateEdges()
+	{
+
+		/// Erases the triangle that belongs to the legalized edge.
+		for (Vector<LG_Edge*>::iterator itt = m_pEdgeVector.begin(); itt != m_pEdgeVector.end(); ++itt)
+		{
+
+			if ((*itt)->CompareOneIndex(m_pBigTriangle->m_pVertices[FIRST_NODE]))
+			{
+				delete *itt;
+				m_pEdgeVector.erase(itt);
+				return true;
+			}
+
+			else if ((*itt)->CompareOneIndex(m_pBigTriangle->m_pVertices[SECOND_NODE]))
+			{
+				delete *itt;
+				m_pEdgeVector.erase(itt);
+				return true;
+			}
+			else if ((*itt)->CompareOneIndex(m_pBigTriangle->m_pVertices[THIRD_NODE]))
+			{
+				delete *itt;
+				m_pEdgeVector.erase(itt);
+				return true;
+			}
+
+		}
+		return false;
+	}
+
+	void LG_DelaunayTriangulation::EliminateEdgesBigTriangle()
+	{
+		Vector<LG_Edge*>::iterator itt = m_pEdgeVector.begin();
+		delete *itt;
+		m_pEdgeVector.erase(itt);
+
+		itt = m_pEdgeVector.begin();
+		delete *itt;
+		m_pEdgeVector.erase(itt);
+
+		itt = m_pEdgeVector.begin();
+		delete *itt;
+		m_pEdgeVector.erase(itt);
+	}
+
 	LG_Triangle* LG_DelaunayTriangulation::CreateTriangle(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode)
 	{
 		/// This flags tells us if we are to add a new edge to the edge's vector.
@@ -436,23 +505,23 @@ namespace LevelGenerator
 	}
 
 	//! This function search 2 triangles that share the same edge
-	bool LG_DelaunayTriangulation::FindTrianglesToLegalize(LG_Edge * ActualEdge, LG_Triangle** pFirstTriangle, LG_Triangle** pSecondTriangle)
+	bool LG_DelaunayTriangulation::FindTrianglesToLegalize(LG_Edge * pActualEdge, LG_Triangle** ppFirstTriangle, LG_Triangle** ppSecondTriangle)
 	{
 		int32 iCountTriangle = 0;
 		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
 		{
 			for (int32 j = 0; j < EDGES_PER_TRIANGLE; j++)
 			{
-				if (m_pTrianglesVector[i]->m_pEdges[j]->CompareIndex(*ActualEdge))
+				if (m_pTrianglesVector[i]->m_pEdges[j]->CompareIndex(*pActualEdge))
 				{
 					if (0 == iCountTriangle)
 					{
-						*pFirstTriangle = m_pTrianglesVector[i];
+						*ppFirstTriangle = m_pTrianglesVector[i];
 					}
 
 					else
 					{
-						*pSecondTriangle = m_pTrianglesVector[i];
+						*ppSecondTriangle = m_pTrianglesVector[i];
 					}
 					++iCountTriangle;
 					break;
@@ -463,7 +532,7 @@ namespace LevelGenerator
 		return false;
 	}
 
-	void LevelGenerator::LG_DelaunayTriangulation::FindNodesToCreatePolygon(LG_Edge* pActualEdge, LG_Triangle * pFirstTriangle, LG_Triangle * pSecondTriangle, LG_Node** pFirstNode, LG_Node** pSecondNode)
+	void LG_DelaunayTriangulation::FindNodesToCreatePolygon(LG_Edge* pActualEdge, LG_Triangle * pFirstTriangle, LG_Triangle * pSecondTriangle, LG_Node** ppFirstNode, LG_Node** ppSecondNode)
 	{
 
 		for (int32 i = 0; i < NODES_PER_TRIANGLE; ++i)
@@ -471,7 +540,7 @@ namespace LevelGenerator
 			if ((pFirstTriangle->m_pVertices[i] != pActualEdge->m_pFirstNode) &&
 				(pFirstTriangle->m_pVertices[i] != pActualEdge->m_pSecondNode))
 			{
-				*pFirstNode = pFirstTriangle->m_pVertices[i];
+				*ppFirstNode = pFirstTriangle->m_pVertices[i];
 			}
 			else
 			{
@@ -484,7 +553,7 @@ namespace LevelGenerator
 			if ((pSecondTriangle->m_pVertices[i] != pActualEdge->m_pFirstNode) &&
 				(pSecondTriangle->m_pVertices[i] != pActualEdge->m_pSecondNode))
 			{
-				*pSecondNode = pSecondTriangle->m_pVertices[i];
+				*ppSecondNode = pSecondTriangle->m_pVertices[i];
 			}
 			else
 			{

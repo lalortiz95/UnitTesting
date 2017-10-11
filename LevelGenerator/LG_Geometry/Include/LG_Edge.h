@@ -95,11 +95,18 @@ namespace LevelGenerator
 		bool CompareEdges(const LG_Edge& EdgeToCompare);
 
 		/**
-		 *	@brief This function compare if the index of the given edge are the same.
-		 *	@param const LG_Edge& OtherEdge: The edge that we want to compare its index.
+		 *	@brief This function compare if the index of the given edge is the same.
+		 *	@param const LG_Edge& OtherEdge: The edge that contains the index that we want to compare.
 		 *	@return true its index are the same, otherwise false.
 		 */
 		bool CompareIndex(const LG_Edge& OtherEdge);
+
+		/**
+		 *	@brief This function compare if one index of the given edge is the same.
+		 *	@param LG_Node* pOtherEdge: The node that we want to compare.
+		 *	@return true its index is the same, otherwise false.
+		 */
+		bool CompareOneIndex(LG_Node* pOtherEdge);
 
 		/**
 		 *	@brief This function change the values of the edge.
