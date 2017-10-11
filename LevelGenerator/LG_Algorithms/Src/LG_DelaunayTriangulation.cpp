@@ -126,8 +126,10 @@ namespace LevelGenerator
 						{
 							if ((*itt) == pFirstTriangle)
 							{
-								delete *itt;
+								LG_Triangle* pTemp = *itt;
 								m_pTrianglesVector.erase(itt);
+								delete pTemp;
+								pTemp = nullptr;
 								break;
 							}
 						}
@@ -136,8 +138,10 @@ namespace LevelGenerator
 						{
 							if ((*itt) == pSecondTriangle)
 							{
-								delete *itt;
+								LG_Triangle* pTemp = *itt;
 								m_pTrianglesVector.erase(itt);
+								delete pTemp;
+								pTemp = nullptr;
 								break;
 							}
 						}
@@ -146,18 +150,16 @@ namespace LevelGenerator
 						{
 							if ((*itt) == pActualEdge)
 							{
-								delete *itt;
+								LG_Edge* pTemp = *itt;
 								m_pEdgeVector.erase(itt);
+								delete pTemp;
+								pTemp = nullptr;
 								break;
 							}
 						}
 						break;
 
 					}
-				}
-				else
-				{
-					continue;
 				}
 			}
 			pActualTriangle->m_bIsChecked = true;
