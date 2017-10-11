@@ -197,6 +197,7 @@ namespace LevelGenerator
 					bHasNoDotsInside = false;
 					///
 					itt = m_pTrianglesVector.begin() + iPosTriangle;
+					m_pTrianglesVector.erase(itt);
 					/// Ends the iteration because now is time to get a new actual triangle.
 					break;
 				}
