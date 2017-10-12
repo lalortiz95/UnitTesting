@@ -13,6 +13,10 @@
 #define SECOND_INDEX 1
 #define THIRD_INDEX 2
 
+#define FIRST_ANGLE 0
+#define SECOND_ANGLE 1
+#define THIRD_ANGLE 2
+
 #define INDEX_PER_EDGE 2
 
 #define NODES_PER_LINE 2		/// Define a number of nodes per line.

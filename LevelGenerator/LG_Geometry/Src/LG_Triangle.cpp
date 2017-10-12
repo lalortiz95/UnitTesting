@@ -270,9 +270,9 @@ namespace LevelGenerator
 	void LG_Triangle::CalculateAngles()
 	{
 		/// We calculate the intrinsic angles
-		m_fAngles[0] = GetAngle(*m_pEdges[0], *m_pEdges[1]);
-		m_fAngles[1] = GetAngle(*m_pEdges[1], *m_pEdges[2]);
-		m_fAngles[2] = GetAngle(*m_pEdges[2], *m_pEdges[0]);
+		m_fAngles[FIRST_ANGLE] = GetAngle(*m_pEdges[FIRST_EDGE], *m_pEdges[SECOND_EDGE]);
+		m_fAngles[SECOND_ANGLE] = GetAngle(*m_pEdges[SECOND_EDGE], *m_pEdges[THIRD_EDGE]);
+		m_fAngles[THIRD_ANGLE] = GetAngle(*m_pEdges[THIRD_EDGE], *m_pEdges[FIRST_EDGE]);
 	}
 
 	//! This operator compares that 2 triangles are the same.
@@ -308,8 +308,8 @@ namespace LevelGenerator
 		LG_Vector3D SecondVector;
 		/// Here we store which nodes will be substracted firstand which second, in order to calculate the vectors
 		/// Correctly.
-		LG_Node* FirstArista;
-		LG_Node* SecondArista;
+		LG_Node* pFirstNode;
+		LG_Node* pSecondNode;
 		/// The angle between the vectors.
 		float fAngle;
 
@@ -319,33 +319,33 @@ namespace LevelGenerator
 		if (EdgeA.m_pFirstNode->m_Position == EdgeB.m_pFirstNode->m_Position ||
 			EdgeA.m_pFirstNode->m_Position == EdgeB.m_pSecondNode->m_Position)
 		{
-			FirstArista  = EdgeA.m_pFirstNode;
-			SecondArista = EdgeA.m_pSecondNode;
+			pFirstNode  = EdgeA.m_pFirstNode;
+			pSecondNode = EdgeA.m_pSecondNode;
 		}
 		else if (EdgeA.m_pSecondNode->m_Position == EdgeB.m_pFirstNode->m_Position ||
 				 EdgeA.m_pSecondNode->m_Position == EdgeB.m_pSecondNode->m_Position)
 		{
-			FirstArista  = EdgeA.m_pSecondNode;
-			SecondArista = EdgeA.m_pFirstNode;
+			pFirstNode = EdgeA.m_pSecondNode;
+			pSecondNode = EdgeA.m_pFirstNode;
 		}
 		/// We calculate the first vectors to get the angle.
-		FirstVector = FirstArista->m_Position - SecondArista->m_Position;
+		FirstVector = pFirstNode->m_Position - pSecondNode->m_Position;
 
 		/// Now we see which nodes will be first and second for the second vector.
 		if (EdgeB.m_pFirstNode->m_Position == EdgeA.m_pFirstNode->m_Position ||
 			EdgeB.m_pFirstNode->m_Position == EdgeA.m_pSecondNode->m_Position)
 		{
-			FirstArista  = EdgeB.m_pFirstNode;
-			SecondArista = EdgeB.m_pSecondNode;
+			pFirstNode = EdgeB.m_pFirstNode;
+			pSecondNode = EdgeB.m_pSecondNode;
 		}
 		else if (EdgeB.m_pSecondNode->m_Position == EdgeA.m_pFirstNode->m_Position ||
 				 EdgeB.m_pSecondNode->m_Position == EdgeA.m_pSecondNode->m_Position)
 		{
-			FirstArista =  EdgeB.m_pSecondNode;
-			SecondArista = EdgeB.m_pFirstNode;
+			pFirstNode = EdgeB.m_pSecondNode;
+			pSecondNode = EdgeB.m_pFirstNode;
 		}
 		/// We calculate the second vector to get the angle.
-		SecondVector = FirstArista->m_Position - SecondArista->m_Position;
+		SecondVector = pFirstNode->m_Position - pSecondNode->m_Position;
 
 		/// We now calculate the intrinsic angle.
 		fAngle = SecondVector.Dot(FirstVector) / (FirstVector.Magnitude() * SecondVector.Magnitude());
