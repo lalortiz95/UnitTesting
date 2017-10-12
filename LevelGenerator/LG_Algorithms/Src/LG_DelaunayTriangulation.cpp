@@ -71,7 +71,7 @@ namespace LevelGenerator
 	{
 		/// 
 		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
-		/// 
+		/// The initial triangulation we base our Delaunay algorithm on.
 		IncrementalTriangulation();
 		/// Set all triangle's flags as false.
 		SetTrianglesAsFalse();
@@ -166,7 +166,7 @@ namespace LevelGenerator
 			bCanStop = CheckIfAllTrianglesAreTrue();
 		}
 
-		/// Eliminate the edges of the big triangle from de edges' vector.
+		/// Eliminate the edges of the big triangle from the edges' vector.
 		EliminateEdgesBigTriangle();
 		/// Eliminate the triangles that shares position with the big triangle.
 		while (EliminateTriangles());
