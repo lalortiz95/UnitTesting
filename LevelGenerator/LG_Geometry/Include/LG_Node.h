@@ -45,6 +45,10 @@ namespace LevelGenerator
 		///************************************************************************/
 
 		/**
+		 *	@var Pointer of node that defines what node is the parent. 
+		 */
+
+		/**
 		 *	@var This variable stores a 3D position (X,Y,Z).
 		 */
 		LG_Vector3D m_Position;

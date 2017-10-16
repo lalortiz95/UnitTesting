@@ -32,12 +32,12 @@ namespace LevelGenerator
 		/// The old weight of the node.
 		float fOldWeight = 0;
 
-		/// Flag to determinate when a node is the longest distance.
+		/// Flag to determinate when a node has the longest distance.
 		bool bIsTheLongest = true;
 
-		/// Initialize the first iterator as the begin of the pointer nodes of the  start node.
+		/// Initialize the first iterator as the begin of the nodes pointer from the start node.
 		Vector<LG_Node*>::iterator itt_1 = m_pStartNode->m_PointerNodes.begin();
-		/// Init the actual node.
+		/// Init the actual node as the front of the path nodes.
 		m_pActualNode = m_PathNodes.front();
 		/// Init the actual distance.
 		fActualDistance = m_pActualNode->m_fWeight;
@@ -55,7 +55,7 @@ namespace LevelGenerator
 
 				if (fNewDistance < fActualDistance)
 				{
-					/// Actualize the actual distance as the new distance.
+					/// Actualize as the new distance.
 					fActualDistance = fNewDistance;
 					/// Insert the node at the begin of the vector.
 					m_PathNodes.insert(m_PathNodes.begin(), *itt_1);
@@ -80,7 +80,7 @@ namespace LevelGenerator
 					}
 
 
-					/// Is this flag is true, insert the node at the end of the vector.
+					/// If this flag is true, insert the node at the end of the vector.
 					if (bIsTheLongest)
 					{
 						m_PathNodes.push_back(*itt_1);
@@ -104,12 +104,12 @@ namespace LevelGenerator
 		}
 	}
 
-
+	//! This function release all memory used in the object class.
 	void LG_Dijkstra::Destroy()
 	{
 	}
 
-
+	//! This function get the distance between 2 nodes.
 	float LG_Dijkstra::GetDistance(LG_Node * pFirstNode, LG_Node * pSecondNode)
 	{
 		/// Calculate the distance of 2 nodes, and return it.
@@ -130,12 +130,13 @@ namespace LevelGenerator
 	void LG_Dijkstra::SetActualNode()
 	{
 		/// Find the new actual node.
-		for (int32 i = 0; i < m_PathNodes.size(); ++i)
+		for (Vector<LG_Node*>::iterator itt = m_PathNodes.begin(); itt != m_PathNodes.end(); ++itt)
 		{
-			if (!m_PathNodes[i]->m_bIsChecked)
+			if (!(*itt)->m_bIsChecked)
 			{
 				/// Asign the new actual node.
-				m_pActualNode = m_PathNodes[i];
+				m_pActualNode = (*itt);
+				m_PathNodes.erase(itt);
 				/// End the for.
 				break;
 			}
