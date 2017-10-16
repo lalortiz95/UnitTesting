@@ -276,7 +276,7 @@ void LG_Visual::Renderer()
 			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 			///Update screen
 			SDL_RenderPresent(m_Renderer);
-			SDL_Delay(300);
+			//SDL_Delay(300);
 		}
 		//DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
 		//	Color,
