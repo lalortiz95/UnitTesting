@@ -3,6 +3,8 @@
 #include "LG_DelaunayTriangulation.h"
 #include "LG_MarchingSquare.h"
 #include "LG_RDP.h"
+#include "LG_Voronoi.h"
+#include "LG_Dijkstra.h"
 #include <LG_Grid.h>
 
 namespace LevelGenerator

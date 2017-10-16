@@ -175,6 +175,7 @@
   <ItemGroup>
     <ClInclude Include="Include\LG_AlgorithmsPrerequisites.h" />
     <ClInclude Include="Include\LG_DelaunayTriangulation.h" />
+    <ClInclude Include="Include\LG_Dijkstra.h" />
     <ClInclude Include="Include\LG_Generate.h" />
     <ClInclude Include="Include\LG_MarchingSquare.h" />
     <ClInclude Include="Include\LG_RDP.h" />
@@ -182,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_DelaunayTriangulation.cpp" />
+    <ClCompile Include="Src\LG_Dijkstra.cpp" />
     <ClCompile Include="Src\LG_Generate.cpp" />
     <ClCompile Include="Src\LG_MarchingSquare.cpp" />
     <ClCompile Include="Src\LG_RDP.cpp" />

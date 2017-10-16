@@ -39,6 +39,7 @@ namespace LevelGenerator
 		m_bIsInside = false;
 		m_bCanDeleted = true;
 		m_bIsChecked = false;
+		m_fWeight = 0.0f;
 	}
 
 	//! Free and delete memory.
@@ -48,8 +49,7 @@ namespace LevelGenerator
 		{
 			for (Vector<LG_Node*>::iterator itt = m_PointerNodes.begin(); itt != m_PointerNodes.end(); ++itt)
 			{
-				(*itt) = nullptr;
-				delete (*itt);
+				*itt = nullptr;
 			}
 			m_PointerNodes.clear();
 		}
@@ -58,10 +58,12 @@ namespace LevelGenerator
 	//! This operator assigns the values from other node to this node.
 	LG_Node& LG_Node::operator=(const LG_Node & OtherNode)
 	{
-		this->m_bCanDeleted = OtherNode.m_bCanDeleted;
-		this->m_bIsInside = OtherNode.m_bIsInside;
 		this->m_iID = OtherNode.m_iID;
 		this->m_Position = OtherNode.m_Position;
+		this->m_bCanDeleted = OtherNode.m_bCanDeleted;
+		this->m_bIsInside = OtherNode.m_bIsInside;
+		this->m_bIsChecked = OtherNode.m_bIsChecked;
+		this->m_fWeight = OtherNode.m_fWeight;
 		return *this;
 	}
 

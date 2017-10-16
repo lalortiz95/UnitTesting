@@ -145,7 +145,7 @@ bool LG_Visual::Init()
 
 		}
 
-		
+
 		//////////////////////////////////////////////////////////////////////////
 	}
 
@@ -243,6 +243,10 @@ void LG_Visual::Renderer()
 	LevelGenerator::LG_Vector3D Secondpos;
 	LevelGenerator::LG_Vector3D CircumCenter;
 
+	LevelGenerator::LG_Dijkstra Pathfinding;
+	Pathfinding.Init(&AlgorithmGeneration.m_DT.m_NodesCloud, &AlgorithmGeneration.m_DT.m_NodesCloud[3], &AlgorithmGeneration.m_DT.m_NodesCloud[8]);
+	Pathfinding.Run();
+
 	/// Aqui se renderea la isolinea resultante de MS y RDP.
 	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_NodesCloud.size(); ++i)
 	//{
@@ -284,6 +288,51 @@ void LG_Visual::Renderer()
 		/////Update screen
 		//SDL_RenderPresent(m_Renderer);
 	}
+
+	/// Aqui se rendere al pathfinding. //////////////////////////////////////////////////
+	for (LevelGenerator::int32 i = 0; i < Pathfinding.m_PathNodes.size(); ++i)
+	{
+		posToSpawn = Pathfinding.m_PathNodes[i]->m_Position;
+		
+		// Black
+		SDL_SetRenderDrawColor(m_Renderer, 255, 0, 0, 0);
+		// en la posición de cada nodo dibujar un punto con SDL.
+		SDL_RenderDrawPoint(m_Renderer, posToSpawn.X, posToSpawn.Y);
+		///Update screen
+		SDL_RenderPresent(m_Renderer);
+	}
+
+	
+		posToSpawn = Pathfinding.m_pStartNode->m_Position;
+		Secondpos = Pathfinding.m_pEndNode->m_Position;
+
+		// Black
+		SDL_SetRenderDrawColor(m_Renderer, 0, 0, 255, 0);
+		// en la posición de cada nodo dibujar un punto con SDL.
+		SDL_RenderDrawPoint(m_Renderer, posToSpawn.X, posToSpawn.Y);
+		// en la posición de cada nodo dibujar un punto con SDL.
+		SDL_RenderDrawPoint(m_Renderer, Secondpos.X, Secondpos.Y);
+		///Update screen
+		SDL_RenderPresent(m_Renderer);
+	
+
+	for (LevelGenerator::int32 i = 0; i < Pathfinding.m_BesthPath.size(); ++i)
+	{
+		if ((i + 1) < Pathfinding.m_BesthPath.size())
+		{
+			posToSpawn = Pathfinding.m_BesthPath[i]->m_Position;
+			Secondpos = Pathfinding.m_BesthPath[i + 1]->m_Position;
+
+			// Green
+			SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
+			// en la posición de cada nodo dibujar un punto con SDL.
+			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+			///Update screen
+			SDL_RenderPresent(m_Renderer);
+			SDL_Delay(400);
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////////////////
 
 	// ///Aqui se rendera los triangulos malos de la triangulacion.
 	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pBadTriangles.size(); ++i)
@@ -464,16 +513,16 @@ void LG_Visual::RenderDelaunay()
 						SDL_RenderPresent(m_SecondRenderer);
 						SDL_Delay(300);
 					}
-					
+
 					LG_Triangle* pNewSecondTriangle = AlgorithmGeneration.m_DT.CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pSecondNode);
-					
+
 					for (LevelGenerator::int32 k = 0; k < NODES_PER_TRIANGLE; ++k)
 					{
 						posToSpawn = pNewSecondTriangle->m_pEdges[k]->m_pFirstNode->m_Position;
 						Secondpos = pNewSecondTriangle->m_pEdges[k]->m_pSecondNode->m_Position;
 
 						// Draw red line.
-						SDL_SetRenderDrawColor(m_SecondRenderer, 0,0, 255, 0xFF);
+						SDL_SetRenderDrawColor(m_SecondRenderer, 0, 0, 255, 0xFF);
 						// en la posición de cada nodo dibujar un punto con SDL.
 						SDL_RenderDrawLine(m_SecondRenderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 						///Update screen
@@ -493,7 +542,7 @@ void LG_Visual::RenderDelaunay()
 					AlgorithmGeneration.m_DT.m_pTrianglesVector.push_back(pNewSecondTriangle);
 
 					/// Erases the triangle that belongs to the legalized edge.
-					for (Vector<LG_Triangle*>::iterator itt = AlgorithmGeneration.m_DT.m_pTrianglesVector.begin(); 
+					for (Vector<LG_Triangle*>::iterator itt = AlgorithmGeneration.m_DT.m_pTrianglesVector.begin();
 						itt != AlgorithmGeneration.m_DT.m_pTrianglesVector.end(); ++itt)
 					{
 						if ((*itt) == pFirstTriangle)
@@ -536,7 +585,7 @@ void LG_Visual::RenderDelaunay()
 				}
 			}
 		}
-		
+
 		pActualTriangle->m_bIsChecked = true;
 		bCanStop = AlgorithmGeneration.m_DT.CheckIfAllTrianglesAreTrue();
 	}

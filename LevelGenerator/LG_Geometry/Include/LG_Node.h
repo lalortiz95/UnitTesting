@@ -45,32 +45,37 @@ namespace LevelGenerator
 		///************************************************************************/
 
 		/**
-		 *	@brief This variable stores a 3D position (X,Y,Z).
+		 *	@var This variable stores a 3D position (X,Y,Z).
 		 */
 		LG_Vector3D m_Position;
 
 		/**
-		 *	@brief This flag determinate if the node is On or Off.
+		 *	@var This flag determinate if the node is On or Off.
 		 */
 		bool m_bIsInside;
 
 		/**
-		 *	@brief This flag determinate if this node can be deleted.
+		 *	@var This flag determinate if this node can be deleted.
 		 */
 		bool m_bCanDeleted;
 
 		/**
-		 *	@brief This flag determinates if the node has already been used.
+		 *	@var This flag determinates if the node has already been used.
 		 */
 		bool m_bIsChecked;
 
 		/**
-		 *	@brief This variable store's an ID.
+		 *	@var This variable store's an ID.
 		 */
 		int32 m_iID;
 
 		/**
-		 *	@brief This vector stores a pointer of nodes.
+		 *	@var This variable store's the weight of the node.
+		 */
+		float m_fWeight;
+
+		/**
+		 *	@var This vector stores a pointer of nodes.
 		 */
 		Vector<LG_Node*> m_PointerNodes;
 
