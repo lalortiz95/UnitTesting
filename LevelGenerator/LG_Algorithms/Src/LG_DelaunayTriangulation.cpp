@@ -1,4 +1,5 @@
 #include "LG_DelaunayTriangulation.h"
+#include <LG_Math.h>
 
 namespace LevelGenerator
 {
@@ -71,7 +72,7 @@ namespace LevelGenerator
 	{
 		/// 
 		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
-		/// 
+		/// The initial triangulation we base our Delaunay algorithm on.
 		IncrementalTriangulation();
 		/// Set all triangle's flags as false.
 		SetTrianglesAsFalse();
@@ -89,7 +90,10 @@ namespace LevelGenerator
 		LG_Triangle* pActualTriangle = m_pTrianglesVector.front();
 		bool bCanStop = false;
 
-		while (!bCanStop)
+		/// counter to exit the while loop.
+		int32 iBreakWhile = 0;
+
+		while (!bCanStop && iBreakWhile < 500)
 		{
 			bCanStop = true;
 			for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
@@ -116,8 +120,9 @@ namespace LevelGenerator
 
 						LG_Triangle* pNewFirstTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pFirstNode);
 						LG_Triangle* pNewSecondTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pSecondNode);
-						pNewFirstTriangle->m_bIsChecked = true;
-						pNewSecondTriangle->m_bIsChecked = true;
+						//pNewFirstTriangle->m_bIsChecked = true;
+						//pNewSecondTriangle->m_bIsChecked = true;
+						++iBreakWhile;
 						m_pTrianglesVector.push_back(pNewFirstTriangle);
 						m_pTrianglesVector.push_back(pNewSecondTriangle);
 
@@ -166,7 +171,7 @@ namespace LevelGenerator
 			bCanStop = CheckIfAllTrianglesAreTrue();
 		}
 
-		/// Eliminate the edges of the big triangle from de edges' vector.
+		/// Eliminate the edges of the big triangle from the edges' vector.
 		EliminateEdgesBigTriangle();
 		/// Eliminate the triangles that shares position with the big triangle.
 		while (EliminateTriangles());
@@ -181,43 +186,125 @@ namespace LevelGenerator
 		bool bHasNoDotsInside = true;
 		int32 iPosTriangle = 0;
 		Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin();
+
+		/// A counter for all of the dots inside of a triangle, it's needed because if there is only one, we'll triangulate with that.
+		int32 iDotsInside = 0;
+		/// Stores the triangle that we want to know whether it contains good angles or not
+		LG_Triangle* TempTri;
+		/// The best angle in the dots inside a triangle. We start with 80°, or 1.39626 radians.
+		float fBestAngle;
+		/// A starting default angle to select a good one.
+		float fDefaultAngle = 1.74533f;
+		/// If the triangle doesn't have triangles with good angles in it, but it's the only one available we triangulate with that.
+		bool bHaveGoodAngles = false;
+
+		/// here we store all the nodes that we find inside of the actual triangle. This is needed
+		Vector<LG_Node*> pNodesInside;
+		/// Here we store the best node inside of the triangle, and we use the variable to change it's properties.
+		LG_Node* pBestNode;
+
 		/// we perform incremental triangulation
 		while (!bQuit)
 		{
-			/// We will compare the actual triangle against all of the nodes in the node cloud.
+			/// Makes sure that the nodes inside list is clear for this iteration
+			pNodesInside.clear();
+			/// Initialize the best angles array with the default minimum angle needed, this being 100°
+			fBestAngle = fDefaultAngle;
+			/// Clean the best node for this iteration.
+			//BestNode = nullptr;
+			/// Reset the value of the flag for this iteration.
+			bHaveGoodAngles = false;
+			/// 
+			bHasNoDotsInside = true;
+
+			/// We are going to find all the nodes inside of the actual triangle, and get the one that makes
+			/// the best intrinsic angles.
 			for (int32 i = 0; i < m_NodesCloud.size(); ++i)
 			{
-				/// If there is a dot inside of the triangle
 				if (m_pActualTriangle->IsPointInside(&m_NodesCloud[i]) && !m_NodesCloud[i].m_bIsChecked)
 				{
-					///Creates 3 new triangles between each edge of the actual triangle, and the iterating node.
-					for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
-					{
-						m_pTrianglesVector.push_back(
-							CreateTriangle(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
-								m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
-								&m_NodesCloud[i]));
-					}
-					/// Set the node that we just used as checked.
-					m_NodesCloud[i].m_bIsChecked = true;
-					/// set that there were dots inside of the triangle.
+					/// Set this flag to false since the actual triangle did have nodes inside.
 					bHasNoDotsInside = false;
-					///
-					itt = m_pTrianglesVector.begin() + iPosTriangle;
-					m_pTrianglesVector.erase(itt);
-					/// Ends the iteration because now is time to get a new actual triangle.
-					break;
+					/// We store the node that's inside.
+					pNodesInside.push_back(&m_NodesCloud[i]);
 				}
 			}
 
-			/// It didn't have any dots inside.
+			/// Find the best node to triangulate with.
+			for (int32 i = 0; i < pNodesInside.size(); ++i)
+			{
+				/// We check that the node isn't checked already.
+				if (pNodesInside[i]->m_bIsChecked)
+				{
+					continue;
+				}
+				/// Create 3 triangles between the actual triangle and the iterating node.
+				for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
+				{
+					/// Store the first triangle created between the iterating edge, and the iterating node.
+					TempTri = CreateTriangle(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
+						m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
+						pNodesInside[i]);
+
+					/// If the biggest angle in the triangle, is smaller than the best angle, that becomes the new best angle.
+					if (LG_Math::Max3(TempTri->m_fAngles[0], TempTri->m_fAngles[1], TempTri->m_fAngles[2]) < fBestAngle)
+					{
+						/// Store the best angle for this triangle.
+						fBestAngle = LG_Math::Max3(TempTri->m_fAngles[0], TempTri->m_fAngles[1], TempTri->m_fAngles[2]);
+						/// We store the node we the best angles.
+						pBestNode = pNodesInside[i];
+						/// 
+						bHaveGoodAngles = true;
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+
+			/// If the triangles inside of the actual triangle dont make good angles, but it had dots inside
+			/// we still need to triangulate, so we set the best node as the first of the list.
+			if (!bHaveGoodAngles && !bHasNoDotsInside)
+			{
+				pBestNode = pNodesInside[0];
+			}
+			/// See if the node didn't have any nodes inside.
 			if (bHasNoDotsInside)
 			{
 				/// We set that triangle as true.
 				m_pActualTriangle->m_bIsChecked = true;
 			}
+			else
+			{
+				/// This block of code makes a triangle with every node from all the actual triangle's aristas, and 
+				/// the node found as the best one, defined by it's beautiful intrinsic angles.
+				for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
+				{
+					//Creo que esta función está destruyendo todo.
+					/// We triangulate with the actual triangle and the best node.
+					m_pTrianglesVector.push_back(CreateTriangle(m_pActualTriangle->m_pEdges[i]->m_pFirstNode,
+						m_pActualTriangle->m_pEdges[i]->m_pSecondNode,
+						pBestNode));
+				}
 
-			/// Iterates throough the triangles vector.
+				for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+				{
+					if (pBestNode->m_iID == m_NodesCloud[i].m_iID)
+					{
+						/// Mark the best node as checked. 
+						m_NodesCloud[i].m_bIsChecked = true;
+						break;
+					}
+				}
+
+				/// We delete the triangle that have the 3 new triangles
+				itt = m_pTrianglesVector.begin() + iPosTriangle;
+				m_pTrianglesVector.erase(itt);
+			}
+
+			///  We find the new actual triangle by iterating through their list, and finding a triangle that
+			/// haven't been checked yet.
 			for (int32 i = m_pTrianglesVector.size() - 1; i >= 0; --i)
 			{
 				/// We find the new actual triangle.
@@ -225,20 +312,106 @@ namespace LevelGenerator
 				{
 					/// set the new triangle.
 					m_pActualTriangle = m_pTrianglesVector[i];
-
+					/// Store the place in the array to set the new actual triangle in the next while iteration.
 					iPosTriangle = i;
+					/// Exits the for.
 					break;
 				}
 			}
-
 			/// Checks if the triangles are already checked.
 			for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
 			{
 				CheckIfTriangleIsChecked(m_pTrianglesVector[i]);
 			}
-
 			/// once all the triangles have been checked, we finish the incremental triangulation.
 			bQuit = CheckIfAllTrianglesAreTrue();
+
+			// debugging purposes.
+			if (bQuit)
+			{
+				bQuit = bQuit;
+			}
+
+			///// We will compare the actual triangle against all of the nodes in the node cloud.
+			//for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+			//{
+			//	/// If there is a dot inside of the triangle
+			//	if (m_pActualTriangle->IsPointInside(&m_NodesCloud[i]) && !m_NodesCloud[i].m_bIsChecked)
+			//	{
+			//		/// set that there were dots inside of the triangle.
+			//		bHasNoDotsInside = false;
+			//		///Creates 3 new triangles between each edge of the actual triangle, and the iterating node.
+			//		for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
+			//		{
+			//			/// Add one to the dots counter. We want to know if there are more than one inside.
+			//			++iDotsInside;
+			//			//TODO: Si alguno de los guardados sigue en 80 significa que no cambió, entonces se debe
+			//			// buscar un nuevo punto, al final de la iteración con todos los puntos, si no se encontró
+			//			// otro nodo adentro entonces se toma el único que estaba y con ese se triangula, ya ni modo.
+			//			// esto se hace teniendo una referencia al nodo del último triángulo que no haya sido bueno.
+			//			/// Store the first triangle created between the iterating edge, and the iterating node.
+			//			TempTri = CreateTriangle(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
+			//				m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
+			//				&m_NodesCloud[i]);
+			//			/// If the biggest angle in the triangle, is smaller than the best angle, that becomes the new best angle.
+			//			if (LG_Math::Max3(TempTri->m_fAngles[0], TempTri->m_fAngles[1], TempTri->m_fAngles[2]) < fBestAngle[j])
+			//			{
+			//				/// Store the best angle for this triangle.
+			//				fBestAngle[j] = LG_Math::Max3(TempTri->m_fAngles[0], TempTri->m_fAngles[1], TempTri->m_fAngles[2]);
+			//			}
+			//			//m_pTrianglesVector.push_back(
+			//			//	CreateTriangle(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
+			//			//		m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
+			//			//		&m_NodesCloud[i]));
+			//		}
+			//		/// Iterate through the calculated best angles.
+			//		for (int32 j = 0; j < ANGLES_PER_TRIANGLE; ++j)
+			//		{
+			//			/// see if there's an angle that didn't change, meaning the triangles it would triangulate are no good for us.
+			//			if (fBestAngle[j] < 80)
+			//			{
+			//				bHaveBadangles = false;
+			//			}
+			//		}
+			//		/// If the angles in one of the triangles is considered a bad triangle.
+			//		if (bHaveBadangles)
+			//		{
+			//			continue;
+			//		}
+			//		/// Set the node that we just used as checked.
+			//		m_NodesCloud[i].m_bIsChecked = true;
+			//		///
+			//		itt = m_pTrianglesVector.begin() + iPosTriangle;
+			//		m_pTrianglesVector.erase(itt);
+			//		/// Ends the iteration because now is time to get a new actual triangle.
+			//		break;
+			//	}
+			//}
+			///// It didn't have any dots inside.
+			//if (bHasNoDotsInside)
+			//{
+			//	/// We set that triangle as true.
+			//	m_pActualTriangle->m_bIsChecked = true;
+			//}
+			///// Iterates throough the triangles vector.
+			//for (int32 i = m_pTrianglesVector.size() - 1; i >= 0; --i)
+			//{
+			//	/// We find the new actual triangle.
+			//	if (!m_pTrianglesVector[i]->m_bIsChecked && m_pActualTriangle != m_pTrianglesVector[i])
+			//	{
+			//		/// set the new triangle.
+			//		m_pActualTriangle = m_pTrianglesVector[i];
+			//		iPosTriangle = i;
+			//		break;
+			//	}
+			//}
+			///// Checks if the triangles are already checked.
+			//for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+			//{
+			//	CheckIfTriangleIsChecked(m_pTrianglesVector[i]);
+			//}
+			///// once all the triangles have been checked, we finish the incremental triangulation.
+			//bQuit = CheckIfAllTrianglesAreTrue();
 		}
 	}
 
@@ -316,7 +489,7 @@ namespace LevelGenerator
 		/// Assign the ID for the node.
 		pNodePosition2->m_iID = iCountNode;
 		/// Add one to the counter node.
-		iCountNode++;
+		++iCountNode;
 
 		/// 
 		pNodePosition3->m_Position = pNodePosition2->m_Position;
@@ -326,7 +499,7 @@ namespace LevelGenerator
 		/// Assign the ID for the node.
 		pNodePosition3->m_iID = iCountNode;
 		/// Add one to the counter node.
-		iCountNode++;
+		++iCountNode;
 
 
 		m_pBigTriangle = new LG_Triangle();
@@ -349,7 +522,7 @@ namespace LevelGenerator
 		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
 		{
 			m_NodesCloud[i].m_iID = iCountNode;
-			iCountNode++;
+			++iCountNode;
 		}
 
 	}
@@ -486,7 +659,7 @@ namespace LevelGenerator
 		/// Creates a new triangle, and initializes it.
 		pNewTriangle->Init(pFirstEdge, pSecondEdge, pThirdEdge);
 		pNewTriangle->m_iID = m_iTrianglesCount;
-		m_iTrianglesCount++;
+		++m_iTrianglesCount;
 
 		/// Check if it is needed to add new edges.
 		if (bIsFirstEdgeNew)

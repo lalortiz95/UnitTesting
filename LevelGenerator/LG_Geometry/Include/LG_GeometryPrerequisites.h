@@ -22,9 +22,10 @@
 #define NODES_PER_LINE 2		/// Define a number of nodes per line.
 #define NODES_PER_EDGE 2		/// Define a number of nodes per edge.
 
-#define EDGES_PER_TRIANGLE 3	/// Define a number of edges per triangle.
-#define NODES_PER_TRIANGLE 3	/// Define a number of vertex per triangle.
-#define INDEX_PER_TRIANGLE 3    /// Define a number of index per triangle.
+#define EDGES_PER_TRIANGLE  3	/// Define a number of edges per triangle.
+#define NODES_PER_TRIANGLE  3	/// Define a number of vertex per triangle.
+#define INDEX_PER_TRIANGLE  3   /// Define a number of index per triangle.
+#define ANGLES_PER_TRIANGLE 3	/// Defines the number of angles per triangle.
 
 #if defined(LG_GEOMETRY_EXPORTS)
 #	define LG_GEOMETRY_EXPORT __declspec(dllexport)

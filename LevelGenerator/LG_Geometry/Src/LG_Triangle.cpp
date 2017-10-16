@@ -308,8 +308,8 @@ namespace LevelGenerator
 		LG_Vector3D SecondVector;
 		/// Here we store which nodes will be substracted firstand which second, in order to calculate the vectors
 		/// Correctly.
-		LG_Node* pFirstNode;
-		LG_Node* pSecondNode;
+		LG_Node* pFirstNode = nullptr;
+		LG_Node* pSecondNode = nullptr;
 		/// The angle between the vectors.
 		float fAngle;
 
@@ -319,17 +319,21 @@ namespace LevelGenerator
 		if (EdgeA.m_pFirstNode->m_Position == EdgeB.m_pFirstNode->m_Position ||
 			EdgeA.m_pFirstNode->m_Position == EdgeB.m_pSecondNode->m_Position)
 		{
-			pFirstNode  = EdgeA.m_pFirstNode;
+			pFirstNode = EdgeA.m_pFirstNode;
 			pSecondNode = EdgeA.m_pSecondNode;
 		}
 		else if (EdgeA.m_pSecondNode->m_Position == EdgeB.m_pFirstNode->m_Position ||
-				 EdgeA.m_pSecondNode->m_Position == EdgeB.m_pSecondNode->m_Position)
+			EdgeA.m_pSecondNode->m_Position == EdgeB.m_pSecondNode->m_Position)
 		{
 			pFirstNode = EdgeA.m_pSecondNode;
 			pSecondNode = EdgeA.m_pFirstNode;
 		}
-		/// We calculate the first vectors to get the angle.
-		FirstVector = pFirstNode->m_Position - pSecondNode->m_Position;
+
+		if (pFirstNode && pSecondNode)
+		{
+			/// We calculate the first vectors to get the angle.
+			FirstVector = pFirstNode->m_Position - pSecondNode->m_Position;
+		}
 
 		/// Now we see which nodes will be first and second for the second vector.
 		if (EdgeB.m_pFirstNode->m_Position == EdgeA.m_pFirstNode->m_Position ||
@@ -339,13 +343,17 @@ namespace LevelGenerator
 			pSecondNode = EdgeB.m_pSecondNode;
 		}
 		else if (EdgeB.m_pSecondNode->m_Position == EdgeA.m_pFirstNode->m_Position ||
-				 EdgeB.m_pSecondNode->m_Position == EdgeA.m_pSecondNode->m_Position)
+			EdgeB.m_pSecondNode->m_Position == EdgeA.m_pSecondNode->m_Position)
 		{
 			pFirstNode = EdgeB.m_pSecondNode;
 			pSecondNode = EdgeB.m_pFirstNode;
 		}
-		/// We calculate the second vector to get the angle.
-		SecondVector = pFirstNode->m_Position - pSecondNode->m_Position;
+
+		if (pFirstNode && pSecondNode)
+		{
+			/// We calculate the second vector to get the angle.
+			SecondVector = pFirstNode->m_Position - pSecondNode->m_Position;
+		}
 
 		/// We now calculate the intrinsic angle.
 		fAngle = SecondVector.Dot(FirstVector) / (FirstVector.Magnitude() * SecondVector.Magnitude());
