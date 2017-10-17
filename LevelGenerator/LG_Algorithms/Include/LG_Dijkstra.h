@@ -6,9 +6,8 @@
 
 namespace LevelGenerator
 {
-
 	/**
-	 *	@brief This class use a pathfinding Dijkstra.
+	 *	@brief This class use a path finding Dijkstra.
 	 */
 	class LG_ALGORITHMS_EXPORT LG_Dijkstra
 	{
@@ -113,11 +112,16 @@ namespace LevelGenerator
 		void SetActualNode();
 
 		/**
-		 *	@brief This function check if the iterating node is not in the path nodes.
-		 *	@param LG_Node* pIteratingNode: The node that we want to check if it is in the path nodes.
+		 *	@brief This function check if the iterating node is not in the node's path.
+		 *	@param LG_Node* pIteratingNode: The node that we want to check if it is in the node's path.
 		 *	@return true if the node is in the path nodes, otherwise false.
 		 */
 		bool ExistInPathNodes(LG_Node* pIteratingNode);
+
+		/**
+		 *	@brief This function restructure the node's path.
+		 */
+		void RestructurePath();
 
 	};
 }

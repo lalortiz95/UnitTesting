@@ -11,10 +11,11 @@ namespace LevelGenerator
 	//! Default Destructor.
 	LG_Node::~LG_Node()
 	{
-		//! Calls the destroy function.
+		/// Calls the destroy function.
 		Destroy();
 	}
 
+	//!
 	LG_Node::LG_Node(LG_Node * node)
 	{
 		*this = node;
@@ -27,6 +28,7 @@ namespace LevelGenerator
 		m_Position = vPosition;
 	}
 
+	//! 
 	LG_Node::LG_Node(float fx, float fy, float fz)
 	{
 		Init();
@@ -36,6 +38,7 @@ namespace LevelGenerator
 	//! Initialize resources of the node.
 	void LG_Node::Init()
 	{
+		m_pParentNode = nullptr;
 		m_bIsInside = false;
 		m_bCanDeleted = true;
 		m_bIsChecked = false;

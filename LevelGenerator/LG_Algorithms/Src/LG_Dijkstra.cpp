@@ -31,7 +31,8 @@ namespace LevelGenerator
 		float fNewDistance = 0;
 		/// The old weight of the node.
 		float fOldWeight = 0;
-
+		/// A flag that tells if a node has already been inserted.
+		bool bExists = false;
 		/// Flag to determinate when a node has the longest distance.
 		bool bIsTheLongest = true;
 
@@ -39,8 +40,6 @@ namespace LevelGenerator
 		Vector<LG_Node*>::iterator itt_1 = m_pStartNode->m_PointerNodes.begin();
 		/// Init the actual node as the front of the path nodes.
 		m_pActualNode = m_PathNodes.front();
-		/// Init the actual distance.
-		fActualDistance = m_pActualNode->m_fWeight;
 
 		/// End the while when the actual node is the same that the end node.
 		while (m_pActualNode != m_pEndNode)
@@ -49,27 +48,31 @@ namespace LevelGenerator
 			for (; itt_1 != m_pActualNode->m_PointerNodes.end(); ++itt_1)
 			{
 				/// Obtain the distance between the actual node and the iterating node.
-				fNewDistance = GetDistance(m_pActualNode, (*itt_1));
-				/// The weight of the node is determined by the distance between the current and the iterating node plus the weight of the current node.
-				(*itt_1)->m_fWeight = m_pActualNode->m_fWeight + fNewDistance;
+				fActualDistance = GetDistance(m_pActualNode, (*itt_1));
+				fNewDistance = m_pActualNode->m_fWeight + fActualDistance;
 
-				if (fNewDistance < fActualDistance)
+				if (ExistInPathNodes((*itt_1)))
 				{
-					/// Actualize as the new distance.
-					fActualDistance = fNewDistance;
-					/// Insert the node at the begin of the vector.
-					m_PathNodes.insert(m_PathNodes.begin(), *itt_1);
+					if (fNewDistance < (*itt_1)->m_fWeight)
+					{
+						/// The weight of the node is determined by the distance between the current and the iterating node plus the weight of the current node.
+						(*itt_1)->m_fWeight = fNewDistance;
+						(*itt_1)->m_pParentNode = m_pActualNode;
+						RestructurePath();
+					}
 				}
 
 				else
 				{
-
-					/// Iterating the path nodes.
+					/// The weight of the node is determined by the distance between the current and the iterating node plus the weight of the current node.
+					(*itt_1)->m_fWeight = fNewDistance;
 					for (int32 i = 0; i < m_PathNodes.size(); ++i)
 					{
 						/// Compare what weight is less than the other.
 						if ((*itt_1)->m_fWeight < m_PathNodes[i]->m_fWeight)
 						{
+							/// Set the parent of the iterated node as the actual node.
+							(*itt_1)->m_pParentNode = m_pActualNode;
 							/// Insert the first iterator before the second iterator, because the first is smaller.
 							m_PathNodes.insert(m_PathNodes.begin() + i, *itt_1);
 							/// Change the flag to determinate that this node isn't the longest distance.
@@ -79,10 +82,12 @@ namespace LevelGenerator
 						}
 					}
 
-
 					/// If this flag is true, insert the node at the end of the vector.
 					if (bIsTheLongest)
 					{
+						/// Set the parent of the iterated node as the actual node.
+						(*itt_1)->m_pParentNode = m_pActualNode;
+						/// 
 						m_PathNodes.push_back(*itt_1);
 					}
 					/// Otherwise reset the flag.
@@ -91,16 +96,23 @@ namespace LevelGenerator
 						bIsTheLongest = true;
 					}
 				}
-
 			}
 			/// Set the actual node as checked.
 			m_pActualNode->m_bIsChecked = true;
-			/// Insert the actual node to the best path.
-			m_BesthPath.push_back(m_pActualNode);
 			/// Set the new actual node.
 			SetActualNode();
 			/// Reset the iterator.
 			itt_1 = m_pActualNode->m_PointerNodes.begin();
+		}
+
+		/// Add the actual node to the best nodes list.
+		m_BesthPath.insert(m_BesthPath.begin(), m_pActualNode);
+		/// Iterate until we've inserted all of the nodes.
+		while (m_pActualNode != m_pStartNode)
+		{
+			/// insert the parent of the actual node, and change the actual to it's parent.
+			m_BesthPath.insert(m_BesthPath.begin(), m_pActualNode->m_pParentNode);
+			m_pActualNode = m_pActualNode->m_pParentNode;
 		}
 	}
 
@@ -136,7 +148,7 @@ namespace LevelGenerator
 			{
 				/// Asign the new actual node.
 				m_pActualNode = (*itt);
-				m_PathNodes.erase(itt);
+				//m_PathNodes.erase(itt);
 				/// End the for.
 				break;
 			}
@@ -155,5 +167,34 @@ namespace LevelGenerator
 		}
 		/// If not find the given node return false.
 		return false;
+	}
+
+	//! This function restructure the node's path.
+	void LG_Dijkstra::RestructurePath()
+	{
+		Vector<LG_Node*> TempPathNodes;
+		TempPathNodes.resize(0);
+		float fActualWeight = LG_Math::INFINITE_NUM;
+		///
+		LG_Node* pTemp = nullptr;
+		int32 iInitialSize = m_PathNodes.size();
+		while (TempPathNodes.size() != iInitialSize)
+		{
+			for (Vector<LG_Node*>::iterator itt = m_PathNodes.begin(); itt != m_PathNodes.end(); ++itt)
+			{
+				if ((*itt)->m_fWeight < fActualWeight)
+				{
+					fActualWeight = (*itt)->m_fWeight;
+					pTemp = (*itt);
+					m_PathNodes.erase(itt);
+					break;
+				}
+			}
+			fActualWeight = LG_Math::INFINITE_NUM;
+			/// 
+			TempPathNodes.push_back(pTemp);
+		}
+		///
+		m_PathNodes = TempPathNodes;
 	}
 }
