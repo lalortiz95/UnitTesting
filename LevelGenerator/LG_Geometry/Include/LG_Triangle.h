@@ -25,6 +25,15 @@ namespace LevelGenerator
 		LG_Triangle();
 
 		/**
+		 *	@brief Constructor with parameters.
+		 *	@param LG_Edge* pFirstEdge: The first edge of the triangle.
+		 *	@param LG_Edge* pSecondEdge: The second edge of the triangle.
+		 *	@param LG_Edge* pThirdEdge: The third edge of the triangle.
+		 *	@param int32& iTriangleID: The id of the triangle.
+		 */
+		LG_Triangle(LG_Edge* pFirstEdge, LG_Edge* pSecondEdge, LG_Edge* pThirdEdge, int32& iTriangleID);
+
+		/**
 		 *	@brief Default destructor.
 		 */
 		~LG_Triangle();

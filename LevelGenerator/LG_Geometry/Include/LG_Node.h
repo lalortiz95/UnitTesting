@@ -45,14 +45,19 @@ namespace LevelGenerator
 		///************************************************************************/
 
 		/**
-		 *	@var Pointer of node that defines what node is the parent. 
+		 *	@var This variable store's an ID.
 		 */
-		LG_Node* m_pParentNode;
+		int32 m_iID;
 
 		/**
 		 *	@var This variable stores a 3D position (X,Y,Z).
 		 */
 		LG_Vector3D m_Position;
+
+		/**
+		 *	@var This variable store's the weight of the node.
+		 */
+		float m_fWeight;
 
 		/**
 		 *	@var This flag determinate if the node is On or Off.
@@ -70,14 +75,9 @@ namespace LevelGenerator
 		bool m_bIsChecked;
 
 		/**
-		 *	@var This variable store's an ID.
+		 *	@var Pointer of node that defines what node is the parent.
 		 */
-		int32 m_iID;
-
-		/**
-		 *	@var This variable store's the weight of the node.
-		 */
-		float m_fWeight;
+		LG_Node* m_pParentNode;
 
 		/**
 		 *	@var This vector stores a pointer of nodes.
@@ -98,6 +98,12 @@ namespace LevelGenerator
 		 *	@brief Function to release memory and destroy objects.
 		 */
 		void Destroy();
+
+		/**
+		 *	@brief This function stops pointing to the given node.
+		 *	@param LG_Node* pNode: The node that we want to stop pointing.
+		 */
+		void StopPointingNode(LG_Node* pNode);
 
 		///************************************************************************/
 		///*						  Assignment Operator.						  */

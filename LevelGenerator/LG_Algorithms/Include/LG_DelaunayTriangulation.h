@@ -135,8 +135,9 @@ namespace LevelGenerator
 		 *	@param LG_Triangle* pSecondTriangle: The second triangle.
 		 *	@param LG_Node** ppFirstNode: The first node that we want to found.
 		 *	@param LG_Node** ppSecondNode: The second node that we want to found.
+		 *	@return true if find 2 nodes to create a polygon, otherwise false.
 		 */
-		void FindNodesToCreatePolygon(LG_Edge* pActualEdge, LG_Triangle* pFirstTriangle, LG_Triangle* pSecondTriangle, LG_Node** ppFirstNode, LG_Node** ppSecondNode);
+		bool FindNodesToCreatePolygon(LG_Edge* pActualEdge, LG_Triangle* pFirstTriangle, LG_Triangle* pSecondTriangle, LG_Node** ppFirstNode, LG_Node** ppSecondNode);
 
 
 		/**
@@ -158,18 +159,36 @@ namespace LevelGenerator
 		 *	@brief This function delete all triangles that have one or more nodes of the big triangle.
 		 *	@return true if we erase one triangle of the triangles' vector.
 		 */
-		bool EliminateTriangles();
+		bool DeleteTrianglesSharesBT();
 
 		/**
 		 *	@brief This function delete all edges that have one or more nodes of the big triangle.
 		 *	@return true if we erase one edge of the edges' vector.
 		 */
-		bool EliminateEdges();
+		bool DeleteEdgesSharesBT();
 
 		/**
 		 *	@brief Thisfunction delete all edges of the big triangle from the edges' vector 
 		 */
-		void EliminateEdgesBigTriangle();
+		void DeleteEdgesBT();
+
+		/**
+		 *	@brief This function delete all nodes of the big triangle and delete the big triangle.
+		 */
+		void DeleteBT();
+
+		/**
+		 *	@brief This function erase a triangle from the triangles' vector.
+		 *	@param LG_Triangle* pTriangle: The triangle that we want to erase from the triangles' vector.
+		 */
+		void EraseTriangleFromVector(LG_Triangle* pTriangle);
+
+		/**
+		 *	@brief This function erase a edge from the edges' vector.
+		 *	@param LG_Edge* pEdge: The edge that we want to erase from the edges' vector.
+		 */
+		void EraseEdgeFromVector(LG_Edge* pEdge);
+
 
 
 		/**
@@ -180,5 +199,14 @@ namespace LevelGenerator
 		 *	@return The new triangle.
 		 */
 		LG_Triangle* CreateTriangle(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
+
+		/**
+		 *	@brief This function check if the triangle is a good triangle with the given nodes.
+		 *	@param LG_Node* pFirstNode: The first node that we need to create a triangle.
+		 *	@param LG_Node* pSecondNode: The second node that we need to create a triangle.
+		 *	@param LG_Node* pThirdNode: The third node that we need to create a triangle.
+		 *	@return The triangle.
+		 */
+		LG_Triangle CheckIfIsAGoodTriangle(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
 	};
 }

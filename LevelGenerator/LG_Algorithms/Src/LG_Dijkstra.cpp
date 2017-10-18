@@ -4,16 +4,24 @@ namespace LevelGenerator
 {
 	LG_Dijkstra::LG_Dijkstra()
 	{
+		m_BesthPath.clear();
+		m_PathNodes.clear();
+		m_pNodesCloud = nullptr;
+		m_pStartNode = nullptr;
+		m_pEndNode = nullptr;
+		m_pActualNode = nullptr;
 	}
 
 
 	LG_Dijkstra::~LG_Dijkstra()
 	{
+		Destroy();
 	}
 
 	//! This function initialize dijkstra algorithm.
 	void LG_Dijkstra::Init(Vector<LG_Node>* pNodeCloud, LG_Node* pStartNode, LG_Node* pEndNode)
 	{
+		Destroy();
 		m_pNodesCloud = pNodeCloud;
 		m_pStartNode = pStartNode;
 		m_pActualNode = m_pStartNode;
@@ -119,6 +127,44 @@ namespace LevelGenerator
 	//! This function release all memory used in the object class.
 	void LG_Dijkstra::Destroy()
 	{
+
+		if(m_BesthPath.size() != 0)
+		{
+			for (Vector<LG_Node*>::iterator itt = m_BesthPath.begin(); itt != m_BesthPath.end(); ++itt)
+			{
+				*itt = nullptr;
+			}
+			m_BesthPath.clear();
+		}
+
+		if (m_PathNodes.size() != 0)
+		{
+			for (Vector<LG_Node*>::iterator itt = m_PathNodes.begin(); itt != m_PathNodes.end(); ++itt)
+			{
+				*itt = nullptr;
+			}
+			m_PathNodes.clear();
+		}
+	
+		if (m_pNodesCloud != nullptr)
+		{
+			m_pNodesCloud = nullptr;
+		}
+
+		if (m_pStartNode != nullptr)
+		{
+			m_pStartNode = nullptr;
+		}
+
+		if (m_pEndNode != nullptr)
+		{
+			m_pEndNode = nullptr;
+		}
+
+		if (m_pActualNode != nullptr)
+		{
+			m_pActualNode = nullptr;
+		}
 	}
 
 	//! This function get the distance between 2 nodes.
@@ -172,26 +218,30 @@ namespace LevelGenerator
 	//! This function restructure the node's path.
 	void LG_Dijkstra::RestructurePath()
 	{
-		Vector<LG_Node*> TempPathNodes;
-		TempPathNodes.resize(0);
-		float fActualWeight = LG_Math::INFINITE_NUM;
 		///
 		LG_Node* pTemp = nullptr;
+		Vector<LG_Node*> TempPathNodes;
+		Vector<LG_Node*>::iterator ittErase = m_PathNodes.begin();
+
 		int32 iInitialSize = m_PathNodes.size();
+		float fActualWeight = LG_Math::INFINITE_NUM;
+
+		TempPathNodes.resize(0);
+
 		while (TempPathNodes.size() != iInitialSize)
 		{
+			
 			for (Vector<LG_Node*>::iterator itt = m_PathNodes.begin(); itt != m_PathNodes.end(); ++itt)
 			{
 				if ((*itt)->m_fWeight < fActualWeight)
 				{
 					fActualWeight = (*itt)->m_fWeight;
 					pTemp = (*itt);
-					m_PathNodes.erase(itt);
-					break;
+					ittErase = itt;
 				}
 			}
+			m_PathNodes.erase(ittErase);
 			fActualWeight = LG_Math::INFINITE_NUM;
-			/// 
 			TempPathNodes.push_back(pTemp);
 		}
 		///
