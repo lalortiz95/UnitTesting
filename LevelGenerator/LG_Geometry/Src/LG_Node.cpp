@@ -58,6 +58,19 @@ namespace LevelGenerator
 		}
 	}
 
+	//! This function stops pointing to the given node.
+	void LG_Node::StopPointingNode(LG_Node * pNode)
+	{
+		for (Vector<LG_Node*>::iterator itt = m_PointerNodes.begin(); itt != m_PointerNodes.end(); ++itt)
+		{
+			if ((*itt) == pNode)
+			{
+				m_PointerNodes.erase(itt);
+				return;
+			}
+		}
+	}
+
 	//! This operator assigns the values from other node to this node.
 	LG_Node& LG_Node::operator=(const LG_Node & OtherNode)
 	{

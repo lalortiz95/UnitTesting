@@ -15,18 +15,9 @@ namespace LevelGenerator
 	//! Parameter constructor.
 	LG_Edge::LG_Edge(LG_Node* pFirstNode, LG_Node* pSecondNode, int32& EdgeID)
 	{
-		m_pFirstNode = nullptr;
-		m_pSecondNode = nullptr;
-		m_fDistance = 0.0f;
-
-		/// We assign the nodes.
-		m_pFirstNode = pFirstNode;
-		m_pSecondNode = pSecondNode;
+		Init(pFirstNode, pSecondNode);
 		m_iID = EdgeID;
-
-		/// Assign the pointer of every node of the arista.
-		m_pFirstNode->m_PointerNodes.push_back(m_pSecondNode);
-		m_pSecondNode->m_PointerNodes.push_back(m_pFirstNode);
+		++EdgeID;
 
 		/// Calculate the magnitude of the arista, and store it.
 		LG_Vector3D magnitude = pSecondNode->m_Position - pFirstNode->m_Position;

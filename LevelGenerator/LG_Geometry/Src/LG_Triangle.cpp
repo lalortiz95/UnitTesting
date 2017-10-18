@@ -10,6 +10,14 @@ namespace LevelGenerator
 		m_bIsChecked = false;
 	}
 
+	LG_Triangle::LG_Triangle(LG_Edge * pFirstEdge, LG_Edge * pSecondEdge, LG_Edge * pThirdEdge, int32 & iTriangleID)
+	{
+		m_bIsChecked = false;
+		Init(pFirstEdge, pSecondEdge, pThirdEdge);
+		m_iID = iTriangleID;
+		++iTriangleID;
+	}
+
 	//! Default destructor.
 	LG_Triangle::~LG_Triangle()
 	{

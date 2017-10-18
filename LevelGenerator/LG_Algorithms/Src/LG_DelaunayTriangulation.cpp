@@ -90,6 +90,9 @@ namespace LevelGenerator
 		LG_Triangle* pActualTriangle = m_pTrianglesVector.front();
 		bool bCanStop = false;
 
+		////////TEST 
+		m_NodesCloud = m_NodesCloud;
+
 		/// counter to exit the while loop.
 		int32 iBreakWhile = 0;
 
@@ -112,59 +115,33 @@ namespace LevelGenerator
 				if (FindTrianglesToLegalize(pActualEdge, &pFirstTriangle, &pSecondTriangle))
 				{
 					/// 
-					FindNodesToCreatePolygon(pActualEdge, pFirstTriangle, pSecondTriangle, &pFirstNode, &pSecondNode);
-					/// If at least one of the nodes was inside the circle we change the arista for a legal one.
-					if (pSecondTriangle->m_CircumcircleCircumference.IsDotInside(pFirstNode->m_Position) ||
-						pFirstTriangle->m_CircumcircleCircumference.IsDotInside(pSecondNode->m_Position))
+					if (FindNodesToCreatePolygon(pActualEdge, pFirstTriangle, pSecondTriangle, &pFirstNode, &pSecondNode))
 					{
-
-						LG_Triangle* pNewFirstTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pFirstNode);
-						LG_Triangle* pNewSecondTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pSecondNode);
-						++iBreakWhile;
-						m_pTrianglesVector.push_back(pNewFirstTriangle);
-						m_pTrianglesVector.push_back(pNewSecondTriangle);
-
-						/// Erases the triangle that belongs to the legalized edge.
-						for (Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin(); itt != m_pTrianglesVector.end(); ++itt)
+						/// If at least one of the nodes was inside the circle we change the arista for a legal one.
+						if (pSecondTriangle->m_CircumcircleCircumference.IsDotInside(pFirstNode->m_Position) ||
+							pFirstTriangle->m_CircumcircleCircumference.IsDotInside(pSecondNode->m_Position))
 						{
-							if ((*itt) == pFirstTriangle)
-							{
-								LG_Triangle* pTemp = *itt;
-								m_pTrianglesVector.erase(itt);
-								delete pTemp;
-								pTemp = nullptr;
-								break;
-							}
+
+							LG_Triangle* pNewFirstTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pFirstNode);
+							if(pNewFirstTriangle != nullptr)
+							m_pTrianglesVector.push_back(pNewFirstTriangle);
+
+							LG_Triangle* pNewSecondTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pSecondNode);
+							if(pNewSecondTriangle != nullptr)
+							m_pTrianglesVector.push_back(pNewSecondTriangle);
+						
+							EraseTriangleFromVector(pFirstTriangle);
+							EraseTriangleFromVector(pSecondTriangle);
+
+							pActualEdge->Legalize(pActualEdge->m_pFirstNode, pActualEdge->m_pSecondNode);
+							EraseEdgeFromVector(pActualEdge);
+
+							pFirstNode = nullptr;
+							pSecondNode = nullptr;
+							++iBreakWhile;
+							break;
+
 						}
-
-						for (Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin(); itt != m_pTrianglesVector.end(); ++itt)
-						{
-							if ((*itt) == pSecondTriangle)
-							{
-								LG_Triangle* pTemp = *itt;
-								m_pTrianglesVector.erase(itt);
-								delete pTemp;
-								pTemp = nullptr;
-								break;
-							}
-						}
-
-						//TODO: se borra el edge pero no las conexiones que tienen sus nodos
-						pActualEdge->Legalize(pActualEdge->m_pFirstNode, pActualEdge->m_pSecondNode);
-
-						for (Vector<LG_Edge*>::iterator itt = m_pEdgeVector.begin(); itt != m_pEdgeVector.end(); ++itt)
-						{
-							if ((*itt) == pActualEdge)
-							{
-								LG_Edge* pTemp = *itt;
-								m_pEdgeVector.erase(itt);
-								delete pTemp;
-								pTemp = nullptr;
-								break;
-							}
-						}
-						break;
-
 					}
 				}
 			}
@@ -172,12 +149,15 @@ namespace LevelGenerator
 			bCanStop = CheckIfAllTrianglesAreTrue();
 		}
 
+
 		/// Eliminate the edges of the big triangle from the edges' vector.
-		EliminateEdgesBigTriangle();
+		DeleteEdgesBT();
 		/// Eliminate the triangles that shares position with the big triangle.
-		while (EliminateTriangles());
+		while (DeleteTrianglesSharesBT());
 		/// Eliminate the edges that shares position with the big triangle.
-		while (EliminateEdges());
+		while (DeleteEdgesSharesBT());
+		/// Eliminate the big triangle.
+		DeleteBT();
 	}
 
 	//! This function performs an initial triangulation that works as a base for the rest of the algorithm.
@@ -191,7 +171,9 @@ namespace LevelGenerator
 		/// A counter for all of the dots inside of a triangle, it's needed because if there is only one, we'll triangulate with that.
 		int32 iDotsInside = 0;
 		/// Stores the triangle that we want to know whether it contains good angles or not
-		LG_Triangle* TempTri;
+		LG_Triangle TempTri;
+
+		LG_Triangle* pNewTriangle = nullptr;
 		/// The best angle in the dots inside a triangle. We start with 80°, or 1.39626 radians.
 		float fBestAngle;
 		/// A starting default angle to select a good one.
@@ -243,23 +225,24 @@ namespace LevelGenerator
 				for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
 				{
 					/// Store the first triangle created between the iterating edge, and the iterating node.
-					TempTri = CreateTriangle(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
+					TempTri = CheckIfIsAGoodTriangle(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
 						m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
 						pNodesInside[i]);
 
 					/// If the biggest angle in the triangle, is smaller than the best angle, that becomes the new best angle.
-					if (LG_Math::Max3(TempTri->m_fAngles[0], TempTri->m_fAngles[1], TempTri->m_fAngles[2]) < fBestAngle)
+					if (LG_Math::Max3(TempTri.m_fAngles[0], TempTri.m_fAngles[1], TempTri.m_fAngles[2]) < fBestAngle)
 					{
 						/// Store the best angle for this triangle.
-						fBestAngle = LG_Math::Max3(TempTri->m_fAngles[0], TempTri->m_fAngles[1], TempTri->m_fAngles[2]);
+						fBestAngle = LG_Math::Max3(TempTri.m_fAngles[0], TempTri.m_fAngles[1], TempTri.m_fAngles[2]);
 						/// We store the node we the best angles.
 						pBestNode = pNodesInside[i];
 						/// 
 						bHaveGoodAngles = true;
 					}
-					else
+
+					for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
 					{
-						break;
+						delete TempTri.m_pEdges[i];
 					}
 				}
 			}
@@ -282,11 +265,13 @@ namespace LevelGenerator
 				/// the node found as the best one, defined by it's beautiful intrinsic angles.
 				for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
 				{
-					//Creo que esta función está destruyendo todo.
+					
 					/// We triangulate with the actual triangle and the best node.
-					m_pTrianglesVector.push_back(CreateTriangle(m_pActualTriangle->m_pEdges[i]->m_pFirstNode,
+					pNewTriangle = CreateTriangle(m_pActualTriangle->m_pEdges[i]->m_pFirstNode,
 						m_pActualTriangle->m_pEdges[i]->m_pSecondNode,
-						pBestNode));
+						pBestNode);
+					if(pNewTriangle != nullptr)
+					m_pTrianglesVector.push_back(pNewTriangle);
 				}
 
 				for (int32 i = 0; i < m_NodesCloud.size(); ++i)
@@ -332,87 +317,6 @@ namespace LevelGenerator
 			{
 				bQuit = bQuit;
 			}
-
-			///// We will compare the actual triangle against all of the nodes in the node cloud.
-			//for (int32 i = 0; i < m_NodesCloud.size(); ++i)
-			//{
-			//	/// If there is a dot inside of the triangle
-			//	if (m_pActualTriangle->IsPointInside(&m_NodesCloud[i]) && !m_NodesCloud[i].m_bIsChecked)
-			//	{
-			//		/// set that there were dots inside of the triangle.
-			//		bHasNoDotsInside = false;
-			//		///Creates 3 new triangles between each edge of the actual triangle, and the iterating node.
-			//		for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
-			//		{
-			//			/// Add one to the dots counter. We want to know if there are more than one inside.
-			//			++iDotsInside;
-			//			//TODO: Si alguno de los guardados sigue en 80 significa que no cambió, entonces se debe
-			//			// buscar un nuevo punto, al final de la iteración con todos los puntos, si no se encontró
-			//			// otro nodo adentro entonces se toma el único que estaba y con ese se triangula, ya ni modo.
-			//			// esto se hace teniendo una referencia al nodo del último triángulo que no haya sido bueno.
-			//			/// Store the first triangle created between the iterating edge, and the iterating node.
-			//			TempTri = CreateTriangle(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
-			//				m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
-			//				&m_NodesCloud[i]);
-			//			/// If the biggest angle in the triangle, is smaller than the best angle, that becomes the new best angle.
-			//			if (LG_Math::Max3(TempTri->m_fAngles[0], TempTri->m_fAngles[1], TempTri->m_fAngles[2]) < fBestAngle[j])
-			//			{
-			//				/// Store the best angle for this triangle.
-			//				fBestAngle[j] = LG_Math::Max3(TempTri->m_fAngles[0], TempTri->m_fAngles[1], TempTri->m_fAngles[2]);
-			//			}
-			//			//m_pTrianglesVector.push_back(
-			//			//	CreateTriangle(m_pActualTriangle->m_pEdges[j]->m_pFirstNode,
-			//			//		m_pActualTriangle->m_pEdges[j]->m_pSecondNode,
-			//			//		&m_NodesCloud[i]));
-			//		}
-			//		/// Iterate through the calculated best angles.
-			//		for (int32 j = 0; j < ANGLES_PER_TRIANGLE; ++j)
-			//		{
-			//			/// see if there's an angle that didn't change, meaning the triangles it would triangulate are no good for us.
-			//			if (fBestAngle[j] < 80)
-			//			{
-			//				bHaveBadangles = false;
-			//			}
-			//		}
-			//		/// If the angles in one of the triangles is considered a bad triangle.
-			//		if (bHaveBadangles)
-			//		{
-			//			continue;
-			//		}
-			//		/// Set the node that we just used as checked.
-			//		m_NodesCloud[i].m_bIsChecked = true;
-			//		///
-			//		itt = m_pTrianglesVector.begin() + iPosTriangle;
-			//		m_pTrianglesVector.erase(itt);
-			//		/// Ends the iteration because now is time to get a new actual triangle.
-			//		break;
-			//	}
-			//}
-			///// It didn't have any dots inside.
-			//if (bHasNoDotsInside)
-			//{
-			//	/// We set that triangle as true.
-			//	m_pActualTriangle->m_bIsChecked = true;
-			//}
-			///// Iterates throough the triangles vector.
-			//for (int32 i = m_pTrianglesVector.size() - 1; i >= 0; --i)
-			//{
-			//	/// We find the new actual triangle.
-			//	if (!m_pTrianglesVector[i]->m_bIsChecked && m_pActualTriangle != m_pTrianglesVector[i])
-			//	{
-			//		/// set the new triangle.
-			//		m_pActualTriangle = m_pTrianglesVector[i];
-			//		iPosTriangle = i;
-			//		break;
-			//	}
-			//}
-			///// Checks if the triangles are already checked.
-			//for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
-			//{
-			//	CheckIfTriangleIsChecked(m_pTrianglesVector[i]);
-			//}
-			///// once all the triangles have been checked, we finish the incremental triangulation.
-			//bQuit = CheckIfAllTrianglesAreTrue();
 		}
 	}
 
@@ -537,7 +441,7 @@ namespace LevelGenerator
 		}
 	}
 
-	bool LG_DelaunayTriangulation::EliminateTriangles()
+	bool LG_DelaunayTriangulation::DeleteTrianglesSharesBT()
 	{
 		/// Erases the triangle that belongs to the legalized edge.
 		for (Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin(); itt != m_pTrianglesVector.end(); ++itt)
@@ -546,8 +450,10 @@ namespace LevelGenerator
 			{
 				if ((*itt)->CompareOneIndex(m_pBigTriangle->m_pVertices[i]))
 				{
-					delete *itt;
+					LG_Triangle* pTemp = *itt;
 					m_pTrianglesVector.erase(itt);
+					delete pTemp;
+					pTemp = nullptr;
 					return true;
 				}
 			}
@@ -555,7 +461,7 @@ namespace LevelGenerator
 		return false;
 	}
 
-	bool LG_DelaunayTriangulation::EliminateEdges()
+	bool LG_DelaunayTriangulation::DeleteEdgesSharesBT()
 	{
 
 		/// Erases the triangle that belongs to the legalized edge.
@@ -564,21 +470,31 @@ namespace LevelGenerator
 
 			if ((*itt)->CompareOneIndex(m_pBigTriangle->m_pVertices[FIRST_NODE]))
 			{
-				delete *itt;
+
+				LG_Edge* pTemp = *itt;
+				(*itt)->Legalize((*itt)->m_pFirstNode, (*itt)->m_pSecondNode);
 				m_pEdgeVector.erase(itt);
+				delete pTemp;
+				pTemp = nullptr;
 				return true;
 			}
 
 			else if ((*itt)->CompareOneIndex(m_pBigTriangle->m_pVertices[SECOND_NODE]))
 			{
-				delete *itt;
+				LG_Edge* pTemp = *itt;
+				(*itt)->Legalize((*itt)->m_pFirstNode, (*itt)->m_pSecondNode);
 				m_pEdgeVector.erase(itt);
+				delete pTemp;
+				pTemp = nullptr;
 				return true;
 			}
 			else if ((*itt)->CompareOneIndex(m_pBigTriangle->m_pVertices[THIRD_NODE]))
 			{
-				delete *itt;
+				LG_Edge* pTemp = *itt;
+				(*itt)->Legalize((*itt)->m_pFirstNode, (*itt)->m_pSecondNode);
 				m_pEdgeVector.erase(itt);
+				delete pTemp;
+				pTemp = nullptr;
 				return true;
 			}
 
@@ -586,46 +502,107 @@ namespace LevelGenerator
 		return false;
 	}
 
-	void LG_DelaunayTriangulation::EliminateEdgesBigTriangle()
+	void LG_DelaunayTriangulation::DeleteEdgesBT()
 	{
 		Vector<LG_Edge*>::iterator itt = m_pEdgeVector.begin();
-		delete *itt;
+		LG_Edge* pTemp = *itt;
+		pTemp->Legalize(pTemp->m_pFirstNode, pTemp->m_pSecondNode);
 		m_pEdgeVector.erase(itt);
+		delete pTemp;
+		pTemp = nullptr;
 
 		itt = m_pEdgeVector.begin();
-		delete *itt;
+		pTemp = *itt;
+		pTemp->Legalize(pTemp->m_pFirstNode, pTemp->m_pSecondNode);
 		m_pEdgeVector.erase(itt);
+		delete pTemp;
+		pTemp = nullptr;
 
 		itt = m_pEdgeVector.begin();
-		delete *itt;
+		pTemp = *itt;
+		pTemp->Legalize(pTemp->m_pFirstNode, pTemp->m_pSecondNode);
 		m_pEdgeVector.erase(itt);
+		delete pTemp;
+		pTemp = nullptr;
+	}
+
+	void LG_DelaunayTriangulation::DeleteBT()
+	{
+		int32 iNode = 0;
+		while (iNode < NODES_PER_TRIANGLE)
+		{
+			for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+			{
+				for (Vector<LG_Node*>::iterator itt = m_NodesCloud[i].m_PointerNodes.begin();
+					itt != m_NodesCloud[i].m_PointerNodes.end(); ++itt)
+				{
+					if ((*itt) == m_pBigTriangle->m_pVertices[iNode])
+					{
+						(*itt)->StopPointingNode(m_pBigTriangle->m_pVertices[iNode]);
+						itt = m_NodesCloud[i].m_PointerNodes.begin();
+					}
+				}
+			}
+			delete m_pBigTriangle->m_pVertices[iNode];
+			m_pBigTriangle->m_pVertices[iNode] = nullptr;
+			++iNode;
+		}
+		delete m_pBigTriangle;
+		m_pBigTriangle = nullptr;
+	}
+
+	void LG_DelaunayTriangulation::EraseTriangleFromVector(LG_Triangle * pTriangle)
+	{
+		/// Erases the triangle that belongs to the legalized edge.
+		for (Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin(); itt != m_pTrianglesVector.end(); ++itt)
+		{
+			if ((*itt) == pTriangle)
+			{
+				LG_Triangle* pTemp = *itt;
+				m_pTrianglesVector.erase(itt);
+				delete pTemp;
+				pTemp = nullptr;
+				pTriangle = nullptr;
+				break;
+			}
+		}
+	}
+
+	void LG_DelaunayTriangulation::EraseEdgeFromVector(LG_Edge * pEdge)
+	{
+		for (Vector<LG_Edge*>::iterator itt = m_pEdgeVector.begin(); itt != m_pEdgeVector.end(); ++itt)
+		{
+			if ((*itt) == pEdge)
+			{
+				LG_Edge* pTemp = *itt;
+				m_pEdgeVector.erase(itt);
+				delete pTemp;
+				pTemp = nullptr;
+				pEdge = nullptr;
+				break;
+			}
+		}
 	}
 
 	LG_Triangle* LG_DelaunayTriangulation::CreateTriangle(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode)
 	{
+
+		for (int32 i = 0; i < m_pTrianglesVector.size(); ++i)
+		{
+			if (m_pTrianglesVector[i]->CompareIndex(pFirstNode, pSecondNode, pThirdNode))
+			{
+				return nullptr;
+			}
+		}
+
 		/// This flags tells us if we are to add a new edge to the edge's vector.
 		bool bIsFirstEdgeNew, bIsSecondEdgeNew, bIsThridEdgeNew;
 		bIsFirstEdgeNew = bIsSecondEdgeNew = bIsThridEdgeNew = true;
-		///
-		LG_Triangle* pNewTriangle = new LG_Triangle();
 
 		/// Assigns memory.
-		LG_Edge* pFirstEdge = new LG_Edge();
-		LG_Edge* pSecondEdge = new LG_Edge();
-		LG_Edge* pThirdEdge = new LG_Edge();
-
-		/// Initialize 3 new edges.
-		pFirstEdge->Init(pFirstNode, pSecondNode);
-		pFirstEdge->m_iID = m_iEdgesCount;
-		++m_iEdgesCount;
-
-		pSecondEdge->Init(pFirstNode, pThirdNode);
-		pSecondEdge->m_iID = m_iEdgesCount;
-		++m_iEdgesCount;
-
-		pThirdEdge->Init(pSecondNode, pThirdNode);
-		pThirdEdge->m_iID = m_iEdgesCount;
-		++m_iEdgesCount;
+		LG_Edge* pFirstEdge = new LG_Edge(pFirstNode, pSecondNode, m_iEdgesCount);
+		LG_Edge* pSecondEdge = new LG_Edge(pFirstNode, pThirdNode, m_iEdgesCount);
+		LG_Edge* pThirdEdge = new LG_Edge(pSecondNode, pThirdNode, m_iEdgesCount);
 
 		/// Checks if the edge haven't been inserted already. If so it gives a reference of the memory.
 		for (int32 i = 0; i < m_pEdgeVector.size(); ++i)
@@ -656,12 +633,8 @@ namespace LevelGenerator
 			}
 		}
 
-
-		/// Creates a new triangle, and initializes it.
-		pNewTriangle->Init(pFirstEdge, pSecondEdge, pThirdEdge);
-		pNewTriangle->m_iID = m_iTrianglesCount;
-		++m_iTrianglesCount;
-
+		LG_Triangle* pNewTriangle = new LG_Triangle(pFirstEdge, pSecondEdge, pThirdEdge, m_iTrianglesCount);
+	
 		/// Check if it is needed to add new edges.
 		if (bIsFirstEdgeNew)
 		{
@@ -676,7 +649,42 @@ namespace LevelGenerator
 			m_pEdgeVector.push_back(pThirdEdge);
 		}
 		/// Returns the new created triangle.
+
 		return pNewTriangle;
+	}
+
+	LG_Triangle LG_DelaunayTriangulation::CheckIfIsAGoodTriangle(LG_Node * pFirstNode, LG_Node * pSecondNode, LG_Node * pThirdNode)
+	{
+
+		LG_Triangle NewTriangle;
+
+		NewTriangle.m_pVertices[FIRST_NODE] = pFirstNode;
+		NewTriangle.m_pVertices[SECOND_NODE] = pSecondNode;
+		NewTriangle.m_pVertices[THIRD_NODE] = pThirdNode;
+
+		NewTriangle.m_NodeIndex[FIRST_INDEX] = NewTriangle.m_pVertices[FIRST_NODE]->m_iID;
+		NewTriangle.m_NodeIndex[SECOND_INDEX] = NewTriangle.m_pVertices[SECOND_NODE]->m_iID;
+		NewTriangle.m_NodeIndex[THIRD_INDEX] = NewTriangle.m_pVertices[THIRD_NODE]->m_iID;
+
+
+		NewTriangle.m_pEdges[FIRST_EDGE] = new LG_Edge();
+		NewTriangle.m_pEdges[SECOND_EDGE] = new LG_Edge();
+		NewTriangle.m_pEdges[THIRD_EDGE] = new LG_Edge();
+
+		NewTriangle.m_pEdges[FIRST_EDGE]->m_pFirstNode = pFirstNode;
+		NewTriangle.m_pEdges[FIRST_EDGE]->m_pSecondNode = pSecondNode;
+
+		NewTriangle.m_pEdges[SECOND_EDGE]->m_pFirstNode = pFirstNode;
+		NewTriangle.m_pEdges[SECOND_EDGE]->m_pSecondNode = pThirdNode;
+
+		NewTriangle.m_pEdges[THIRD_EDGE]->m_pFirstNode = pSecondNode;
+		NewTriangle.m_pEdges[THIRD_EDGE]->m_pSecondNode = pThirdNode;
+
+		NewTriangle.CalculateCircumcenter();
+		NewTriangle.CalculateAngles();
+
+		/// Returns the new created triangle.
+		return NewTriangle;
 	}
 
 	//! This function search 2 triangles that share the same edge
@@ -707,21 +715,22 @@ namespace LevelGenerator
 		return false;
 	}
 
-	void LG_DelaunayTriangulation::FindNodesToCreatePolygon(LG_Edge* pActualEdge, LG_Triangle * pFirstTriangle, LG_Triangle * pSecondTriangle, LG_Node** ppFirstNode, LG_Node** ppSecondNode)
+	bool LG_DelaunayTriangulation::FindNodesToCreatePolygon(LG_Edge* pActualEdge, LG_Triangle * pFirstTriangle, LG_Triangle * pSecondTriangle, LG_Node** ppFirstNode, LG_Node** ppSecondNode)
 	{
-
+		bool bSucced = false;
 		for (int32 i = 0; i < NODES_PER_TRIANGLE; ++i)
 		{
 			if ((pFirstTriangle->m_pVertices[i] != pActualEdge->m_pFirstNode) &&
 				(pFirstTriangle->m_pVertices[i] != pActualEdge->m_pSecondNode))
 			{
 				*ppFirstNode = pFirstTriangle->m_pVertices[i];
+				bSucced = true;
+				break;
 			}
 			else
-			{
-				continue;
-			}
+				bSucced = false;
 		}
+
 
 		for (int32 i = 0; i < NODES_PER_TRIANGLE; ++i)
 		{
@@ -729,12 +738,14 @@ namespace LevelGenerator
 				(pSecondTriangle->m_pVertices[i] != pActualEdge->m_pSecondNode))
 			{
 				*ppSecondNode = pSecondTriangle->m_pVertices[i];
+				bSucced = true;
+				break;
 			}
 			else
-			{
-				continue;
-			}
+				bSucced = false;
 		}
+
+		return bSucced;
 	}
 
 	//! This function releases memory and clears the variables.
@@ -747,8 +758,25 @@ namespace LevelGenerator
 			m_pBigTriangle = nullptr;
 		}
 
-		if (m_pTrianglesVector.size() != 0)
+
+		while (m_pEdgeVector.size() != 0)
 		{
+			Vector<LG_Edge*>::iterator itt = m_pEdgeVector.begin();
+			LG_Edge* pTemp = *itt;
+			pTemp->Legalize(pTemp->m_pFirstNode, pTemp->m_pSecondNode);
+			m_pEdgeVector.erase(itt);
+			delete pTemp;
+			pTemp = nullptr;
 		}
+
+		while (m_pTrianglesVector.size() != 0)
+		{
+			Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin();
+			LG_Triangle* pTemp = *itt;
+			m_pTrianglesVector.erase(itt);
+			delete pTemp;
+			pTemp = nullptr;
+		}
+
 	}
 }
