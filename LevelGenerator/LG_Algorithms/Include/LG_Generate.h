@@ -2,9 +2,11 @@
 #include "LG_AlgorithmsPrerequisites.h"
 #include "LG_DelaunayTriangulation.h"
 #include "LG_MarchingSquare.h"
-#include "LG_RDP.h"
-#include "LG_Voronoi.h"
 #include "LG_Dijkstra.h"
+#include "LG_Voronoi.h"
+#include "LG_RDP.h"
+#include "LG_MST.h"
+
 #include <LG_Grid.h>
 
 namespace LevelGenerator
@@ -33,47 +35,52 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief Flag that determinate when we can insert a node in front or back of the isoline.
+		 *	@var Flag that determinate when we can insert a node in front or back of the isoline.
 		 */
 		bool m_bInsertFront;
 
 		/**
-		 *	@brief An object of the marching square class. It's used to run the algorithm.
+		 *	@var An object of the marching square class. It's used to run the algorithm.
 		 */
 		LG_MarchingSquare m_MS;
 
 		/**
-		 *	@brief An object of the Ramer-Douglas-Peucker class. It's used to run it's algorithm.
+		 *	@var An object of the Ramer-Douglas-Peucker class. It's used to run it's algorithm.
 		 */
 		LG_RDP m_RDP;
 
 		/**
-		 *	@brief An object of the delaunay triangulation class. It's used to run it's algorithm.
+		 *	@var An object of the Minimum spanning tree class. It's used to run it's algorithm.
+		 */
+		LG_MST m_MST;
+
+		/**
+		 *	@var An object of the delaunay triangulation class. It's used to run it's algorithm.
 		 */
 		LG_DelaunayTriangulation m_DT;
 
 		/**
-		 *	@brief A vector of isolines where we store the marching square output.
+		 *	@var A vector of isolines where we store the marching square output.
 		 */
 		Vector<LG_Isoline> m_IsolineVector;
 
 		/**
-		 *	@brief A vector of final isolines.
+		 *	@var A vector of final isolines.
 		 */
 		Vector<LG_Isoline> m_FinalIsolineVector;
 
 		/**
-		 *	@brief A vector of tiles where we store the tiles inside of marching square.
+		 *	@var A vector of tiles where we store the tiles inside of marching square.
 		 */
 		Vector<LG_Tile*> m_TileVector;
 
 		/**
-		 *	@brief The current isoline being filled.
+		 *	@var The current isoline being filled.
 		 */
 		LG_Isoline m_ActualIsoline;
 
 		/**
-		 *	@brief A pointer that define the actual tile.
+		 *	@var A pointer that define the actual tile.
 		 */
 		LG_Tile* m_pActualTile;
 

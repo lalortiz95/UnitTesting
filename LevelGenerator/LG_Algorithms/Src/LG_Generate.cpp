@@ -58,6 +58,7 @@ namespace LevelGenerator
 			m_MS.m_pMap->m_MapCenter.m_Position,
 			m_FinalIsolineVector);
 
+		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
 	}
 
 	//! This function generate a isoline from Marching Square Cases.

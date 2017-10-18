@@ -124,6 +124,13 @@ namespace LevelGenerator
 		bool CompareOneIndex(LG_Node* pOtherNode);
 
 		/**
+		 *	@brief This function see if it contains a given node.
+		 *	@param LG_Edge* EdgeToCompare: the edge that we want to find out if it's in the triangle.
+		 *	@return true when the edge was part of the triangle.
+		 */
+		bool HasEdgeInside(LG_Edge* EdgeToCompare);
+
+		/**
 		 *	@brief Calculates the triangle's circumcentre.
 		 */
 		void CalculateCircumcenter();

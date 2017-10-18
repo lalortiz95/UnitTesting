@@ -36,6 +36,9 @@
     <ClInclude Include="Include\LG_Dijkstra.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\LG_MST.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_MarchingSquare.cpp">
@@ -54,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\LG_Dijkstra.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\LG_MST.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

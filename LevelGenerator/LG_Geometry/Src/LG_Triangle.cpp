@@ -133,6 +133,23 @@ namespace LevelGenerator
 			(m_NodeIndex[THIRD_INDEX] == pOtherNode->m_iID));
 	}
 
+	//! This function see if it contains a given node.
+	bool LG_Triangle::HasEdgeInside(LG_Edge * EdgeToCompare)
+	{
+		/// Iterates through the edges of the triangle
+		for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
+		{
+			/// If it finds a matching one, returns true.
+			if (m_pEdges[i]->CompareEdges(*EdgeToCompare))
+			{
+				return true;
+			}
+		}
+
+		/// If it did not find any matching edges, returns false.
+		return false;
+	}
+
 	//! Calculates the triangle's circumcentre.
 	void LG_Triangle::CalculateCircumcenter()
 	{

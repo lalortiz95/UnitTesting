@@ -29,32 +29,32 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This node stores when the isoline begin.
+		 *	@var This node stores when the isoline begin.
 		 */
 		LG_Node* m_pStart;
 
 		/**
-		 *	@brief This node stores when the isoline end.
+		 *	@var This node stores when the isoline end.
 		 */
 		LG_Node* m_pEnd;
 
 		/**
-		 *	@brief This node stores a temporal node.
+		 *	@var This node stores a temporal node.
 		 */
 		LG_Node* m_pActualNode;
 
 		/**
-		 *	@brief The original isoline which will be reduced.
+		 *	@var The original isoline which will be reduced.
 		 */
 		LG_Isoline m_OriginalIsoline;
 
 		/**
-		 *	@brief The reduced set of nodes.
+		 *	@var The reduced set of nodes.
 		 */
 		LG_Isoline m_FinalIsoline;
 
 		/**
-		 *	@brief The range to reduce nodes.
+		 *	@var The range to reduce nodes.
 		 */
 		float m_fRange;
 
