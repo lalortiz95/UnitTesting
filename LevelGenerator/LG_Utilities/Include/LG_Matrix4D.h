@@ -9,7 +9,6 @@ namespace LevelGenerator
 	///*						  Forward Declarations.							*/
 	///**************************************************************************/
 	class LG_Vector4D;
-	class LG_Vector3D;
 
 	/**
 	 *	@brief This class is a 4 dimensional matrix.
@@ -34,6 +33,8 @@ namespace LevelGenerator
 			float LikeArray[16];
 			float LikeMatrix[4][4];
 		};
+
+		static const LG_Matrix4D ZERO;
 
 		///************************************************************************/
 		///*                            Constructor & Destructor.                 */
@@ -128,7 +129,7 @@ namespace LevelGenerator
 		 *	@brief Transposes a matrix.
 		 *	@return The transposed matrix.
 		 */
-		 LG_Matrix4D Transpose();
+		 LG_Matrix4D Transpose(void);
 
 		/**
 		 *	@brief Used to equalize a matrix to it's identity.

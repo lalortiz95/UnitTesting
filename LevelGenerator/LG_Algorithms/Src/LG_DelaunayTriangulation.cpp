@@ -120,8 +120,6 @@ namespace LevelGenerator
 
 						LG_Triangle* pNewFirstTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pFirstNode);
 						LG_Triangle* pNewSecondTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pSecondNode);
-						//pNewFirstTriangle->m_bIsChecked = true;
-						//pNewSecondTriangle->m_bIsChecked = true;
 						++iBreakWhile;
 						m_pTrianglesVector.push_back(pNewFirstTriangle);
 						m_pTrianglesVector.push_back(pNewSecondTriangle);
@@ -150,6 +148,9 @@ namespace LevelGenerator
 								break;
 							}
 						}
+
+						//TODO: se borra el edge pero no las conexiones que tienen sus nodos
+						pActualEdge->Legalize(pActualEdge->m_pFirstNode, pActualEdge->m_pSecondNode);
 
 						for (Vector<LG_Edge*>::iterator itt = m_pEdgeVector.begin(); itt != m_pEdgeVector.end(); ++itt)
 						{

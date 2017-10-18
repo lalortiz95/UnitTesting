@@ -144,8 +144,9 @@ namespace LevelGenerator
 		{
 			if ((*itt) == m_pSecondNode)
 			{
-				(*itt) = nullptr;
+				LG_Node* pTemp = *itt;
 				m_pFirstNode->m_PointerNodes.erase(itt);
+				pTemp = nullptr;
 				break;
 			}
 		}
@@ -154,25 +155,12 @@ namespace LevelGenerator
 		{
 			if ((*itt) == m_pFirstNode)
 			{
-				(*itt) = nullptr;
+				LG_Node* pTemp = *itt;
 				m_pSecondNode->m_PointerNodes.erase(itt);
+				pTemp = nullptr;
 				break;
 			}
 		}
-
-		/// We assign the nodes.
-		m_pFirstNode = pFirstNode;
-		m_pSecondNode = pSecondNode;
-
-		m_NodeIndex[FIRST_INDEX] = m_pFirstNode->m_iID;
-		m_NodeIndex[SECOND_INDEX] = m_pSecondNode->m_iID;
-
-		m_pFirstNode->m_PointerNodes.push_back(m_pSecondNode);
-		m_pSecondNode->m_PointerNodes.push_back(m_pFirstNode);
-
-		/// Calculate the magnitude of the edge, and store it.
-		LG_Vector3D magnitude = pSecondNode->m_Position - pFirstNode->m_Position;
-		m_fDistance = magnitude.Magnitude();
 	}
 
 	//! This operator assign the values of the given edge in this edge.

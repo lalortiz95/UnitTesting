@@ -3,10 +3,10 @@
 
 namespace LevelGenerator
 {
+	//const LG_Matrix4D::ZERO = LG_Matrix4D(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 
 	LG_Matrix4D::LG_Matrix4D()
 	{
-		*this = Zero();
 	}
 
 	LG_Matrix4D::LG_Matrix4D(float fX0, float fY0, float fZ0, float fW0,
@@ -115,8 +115,26 @@ namespace LevelGenerator
 	LG_Matrix4D LG_Matrix4D::Zero(void)
 	{
 		LG_Matrix4D mZero;
-		for (int32 i = 0; i < 9; i++)
-			mZero.LikeArray[i] = 0;
+		mZero.m.X0 = 0;
+		mZero.m.X1 = 0;
+		mZero.m.X2 = 0;
+		mZero.m.X3 = 0;
+
+		mZero.m.Y0 = 0;
+		mZero.m.Y1 = 0;
+		mZero.m.Y2 = 0;
+		mZero.m.Y3 = 0;
+
+		mZero.m.Z0 = 0;
+		mZero.m.Z1 = 0;
+		mZero.m.Z2 = 0;
+		mZero.m.Z3 = 0;
+
+		mZero.m.W0 = 0;
+		mZero.m.W1 = 0;
+		mZero.m.W2 = 0;
+		mZero.m.W3 = 0;
+
 		return mZero;
 	}
 
@@ -127,6 +145,7 @@ namespace LevelGenerator
 		identity.m.X0 = 1;
 		identity.m.Y1 = 1;
 		identity.m.Z2 = 1;
+		identity.m.W3 = 1;
 		return identity;
 	}
 
@@ -227,7 +246,7 @@ namespace LevelGenerator
 						{
 							///aquí no entendí que pedo.
 							LikeMatrix[j][k] = LikeMatrix[j][k] + (fAux * LikeMatrix[i][k]);
-							if (LikeMatrix[j][k] - LG_Math::DELTA <= 0 && 
+							if (LikeMatrix[j][k] - LG_Math::DELTA <= 0 &&
 								LikeMatrix[j][k] + LG_Math::DELTA >= 0)
 							{
 								LikeMatrix[j][k] = 0;
@@ -264,7 +283,7 @@ namespace LevelGenerator
 	{
 		///Los valores que hay en la matriz cuando se ignoran la col y la row dada.
 		LG_Matrix3D determinantMatrix;
-		float fValues[9];
+		float fValues[16];
 		///contador para llenar fValues
 		int32 iCount = 0;
 

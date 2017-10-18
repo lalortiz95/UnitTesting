@@ -244,7 +244,7 @@ void LG_Visual::Renderer()
 	LevelGenerator::LG_Vector3D CircumCenter;
 
 	LevelGenerator::LG_Dijkstra Pathfinding;
-	Pathfinding.Init(&AlgorithmGeneration.m_DT.m_NodesCloud, &AlgorithmGeneration.m_DT.m_NodesCloud[0], &AlgorithmGeneration.m_DT.m_NodesCloud[8]);
+	Pathfinding.Init(&AlgorithmGeneration.m_DT.m_NodesCloud, &AlgorithmGeneration.m_DT.m_NodesCloud[2], &AlgorithmGeneration.m_DT.m_NodesCloud[8]);
 	Pathfinding.Run();
 
 	/// Aqui se renderea la isolinea resultante de MS y RDP.
