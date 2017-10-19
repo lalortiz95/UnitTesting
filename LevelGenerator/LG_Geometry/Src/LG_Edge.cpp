@@ -128,7 +128,7 @@ namespace LevelGenerator
 	}
 
 	//! This function chanfge the values of the edge.
-	void LG_Edge::Legalize(LG_Node * pFirstNode, LG_Node * pSecondNode)
+	void LG_Edge::Legalize()
 	{
 		/// Assign the pointer of every node of the edge.
 		for (Vector<LG_Node*>::iterator itt = m_pFirstNode->m_PointerNodes.begin(); itt != m_pFirstNode->m_PointerNodes.end(); ++itt)

@@ -133,7 +133,7 @@ namespace LevelGenerator
 							EraseTriangleFromVector(pFirstTriangle);
 							EraseTriangleFromVector(pSecondTriangle);
 
-							pActualEdge->Legalize(pActualEdge->m_pFirstNode, pActualEdge->m_pSecondNode);
+							pActualEdge->Legalize();
 							EraseEdgeFromVector(pActualEdge);
 
 							pFirstNode = nullptr;
@@ -472,7 +472,7 @@ namespace LevelGenerator
 			{
 
 				LG_Edge* pTemp = *itt;
-				(*itt)->Legalize((*itt)->m_pFirstNode, (*itt)->m_pSecondNode);
+				(*itt)->Legalize();
 				m_pEdgeVector.erase(itt);
 				delete pTemp;
 				pTemp = nullptr;
@@ -482,7 +482,7 @@ namespace LevelGenerator
 			else if ((*itt)->CompareOneIndex(m_pBigTriangle->m_pVertices[SECOND_NODE]))
 			{
 				LG_Edge* pTemp = *itt;
-				(*itt)->Legalize((*itt)->m_pFirstNode, (*itt)->m_pSecondNode);
+				(*itt)->Legalize();
 				m_pEdgeVector.erase(itt);
 				delete pTemp;
 				pTemp = nullptr;
@@ -491,7 +491,7 @@ namespace LevelGenerator
 			else if ((*itt)->CompareOneIndex(m_pBigTriangle->m_pVertices[THIRD_NODE]))
 			{
 				LG_Edge* pTemp = *itt;
-				(*itt)->Legalize((*itt)->m_pFirstNode, (*itt)->m_pSecondNode);
+				(*itt)->Legalize();
 				m_pEdgeVector.erase(itt);
 				delete pTemp;
 				pTemp = nullptr;
@@ -506,21 +506,21 @@ namespace LevelGenerator
 	{
 		Vector<LG_Edge*>::iterator itt = m_pEdgeVector.begin();
 		LG_Edge* pTemp = *itt;
-		pTemp->Legalize(pTemp->m_pFirstNode, pTemp->m_pSecondNode);
+		pTemp->Legalize();
 		m_pEdgeVector.erase(itt);
 		delete pTemp;
 		pTemp = nullptr;
 
 		itt = m_pEdgeVector.begin();
 		pTemp = *itt;
-		pTemp->Legalize(pTemp->m_pFirstNode, pTemp->m_pSecondNode);
+		pTemp->Legalize();
 		m_pEdgeVector.erase(itt);
 		delete pTemp;
 		pTemp = nullptr;
 
 		itt = m_pEdgeVector.begin();
 		pTemp = *itt;
-		pTemp->Legalize(pTemp->m_pFirstNode, pTemp->m_pSecondNode);
+		pTemp->Legalize();
 		m_pEdgeVector.erase(itt);
 		delete pTemp;
 		pTemp = nullptr;
@@ -763,7 +763,7 @@ namespace LevelGenerator
 		{
 			Vector<LG_Edge*>::iterator itt = m_pEdgeVector.begin();
 			LG_Edge* pTemp = *itt;
-			pTemp->Legalize(pTemp->m_pFirstNode, pTemp->m_pSecondNode);
+			pTemp->Legalize();
 			m_pEdgeVector.erase(itt);
 			delete pTemp;
 			pTemp = nullptr;
