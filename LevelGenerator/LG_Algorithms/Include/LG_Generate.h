@@ -7,6 +7,7 @@
 #include "LG_RDP.h"
 #include "LG_MST.h"
 
+#include <LG_Rect.h>
 #include <LG_Grid.h>
 
 namespace LevelGenerator
@@ -73,6 +74,11 @@ namespace LevelGenerator
 		 *	@var A vector of tiles where we store the tiles inside of marching square.
 		 */
 		Vector<LG_Tile*> m_TileVector;
+
+		/**
+		 *	@var Were we store our rooms.
+		 */
+		Vector<LG_Rect*> m_Rooms;
 
 		/**
 		 *	@var The current isoline being filled.

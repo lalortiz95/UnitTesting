@@ -64,6 +64,19 @@ namespace LevelGenerator
 		m_Position = Position;
 		m_fHeight = fHeight;
 		m_fWidth = fWidth;
+
+		/// We initialize all the nodes positions.
+		m_TopLeft.m_Position.X = Position.X - (fWidth / 2);
+		m_TopLeft.m_Position.Y = Position.Y - (fHeight / 2);
+
+		m_BottomLeft.m_Position.X = m_TopLeft.m_Position.X;
+		m_BottomLeft.m_Position.Y = m_TopLeft.m_Position.Y - fHeight;
+
+		m_TopRight.m_Position.X = m_TopLeft.m_Position.X + m_fWidth;
+		m_TopRight.m_Position.Y = m_TopLeft.m_Position.Y;
+
+		m_BottomRight.m_Position.X = m_TopRight.m_Position.X;
+		m_BottomRight.m_Position.Y = m_BottomLeft.m_Position.Y;
 	}
 
 	//! Function to realease memory and destroy objects.

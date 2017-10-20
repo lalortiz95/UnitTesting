@@ -43,6 +43,9 @@ namespace LevelGenerator
 		/// Initialize the variables.
 		Initialize();
 
+		/// 
+		GenerateRooms(100, LG_Vector3D(20, 20, 0), LG_Vector3D(50, 50, 0));
+
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
 
@@ -370,9 +373,7 @@ namespace LevelGenerator
 		//TODO: hacer que el tamaño dependa de la cantidad de cuartos. Quiza que el área para spawn que sea un circulo.
 		SpawnZone.Init(LG_Vector3D(0, 0, 0), 1000.f, 1000.f);
 
-		/// Were we store our rooms.
-		Vector<LG_Rect*> Rooms;
-		Rooms.resize(iRoomAmount);
+		m_Rooms.resize(iRoomAmount);
 
 		/// The rectangle object that we use to fill the vector.
 		LG_Rect* NewRect = nullptr;
@@ -394,14 +395,16 @@ namespace LevelGenerator
 			PosToSpawn.X = rand() % fMaxX + fMinX;
 			PosToSpawn.Y = rand() % fMaxY + fMinY;
 			/// We find a random size for the rectangles upon the given boundaries. 
-			RoomSize.X = rand() % (int32)MaxSize.X + -(int32)MinSize.X;
-			RoomSize.Y = rand() % (int32)MaxSize.Y + -(int32)MinSize.Y;
+			RoomSize.X = rand() % (int32)MaxSize.X + (int32)MinSize.X;
+			RoomSize.Y = rand() % (int32)MaxSize.Y + (int32)MinSize.Y;
 
 			/// initialize the new room.
 			NewRect = new LG_Rect(PosToSpawn, RoomSize.X, RoomSize.Y);
 			/// Add the room to the room's vector.
-			Rooms.push_back(NewRect);
+			m_Rooms[i] = NewRect;
 		}
+
+		m_Rooms = m_Rooms;
 	}
 
 	//! This function set a new actual tile.
