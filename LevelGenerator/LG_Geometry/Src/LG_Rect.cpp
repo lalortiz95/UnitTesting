@@ -8,6 +8,11 @@ namespace LevelGenerator
 	{
 	}
 
+	LG_Rect::LG_Rect(LG_Vector3D Position, float fWidth, float fHeight)
+	{
+		Init(Position, fWidth, fHeight);
+	}
+
 	//! Default destructor.
 	LG_Rect::~LG_Rect()
 	{
@@ -50,8 +55,15 @@ namespace LevelGenerator
 
 		m_BottomLeft.m_Position = m_TopLeft.m_Position;
 		m_BottomLeft.m_Position.Y -= m_fHeight;
+	}
 
-		
+	//! 
+	void LG_Rect::Init(LG_Vector3D Position, float fWidth, float fHeight)
+	{
+		/// assign value to the variable
+		m_Position = Position;
+		m_fHeight = fHeight;
+		m_fWidth = fWidth;
 	}
 
 	//! Function to realease memory and destroy objects.

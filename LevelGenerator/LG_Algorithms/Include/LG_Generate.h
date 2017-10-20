@@ -158,6 +158,14 @@ namespace LevelGenerator
 		void InsertEdgeNode(int32 iCountLine);
 
 		/**
+		 *	@brief Generates random positions for the rectangles, and separates them.
+		 *	@param int32 iRoomAmount: The number of rooms that are going to be created.
+		 *	@param LG_Vector3D MinSize: the minimum available sizes for the rooms.
+		 *	@param LG_Vector3D MaxSize: the maximum available sizes for the rooms.
+		 */
+		void GenerateRooms(int32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize);
+
+		/**
 		 *	@brief This function sets a new actual tile.
 		 */
 		void SetActualTile();

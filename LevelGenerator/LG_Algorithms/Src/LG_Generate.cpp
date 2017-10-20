@@ -1,4 +1,5 @@
 #include "LG_Generate.h"
+#include <LG_Rect.h>
 
 namespace LevelGenerator
 {
@@ -351,6 +352,55 @@ namespace LevelGenerator
 				/// Set the flag that define if we can insert in back of the line.
 				m_bInsertFront = false;
 			}
+		}
+	}
+
+	//! Generates random positions for the rectangles, and separates them.
+	void LG_Generate::GenerateRooms(int32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize)
+	{
+		//TODO: definir un área para spawnear los cuartos, asegurarse de revisar el peso de cada uno para definir el tamaño delos cuartos
+		// una vez que se tengan todos los rectangulos en sus respectivas posiciones, con sus tamaños correspondientes
+		// separarlos de tal manera que ninguno choque con ninguno.
+		// Triangular con los puntos generados.
+
+
+		/// The area within we will generate random positions for our nodes.
+		LG_Rect SpawnZone;
+		/// Create a area to spawn the dots.
+		//TODO: hacer que el tamaño dependa de la cantidad de cuartos. Quiza que el área para spawn que sea un circulo.
+		SpawnZone.Init(LG_Vector3D(0, 0, 0), 1000.f, 1000.f);
+
+		/// Were we store our rooms.
+		Vector<LG_Rect*> Rooms;
+		Rooms.resize(iRoomAmount);
+
+		/// The rectangle object that we use to fill the vector.
+		LG_Rect* NewRect = nullptr;
+
+		/// We store the minimum and maximum values to generate random positions for our rooms.
+		LG_Vector3D PosToSpawn(0, 0, 0);
+		int32 fMinX = SpawnZone.m_Position.X - (SpawnZone.m_fWidth / 2);
+		int32 fMaxX = SpawnZone.m_Position.X + SpawnZone.m_fWidth;
+
+		int32 fMinY = SpawnZone.m_Position.Y - (SpawnZone.m_fHeight / 2);
+		int32 fMaxY = SpawnZone.m_Position.Y + SpawnZone.m_fHeight;
+
+		/// Where we store the random room size.
+		LG_Vector3D RoomSize;
+
+		for (int32 i = 0; i < iRoomAmount; ++i)
+		{
+			/// We find a random position for the room we are about to create.
+			PosToSpawn.X = rand() % fMaxX + fMinX;
+			PosToSpawn.Y = rand() % fMaxY + fMinY;
+			/// We find a random size for the rectangles upon the given boundaries. 
+			RoomSize.X = rand() % (int32)MaxSize.X + -(int32)MinSize.X;
+			RoomSize.Y = rand() % (int32)MaxSize.Y + -(int32)MinSize.Y;
+
+			/// initialize the new room.
+			NewRect = new LG_Rect(PosToSpawn, RoomSize.X, RoomSize.Y);
+			/// Add the room to the room's vector.
+			Rooms.push_back(NewRect);
 		}
 	}
 

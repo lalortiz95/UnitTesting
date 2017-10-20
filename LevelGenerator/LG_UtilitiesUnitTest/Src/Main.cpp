@@ -9,7 +9,7 @@
 
 using namespace LevelGenerator;
 
-TEST(UtilitiesUnitTest, Matrices)
+TEST(Matrices, Zero_Init)
 {
 	///Zero function test.
 	LG_Matrix3D M = LG_Matrix3D::Zero();
@@ -20,9 +20,12 @@ TEST(UtilitiesUnitTest, Matrices)
 		/// See that the matrix has only got values of 0.
 		EXPECT_TRUE(M.LikeArray[i] == 0);
 	}
+}
 
+TEST(Matrices, Identity_Init)
+{
 	/// Identity method test.
-	M = LG_Matrix3D::Identity();
+	LG_Matrix3D M = LG_Matrix3D::Identity();
 	for (int32 i = 0; i < 3; ++i)
 	{
 		for (int32 j = 0; j < 3; ++j)

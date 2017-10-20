@@ -21,6 +21,11 @@ namespace LevelGenerator
 		LG_Rect();
 
 		/**
+		 *	@brief Parameter Constructor.
+		 */
+		LG_Rect(LG_Vector3D Position, float fWidth, float fHeight);
+
+		/**
 		 *	@brief Default Destructor.
 		 */
 		~LG_Rect();
@@ -30,37 +35,42 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This variable stores the width of the rect.
+		 *	@var This variable stores the width of the rect.
 		 */
 		float m_fWidth;
 
 		/**
-		 *	@brief This variable stores the height of the rect.
+		 *	@var This variable stores the height of the rect.
 		 */
 		float m_fHeight;
 
 		/**
-		 *	@brief This matrix is used to check collisions easily.
+		 *	@var The center position of the rectangle.
+		 */
+		LG_Vector3D m_Position;
+
+		/**
+		 *	@var This matrix is used to check collisions easily.
 		 */
 		LG_Matrix3D m_RotationMatrix;
 
 		/**
-		 *	@brief The top node on the left of the tile.
+		 *	@var The top node on the left of the tile.
 		 */
 		LG_Node m_TopLeft;
 
 		/**
-		 *	@brief The top node on the right of the tile.
+		 *	@var The top node on the right of the tile.
 		 */
 		LG_Node m_TopRight;
 
 		/**
-		 *	@brief The bottom node on the right of the tile.
+		 *	@var The bottom node on the right of the tile.
 		 */
 		LG_Node m_BottomRight;
 
 		/**
-		 *	@brief The bottom node on the left of the tile.
+		 *	@var The bottom node on the left of the tile.
 		 */
 		LG_Node m_BottomLeft;
 
@@ -75,6 +85,14 @@ namespace LevelGenerator
 		 *	@param float fRange: the range.
 		 */
 		void Init(LG_Vector3D StartPosition,LG_Vector3D EndPosition, float fRange);
+
+		/**
+		 *	@brief Function to initialize the variables.
+		 *	@param LG_Vector3D Position: The center position of the rectangle.
+		 *	@param float fWidth: the rectangle's width.
+		 *	@param float fHeight: the rectangle's height
+		 */
+		void Init(LG_Vector3D Position, float fWidth, float fHeight);
 
 		/**
 		 *	@brief Function to realease memory and destroy objects.
