@@ -28,42 +28,42 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief Stores the value of PI.
+		 *	@var Stores the value of PI.
 		 */
 		static const float PI;
 
 		/**
-		 *	@brief Stores the value of Euler.
+		 *	@var Stores the value of Euler.
 		 */
 		static const float EULERS;
 
 		/**
-		 *	@brief Stores half of the value of PI.
+		 *	@var Stores half of the value of PI.
 		 */
 		static const float PI_HALF;
 
 		/**
-		 *	@brief Stores the double value of PI.
+		 *	@var Stores the double value of PI.
 		 */
 		static const float PI2;
 
 		/**
-		 *	@brief This constant represent a big number that we'll take as infinite.
+		 *	@var This constant represent a big number that we'll take as infinite.
 		 */
 		static const float INFINITE_NUM;
 
 		/**
-		 *	@brief This constant stores a aproximation to 0.
+		 *	@var This constant stores a aproximation to 0.
 		 */
 		static const float DELTA;
 
 		/**
-		 *	@brief This constant stores the smallest number that we can have.
+		 *	@var This constant stores the smallest number that we can have.
 		 */
 		static const float EPSILON;
 
 		/**
-		 *	@brief This constant stores the maximum presition that we'll have on floats.
+		 *	@var This constant stores the maximum presition that we'll have on floats.
 		 */
 		static const float MAX_FLOAT_PRESITION;
 

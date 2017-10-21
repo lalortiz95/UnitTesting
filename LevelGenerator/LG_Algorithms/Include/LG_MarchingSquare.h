@@ -6,7 +6,7 @@
 namespace LevelGenerator
 {
 	/**
-	 * @brief An enumerator to define all posible cases from marching squares.
+	 * @enum An enumerator to define all posible cases from marching squares.
 	 */
 	enum eTileCase
 	{
@@ -54,27 +54,27 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief A LG_Grid pointer in which we are realizing the algorithm.
+		 *	@var A LG_Grid pointer in which we are realizing the algorithm.
 		 */
 		LG_Grid* m_pMap;
 
 		/**
-		 *	@brief This vector stores a circles class objects.
+		 *	@var This vector stores a circles class objects.
 		 */
 		Vector<LG_Circle>m_CircleList;
 
 		/**
-		*	@brief This variable stores in a vector the reference of the tiles that have a case different than 0.
+		*	@var This variable stores in a vector the reference of the tiles that have a case different than 0.
 		*/
 		Vector<LG_Tile*> m_pTilesWithCase;
 
 		/**
-		*	@brief This variable stores in a vector the reference of the tiles that have a case different than 0 and 15.
+		*	@var This variable stores in a vector the reference of the tiles that have a case different than 0 and 15.
 		*/
 		Vector<LG_Tile*> m_pEdgeTiles;
 
 		/**
-		 *	@brief The contour of the generated shape.
+		 *	@var The contour of the generated shape.
 		 */
 		LG_Isoline m_Outline;
 

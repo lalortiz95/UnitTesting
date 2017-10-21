@@ -33,32 +33,32 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This value is used to identify the case of the tile.
+		 *	@var This value is used to identify the case of the tile.
 		 */
 		int32 m_iCase; 
 
 		/**
-		 *	@brief An identifier to the tile.
+		 *	@var An identifier to the tile.
 		 */
 		int32 m_iID;
 
 		/**
-		 *	@brief An array of nodes, one for each corner of the tile.
+		 *	@var An array of nodes, one for each corner of the tile.
 		 */
 		LG_Node m_Nodes[4];
 
 		/**
-		 *	@brief An array of nodes, that define when we can draw a line that depending if it's true or false.
+		 *	@var An array of nodes, that define when we can draw a line that depending if it's true or false.
 		 */
 		LG_Node m_LinesNodes[4];
 
 		/**
-		 *	@brief A vector of lines, that depending on the tile's case it's lengh could be 1 or 2.
+		 *	@var A vector of lines, that depending on the tile's case it's lengh could be 1 or 2.
 		 */
 		Vector<LG_Line> m_LinesVector;
 
 		/**
-		 *	@brief true when we have already added it to a final isoline in generate algorithm.
+		 *	@var true when we have already added it to a final isoline in generate algorithm.
 		 */
 		bool m_bIsChecked;
 
@@ -67,42 +67,42 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief The top node on the left of the tile.
+		 *	@var The top node on the left of the tile.
 		 */
 		LG_Node* m_pTopLeft;
 
 		/**
-		 *	@brief The top node on the right of the tile.
+		 *	@var The top node on the right of the tile.
 		 */
 		LG_Node* m_pTopRight;
 		
 		/**
-		 *	@brief The bottom node on the right of the tile.
+		 *	@var The bottom node on the right of the tile.
 		 */
 		LG_Node* m_pBottomRight;
 
 		/**
-		 *	@brief The bottom node on the left of the tile.
+		 *	@var The bottom node on the left of the tile.
 		 */
 		LG_Node* m_pBottomLeft;
 
 		/**
-		 *	@brief The Up node that define when we can draw a line, that depending if it's true or false.
+		 *	@var The Up node that define when we can draw a line, that depending if it's true or false.
 		 */
 		LG_Node* m_pUp;
 
 		/**
-		 *	@brief The Left node that define when we can draw a line, that depending if it's true or false.
+		 *	@var The Left node that define when we can draw a line, that depending if it's true or false.
 		 */
 		LG_Node* m_pLeft;
 
 		/**
-		 *	@brief The Right node that define when we can draw a line, that depending if it's true or false.
+		 *	@var The Right node that define when we can draw a line, that depending if it's true or false.
 		 */
 		LG_Node* m_pRight;
 
 		/**
-		 *	@brief The Down node that define when we can draw a line, that depending if it's true or false.
+		 *	@var The Down node that define when we can draw a line, that depending if it's true or false.
 		 */
 		LG_Node* m_pDown;
 		
@@ -112,12 +112,12 @@ namespace LevelGenerator
 
 
 		/**
-		 *	@brief The constant that define the size per tile..
+		 *	@var The constant that define the size per tile..
 		 */
 		static const int32 SIZE_OF_TILE;
 
 		/**
-		 *	@brief The constant that define the number of nodes in the tile.
+		 *	@var The constant that define the number of nodes in the tile.
 		 */
 		static const int32 NUM_NODES_PER_TILE;
 

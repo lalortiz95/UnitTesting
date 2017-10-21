@@ -37,37 +37,37 @@ namespace LevelGenerator
 		///************************************************************************/
 
 		/**
-		 *	@brief First node pointer of the edge.
+		 *	@var First node pointer of the edge.
 		 */
 		LG_Node* m_pFirstNode;
 
 		/**
-		 *	@brief Second node pointer of the edge.
+		 *	@var Second node pointer of the edge.
 		 */
 		LG_Node* m_pSecondNode;
 
 		/**
-		 *	@brief The edge's magnitude.
+		 *	@var The edge's magnitude.
 		 */
 		float m_fDistance;
 
 		/**
-		 *	@brief This flag is used to determinate when a edge is checked.
+		 *	@var This flag is used to determinate when a edge is checked.
 		 */
 		bool m_bIsChecked;
 
 		/**
-		 *	@brief This flag is used to determinate when a edge is legal. That comes in handy when working with DT.
+		 *	@var This flag is used to determinate when a edge is legal. That comes in handy when working with DT.
 		 */
 		bool m_bIsLegal;
 
 		/**
-		 *	@brief The edge's ID.
+		 *	@var The edge's ID.
 		 */
 		int32 m_iID;
 
 		/**
-		 *	@brief The indiex of the both nodes in the edge.
+		 *	@var The indiex of the both nodes in the edge.
 		 */
 		int32 m_NodeIndex[INDEX_PER_EDGE];
 

@@ -44,28 +44,6 @@ namespace LevelGenerator
 		m_pActualTriangle = m_pTrianglesVector.front();
 	}
 
-	//! Overload Init
-	void LG_DelaunayTriangulation::Init(Vector<LG_Node> PointsCloud, LG_Vector3D GridCenter, int32 iGridWidth, int32 iGridHeight)
-	{
-		Destroy();
-
-		/// Store in the nodes cloud all of the nodes in the isoline vector.
-		for (int32 i = 0; i < PointsCloud.size(); ++i)
-		{
-			PointsCloud[i].Init();
-			m_NodesCloud.push_back(PointsCloud[i]);
-		}
-
-		/// Create a triangle that is outside of the node's cloud.
-		CreateBigTriangle(iGridWidth, iGridHeight, GridCenter);
-		m_pBigTriangle->m_iID = m_iTrianglesCount;
-		m_iTrianglesCount++;
-		m_pTrianglesVector.push_back(m_pBigTriangle);
-		for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
-		{
-			m_pEdgeVector.push_back(m_pBigTriangle->m_pEdges[i]);
-		}
-	}
 
 	//! This function performs the algorithm.
 	void LG_DelaunayTriangulation::Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud)

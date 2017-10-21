@@ -9,7 +9,781 @@
 
 using namespace LevelGenerator;
 
-TEST(Matrices, Zero_Init)
+///************************************************************************/
+///*                     Utilities_Wrapping_UnitTest                      */
+///************************************************************************/
+
+/// Check that the size of our variables is what it's supposed to be.
+
+//! Wrapping Char test.
+TEST(Wrapping_Var, Char_8_Bits)
+{
+	/// check that this variable measures the number of desired bits.
+	EXPECT_TRUE(sizeof(int8) == 1);
+}
+
+//! Wrapping Short test.
+TEST(Wrapping_Var, Short_16_Bits)
+{
+	/// check that this variable measures the number of desired bits.
+	EXPECT_TRUE(sizeof(int16) == 2);
+}
+
+//! Wrapping Int test.
+TEST(Wrapping_Var, Int_32_Bits)
+{
+	/// check that this variable measures the number of desired bits.
+	EXPECT_TRUE(sizeof(int32) == 4);
+}
+
+//! Wrapping Long test.
+TEST(Wrapping_Var, Long_64_Bits)
+{
+	/// check that this variable measures the number of desired bits.
+	EXPECT_TRUE(sizeof(int64) == 8);
+}
+
+//! Wrapping Double test.
+TEST(Wrapping_Var, Double_128_Bits)
+{
+	/// check that this variable measures the number of desired bits.
+	EXPECT_TRUE(sizeof(int128) == 16);
+}
+
+//! Wrapping Unsigned Char test.
+TEST(Wrapping_Var, Unsigned_Char_8_Bits)
+{
+	/// check that this variable measures the number of desired bits.
+	EXPECT_TRUE(sizeof(uint8) == 1);
+}
+
+//! Wrapping Unsigned Short test.
+TEST(Wrapping_Var, Unsigned_Short_16_Bits)
+{
+	/// check that this variable measures the number of desired bits.
+	EXPECT_TRUE(sizeof(uint16) == 2);
+}
+
+//! Wrapping Unsigned Int test.
+TEST(Wrapping_Var, Unsigned_Int_32_Bits)
+{
+	/// check that this variable measures the number of desired bits.
+	EXPECT_TRUE(sizeof(uint32) == 4);
+}
+
+//! Wrapping Unsigned Long test.
+TEST(Wrapping_Var, Unsigned_Long_64_Bits)
+{
+	/// check that this variable measures the number of desired bits.
+	EXPECT_TRUE(sizeof(uint64) == 8);
+}
+
+//! Wrapping Unsigned Double test.
+TEST(Wrapping_Var, Unsigned_Double_128_Bits)
+{
+	/// check that this variable measures the number of desired bits.
+	EXPECT_TRUE(sizeof(uint128) == 16);
+}
+
+///************************************************************************/
+///*                     Utilities_Math_UnitTest                          */
+///************************************************************************/
+
+//! Pi Constant Value Test.
+TEST(Math_Constant, PI_)
+{
+	/// If constant pi is equal to atn(1.0f) * 4.0f return true, otherwise return false. 
+	EXPECT_TRUE(LG_Math::PI == std::atan(1.0f) * 4.0f);
+}
+
+//! Pi half Constant Value Test.
+TEST(Math_Constant, PI_Half)
+{
+	/// If constant PIHalf is equal to Pi/2 return true, otherwise return false. 
+	EXPECT_TRUE(LG_Math::PI_HALF == LG_Math::PI / 2.0f);
+}
+
+//! Pi2 Constant Value Test.
+TEST(Math_Constant, 2_PI)
+{
+	/// If constant euler is equal to Pi*2 return true, otherwise return false. 
+	EXPECT_TRUE(LG_Math::PI2 == LG_Math::PI * 2.0f);
+}
+
+//! Euler Constant Value Test.
+TEST(Math_Constant, Euler)
+{
+	/// If constant euler is equal to 2.71828182845904523536f return true, otherwise return false. 
+	EXPECT_TRUE(LG_Math::EULERS == 2.71828182845904523536f);
+}
+
+//! Infinite num Constant Value Test.
+TEST(Math_Constant, Infinite_Num)
+{
+	/// If infinite num is equal to numeric_limits<float>::infinity() return true, otherwise return false.
+	EXPECT_TRUE(LG_Math::INFINITE_NUM == std::numeric_limits<float>::infinity());
+}
+
+//! Delta Constant Value Test.
+TEST(Math_Constant, Delta)
+{
+	/// If delta is equal to a 0.00001f return true, otherwise false.
+	EXPECT_TRUE(LG_Math::DELTA == 0.00001f);
+}
+
+//! Epsilon Constant Value Test.
+TEST(Math_Constant, Epsilon)
+{
+	/// If epsilon is equal to a numeric_limits<float>::epsilon() return true, otherwise false.
+	EXPECT_TRUE(LG_Math::EPSILON == std::numeric_limits<float>::epsilon());
+}
+
+//! Max Float Presition Constant Value Test.
+TEST(Math_Constant, Max_Float_Presition)
+{
+	/// If max float presition is equal to a 0.00000001f return true, otherwise false.
+	EXPECT_TRUE(LG_Math::MAX_FLOAT_PRESITION == 0.00000001f);
+}
+
+//! SquareRoot Function Test.
+TEST(Math_Function, SquareRoot)
+{
+	LG_Math math;
+	/// If the square root of 25 is 5 return true, otherwise false.
+	EXPECT_TRUE(math.Sqrt(25) == 5);
+}
+
+//! Inverse SquareRoot Function Test.
+TEST(Math_Function, Inverse_SquereRoot)
+{
+	LG_Math math;
+	/// If the inverse square root of 25 is 1/5 return true, otherwise false.
+	EXPECT_TRUE(math.InvSqrt(25) == 1.0f / 5);
+}
+
+//! Exponential Function Test.
+TEST(Math_Function, Exponential)
+{
+	LG_Math math;
+	/// If the Exponential of 5 is 148.4131262f return true, otherwise false.
+	EXPECT_TRUE(math.Exp(5) == 148.413162f);
+}
+
+//! Power Function Test.
+TEST(Math_Function, Power_)
+{
+	LG_Math math;
+	/// If 3 pow to 3 is 27 return true, otherwise false.
+	EXPECT_TRUE(math.Pow(3, 3) == 27);
+}
+
+//! NaturalLogarithm Function Test.
+TEST(Math_Function, NaturalLogarithm)
+{
+	LG_Math math;
+	/// If loge 25 is 3.21887589 return true, otherwise false.
+	EXPECT_TRUE(math.Loge(25) == 3.21887589f);
+}
+
+//! Truncation Function Test.
+TEST(Math_Function, Truncation_)
+{
+	LG_Math math;
+	/// If we truncate pi we expect a 3 since its value is 3.1415..., otherwise false.
+	EXPECT_TRUE(math.Trunc(LG_Math::PI) == 3);
+}
+
+//! Float Truncation Function Test.
+TEST(Math_Function, Float_Truncation)
+{
+	LG_Math math;
+	/// If we truncate pi we expect a 3.0f since its value is 3.1415..., otherwise false.
+	EXPECT_TRUE(math.TruncFloat(LG_Math::PI) == 3.0f);
+}
+
+//! Floor Function Test.
+TEST(Math_Function, Floor_)
+{
+	LG_Math math;
+	/// If we aplicate floor to pi we expect a 3 since its value is 3.1415..., otherwise false.
+	EXPECT_TRUE(math.Floor(LG_Math::PI) == 3);
+}
+
+//! Round Function Test.
+TEST(Math_Function, Round_)
+{
+	LG_Math math;
+	/// If we aplicate round to pi we expect a 3 since its value is 3.1415..., otherwise false.
+	EXPECT_TRUE(math.Round(LG_Math::PI) == 3);
+}
+
+//! Ceil Function Test.
+TEST(Math_Function, Ceil_)
+{
+	LG_Math math;
+	/// If we aplicate ceil to pi we expect a 4 since its value is 3.1415..., otherwise false.
+	EXPECT_TRUE(math.Ceil(LG_Math::PI) == 4);
+}
+
+//! Sine Function Test.
+TEST(Math_Function, Sine)
+{
+	LG_Math math;
+	/// If the sine of pi half(90°) is equal to 1 return true, otherwise false.
+	EXPECT_TRUE(math.Sin(LG_Math::PI_HALF) == 1);
+}
+
+//! Cosine Function Test.
+TEST(Math_Function, Cosine)
+{
+	LG_Math math;
+	/// If the cosine of PI2(360°) is equal to 1 return true, otherwise false.
+	EXPECT_TRUE(math.Cos(LG_Math::PI2) == 1);
+}
+
+//! Tangent Function Test.
+TEST(Math_Function, Tangent)
+{
+	LG_Math math;
+	EXPECT_TRUE(math.Tan(LG_Math::PI) <= LG_Math::DELTA && math.Tan(LG_Math::PI) >= -LG_Math::DELTA);
+}
+
+//! Maximum between 2 numbers Function Test.
+TEST(Math_Function, Maximum_2Numbers)
+{
+	LG_Math math;
+	/// If we insert 5 and a 2 in this function we expect the result to be 5 since it is greater than 2.
+	EXPECT_TRUE(math.Max(5, 2) == 5);
+}
+
+//! Minimum between 2 numbers Function Test.
+TEST(Math_Function, Minimum_2Numbers)
+{
+	LG_Math math;
+	/// If we insert 5 and a 2 in this function we expect the result to be 2 since it is less than 5.
+	EXPECT_TRUE(math.Min(5, 2) == 2);
+}
+
+//! Maximum between 3 numbers Function Test.
+TEST(Math_Function, Maximum_3Numbers)
+{
+	LG_Math math;
+	/// If we insert 5,2 and 9 in this function we expect the result to be 9 since it is greater than 2 and 5.
+	EXPECT_TRUE(math.Max3(5, 2, 9) == 9);
+}
+
+//! Minimum between 3 numbers Function Test.
+TEST(Math_Function, Minimum_3Numbers)
+{
+	LG_Math math;
+	/// If we insert 5,2 and 1 in this function we expect the result to be 1 since it is less than 5 and 2.
+	EXPECT_TRUE(math.Min3(5, 2, 1) == 1);
+}
+
+//TODO: Falta, LogX, Asin, ACos, Atan, Abs, Clamp, Lerp, Slerp
+
+///************************************************************************/
+///*                     Utilities_Vector2D_UnitTest                      */
+///************************************************************************/
+
+//! Magnitude Function Test.
+TEST(Vector2D_Function, Magnitude_)
+{
+	/// The Vector that we want to obtain its magnitude.
+	LG_Vector2D Test_2D(0, 5);
+	/// If the magnitud of the vector is equal to 5 return true, otherwise false. 
+	EXPECT_TRUE(Test_2D.Magnitude() == 5);
+}
+
+//! DotProduct Function Test.
+TEST(Vector2D_Function, DotProduct_)
+{
+	/// The first vector for the dot product.
+	LG_Vector2D VectorA(-6, 8);
+	/// The second vector for the dot product.
+	LG_Vector2D VectorB(5, 12);
+	/// IF fesult is equal to 66 return true, otherwise false.
+	EXPECT_TRUE(VectorA.Dot(VectorB) == 66);
+}
+
+//! Normalize Function Test.
+TEST(Vector2D_Function, Normalize_)
+{
+	/// The Vector that we want to normalize.
+	LG_Vector2D Test_2D(0, 1);
+	/// If the magnitude of the normalized vector its between 1 and 0 return true, otherwise false. 
+	EXPECT_TRUE(Test_2D.Normalize() <= 1 && Test_2D.Normalize() >= 0);
+}
+
+//! Equals Function Test.
+TEST(Vector2D_Function, Equals_)
+{
+	/// The vector that we want to compare if its equal to the parameter vector.
+	LG_Vector2D Test_2D(0, 1);
+	/// If the vector test is equal to the parameter vector return true, otherwise false.
+	EXPECT_TRUE(Test_2D.Equals(LG_Vector2D(0, 1), LG_Math::DELTA));
+}
+
+//! Static Magnitude Function Test.
+TEST(Vector2D_Function, StaticMagnitude)
+{
+	/// If the magnitud of the vector is equal to 5 return true, otherwise false. 
+	EXPECT_TRUE(LG_Vector2D::Magnitude(LG_Vector2D(0, 5)) == 5);
+}
+
+//! Static DotProduct Function Test.
+TEST(Vector2D_Function, StaticDotProduct)
+{
+	/// IF result is equal to 66 return true, otherwise false.
+	EXPECT_TRUE(LG_Vector2D::Dot(LG_Vector2D(-6, 8), LG_Vector2D(5, 12)) == 66);
+}
+
+//! Static Normalize Function Test.
+TEST(Vector2D_Function, StaticNormalize)
+{
+	/// If the magnitude of the normalized vector its between 1 and 0 return true, otherwise false. 
+	EXPECT_TRUE(LG_Vector2D::Normalize(LG_Vector2D(0, 1)) <= 1 && LG_Vector2D::Normalize(LG_Vector2D(0, 1)) >= 0);
+}
+
+//! Operator + between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_Plus_Vector)
+{
+	/// The result vector between the first vector plus the second vector.
+	LG_Vector2D VectorResult = LG_Vector2D(7.1f, 2.2f) + LG_Vector2D(3.6f, 4.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2D(10.7f, 6.7f));
+}
+
+//! Operator - between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_Minus_Vector)
+{
+	/// The result vector between the first vector minus the second vector.
+	LG_Vector2D VectorResult = LG_Vector2D(2.6f, 2.2f) - LG_Vector2D(4.6f, 1.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector2D(-2.0f, 0.7f), LG_Math::DELTA));
+}
+
+//! Operator * between 1 Vector and 1 number Test.
+TEST(Vector2D_Operator, Vector_Times_Float)
+{
+	/// The result vector between the first vector times the float value.
+	LG_Vector2D VectorResult = LG_Vector2D(3.5f, 6.7f) * 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector2D(10.5f, 20.1f), LG_Math::DELTA));
+}
+
+//! Operator * between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_Times_Vector)
+{
+	/// The result vector between the first vector times the second vector.
+	LG_Vector2D VectorResult = LG_Vector2D(3.5f, 6.7f) * LG_Vector2D(2.2f, 1.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector2D(7.7f, 10.05f), LG_Math::DELTA));
+}
+
+//! Operator / between 1 Vector and 1 number Test.
+TEST(Vector2D_Operator, Vector_DividedBy_Float)
+{
+	/// The result vector between the first vector divided by the float value.
+	LG_Vector2D VectorResult = LG_Vector2D(3.5f, 6.7f) / 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector2D(1.16666f, 2.23333f), LG_Math::DELTA));
+}
+
+//! Operator / between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_DividedBy_Vector)
+{
+	/// The result vector between the first vector divided by the second vector.
+	LG_Vector2D VectorResult = LG_Vector2D(3.5f, 6.7f) / LG_Vector2D(2.2f, 1.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector2D(1.59090f, 4.46666f), LG_Math::DELTA));
+}
+
+//! Operator == between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_Equal_Vector)
+{
+	/// IF the first vector is the same that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2D(3.50000000f, 6.70000000f) == LG_Vector2D(3.50000000f, 6.70000000f));
+}
+
+//! Operator != between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_Different_Vector)
+{
+	/// IF the first vector is diferent that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2D(3.50000500f, 6.70000000f) != LG_Vector2D(3.50000000f, 6.70000001f));
+}
+
+//! Operator < between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_LeesThan_Vector)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2D(3.50000100f, 6.70000100f) < LG_Vector2D(3.50010000f, 6.70100000f));
+}
+
+//! Operator < between 1 Vector and 1 Value Test.
+TEST(Vector2D_Operator, Vector_LessThan_Float)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2D(3.50000100f, 6.70000100f) < 7.00023015f);
+}
+
+//! Operator > between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_GreaterThan_Vector)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector2D(3.50000100f, 6.70000100f) > LG_Vector2D(3.50010000f, 6.70100000f));
+}
+
+//! Operator > between 1 Vector and 1 Value Test.
+TEST(Vector2D_Operator, Vector_GreaterThan_Float)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector2D(3.50000100f, 6.70000100f) > 7.00023015f);
+}
+
+//! Operator <= between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_LessOrEqualThan_Vector)
+{
+	/// IF the first vector is less or equal that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2D(3.50000100f, 6.70100000f) <= LG_Vector2D(3.50010000f, 6.70100000f));
+}
+
+//! Operator <= between 1 Vector and 1 Value Test.
+TEST(Vector2D_Operator, Vector_LessOrEqualThan_Float)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2D(3.50000100f, 7.00023015f) <= 7.00023015f);
+}
+
+//! Operator >= between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_GreaterOrEqualThan_Vector)
+{
+	/// IF the first vector is greater or equal that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector2D(3.50000100f, 6.70100000f) >= LG_Vector2D(3.50010000f, 6.70100000f));
+}
+
+//! Operator >= between 1 Vector and 1 Value Test.
+TEST(Vector2D_Operator, Vector_GreaterOrEqualThan_Float)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector2D(3.50000100f, 7.00023015f) >= 7.00023015f);
+}
+
+//! Operator += between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_PlusEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector2D VectorResult(7.1f, 2.2f);
+	/// The result vector between the first vector plus the second vector.
+	VectorResult += LG_Vector2D(3.6f, 4.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2D(10.7f, 6.7f));
+}
+
+//! Operator -= between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_MinusEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector2D VectorResult(2.6f, 2.2f);
+	/// The result vector between the first vector minus the second vector.
+	VectorResult -= LG_Vector2D(4.6f, 1.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector2D(-2.0f, 0.7f), LG_Math::DELTA));
+}
+
+//! Operator *= between 1 Vector and 1 number Test.
+TEST(Vector2D_Operator, Vector_TimesEqual_Float)
+{
+	/// The result vector.
+	LG_Vector2D VectorResult(3.50000000f, 6.70000000f);
+	/// The result vector between the first vector times the float value.
+	VectorResult *= 3.00000000f;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector2D(10.5f, 20.1f), LG_Math::DELTA));
+}
+
+//! Operator *= between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_TimesEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector2D VectorResult(3.5f, 6.7f);
+	/// The result vector between the first vector times the second vector.
+	VectorResult *= LG_Vector2D(2.2f, 1.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector2D(7.7f, 10.05f), LG_Math::DELTA));
+}
+
+//! Operator /= between 1 Vector and 1 number Test.
+TEST(Vector2D_Operator, Vector_DivideEqualBy_Float)
+{
+	/// The result vector.
+	LG_Vector2D VectorResult(3.5f, 6.7f);
+	/// The result vector between the first vector divided by the float value.
+	VectorResult /= 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector2D(1.16666f, 2.23333f), LG_Math::DELTA));
+}
+
+//! Operator /= between 2 Vectors Test.
+TEST(Vector2D_Operator, Vector_DivideEqualBy_Vector)
+{
+	/// The result vector.
+	LG_Vector2D VectorResult(3.5f, 6.7f);
+	/// The result vector between the first vector divided by the second vector.
+	VectorResult /= LG_Vector2D(2.2f, 1.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector2D(1.59090f, 4.46666f), LG_Math::DELTA));
+}
+
+///************************************************************************/
+///*                     Utilities_Vector2DI_UnitTest                      */
+///************************************************************************/
+
+//! Magnitude Function Test.
+TEST(Vector2DI_Function, Magnitude_)
+{
+	/// The Vector that we want to obtain its magnitude.
+	LG_Vector2DI Test_2D(0, 5);
+	/// If the magnitud of the vector is equal to 5 return true, otherwise false. 
+	EXPECT_TRUE(Test_2D.Magnitude() == 5);
+}
+
+//! DotProduct Function Test.
+TEST(Vector2DI_Function, DotProduct_)
+{
+	/// The first vector for the dot product.
+	LG_Vector2DI VectorA(-6, 8);
+	/// The second vector for the dot product.
+	LG_Vector2DI VectorB(5, 12);
+	/// IF fesult is equal to 66 return true, otherwise false.
+	EXPECT_TRUE(VectorA.Dot(VectorB) == 66);
+}
+
+//! Normalize Function Test.
+TEST(Vector2DI_Function, Normalize_)
+{
+	/// The Vector that we want to normalize.
+	LG_Vector2DI Test_2D(0, 1);
+	/// If the magnitude of the normalized vector its between 1 and 0 return true, otherwise false. 
+	EXPECT_TRUE(Test_2D.Normalize() <= 1 && Test_2D.Normalize() >= 0);
+}
+
+//! Static Magnitude Function Test.
+TEST(Vector2DI_Function, StaticMagnitude)
+{
+	/// If the magnitud of the vector is equal to 5 return true, otherwise false. 
+	EXPECT_TRUE(LG_Vector2DI::Magnitude(LG_Vector2DI(0, 5)) == 5);
+}
+
+//! Static DotProduct Function Test.
+TEST(Vector2DI_Function, StaticDotProduct)
+{
+	/// IF result is equal to 66 return true, otherwise false.
+	EXPECT_TRUE(LG_Vector2DI::Dot(LG_Vector2DI(-6, 8), LG_Vector2DI(5, 12)) == 66);
+}
+
+//! Static Normalize Function Test.
+TEST(Vector2DI_Function, StaticNormalize)
+{
+	/// If the magnitude of the normalized vector its between 1 and 0 return true, otherwise false. 
+	EXPECT_TRUE(LG_Vector2DI::Normalize(LG_Vector2DI(0, 1)) <= 1 && LG_Vector2DI::Normalize(LG_Vector2DI(0, 1)) >= 0);
+}
+
+//! Operator + between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_Plus_Vector)
+{
+	/// The result vector between the first vector plus the second vector.
+	LG_Vector2DI VectorResult = LG_Vector2DI(7, 2) + LG_Vector2DI(3, 4);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(10, 6));
+}
+
+//! Operator - between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_Minus_Vector)
+{
+	/// The result vector between the first vector minus the second vector.
+	LG_Vector2DI VectorResult = LG_Vector2DI(2, 2) - LG_Vector2DI(4, 1);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(-2, 1));
+}
+
+//! Operator * between 1 Vector and 1 number Test.
+TEST(Vector2DI_Operator, Vector_Times_Float)
+{
+	/// The result vector between the first vector times the float value.
+	LG_Vector2DI VectorResult = LG_Vector2DI(3, 6) * 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(9, 18));
+}
+
+//! Operator * between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_Times_Vector)
+{
+	/// The result vector between the first vector times the second vector.
+	LG_Vector2DI VectorResult = LG_Vector2DI(3, 6) * LG_Vector2DI(2, 1);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(6, 6));
+}
+
+//! Operator / between 1 Vector and 1 number Test.
+TEST(Vector2DI_Operator, Vector_DividedBy_Float)
+{
+	/// The result vector between the first vector divided by the float value.
+	LG_Vector2DI VectorResult = LG_Vector2DI(3, 6) / 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(1, 2));
+}
+
+//! Operator / between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_DividedBy_Vector)
+{
+	/// The result vector between the first vector divided by the second vector.
+	LG_Vector2DI VectorResult = LG_Vector2DI(3, 6) / LG_Vector2DI(3, 1);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(1, 6));
+}
+
+//! Operator == between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_Equal_Vector)
+{
+	/// IF the first vector is the same that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2DI(3, 6) == LG_Vector2DI(3, 6));
+}
+
+//! Operator != between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_Different_Vector)
+{
+	/// IF the first vector is diferent that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2DI(3, 5) != LG_Vector2DI(3, 6));
+}
+
+//! Operator < between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_LeesThan_Vector)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2DI(2, 6) < LG_Vector2DI(3, 7));
+}
+
+//! Operator < between 1 Vector and 1 Value Test.
+TEST(Vector2DI_Operator, Vector_LessThan_Float)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2DI(3, 6) < 7);
+}
+
+//! Operator > between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_GreaterThan_Vector)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector2DI(3, 6) > LG_Vector2DI(4, 6));
+}
+
+//! Operator > between 1 Vector and 1 Value Test.
+TEST(Vector2DI_Operator, Vector_GreaterThan_Float)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector2DI(3, 7) > 7);
+}
+
+//! Operator <= between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_LessOrEqualThan_Vector)
+{
+	/// IF the first vector is less or equal that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2DI(2, 6) <= LG_Vector2DI(3, 6));
+}
+
+//! Operator <= between 1 Vector and 1 Value Test.
+TEST(Vector2DI_Operator, Vector_LessOrEqualThan_Float)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector2DI(3, 7) <= 7);
+}
+
+//! Operator >= between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_GreaterOrEqualThan_Vector)
+{
+	/// IF the first vector is greater or equal that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector2DI(3, 6) >= LG_Vector2DI(4, 6));
+}
+
+//! Operator >= between 1 Vector and 1 Value Test.
+TEST(Vector2DI_Operator, Vector_GreaterOrEqualThan_Float)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector2DI(3, 7) >= 7);
+}
+
+//! Operator += between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_PlusEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector2DI VectorResult(7, 2);
+	/// The result vector between the first vector plus the second vector.
+	VectorResult += LG_Vector2DI(3, 4);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(10, 6));
+}
+
+//! Operator -= between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_MinusEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector2DI VectorResult(2, 2);
+	/// The result vector between the first vector minus the second vector.
+	VectorResult -= LG_Vector2DI(4, 1);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(-2, 1));
+}
+
+//! Operator *= between 1 Vector and 1 number Test.
+TEST(Vector2DI_Operator, Vector_TimesEqual_Float)
+{
+	/// The result vector.
+	LG_Vector2DI VectorResult(3, 6);
+	/// The result vector between the first vector times the float value.
+	VectorResult *= 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(9, 18));
+}
+
+//! Operator *= between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_TimesEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector2DI VectorResult(3, 6);
+	/// The result vector between the first vector times the second vector.
+	VectorResult *= LG_Vector2DI(2, 1);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(6, 6));
+}
+
+//! Operator /= between 1 Vector and 1 number Test.
+TEST(Vector2DI_Operator, Vector_DivideEqualBy_Float)
+{
+	/// The result vector.
+	LG_Vector2DI VectorResult(3, 6);
+	/// The result vector between the first vector divided by the float value.
+	VectorResult /= 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(1, 2));
+}
+
+//! Operator /= between 2 Vectors Test.
+TEST(Vector2DI_Operator, Vector_DivideEqualBy_Vector)
+{
+	/// The result vector.
+	LG_Vector2DI VectorResult(3, 6);
+	/// The result vector between the first vector divided by the second vector.
+	VectorResult /= LG_Vector2DI(3, 1);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector2DI(1, 6));
+}
+
+///************************************************************************/
+///*                     Utilities_Matrices_UnitTest                      */
+///************************************************************************/
+
+TEST(Utilities_Matrix3D, Zero_Function)
 {
 	///Zero function test.
 	LG_Matrix3D M = LG_Matrix3D::Zero();
@@ -22,7 +796,7 @@ TEST(Matrices, Zero_Init)
 	}
 }
 
-TEST(Matrices, Identity_Init)
+TEST(Utilities_Matrix3D, Identity_Function)
 {
 	/// Identity method test.
 	LG_Matrix3D M = LG_Matrix3D::Identity();
@@ -42,38 +816,27 @@ TEST(Matrices, Identity_Init)
 			}
 		}
 	}
+}
 
-	//TODO: probar rotates, translate, and scale.
+TEST(Utilities_Matrix3D, Inverse_Function)
+{
 	/// Inverse method test. The Adjunct, Transpose and Determinant functions are inside of Inverse
 	/// The fact of it working correctly, means that those are correct.
-	M =
+	LG_Matrix3D M =
 	{
 		1.0f, -1.0f, 2.0f,
 		-2.0f, 0.0f, 4.0f,
 		0.0f, -2.0f, 7.0f
 	};
+
 	LG_Matrix3D InverseM = M;
 	InverseM.Inverse();
 	EXPECT_TRUE(M * InverseM == LG_Matrix3D::Identity());
+}
 
-	//TODO: hacer el unit test del gauss jordan
-	LG_Vector4D Result;
-	LG_Matrix4D GaussJ =
-	{ 3, 2,-3,-13,
-	  4,-3, 6, 7,
-	  1, 0,-1,-5,
-	  0, 0, 0, 0 };
-
-	GaussJ.GaussJordan(Result);
-
-	GaussJ =
-	{ 3, 6,-3,-13,
-		4,-3, 6, 7,
-		-2, 5,-3,4,
-		0, 0, 0, 0 };
-
-	GaussJ.GaussJordan(Result);
-
+/// Test init zero of the matrix 4D
+TEST(Utilities_Matrix4D, Zero_Function)
+{
 	///Zero function test.
 	LG_Matrix4D M4 = LG_Matrix4D::Zero();
 
@@ -83,9 +846,14 @@ TEST(Matrices, Identity_Init)
 		/// See that the matrix has only got values of 0.
 		EXPECT_TRUE(M4.LikeArray[i] == 0);
 	}
+}
 
+
+/// Test the identity of the matrix 4D
+TEST(Utilities_Matrix4D, Identity_Function)
+{
 	/// Identity method test.
-	M4 = LG_Matrix4D::Identity();
+	LG_Matrix4D M4 = LG_Matrix4D::Identity();
 	for (int32 i = 0; i < 4; ++i)
 	{
 		for (int32 j = 0; j < 4; ++j)
@@ -102,86 +870,5 @@ TEST(Matrices, Identity_Init)
 			}
 		}
 	}
-}
-
-TEST(UtilitiesUnitTest, Wrapping)
-{
-	/// Check that the size of our variables is what it's supposed to be.
-	EXPECT_TRUE(sizeof(int8) == 1);
-	EXPECT_TRUE(sizeof(int16) == 2);
-	EXPECT_TRUE(sizeof(int32) == 4);
-	EXPECT_TRUE(sizeof(int64) == 8);
-	EXPECT_TRUE(sizeof(int128) == 16);
-
-	EXPECT_TRUE(sizeof(uint8) == 1);
-	EXPECT_TRUE(sizeof(uint16) == 2);
-	EXPECT_TRUE(sizeof(uint32) == 4);
-	EXPECT_TRUE(sizeof(uint64) == 8);
-	EXPECT_TRUE(sizeof(uint128) == 16);
-}
-
-TEST(MathUnitTest, Functions)
-{
-	LG_Math math;
-
-	EXPECT_TRUE(math.Sqrt(25) == 5);
-	EXPECT_TRUE(math.InvSqrt(25) == 1.0f / 5);
-	EXPECT_TRUE(math.Exp(5) == 148.413162f);
-	EXPECT_TRUE(math.Pow(3, 3) == 27);
-	EXPECT_TRUE(math.Loge(25) == 3.21887589f);
-	//EXPECT_TRUE(math.LogX(25, 5) == 5);
-	EXPECT_TRUE(math.Trunc(LG_Math::PI) == 3);
-	EXPECT_TRUE(math.TruncFloat(LG_Math::PI) == 3.0f);
-	EXPECT_TRUE(math.Floor(LG_Math::PI) == 3);
-	EXPECT_TRUE(math.Round(LG_Math::PI) == 3);
-	EXPECT_TRUE(math.Ceil(LG_Math::PI) == 4);
-
-	EXPECT_TRUE(math.Sin(LG_Math::PI_HALF) == 1);
-	EXPECT_TRUE(math.Cos(LG_Math::PI * 2) == 1);
-	EXPECT_TRUE(math.Tan(LG_Math::PI) <= LG_Math::DELTA && math.Tan(LG_Math::PI) >= -LG_Math::DELTA);
-
-	///max
-	EXPECT_TRUE(math.Max(5, 2) == 5);
-	///mmin 
-	EXPECT_TRUE(math.Min(5, 2) == 2);
-
-	///max3
-	EXPECT_TRUE(math.Max3(5, 2, 9) == 9);
-	///mmin3 
-	EXPECT_TRUE(math.Min3(5, 2, 1) == 1);
-
-	system("pause");
-}
-
-TEST(VectorsUnitTest, Vectors)
-{
-	LG_Vector2D vec2D(0, 1);
-	EXPECT_TRUE(LG_Vector2D::Dot(LG_Vector2D(-6, 8), LG_Vector2D(5, 12)) == 66);
-	EXPECT_TRUE(vec2D.Equals(LG_Vector2D(0, 1), LG_Math::DELTA));
-	EXPECT_TRUE(vec2D.Normalize() <= 1 && vec2D.Normalize() >= 0);
-	vec2D = { 0, 5 };
-	EXPECT_TRUE(vec2D.Magnitude() == 5);
-
-	LG_Vector2DI vec2DI(0, 1);
-	EXPECT_TRUE(LG_Vector2DI::Dot(LG_Vector2DI(-6, 8), LG_Vector2DI(5, 12)) == 66);
-	EXPECT_TRUE(vec2DI.Equals(LG_Vector2DI(0, 1), 1));
-	EXPECT_TRUE(vec2DI.Normalize() <= 1 && vec2D.Normalize() >= 0);
-	vec2DI = { 0, 5 };
-	EXPECT_TRUE(vec2DI.Magnitude() == 5);
-
-	LG_Vector3D vec3D(0, 1, 666);
-	EXPECT_TRUE(LG_Vector3D::Dot(LG_Vector3D(1, 2, 3), LG_Vector3D(6, 7, 8)) == 44);
-	EXPECT_TRUE(vec3D.Equals(LG_Vector3D(0, 1, 666), 1));
-	EXPECT_TRUE(vec3D.Normalize() <= 1 && vec3D.Normalize() >= 0);
-	vec3D = { 0, 5, 0 };
-	EXPECT_TRUE(vec3D.Magnitude() == 5);
-
-	LG_Vector4D vec4D(0, 1, 666, 4);
-	EXPECT_TRUE(LG_Vector4D::Dot(LG_Vector4D(1, 2, 3, 4), LG_Vector4D(6, 7, 8, 9)) == 80);
-	EXPECT_TRUE(vec4D.Equals(LG_Vector4D(0, 1, 666, 4), 1));
-	EXPECT_TRUE(LG_Vector4D::Normalize(vec4D) <= 1 && LG_Vector4D::Normalize(vec4D) >= 0);
-	vec4D = { 0, 5, 0, 0 };
-	EXPECT_TRUE(vec4D.Magnitude() == 5);
-
-	system("pause");
+	system("Pause");
 }

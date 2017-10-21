@@ -5,7 +5,7 @@
 namespace LevelGenerator
 {
 	/**
-	 *	@brief This class stores a node in a 3D space.
+	 *	@var This class stores a node in a 3D space.
 	 */
 	class LG_GEOMETRY_EXPORT LG_Node
 	{

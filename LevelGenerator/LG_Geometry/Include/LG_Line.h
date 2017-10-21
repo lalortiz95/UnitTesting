@@ -30,12 +30,12 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This variable stores the start and end nodes of the line.
+		 *	@var This variable stores the start and end nodes of the line.
 		 */
 		LG_Node m_Nodes[2];
 
 		/**
-		 *	@brief This variable tells us if the line's already been inserted to a isoline.
+		 *	@var This variable tells us if the line's already been inserted to a isoline.
 		 */
 		bool m_bIsInside;
 		///************************************************************************/

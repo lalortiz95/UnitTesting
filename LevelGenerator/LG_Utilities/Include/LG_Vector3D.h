@@ -21,17 +21,17 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This variable store the position in X Axis.
+		 *	@var This variable store the position in X Axis.
 		 */
 		float X;
 
 		/**
-		 *	@brief This variable store the position in Y Axis.
+		 *	@var This variable store the position in Y Axis.
 		 */
 		float Y;
 
 		/**
-		 *	@brief This variable store the position in Z Axis.
+		 *	@var This variable store the position in Z Axis.
 		 */
 		float Z;
 

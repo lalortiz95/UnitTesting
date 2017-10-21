@@ -262,44 +262,44 @@ void LG_Visual::Renderer()
 	//	}
 	//}
 
-	for (int32 i = 0; i < AlgorithmGeneration.m_Rooms.size(); ++i)
+	for (int32 i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
 	{
 		/// Sets the color of the rectangle.
 		SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
 
 		/// Draws the top line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_Rooms[i]->m_TopLeft.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_Rooms[i]->m_TopLeft.m_Position.Y;
+		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
+		posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_Rooms[i]->m_TopRight.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_Rooms[i]->m_TopRight.m_Position.Y;
+		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
+		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
 
 		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 
 		/// Draws the bottom line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_Rooms[i]->m_BottomLeft.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_Rooms[i]->m_BottomLeft.m_Position.Y;
+		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
+		posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_Rooms[i]->m_BottomRight.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_Rooms[i]->m_BottomRight.m_Position.Y;
+		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
+		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
 
 		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 
 		/// Draws the left line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_Rooms[i]->m_BottomLeft.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_Rooms[i]->m_BottomLeft.m_Position.Y;
+		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
+		posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_Rooms[i]->m_TopLeft.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_Rooms[i]->m_TopLeft.m_Position.Y;
+		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
+		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
 
 		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 
 		/// Draws the right line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_Rooms[i]->m_BottomRight.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_Rooms[i]->m_BottomRight.m_Position.Y;
+		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
+		posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_Rooms[i]->m_TopRight.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_Rooms[i]->m_TopRight.m_Position.Y;
+		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
+		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
 
 		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 

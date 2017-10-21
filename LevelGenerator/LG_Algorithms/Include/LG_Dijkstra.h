@@ -7,7 +7,7 @@
 namespace LevelGenerator
 {
 	/**
-	 *	@brief This class use a path finding Dijkstra.
+	 *	@var This class use a path finding Dijkstra.
 	 */
 	class LG_ALGORITHMS_EXPORT LG_Dijkstra
 	{

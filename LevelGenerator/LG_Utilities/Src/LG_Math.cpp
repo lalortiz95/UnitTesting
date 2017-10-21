@@ -6,7 +6,7 @@ namespace LevelGenerator
 {
 	/// TODO: Comentar la clase.
 	/// Constant Definitions.
-	const float LG_Math::PI = std::atan(1.f) * 4.f;
+	const float LG_Math::PI = std::atan(1.0f) * 4.0f;
 	const float LG_Math::EULERS = (2.71828182845904523536f);
 	const float LG_Math::PI_HALF = LG_Math::PI / 2.0f;
 	const float LG_Math::PI2 = LG_Math::PI * 2;

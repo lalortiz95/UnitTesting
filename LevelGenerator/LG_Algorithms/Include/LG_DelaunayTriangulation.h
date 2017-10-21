@@ -33,37 +33,37 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief where we store our triangulation.
+		 *	@var where we store our triangulation.
 		 */
 		Vector<LG_Triangle*> m_pTrianglesVector;
 
 		/**
-		 *	@brief A vector to store edges that we need for create a triangle.
+		 *	@var A vector to store edges that we need for create a triangle.
 		 */
 		Vector<LG_Edge*> m_pEdgeVector;
 
 		/**
-		 *	@brief The set of nodes that we want to triangulate.
+		 *	@var The set of nodes that we want to triangulate.
 		 */
 		Vector<LG_Node> m_NodesCloud;
 
 		/**
-		 *	@brief A big triangle to make an initial triangulation from the nodes given.
+		 *	@var A big triangle to make an initial triangulation from the nodes given.
 		 */
 		LG_Triangle* m_pBigTriangle;
 
 		/**
-		 *	@brief The actual triangle being created.
+		 *	@var The actual triangle being created.
 		 */
 		LG_Triangle* m_pActualTriangle;
 
 		/**
-		 *	@brief This variable counts the number of triangles created.
+		 *	@var This variable counts the number of triangles created.
 		 */
 		int32 m_iTrianglesCount;
 
 		/**
-		 *	@brief This variable counts the number of edges created.
+		 *	@var This variable counts the number of edges created.
 		 */
 		int32 m_iEdgesCount;
 
@@ -80,16 +80,6 @@ namespace LevelGenerator
 		 */
 		void Init(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> PointsCloud);
 
-		/**
-		 *  @brief This function initialize all variables of the class.
-		 *	@param Vector<LG_Node> PointsCloud: The nodes cloud that we used to generate a triangulation.
-		 *	@param LG_Vector3D:	The center of the grid.
-		 *	@param int32 iGridWidth: The width of the grid.
-		 *	@param int32 iGridHeight: The height of the grid.
-		 */
-		void Init(Vector<LG_Node> PointsCloud, LG_Vector3D GridCenter, int32 iGridWidth, int32 iGridHeight);
-
-		
 		/**
 		 *  @brief This function releases memory and clears the variables.
 		 */

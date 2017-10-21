@@ -373,7 +373,7 @@ namespace LevelGenerator
 		//TODO: hacer que el tamaño dependa de la cantidad de cuartos. Quiza que el área para spawn que sea un circulo.
 		SpawnZone.Init(LG_Vector3D(0, 0, 0), 1000.f, 1000.f);
 
-		m_Rooms.resize(iRoomAmount);
+		m_RoomsVector.resize(iRoomAmount);
 
 		/// The rectangle object that we use to fill the vector.
 		LG_Rect* NewRect = nullptr;
@@ -401,10 +401,9 @@ namespace LevelGenerator
 			/// initialize the new room.
 			NewRect = new LG_Rect(PosToSpawn, RoomSize.X, RoomSize.Y);
 			/// Add the room to the room's vector.
-			m_Rooms[i] = NewRect;
+			m_RoomsVector[i] = NewRect;
 		}
 
-		m_Rooms = m_Rooms;
 	}
 
 	//! This function set a new actual tile.
@@ -460,6 +459,11 @@ namespace LevelGenerator
 				TileToChangeFlag.m_bIsChecked = true;
 			}
 		}
+	}
+
+	void LG_Generate::SeparationRooms()
+	{
+
 	}
 
 }

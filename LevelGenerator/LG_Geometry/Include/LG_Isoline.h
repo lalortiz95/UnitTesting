@@ -30,7 +30,7 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This variable stores the series of points that make up this line.
+		 *	@var This variable stores the series of points that make up this line.
 		 */
 		Vector<LG_Node> m_NodeVector;
 

@@ -1,0 +1,228 @@
+Running main() from gtest_main.cc
+[==========] Running 97 tests from 9 test cases.
+[----------] Global test environment set-up.
+[----------] 10 tests from Wrapping_Var
+[ RUN      ] Wrapping_Var.Char_8_Bits
+[       OK ] Wrapping_Var.Char_8_Bits (0 ms)
+[ RUN      ] Wrapping_Var.Short_16_Bits
+[       OK ] Wrapping_Var.Short_16_Bits (0 ms)
+[ RUN      ] Wrapping_Var.Int_32_Bits
+[       OK ] Wrapping_Var.Int_32_Bits (0 ms)
+[ RUN      ] Wrapping_Var.Long_64_Bits
+[       OK ] Wrapping_Var.Long_64_Bits (0 ms)
+[ RUN      ] Wrapping_Var.Double_128_Bits
+[       OK ] Wrapping_Var.Double_128_Bits (0 ms)
+[ RUN      ] Wrapping_Var.Unsigned_Char_8_Bits
+[       OK ] Wrapping_Var.Unsigned_Char_8_Bits (0 ms)
+[ RUN      ] Wrapping_Var.Unsigned_Short_16_Bits
+[       OK ] Wrapping_Var.Unsigned_Short_16_Bits (0 ms)
+[ RUN      ] Wrapping_Var.Unsigned_Int_32_Bits
+[       OK ] Wrapping_Var.Unsigned_Int_32_Bits (0 ms)
+[ RUN      ] Wrapping_Var.Unsigned_Long_64_Bits
+[       OK ] Wrapping_Var.Unsigned_Long_64_Bits (0 ms)
+[ RUN      ] Wrapping_Var.Unsigned_Double_128_Bits
+[       OK ] Wrapping_Var.Unsigned_Double_128_Bits (0 ms)
+[----------] 10 tests from Wrapping_Var (1 ms total)
+
+[----------] 8 tests from Math_Constant
+[ RUN      ] Math_Constant.PI_
+[       OK ] Math_Constant.PI_ (0 ms)
+[ RUN      ] Math_Constant.PI_Half
+[       OK ] Math_Constant.PI_Half (0 ms)
+[ RUN      ] Math_Constant.2_PI
+[       OK ] Math_Constant.2_PI (0 ms)
+[ RUN      ] Math_Constant.Euler
+[       OK ] Math_Constant.Euler (0 ms)
+[ RUN      ] Math_Constant.Infinite_Num
+[       OK ] Math_Constant.Infinite_Num (0 ms)
+[ RUN      ] Math_Constant.Delta
+[       OK ] Math_Constant.Delta (0 ms)
+[ RUN      ] Math_Constant.Epsilon
+[       OK ] Math_Constant.Epsilon (0 ms)
+[ RUN      ] Math_Constant.Max_Float_Presition
+[       OK ] Math_Constant.Max_Float_Presition (0 ms)
+[----------] 8 tests from Math_Constant (1 ms total)
+
+[----------] 17 tests from Math_Function
+[ RUN      ] Math_Function.SquareRoot
+[       OK ] Math_Function.SquareRoot (0 ms)
+[ RUN      ] Math_Function.Inverse_SquereRoot
+[       OK ] Math_Function.Inverse_SquereRoot (0 ms)
+[ RUN      ] Math_Function.Exponential
+[       OK ] Math_Function.Exponential (0 ms)
+[ RUN      ] Math_Function.Power_
+[       OK ] Math_Function.Power_ (0 ms)
+[ RUN      ] Math_Function.NaturalLogarithm
+[       OK ] Math_Function.NaturalLogarithm (0 ms)
+[ RUN      ] Math_Function.Truncation_
+[       OK ] Math_Function.Truncation_ (0 ms)
+[ RUN      ] Math_Function.Float_Truncation
+[       OK ] Math_Function.Float_Truncation (0 ms)
+[ RUN      ] Math_Function.Floor_
+[       OK ] Math_Function.Floor_ (0 ms)
+[ RUN      ] Math_Function.Round_
+[       OK ] Math_Function.Round_ (0 ms)
+[ RUN      ] Math_Function.Ceil_
+[       OK ] Math_Function.Ceil_ (0 ms)
+[ RUN      ] Math_Function.Sine
+[       OK ] Math_Function.Sine (0 ms)
+[ RUN      ] Math_Function.Cosine
+[       OK ] Math_Function.Cosine (0 ms)
+[ RUN      ] Math_Function.Tangent
+[       OK ] Math_Function.Tangent (0 ms)
+[ RUN      ] Math_Function.Maximum_2Numbers
+[       OK ] Math_Function.Maximum_2Numbers (0 ms)
+[ RUN      ] Math_Function.Minimum_2Numbers
+[       OK ] Math_Function.Minimum_2Numbers (0 ms)
+[ RUN      ] Math_Function.Maximum_3Numbers
+[       OK ] Math_Function.Maximum_3Numbers (0 ms)
+[ RUN      ] Math_Function.Minimum_3Numbers
+[       OK ] Math_Function.Minimum_3Numbers (0 ms)
+[----------] 17 tests from Math_Function (1 ms total)
+
+[----------] 7 tests from Vector2D_Function
+[ RUN      ] Vector2D_Function.Magnitude_
+[       OK ] Vector2D_Function.Magnitude_ (0 ms)
+[ RUN      ] Vector2D_Function.DotProduct_
+[       OK ] Vector2D_Function.DotProduct_ (1 ms)
+[ RUN      ] Vector2D_Function.Normalize_
+[       OK ] Vector2D_Function.Normalize_ (0 ms)
+[ RUN      ] Vector2D_Function.Equals_
+[       OK ] Vector2D_Function.Equals_ (0 ms)
+[ RUN      ] Vector2D_Function.StaticMagnitude
+[       OK ] Vector2D_Function.StaticMagnitude (0 ms)
+[ RUN      ] Vector2D_Function.StaticDotProduct
+[       OK ] Vector2D_Function.StaticDotProduct (0 ms)
+[ RUN      ] Vector2D_Function.StaticNormalize
+[       OK ] Vector2D_Function.StaticNormalize (0 ms)
+[----------] 7 tests from Vector2D_Function (1 ms total)
+
+[----------] 22 tests from Vector2D_Operator
+[ RUN      ] Vector2D_Operator.Vector_Plus_Vector
+[       OK ] Vector2D_Operator.Vector_Plus_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_Minus_Vector
+[       OK ] Vector2D_Operator.Vector_Minus_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_Times_Float
+[       OK ] Vector2D_Operator.Vector_Times_Float (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_Times_Vector
+[       OK ] Vector2D_Operator.Vector_Times_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_DividedBy_Float
+[       OK ] Vector2D_Operator.Vector_DividedBy_Float (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_DividedBy_Vector
+[       OK ] Vector2D_Operator.Vector_DividedBy_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_Equal_Vector
+[       OK ] Vector2D_Operator.Vector_Equal_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_Different_Vector
+[       OK ] Vector2D_Operator.Vector_Different_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_LeesThan_Vector
+[       OK ] Vector2D_Operator.Vector_LeesThan_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_LessThan_Float
+[       OK ] Vector2D_Operator.Vector_LessThan_Float (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_GreaterThan_Vector
+[       OK ] Vector2D_Operator.Vector_GreaterThan_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_GreaterThan_Float
+[       OK ] Vector2D_Operator.Vector_GreaterThan_Float (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_LessOrEqualThan_Vector
+[       OK ] Vector2D_Operator.Vector_LessOrEqualThan_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_LessOrEqualThan_Float
+[       OK ] Vector2D_Operator.Vector_LessOrEqualThan_Float (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_GreaterOrEqualThan_Vector
+[       OK ] Vector2D_Operator.Vector_GreaterOrEqualThan_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_GreaterOrEqualThan_Float
+[       OK ] Vector2D_Operator.Vector_GreaterOrEqualThan_Float (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_PlusEqual_Vector
+[       OK ] Vector2D_Operator.Vector_PlusEqual_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_MinusEqual_Vector
+[       OK ] Vector2D_Operator.Vector_MinusEqual_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_TimesEqual_Float
+[       OK ] Vector2D_Operator.Vector_TimesEqual_Float (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_TimesEqual_Vector
+[       OK ] Vector2D_Operator.Vector_TimesEqual_Vector (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_DivideEqualBy_Float
+[       OK ] Vector2D_Operator.Vector_DivideEqualBy_Float (0 ms)
+[ RUN      ] Vector2D_Operator.Vector_DivideEqualBy_Vector
+[       OK ] Vector2D_Operator.Vector_DivideEqualBy_Vector (0 ms)
+[----------] 22 tests from Vector2D_Operator (1 ms total)
+
+[----------] 6 tests from Vector2DI_Function
+[ RUN      ] Vector2DI_Function.Magnitude_
+[       OK ] Vector2DI_Function.Magnitude_ (0 ms)
+[ RUN      ] Vector2DI_Function.DotProduct_
+[       OK ] Vector2DI_Function.DotProduct_ (0 ms)
+[ RUN      ] Vector2DI_Function.Normalize_
+[       OK ] Vector2DI_Function.Normalize_ (0 ms)
+[ RUN      ] Vector2DI_Function.StaticMagnitude
+[       OK ] Vector2DI_Function.StaticMagnitude (0 ms)
+[ RUN      ] Vector2DI_Function.StaticDotProduct
+[       OK ] Vector2DI_Function.StaticDotProduct (0 ms)
+[ RUN      ] Vector2DI_Function.StaticNormalize
+[       OK ] Vector2DI_Function.StaticNormalize (0 ms)
+[----------] 6 tests from Vector2DI_Function (0 ms total)
+
+[----------] 22 tests from Vector2DI_Operator
+[ RUN      ] Vector2DI_Operator.Vector_Plus_Vector
+[       OK ] Vector2DI_Operator.Vector_Plus_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_Minus_Vector
+[       OK ] Vector2DI_Operator.Vector_Minus_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_Times_Float
+[       OK ] Vector2DI_Operator.Vector_Times_Float (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_Times_Vector
+[       OK ] Vector2DI_Operator.Vector_Times_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_DividedBy_Float
+[       OK ] Vector2DI_Operator.Vector_DividedBy_Float (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_DividedBy_Vector
+[       OK ] Vector2DI_Operator.Vector_DividedBy_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_Equal_Vector
+[       OK ] Vector2DI_Operator.Vector_Equal_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_Different_Vector
+[       OK ] Vector2DI_Operator.Vector_Different_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_LeesThan_Vector
+[       OK ] Vector2DI_Operator.Vector_LeesThan_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_LessThan_Float
+[       OK ] Vector2DI_Operator.Vector_LessThan_Float (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_GreaterThan_Vector
+[       OK ] Vector2DI_Operator.Vector_GreaterThan_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_GreaterThan_Float
+[       OK ] Vector2DI_Operator.Vector_GreaterThan_Float (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_LessOrEqualThan_Vector
+[       OK ] Vector2DI_Operator.Vector_LessOrEqualThan_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_LessOrEqualThan_Float
+[       OK ] Vector2DI_Operator.Vector_LessOrEqualThan_Float (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_GreaterOrEqualThan_Vector
+[       OK ] Vector2DI_Operator.Vector_GreaterOrEqualThan_Vector (1 ms)
+[ RUN      ] Vector2DI_Operator.Vector_GreaterOrEqualThan_Float
+[       OK ] Vector2DI_Operator.Vector_GreaterOrEqualThan_Float (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_PlusEqual_Vector
+[       OK ] Vector2DI_Operator.Vector_PlusEqual_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_MinusEqual_Vector
+[       OK ] Vector2DI_Operator.Vector_MinusEqual_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_TimesEqual_Float
+[       OK ] Vector2DI_Operator.Vector_TimesEqual_Float (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_TimesEqual_Vector
+[       OK ] Vector2DI_Operator.Vector_TimesEqual_Vector (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_DivideEqualBy_Float
+[       OK ] Vector2DI_Operator.Vector_DivideEqualBy_Float (0 ms)
+[ RUN      ] Vector2DI_Operator.Vector_DivideEqualBy_Vector
+[       OK ] Vector2DI_Operator.Vector_DivideEqualBy_Vector (0 ms)
+[----------] 22 tests from Vector2DI_Operator (1 ms total)
+
+[----------] 3 tests from Utilities_Matrix3D
+[ RUN      ] Utilities_Matrix3D.Zero_Function
+[       OK ] Utilities_Matrix3D.Zero_Function (0 ms)
+[ RUN      ] Utilities_Matrix3D.Identity_Function
+[       OK ] Utilities_Matrix3D.Identity_Function (0 ms)
+[ RUN      ] Utilities_Matrix3D.Inverse_Function
+[       OK ] Utilities_Matrix3D.Inverse_Function (0 ms)
+[----------] 3 tests from Utilities_Matrix3D (0 ms total)
+
+[----------] 2 tests from Utilities_Matrix4D
+[ RUN      ] Utilities_Matrix4D.Zero_Function
+[       OK ] Utilities_Matrix4D.Zero_Function (0 ms)
+[ RUN      ] Utilities_Matrix4D.Identity_Function
+Presione una tecla para continuar . . . 
+[       OK ] Utilities_Matrix4D.Identity_Function (2091 ms)
+[----------] 2 tests from Utilities_Matrix4D (2091 ms total)
+
+[----------] Global test environment tear-down
+[==========] 97 tests from 9 test cases ran. (2101 ms total)
+[  PASSED  ] 97 tests.

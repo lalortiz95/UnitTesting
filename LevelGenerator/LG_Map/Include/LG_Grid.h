@@ -33,34 +33,34 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This variable stores the height of the grid.
+		 *	@var This variable stores the height of the grid.
 		 */
 		int32 m_iHeight;
 
 		/**
-		 *	@brief This variable stores the width of the grid.
+		 *	@var This variable stores the width of the grid.
 		 */
 		int32 m_iWidth;
 
 		/**
-		 *	@brief Bidimensional array that stores the tiles.
+		 *	@var Bidimensional array that stores the tiles.
 		 */
 		LG_Tile** m_Grid;
 
 		/**
-		 *	@brief This variable stores the map's center.
+		 *	@var This variable stores the map's center.
 		 */
 		 LG_Node m_MapCenter;
 
 	private:
 
 		/**
-		 *	@brief This variable stores the number of tiles in x.
+		 *	@var This variable stores the number of tiles in x.
 		 */
 		int32 m_iNumberPlanesX;
 
 		/**
-		 *	@brief This variable stores the number of tiles in y.
+		 *	@var This variable stores the number of tiles in y.
 		 */
 		int32 m_iNumberPlanesY;
 

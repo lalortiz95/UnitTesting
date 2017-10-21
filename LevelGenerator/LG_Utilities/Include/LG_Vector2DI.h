@@ -15,12 +15,12 @@ namespace LevelGenerator
 			///**************************************************************************/
 
 			/**
-			 *	@brief This variable store the position in X Axis.
+			 *	@var This variable store the position in X Axis.
 			 */
 			int32 X;
 
 			/**
-			 *	@brief This variable store the position in Y Axis.
+			 *	@var This variable store the position in Y Axis.
 			 */
 			int32 Y;
 
@@ -225,15 +225,6 @@ namespace LevelGenerator
 			 *	@return true if a value is greater or equal to a vector, if not, false.
 			 */
 			bool operator>=(int32 iValue) const;
-
-			/**
-			 *	@brief This function compares if 2 vectors are the same.
-			 *	@param const LG_Vector2DI& OtherVector: The vector to compare with this.
-			 *	@param int32 fTolerance: This variable is used as a tolerance for considering that 2 vectors are the same.
-			 *	@return true if this vector is the same that other vector., if not, false.
-			 */
-			bool Equals(const LG_Vector2DI& OtherVector, int32 Tolerance) const;
-
 
 			///************************************************************************/
 			///*					Compound Assignment Operators.				      */

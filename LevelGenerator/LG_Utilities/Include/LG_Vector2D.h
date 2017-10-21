@@ -15,12 +15,12 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This variable store the position in X Axis.
+		 *	@var This variable store the position in X Axis.
 		 */
 		float X;
 
 		/**
-		 *	@brief This variable store the position in Y Axis.
+		 *	@var This variable store the position in Y Axis.
 		 */
 		float Y;
 
@@ -52,31 +52,45 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief This function return the magnitud of the vector given in the parameter.
+		 *	@return the magnitud of the vector.
+		 */
+		float Magnitude();
+
+		/**
+		 *	@brief This function realizes the dot product between 2 vectors.
+		 *	@param const LG_Vector2D& VectorB: the vector we're getting the dot product with.
+		 *	@return The projection from VectorA with VectorB.
+		 */
+		float Dot(const LG_Vector2D& VectorB);
+
+		/**
+		 *	@brief This function reduce the magnitud of the vector given between 0 and 1.
+		 *	@return The normalized vector.
+		 */
+		LG_Vector2D Normalize(); 
+
+		/**
+		 *	@brief This function compares if 2 vectors are the same.
+		 *	@param const LG_Vector2D& OtherVector: The vector to compare with this.
+		 *	@param float fTolerance: This variable is used as a tolerance for considering that 2 vectors are the same.
+		 *	@return true if this vector is the same that other vector., if not, false.
+		 */
+		bool Equals(const LG_Vector2D& OtherVector, float Tolerance) const;
+
+		/**
+		 *	@brief This function return the magnitud of the vector given in the parameter.
 		 *	@param const LG_Vector2D& OtherVector: The vector.
 		 *	@return the magnitud of the vector.
 		 */
 		static float Magnitude(const LG_Vector2D& OtherVector);
 
 		/**
-		*	@brief This function return the magnitud of the vector given in the parameter.
-		*	@return the magnitud of the vector.
-		*/
-		float Magnitude();
-
-		/**
 		 *	@brief This function realizes the dot product between 2 vectors.
-		 *	@param const LG_Vector2D& VectorA: 
+		 *	@param const LG_Vector2D& VectorA:
 		 *	@param const LG_Vector2D& VectorB:
 		 *	@return The projection from VectorA with VectorB.
 		 */
 		static float Dot(const LG_Vector2D& VectorA, const LG_Vector2D& VectorB);
-
-		/**
-		*	@brief This function realizes the dot product between 2 vectors.
-		*	@param const LG_Vector2D& VectorB: the vector we're getting the dot product with.
-		*	@return The projection from VectorA with VectorB.
-		*/
-		float Dot(const LG_Vector2D& VectorB);
 
 		/**
 		 *	@brief This function reduce the magnitud of the vector given between 0 and 1.
@@ -84,12 +98,6 @@ namespace LevelGenerator
 		 *	@return The normalized vector.
 		 */
 		static LG_Vector2D Normalize(const LG_Vector2D& OtherVector);
-
-		/**
-		*	@brief This function reduce the magnitud of the vector given between 0 and 1.
-		*	@return The normalized vector.
-		*/
-		LG_Vector2D Normalize();
 
 		///************************************************************************/
 		///*						Arithmetic Operators.				          */
@@ -211,15 +219,6 @@ namespace LevelGenerator
 		 *	@return true if a value is greater or equal than the other vector, if not, false.
 		 */
 		bool operator>=(float fValue) const;
-
-		/**
-		*	@brief This function compares if 2 vectors are the same.
-		*	@param const LG_Vector2D& OtherVector: The vector to compare with this.
-		*	@param float fTolerance: This variable is used as a tolerance for considering that 2 vectors are the same.
-		*	@return true if this vector is the same that other vector., if not, false.
-		*/
-		bool Equals(const LG_Vector2D& OtherVector, float Tolerance) const;
-
 
 		///************************************************************************/
 		///*					Compound Assignment Operators.				      */

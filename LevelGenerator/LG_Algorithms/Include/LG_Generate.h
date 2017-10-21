@@ -78,7 +78,7 @@ namespace LevelGenerator
 		/**
 		 *	@var Were we store our rooms.
 		 */
-		Vector<LG_Rect*> m_Rooms;
+		Vector<LG_Rect*> m_RoomsVector;
 
 		/**
 		 *	@var The current isoline being filled.
@@ -187,5 +187,10 @@ namespace LevelGenerator
 		 *	@param LG_Tile& TileToChangeFlag: The tile that we want to change it's flag.
 		 */
 		void SetTileAs(LG_Tile& TileToChangeFlag);
+
+		/**
+		 *	@brief This function separate the rooms
+		 */
+		void SeparationRooms();
 	};
 }

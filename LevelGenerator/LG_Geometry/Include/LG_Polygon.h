@@ -29,7 +29,7 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief A vector of nodes.
+		 *	@var A vector of nodes.
 		 */
 		Vector<LG_Edge*> m_pEdgeVector;
 

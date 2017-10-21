@@ -29,12 +29,12 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@brief This variable stores the position of the circle.
+		 *	@var This variable stores the position of the circle.
 		 */
 		LG_Vector3D m_Position;
 
 		/**
-		 *	@brief This variable stores the radius of the circle.
+		 *	@var This variable stores the radius of the circle.
 		 */
 		float m_fRadius;
 
