@@ -58,16 +58,16 @@ namespace LevelGenerator
 	}
 
 	//! 
-	void LG_Rect::Init(LG_Vector3D Position, float fWidth, float fHeight)
+	void LG_Rect::Init(LG_Node NodePosition, float fWidth, float fHeight)
 	{
 		/// assign value to the variable
-		m_Position = Position;
+		m_CenterPosition = NodePosition;
 		m_fHeight = fHeight;
 		m_fWidth = fWidth;
 
 		/// We initialize all the nodes positions.
-		m_TopLeft.m_Position.X = Position.X - (fWidth / 2);
-		m_TopLeft.m_Position.Y = Position.Y - (fHeight / 2);
+		m_TopLeft.m_Position.X = m_CenterPosition.m_Position.X - (fWidth / 2);
+		m_TopLeft.m_Position.Y = m_CenterPosition.m_Position.Y + (fHeight / 2);
 
 		m_BottomLeft.m_Position.X = m_TopLeft.m_Position.X;
 		m_BottomLeft.m_Position.Y = m_TopLeft.m_Position.Y - fHeight;

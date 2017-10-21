@@ -44,7 +44,7 @@ namespace LevelGenerator
 		Initialize();
 
 		/// 
-		GenerateRooms(100, LG_Vector3D(20, 20, 0), LG_Vector3D(50, 50, 0));
+		GenerateRooms(30, LG_Vector3D(20, 20, 0), LG_Vector3D(50, 50, 0));
 
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
@@ -68,10 +68,10 @@ namespace LevelGenerator
 		}
 
 		/// 
-		m_DT.Run(m_MS.m_pMap->m_iWidth,
-			m_MS.m_pMap->m_iHeight,
-			m_MS.m_pMap->m_MapCenter.m_Position,
-			&m_ReducedNoudCloud);
+		m_DT.Run((int32)m_SpawnZone.m_fWidth,
+			(int32)m_SpawnZone.m_fHeight,
+			m_SpawnZone.m_CenterPosition.m_Position,
+			&m_RoomsNodesCloud);
 
 		///
 		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
@@ -373,17 +373,11 @@ namespace LevelGenerator
 	//! Generates random positions for the rectangles, and separates them.
 	void LG_Generate::GenerateRooms(int32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize)
 	{
-		//TODO: definir un área para spawnear los cuartos, asegurarse de revisar el peso de cada uno para definir el tamaño delos cuartos
-		// una vez que se tengan todos los rectangulos en sus respectivas posiciones, con sus tamaños correspondientes
-		// separarlos de tal manera que ninguno choque con ninguno.
-		// Triangular con los puntos generados.
 
-
-		/// The area within we will generate random positions for our nodes.
-		LG_Rect SpawnZone;
+		
 		/// Create a area to spawn the dots.
 		//TODO: hacer que el tamaño dependa de la cantidad de cuartos. Quiza que el área para spawn que sea un circulo.
-		SpawnZone.Init(LG_Vector3D(0, 0, 0), 1000.f, 1000.f);
+		m_SpawnZone.Init(LG_Vector3D(250, 250, 0), 500.0f, 500.0f);
 
 		m_RoomsVector.resize(iRoomAmount);
 
@@ -392,11 +386,11 @@ namespace LevelGenerator
 
 		/// We store the minimum and maximum values to generate random positions for our rooms.
 		LG_Vector3D PosToSpawn(0, 0, 0);
-		int32 fMinX = SpawnZone.m_Position.X - (SpawnZone.m_fWidth / 2);
-		int32 fMaxX = SpawnZone.m_Position.X + SpawnZone.m_fWidth;
+		int32 fMinX = m_SpawnZone.m_CenterPosition.m_Position.X - (m_SpawnZone.m_fWidth / 2);
+		int32 fMaxX = m_SpawnZone.m_CenterPosition.m_Position.X + (m_SpawnZone.m_fWidth / 2);
 
-		int32 fMinY = SpawnZone.m_Position.Y - (SpawnZone.m_fHeight / 2);
-		int32 fMaxY = SpawnZone.m_Position.Y + SpawnZone.m_fHeight;
+		int32 fMinY = m_SpawnZone.m_CenterPosition.m_Position.Y - (m_SpawnZone.m_fHeight / 2);
+		int32 fMaxY = m_SpawnZone.m_CenterPosition.m_Position.Y + (m_SpawnZone.m_fHeight / 2);
 
 		/// Where we store the random room size.
 		LG_Vector3D RoomSize;
@@ -414,8 +408,8 @@ namespace LevelGenerator
 			NewRect = new LG_Rect(PosToSpawn, RoomSize.X, RoomSize.Y);
 			/// Add the room to the room's vector.
 			m_RoomsVector[i] = NewRect;
-		}
-
+			m_RoomsNodesCloud.push_back(&m_RoomsVector[i]->m_CenterPosition);
+		}		
 	}
 
 	//! This function set a new actual tile.

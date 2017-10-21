@@ -262,48 +262,49 @@ void LG_Visual::Renderer()
 	//	}
 	//}
 
-	/*for (int32 i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
-	{
-		/// Sets the color of the rectangle.
-		SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
+	////// Aqui se renderean los cuartos
+	//for (int32 i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
+	//{
+	//	/// Sets the color of the rectangle.
+	//	SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
 
-		/// Draws the top line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
+	//	/// Draws the top line of the rectangle.
+	//	posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
+	//	posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
+	//	Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
+	//	Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//	SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 
-		/// Draws the bottom line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.Y;
+	//	/// Draws the bottom line of the rectangle.
+	//	posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
+	//	posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
+	//	Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
+	//	Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//	SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 
-		/// Draws the left line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.Y;
+	//	/// Draws the left line of the rectangle.
+	//	posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
+	//	posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
+	//	Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
+	//	Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//	SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 
-		/// Draws the right line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
+	//	/// Draws the right line of the rectangle.
+	//	posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
+	//	posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
+	//	Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
+	//	Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//	SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 
-	}*/
+	//}
 
 	///// Aqui se rendera los triangulos de la triangulacion.
 	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
@@ -333,14 +334,14 @@ void LG_Visual::Renderer()
 	}*/
 
 	LG_Vector3D pos1, pos2;
-	/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
+	/*/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
 	for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
 	{
 		pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
 		pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
 		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
 		SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
-	}
+	}*/
 
 	///// Aqui se rendere al pathfinding. //////////////////////////////////////////////////
 
@@ -353,6 +354,50 @@ void LG_Visual::Renderer()
 			///Clear screen
 			SDL_RenderClear(m_Renderer);
 
+			//// Aqui se renderean los cuartos
+			for (int32 i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
+			{
+				// Set the color.
+				SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
+				/// Draws the top line of the rectangle.
+				posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
+				posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
+
+				Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
+				Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
+
+				SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+
+				/// Draws the bottom line of the rectangle.
+				posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
+				posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.Y;
+
+				Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
+				Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
+
+				SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+
+				/// Draws the left line of the rectangle.
+				posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
+				posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.Y;
+
+				Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
+				Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
+
+				SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+
+				/// Draws the right line of the rectangle.
+				posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
+				posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
+
+				Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
+				Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
+
+				SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+
+			}
+
+			///// Esto renderea la triangulacion
 			//for (LevelGenerator::int32 Q = 0; Q < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++Q)
 			//{
 
@@ -427,7 +472,7 @@ void LG_Visual::Renderer()
 	}
 	////////////////////////////////////////////////////////////////////////////////////////
 
-	/*/// For para imprimir cada nodo del triangulo como circulo.
+	/// For para imprimir cada nodo del triangulo como circulo.
 	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
 	{
 		/// Aqui rendereamos los vertices de cada triangulo.
@@ -443,12 +488,12 @@ void LG_Visual::Renderer()
 			SDL_RenderPresent(m_Renderer);
 		}
 
-	}*/
+	}
 
 
 	////////////////////////////// DEBUG
 	///// Aqui rendereamos un nodo a la vez de cada uno de la nube de puntos y sus conecciones.
-	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_NodesCloud.size(); ++i)
+	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pNodesCloud->size(); ++i)
 	//{
 	//	// Draw red line.
 	//	SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 0xFF);
@@ -473,22 +518,22 @@ void LG_Visual::Renderer()
 	//	}
 	//	LG_Circle CircleNode;
 	//	CircleNode.m_fRadius = 10;
-	//	CircleNode.m_Position = AlgorithmGeneration.m_DT.m_NodesCloud[i].m_Position;
+	//	CircleNode.m_Position = (*AlgorithmGeneration.m_DT.m_pNodesCloud)[i]->m_Position;
 	//	DrawCircle(CircleNode, LG_Vector3D(0, 0, 0), 50);
 	//	SDL_RenderPresent(m_Renderer);
 
 	//	/// Aqui rendereamos los vertices de cada triangulo.
-	//	for (LevelGenerator::int32 j = 0; j < AlgorithmGeneration.m_DT.m_NodesCloud[i].m_PointerNodes.size(); ++j)
+	//	for (LevelGenerator::int32 j = 0; j < (*AlgorithmGeneration.m_DT.m_pNodesCloud)[i]->m_PointerNodes.size(); ++j)
 	//	{
 	//		/// the position of the trianle's vertices.
 	//		LG_Circle Circle;
 	//		Circle.m_fRadius = 10;
-	//		Circle.m_Position = AlgorithmGeneration.m_DT.m_NodesCloud[i].m_PointerNodes[j]->m_Position;
+	//		Circle.m_Position = (*AlgorithmGeneration.m_DT.m_pNodesCloud)[i]->m_PointerNodes[j]->m_Position;
 	//		DrawCircle(Circle, LG_Vector3D(22, 100, 0), 50);
 
 
-	//		posToSpawn = AlgorithmGeneration.m_DT.m_NodesCloud[i].m_Position;
-	//		Secondpos = AlgorithmGeneration.m_DT.m_NodesCloud[i].m_PointerNodes[j]->m_Position;
+	//		posToSpawn = (*AlgorithmGeneration.m_DT.m_pNodesCloud)[i]->m_Position;
+	//		Secondpos = (*AlgorithmGeneration.m_DT.m_pNodesCloud)[i]->m_PointerNodes[j]->m_Position;
 
 	//		// Draw red line.
 	//		SDL_SetRenderDrawColor(m_Renderer, 0, 0, 255, 0xFF);

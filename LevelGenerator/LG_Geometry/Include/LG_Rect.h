@@ -47,7 +47,7 @@ namespace LevelGenerator
 		/**
 		 *	@var The center position of the rectangle.
 		 */
-		LG_Vector3D m_Position;
+		LG_Node m_CenterPosition;
 
 		/**
 		 *	@var This matrix is used to check collisions easily.
@@ -88,11 +88,11 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief Function to initialize the variables.
-		 *	@param LG_Vector3D Position: The center position of the rectangle.
+		 *	@param LG_Node Position: The center position of the rectangle.
 		 *	@param float fWidth: the rectangle's width.
 		 *	@param float fHeight: the rectangle's height
 		 */
-		void Init(LG_Vector3D Position, float fWidth, float fHeight);
+		void Init(LG_Node Position, float fWidth, float fHeight);
 
 		/**
 		 *	@brief Function to realease memory and destroy objects.

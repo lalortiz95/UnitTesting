@@ -56,6 +56,11 @@ namespace LevelGenerator
 		LG_MST m_MST;
 
 		/**
+		 *	@var Spawn Zone
+		 */
+		LG_Rect m_SpawnZone;
+
+		/**
 		 *	@var An object of the delaunay triangulation class. It's used to run it's algorithm.
 		 */
 		LG_DelaunayTriangulation m_DT;
