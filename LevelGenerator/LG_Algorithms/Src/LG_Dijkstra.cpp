@@ -19,7 +19,7 @@ namespace LevelGenerator
 	}
 
 	//! This function initialize dijkstra algorithm.
-	void LG_Dijkstra::Init(Vector<LG_Node>* pNodeCloud, LG_Node* pStartNode, LG_Node* pEndNode)
+	void LG_Dijkstra::Init(Vector<LG_Node*>* pNodeCloud, LG_Node* pStartNode, LG_Node* pEndNode)
 	{
 		Destroy();
 		m_pNodesCloud = pNodeCloud;
@@ -180,7 +180,7 @@ namespace LevelGenerator
 	{
 		for (int32 i = 0; i < m_pNodesCloud->size(); ++i)
 		{
-			(*m_pNodesCloud)[i].m_bIsChecked = false;
+			(*m_pNodesCloud)[i]->m_bIsChecked = false;
 		}
 	}
 

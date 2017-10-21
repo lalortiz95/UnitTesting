@@ -36,7 +36,7 @@ namespace LevelGenerator
 		/**
 		 *	@var The cloud of nodes.
 		 */
-		Vector<LG_Node>* m_pNodesCloud;
+		Vector<LG_Node*>* m_pNodesCloud;
 
 		/**
 		 *	@var A pointer to the actual node.
@@ -81,7 +81,7 @@ namespace LevelGenerator
 		 *	@param LG_Node* pStartNode: The starting node.
 		 *	@param LG_Node* pEndNode: The node that we want to reach.
 		 */
-		void Init(Vector<LG_Node>* NodeCloud, LG_Node* pStartNode,LG_Node* pEndNode);
+		void Init(Vector<LG_Node*>* NodeCloud, LG_Node* pStartNode,LG_Node* pEndNode);
 
 		/**
 		 *	@brief This function runs the algorithm and finds the shortest path.

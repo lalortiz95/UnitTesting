@@ -262,7 +262,7 @@ void LG_Visual::Renderer()
 	//	}
 	//}
 
-	for (int32 i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
+	/*for (int32 i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
 	{
 		/// Sets the color of the rectangle.
 		SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
@@ -303,7 +303,7 @@ void LG_Visual::Renderer()
 
 		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
 
-	}
+	}*/
 
 	///// Aqui se rendera los triangulos de la triangulacion.
 	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
@@ -332,99 +332,99 @@ void LG_Visual::Renderer()
 		SDL_Delay(2000);
 	}*/
 
-	//LG_Vector3D pos1, pos2;
-	///// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
-	//for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
-	//{
-	//	pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
-	//	pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
-	//	SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
-	//	SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
-	//}
+	LG_Vector3D pos1, pos2;
+	/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
+	for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
+	{
+		pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
+		pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
+		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
+		SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
+	}
 
 	///// Aqui se rendere al pathfinding. //////////////////////////////////////////////////
 
-	//for (int32 h = 0; h < AlgorithmGeneration.m_DT.m_NodesCloud.size(); h++)
-	//{
-	//	for (int32 k = 0; k < AlgorithmGeneration.m_DT.m_NodesCloud.size(); k++)
-	//	{
-	//		// Set the color.
-	//		SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 0xFF);
-	//		///Clear screen
-	//		SDL_RenderClear(m_Renderer);
+	for (int32 h = 0; h < AlgorithmGeneration.m_DT.m_pNodesCloud->size(); h++)
+	{
+		for (int32 k = 0; k < AlgorithmGeneration.m_DT.m_pNodesCloud->size(); k++)
+		{
+			// Set the color.
+			SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 0xFF);
+			///Clear screen
+			SDL_RenderClear(m_Renderer);
 
-	//		//for (LevelGenerator::int32 Q = 0; Q < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++Q)
-	//		//{
+			//for (LevelGenerator::int32 Q = 0; Q < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++Q)
+			//{
 
-	//		//	for (LevelGenerator::int32 e = 0; e < NODES_PER_TRIANGLE; ++e)
-	//		//	{
-	//		//		posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pFirstNode->m_Position;
-	//		//		Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pSecondNode->m_Position;
+			//	for (LevelGenerator::int32 e = 0; e < NODES_PER_TRIANGLE; ++e)
+			//	{
+			//		posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pFirstNode->m_Position;
+			//		Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pSecondNode->m_Position;
 
-	//		//		// Draw red line.
-	//		//		SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
-	//		//		// en la posición de cada nodo dibujar un punto con SDL.
-	//		//		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-	//		//		///Update screen
-	//		//		SDL_RenderPresent(m_Renderer);
+			//		// Draw red line.
+			//		SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
+			//		// en la posición de cada nodo dibujar un punto con SDL.
+			//		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+			//		///Update screen
+			//		SDL_RenderPresent(m_Renderer);
 
-	//		//	}
-	//		//}
+			//	}
+			//}
 
-	//		LG_Vector3D pos1, pos2;
-	//		/// Aquí  se renderea el minimum spanning tree
-	//		for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
-	//		{
-	//			pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
-	//			pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
-	//			SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
-	//			SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
-	//		}
+			LG_Vector3D pos1, pos2;
+			/// Aquí  se renderea el minimum spanning tree
+			for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
+			{
+				pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
+				pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
+				SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
+				SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
+			}
 
-	//		/// Aqui rendereamos los vertices de cada triangulo.
-	//		for (int32 j = 0; j < AlgorithmGeneration.m_DT.m_NodesCloud.size(); ++j)
-	//		{
-	//			/// the position of the trianle's vertices.
-	//			LG_Circle Circle;
-	//			Circle.m_fRadius = 5;
-	//			Circle.m_Position = AlgorithmGeneration.m_DT.m_NodesCloud[j].m_Position;
-	//			DrawCircle(Circle, LG_Vector3D(255, 0, 0), 50);
-	//		}
+			/// Aqui rendereamos los vertices de cada triangulo.
+			for (int32 j = 0; j < AlgorithmGeneration.m_DT.m_pNodesCloud->size(); ++j)
+			{
+				/// the position of the trianle's vertices.
+				LG_Circle Circle;
+				Circle.m_fRadius = 5;
+				Circle.m_Position = (*AlgorithmGeneration.m_DT.m_pNodesCloud)[j]->m_Position;
+				DrawCircle(Circle, LG_Vector3D(255, 0, 0), 50);
+			}
 
-	//		Pathfinding.Init(&AlgorithmGeneration.m_DT.m_NodesCloud, &AlgorithmGeneration.m_DT.m_NodesCloud[h], &AlgorithmGeneration.m_DT.m_NodesCloud[k]);
-	//		Pathfinding.Run();
+			Pathfinding.Init(AlgorithmGeneration.m_DT.m_pNodesCloud, (*AlgorithmGeneration.m_DT.m_pNodesCloud)[h], (*AlgorithmGeneration.m_DT.m_pNodesCloud)[k]);
+			Pathfinding.Run();
 
-	//		/// Aqui rendereamos los nodos de inicio y fin del pathfinding como circulos pequeños.
-	//		LG_Circle newCircle;
-	//		newCircle.m_fRadius = 10;
-	//		newCircle.m_Position = Pathfinding.m_pStartNode->m_Position;
-	//		LG_Circle newCircle2;
-	//		newCircle2.m_fRadius = 10;
-	//		newCircle2.m_Position = Pathfinding.m_pEndNode->m_Position;
-	//		DrawCircle(newCircle, LG_Vector3D(0, 0, 0), 50);
-	//		DrawCircle(newCircle2, LG_Vector3D(0, 0, 0), 50);
-	//		///Update screen
-	//		SDL_RenderPresent(m_Renderer);
+			/// Aqui rendereamos los nodos de inicio y fin del pathfinding como circulos pequeños.
+			LG_Circle newCircle;
+			newCircle.m_fRadius = 10;
+			newCircle.m_Position = Pathfinding.m_pStartNode->m_Position;
+			LG_Circle newCircle2;
+			newCircle2.m_fRadius = 10;
+			newCircle2.m_Position = Pathfinding.m_pEndNode->m_Position;
+			DrawCircle(newCircle, LG_Vector3D(0, 0, 0), 50);
+			DrawCircle(newCircle2, LG_Vector3D(0, 0, 0), 50);
+			///Update screen
+			SDL_RenderPresent(m_Renderer);
 
-	//		/// Aqui rendereamos el mejor camino de un nodo hasia otro.
-	//		for (LevelGenerator::int32 i = 0; i < Pathfinding.m_BesthPath.size(); ++i)
-	//		{
-	//			if ((i + 1) < Pathfinding.m_BesthPath.size())
-	//			{
-	//				posToSpawn = Pathfinding.m_BesthPath[i]->m_Position;
-	//				Secondpos = Pathfinding.m_BesthPath[i + 1]->m_Position;
+			/// Aqui rendereamos el mejor camino de un nodo hasia otro.
+			for (LevelGenerator::int32 i = 0; i < Pathfinding.m_BesthPath.size(); ++i)
+			{
+				if ((i + 1) < Pathfinding.m_BesthPath.size())
+				{
+					posToSpawn = Pathfinding.m_BesthPath[i]->m_Position;
+					Secondpos = Pathfinding.m_BesthPath[i + 1]->m_Position;
 
-	//				// blue
-	//				SDL_SetRenderDrawColor(m_Renderer, 0, 0, 255, 0);
-	//				// en la posición de cada nodo dibujar un punto con SDL.
-	//				SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-	//				///Update screen
-	//				SDL_RenderPresent(m_Renderer);
-	//				SDL_Delay(400);
-	//			}
-	//		}
-	//	}
-	//}
+					// blue
+					SDL_SetRenderDrawColor(m_Renderer, 0, 0, 255, 0);
+					// en la posición de cada nodo dibujar un punto con SDL.
+					SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+					///Update screen
+					SDL_RenderPresent(m_Renderer);
+					SDL_Delay(400);
+				}
+			}
+		}
+	}
 	////////////////////////////////////////////////////////////////////////////////////////
 
 	/*/// For para imprimir cada nodo del triangulo como circulo.

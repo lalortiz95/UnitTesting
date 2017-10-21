@@ -19,19 +19,10 @@ namespace LevelGenerator
 	}
 
 	//! This function initialize all variables of the class.
-	void LG_DelaunayTriangulation::Init(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud)
+	void LG_DelaunayTriangulation::Init(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Node*>* NodesCloud)
 	{
 		Destroy();
-
-		/// Store in the nodes cloud all of the nodes in the isoline vector.
-		for (int32 i = 0; i < NodesCloud.size(); ++i)
-		{
-			for (int32 j = 0; j < NodesCloud[i].m_NodeVector.size(); ++j)
-			{
-				NodesCloud[i].m_NodeVector[j].Init();
-				m_NodesCloud.push_back(NodesCloud[i].m_NodeVector[j]);
-			}
-		}
+		m_pNodesCloud = NodesCloud;
 
 		/// Create a triangle that is outside of the node's cloud.
 		CreateBigTriangle(iGridWidth, iGridHeight, GridCenter);
@@ -46,7 +37,7 @@ namespace LevelGenerator
 
 
 	//! This function performs the algorithm.
-	void LG_DelaunayTriangulation::Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Isoline> NodesCloud)
+	void LG_DelaunayTriangulation::Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Node*>* NodesCloud)
 	{
 		/// 
 		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
@@ -67,9 +58,6 @@ namespace LevelGenerator
 		LG_Edge* pActualEdge = nullptr;
 		LG_Triangle* pActualTriangle = m_pTrianglesVector.front();
 		bool bCanStop = false;
-
-		////////TEST 
-		m_NodesCloud = m_NodesCloud;
 
 		/// counter to exit the while loop.
 		int32 iBreakWhile = 0;
@@ -180,14 +168,14 @@ namespace LevelGenerator
 
 			/// We are going to find all the nodes inside of the actual triangle, and get the one that makes
 			/// the best intrinsic angles.
-			for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+			for (int32 i = 0; i < m_pNodesCloud->size(); ++i)
 			{
-				if (m_pActualTriangle->IsPointInside(&m_NodesCloud[i]) && !m_NodesCloud[i].m_bIsChecked)
+				if (m_pActualTriangle->IsPointInside((*m_pNodesCloud)[i]) && !(*m_pNodesCloud)[i]->m_bIsChecked)
 				{
 					/// Set this flag to false since the actual triangle did have nodes inside.
 					bHasNoDotsInside = false;
 					/// We store the node that's inside.
-					pNodesInside.push_back(&m_NodesCloud[i]);
+					pNodesInside.push_back((*m_pNodesCloud)[i]);
 				}
 			}
 
@@ -252,12 +240,12 @@ namespace LevelGenerator
 					m_pTrianglesVector.push_back(pNewTriangle);
 				}
 
-				for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+				for (int32 i = 0; i < m_pNodesCloud->size(); ++i)
 				{
-					if (pBestNode->m_iID == m_NodesCloud[i].m_iID)
+					if (pBestNode->m_iID == (*m_pNodesCloud)[i]->m_iID)
 					{
 						/// Mark the best node as checked. 
-						m_NodesCloud[i].m_bIsChecked = true;
+						(*m_pNodesCloud)[i]->m_bIsChecked = true;
 						break;
 					}
 				}
@@ -320,15 +308,15 @@ namespace LevelGenerator
 		DotsInside = DotsChecked = 0;
 
 		/// Iterates through the nodes cloud.
-		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+		for (int32 i = 0; i < m_pNodesCloud->size(); ++i)
 		{
 			/// Check if the iterating node is inside of the actual triangle.
-			if (pActualTriangle->IsPointInside(&m_NodesCloud[i]))
+			if (pActualTriangle->IsPointInside((*m_pNodesCloud)[i]))
 			{
 				/// add one to the dots inside counter.
 				++DotsInside;
 				/// Check that the node inside is checked
-				if (m_NodesCloud[i].m_bIsChecked)
+				if ((*m_pNodesCloud)[i]->m_bIsChecked)
 				{
 					/// add one to the nodes checked counter.
 					++DotsChecked;
@@ -402,9 +390,9 @@ namespace LevelGenerator
 			m_pEdgeVector.push_back(m_pBigTriangle->m_pEdges[i]);
 		}
 
-		for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+		for (int32 i = 0; i < m_pNodesCloud->size(); ++i)
 		{
-			m_NodesCloud[i].m_iID = iCountNode;
+			(*m_pNodesCloud)[i]->m_iID = iCountNode;
 			++iCountNode;
 		}
 
@@ -509,15 +497,15 @@ namespace LevelGenerator
 		int32 iNode = 0;
 		while (iNode < NODES_PER_TRIANGLE)
 		{
-			for (int32 i = 0; i < m_NodesCloud.size(); ++i)
+			for (int32 i = 0; i < m_pNodesCloud->size(); ++i)
 			{
-				for (Vector<LG_Node*>::iterator itt = m_NodesCloud[i].m_PointerNodes.begin();
-					itt != m_NodesCloud[i].m_PointerNodes.end(); ++itt)
+				for (Vector<LG_Node*>::iterator itt = (*m_pNodesCloud)[i]->m_PointerNodes.begin();
+					itt != (*m_pNodesCloud)[i]->m_PointerNodes.end(); ++itt)
 				{
 					if ((*itt) == m_pBigTriangle->m_pVertices[iNode])
 					{
 						(*itt)->StopPointingNode(m_pBigTriangle->m_pVertices[iNode]);
-						itt = m_NodesCloud[i].m_PointerNodes.begin();
+						itt = (*m_pNodesCloud)[i]->m_PointerNodes.begin();
 					}
 				}
 			}

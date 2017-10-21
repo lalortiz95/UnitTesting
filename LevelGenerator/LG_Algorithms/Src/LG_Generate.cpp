@@ -57,11 +57,23 @@ namespace LevelGenerator
 			m_RDP.Destroy();
 		}
 
+		/// Store in the nodes cloud all of the nodes in the isoline vector.
+		for (int32 i = 0; i < m_FinalIsolineVector.size(); ++i)
+		{
+			for (int32 j = 0; j < m_FinalIsolineVector[i].m_NodeVector.size(); ++j)
+			{
+				m_FinalIsolineVector[i].m_NodeVector[j].Init();
+				m_ReducedNoudCloud.push_back(&m_FinalIsolineVector[i].m_NodeVector[j]);
+			}
+		}
+
+		/// 
 		m_DT.Run(m_MS.m_pMap->m_iWidth,
 			m_MS.m_pMap->m_iHeight,
 			m_MS.m_pMap->m_MapCenter.m_Position,
-			m_FinalIsolineVector);
+			&m_ReducedNoudCloud);
 
+		///
 		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
 	}
 
