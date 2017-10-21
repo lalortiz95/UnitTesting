@@ -780,6 +780,516 @@ TEST(Vector2DI_Operator, Vector_DivideEqualBy_Vector)
 }
 
 ///************************************************************************/
+///*                     Utilities_Vector3D_UnitTest                      */
+///************************************************************************/
+
+TEST(Utilities_Vector3D, Magnitude_Function)
+{
+	LG_Vector3D V(0.f, 5.f, 0.f);
+	EXPECT_TRUE(V.Magnitude() == 5.0f);
+}
+
+TEST(Utilities_Vector3D, StaticMagnitude_Function)
+{
+	LG_Vector3D V(0.f, 5.f, 0.f);
+	float fMAg = LG_Vector3D::Magnitude(V);
+	EXPECT_TRUE(fMAg == 5.0f);
+}
+
+TEST(Utilities_Vector3D, DotProduct_Function)
+{
+	LG_Vector3D V1(1.f, 2.f, 3.f);
+	LG_Vector3D V2(6.f, 7.f, 8.f);
+	EXPECT_TRUE(V1.Dot(V2) == 44.f);
+}
+
+TEST(Utilities_Vector3D, StaitcDotProduct_Function)
+{
+	LG_Vector3D V1(1.f, 2.f, 3.f);
+	LG_Vector3D V2(6.f, 7.f, 8.f);
+	EXPECT_TRUE(LG_Vector3D::Dot(V1, V2) == 44.f);
+}
+
+TEST(Utilities_Vector3D, CrossProduct_Function)
+{
+	LG_Vector3D V1(2.f, 1.f, -1.f);
+	LG_Vector3D V2(-3.f, 4.f, 1.f);
+	EXPECT_TRUE(V1.Cross3(V2) == LG_Vector3D(-5.f, -1.f, -11.f));
+}
+
+TEST(Utilities_Vector3D, StaticCrossProduct_Function)
+{
+	LG_Vector3D V1(2.f, 1.f, -1.f);
+	LG_Vector3D V2(-3.f, 4.f, 1.f);
+	EXPECT_TRUE(LG_Vector3D::Cross3(V1, V2) == LG_Vector3D(5.f, 1.f, 11.f));
+}
+
+TEST(Utilities_Vector3D, Normalize_Function)
+{
+	LG_Vector3D V(3.f, 1.f, 2.f);
+	EXPECT_TRUE(V.Normalize() == LG_Vector3D(0.801783681, 0.267261237, 0.534522474));
+}
+
+TEST(Utilities_Vector3D, StaticNormalize_Function)
+{
+	LG_Vector3D V(3.f, 1.f, 2.f);
+	EXPECT_TRUE(LG_Vector3D::Normalize(V) == LG_Vector3D(0.801783681, 0.267261237, 0.534522474));
+}
+
+TEST(Utilities_Vector3D, Equals_Function)
+{
+	LG_Vector3D V1(3.f, 1.f, 2.f);
+	LG_Vector3D V2(3.f, 1.f, 2.f);
+	EXPECT_TRUE(V1.Equals(V2, LG_Math::DELTA));
+}
+
+//! Operator + between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_Plus_Vector)
+{
+	/// The result vector between the first vector plus the second vector.
+	LG_Vector3D VectorResult = LG_Vector3D(7.1f, 2.2f, 1.0f) + LG_Vector3D(3.6f, 4.5f, 2.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector3D(10.7f, 6.7f, 3.5f));
+}
+
+//! Operator - between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_Minus_Vector)
+{
+	/// The result vector between the first vector minus the second vector.
+	LG_Vector3D VectorResult = LG_Vector3D(2.6f, 2.2f, 1.0f) - LG_Vector3D(4.6f, 1.5f, 2.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector3D(-2.0f, 0.7f, -1.5f), LG_Math::DELTA));
+}
+
+//! Operator * between 1 Vector and 1 number Test.
+TEST(Vector3D_Operator, Vector_Times_Float)
+{
+	/// The result vector between the first vector times the float value.
+	LG_Vector3D VectorResult = LG_Vector3D(3.5f, 6.7f, 2.0f) * 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector3D(10.5f, 20.1f, 6.0f), LG_Math::DELTA));
+}
+
+//! Operator * between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_Times_Vector)
+{
+	/// The result vector between the first vector times the second vector.
+	LG_Vector3D VectorResult = LG_Vector3D(3.5f, 6.7f, 5.0f) * LG_Vector3D(2.2f, 1.5f, 5.0f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector3D(7.7f, 10.05f, 25.0f), LG_Math::DELTA));
+}
+
+//! Operator / between 1 Vector and 1 number Test.
+TEST(Vector3D_Operator, Vector_DividedBy_Float)
+{
+	/// The result vector between the first vector divided by the float value.
+	LG_Vector3D VectorResult = LG_Vector3D(3.5f, 6.7f, 3.0f) / 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector3D(1.16666f, 2.23333f, 1.0f), LG_Math::DELTA));
+}
+
+//! Operator / between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_DividedBy_Vector)
+{
+	/// The result vector between the first vector divided by the second vector.
+	LG_Vector3D VectorResult = LG_Vector3D(3.5f, 6.7f, 25.0f) / LG_Vector3D(2.2f, 1.5f, 5.0f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector3D(1.59090f, 4.46666f, 5.0f), LG_Math::DELTA));
+}
+
+//! Operator == between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_Equal_Vector)
+{
+	/// IF the first vector is the same that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector3D(3.50000000f, 6.70000000f, 6.70000000f) == LG_Vector3D(3.50000000f, 6.70000000f, 6.70000000f));
+}
+
+//! Operator != between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_Different_Vector)
+{
+	/// IF the first vector is diferent that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector3D(3.50000500f, 6.70000000f, 6.70000000f) != LG_Vector3D(3.50000000f, 6.70000001f, 6.70000000f));
+}
+
+//! Operator < between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_LeesThan_Vector)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector3D(3.50000100f, 6.70000100f, 6.70000100f) < LG_Vector3D(3.50010000f, 6.70100000f, 6.70100000f));
+}
+
+//! Operator < between 1 Vector and 1 Value Test.
+TEST(Vector3D_Operator, Vector_LessThan_Float)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector3D(3.50000100f, 6.70000100f, 6.70000000f) < 7.00023015f);
+}
+
+//! Operator > between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_GreaterThan_Vector)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector3D(3.50000100f, 6.70000100f, 6.70000100f) > LG_Vector3D(3.50010000f, 6.70100000f, 6.70100000f));
+}
+
+//! Operator > between 1 Vector and 1 Value Test.
+TEST(Vector3D_Operator, Vector_GreaterThan_Float)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector3D(3.50000100f, 6.70000100f, 6.70000000f) > 7.00023015f);
+}
+
+//! Operator <= between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_LessOrEqualThan_Vector)
+{
+	/// IF the first vector is less or equal that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector3D(3.50000100f, 6.70100000f, 5.01000000f) <= LG_Vector3D(3.50010000f, 6.70100000f, 5.10000000f));
+}
+
+//! Operator <= between 1 Vector and 1 Value Test.
+TEST(Vector3D_Operator, Vector_LessOrEqualThan_Float)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector3D(3.50000100f, 7.00023015f, 5.00000000f) <= 7.00023015f);
+}
+
+//! Operator >= between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_GreaterOrEqualThan_Vector)
+{
+	/// IF the first vector is greater or equal that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector3D(3.50000100f, 6.70100000f, 5.01000000f) >= LG_Vector3D(3.50010000f, 6.70100000f, 5.00000100f));
+}
+
+//! Operator >= between 1 Vector and 1 Value Test.
+TEST(Vector3D_Operator, Vector_GreaterOrEqualThan_Float)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector3D(3.50000100f, 7.00023015f, 5.00000000f) >= 7.00023015f);
+}
+
+//! Operator += between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_PlusEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector3D VectorResult(7.1f, 2.2f, 5.0f);
+	/// The result vector between the first vector plus the second vector.
+	VectorResult += LG_Vector3D(3.6f, 4.5f, 5.0f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector3D(10.7f, 6.7f, 10.0f));
+}
+
+//! Operator -= between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_MinusEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector3D VectorResult(2.6f, 2.2f, 5.0f);
+	/// The result vector between the first vector minus the second vector.
+	VectorResult -= LG_Vector3D(4.6f, 1.5f, 5.0f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector3D(-2.0f, 0.7f, 0.0f), LG_Math::DELTA));
+}
+
+//! Operator *= between 1 Vector and 1 number Test.
+TEST(Vector3D_Operator, Vector_TimesEqual_Float)
+{
+	/// The result vector.
+	LG_Vector3D VectorResult(3.50000000f, 6.70000000f, 2.00000000f);
+	/// The result vector between the first vector times the float value.
+	VectorResult *= 3.00000000f;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector3D(10.5f, 20.1f, 6.0f), LG_Math::DELTA));
+}
+
+//! Operator *= between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_TimesEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector3D VectorResult(3.5f, 6.7f, 2.0f);
+	/// The result vector between the first vector times the second vector.
+	VectorResult *= LG_Vector3D(2.2f, 1.5f, 3.0f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector3D(7.7f, 10.05f, 6.0f), LG_Math::DELTA));
+}
+
+//! Operator /= between 1 Vector and 1 number Test.
+TEST(Vector3D_Operator, Vector_DivideEqualBy_Float)
+{
+	/// The result vector.
+	LG_Vector3D VectorResult(3.5f, 6.7f, 6.0f);
+	/// The result vector between the first vector divided by the float value.
+	VectorResult /= 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector3D(1.16666f, 2.23333f, 2.0f), LG_Math::DELTA));
+}
+
+//! Operator /= between 2 Vectors Test.
+TEST(Vector3D_Operator, Vector_DivideEqualBy_Vector)
+{
+	/// The result vector.
+	LG_Vector3D VectorResult(3.5f, 6.7f, 6.0f);
+	/// The result vector between the first vector divided by the second vector.
+	VectorResult /= LG_Vector3D(2.2f, 1.5f, 2.0f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector3D(1.59090f, 4.46666f, 3.0f), LG_Math::DELTA));
+}
+
+///************************************************************************/
+///*                     Utilities_Vector4D_UnitTest                      */
+///************************************************************************/
+
+
+TEST(Utilities_Vector4D, Magnitude_Function)
+{
+	LG_Vector4D V(0.f, 5.f, 0.f, 0.f);
+	EXPECT_TRUE(V.Magnitude() == 5.0f);
+}
+
+TEST(Utilities_Vector4D, StaticMagnitude_Function)
+{
+	LG_Vector4D V(0.f, 5.f, 0.f, 0.f);
+	float fMAg = LG_Vector4D::Magnitude(V);
+	EXPECT_TRUE(fMAg == 5.0f);
+}
+
+TEST(Utilities_Vector4D, DotProduct_Function)
+{
+	LG_Vector4D V1(1.f, 2.f, 3.f, 0.f);
+	LG_Vector4D V2(6.f, 7.f, 8.f, 0.f);
+	EXPECT_TRUE(V1.Dot(V2) == 44.f);
+}
+
+TEST(Utilities_Vector4D, StaitcDotProduct_Function)
+{
+	LG_Vector4D V1(1.f, 2.f, 3.f, 0.f);
+	LG_Vector4D V2(6.f, 7.f, 8.f, 0.f);
+	EXPECT_TRUE(LG_Vector4D::Dot(V1, V2) == 44.f);
+}
+
+TEST(Utilities_Vector4D, CrossProduct_Function)
+{
+	LG_Vector4D V1(2.f, 1.f, -1.f, 10.f);
+	LG_Vector4D V2(-3.f, 4.f, 1.f, 2.f);
+	EXPECT_TRUE(V1.Cross(V2) == LG_Vector4D(5.f, 1.f, 11.f, 0.f));
+}
+
+TEST(Utilities_Vector4D, StaticCrossProduct_Function)
+{
+	LG_Vector4D V1(2.f, 1.f, -1.f, 0.f);
+	LG_Vector4D V2(-3.f, 4.f, 1.f, 0.f);
+	EXPECT_TRUE(LG_Vector4D::Cross(V1, V2) == LG_Vector4D(5.f, 1.f, 11.f, 0.f));
+}
+
+TEST(Utilities_Vector4D, Normalize_Function)
+{
+	LG_Vector4D V(3.f, 1.f, 2.f, 0.f);
+	V.Normalize();
+	EXPECT_TRUE(V == LG_Vector4D(0.801783681, 0.267261237, 0.534522474, 0.f));
+}
+
+TEST(Utilities_Vector4D, StaticNormalize_Function)
+{
+	LG_Vector4D V(3.f, 1.f, 2.f, 0.f);
+	EXPECT_TRUE(LG_Vector4D::Normalize(V) == LG_Vector4D(0.801783681, 0.267261237, 0.534522474, 0.f));
+}
+
+TEST(Utilities_Vector4D, Equals_Function)
+{
+	LG_Vector4D V1(3.f, 1.f, 2.f, 3.f);
+	LG_Vector4D V2(3.f, 1.f, 2.f, 3.f);
+	EXPECT_TRUE(V1.Equals(V2, LG_Math::DELTA));
+}
+
+//! Operator + between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_Plus_Vector)
+{
+	/// The result vector between the first vector plus the second vector.
+	LG_Vector4D VectorResult = LG_Vector4D(7.1f, 2.2f, 1.0f, 2.3f) + LG_Vector4D(3.6f, 4.5f, 2.5f, 5.5f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector4D(10.7f, 6.7f, 3.5f, 7.8f));
+}
+
+//! Operator - between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_Minus_Vector)
+{
+	/// The result vector between the first vector minus the second vector.
+	LG_Vector4D VectorResult = LG_Vector4D(2.6f, 2.2f, 1.0f, 5.f) - LG_Vector4D(4.6f, 1.5f, 2.5f, 4.f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector4D(-2.0f, 0.7f, -1.5f, 1.f), LG_Math::DELTA));
+}
+
+//! Operator * between 1 Vector and 1 number Test.
+TEST(Vector4D_Operator, Vector_Times_Float)
+{
+	/// The result vector between the first vector times the float value.
+	LG_Vector4D VectorResult = LG_Vector4D(3.5f, 6.7f, 2.0f, 6.f) * 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector4D(10.5f, 20.1f, 6.0f, 18.f), LG_Math::DELTA));
+}
+
+//! Operator * between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_Times_Vector)
+{
+	/// The result vector between the first vector times the second vector.
+	LG_Vector4D VectorResult = LG_Vector4D(3.5f, 6.7f, 5.0f, 4.f) * LG_Vector4D(2.2f, 1.5f, 5.0f, 7.f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector4D(7.7f, 10.05f, 25.0f, 28.f), LG_Math::DELTA));
+}
+
+//! operator / between 1 vector and 1 number test.
+TEST(Vector4D_Operator, Vector_DividedBy_Float)
+{
+	/// the result vector between the first vector divided by the float value.
+	LG_Vector4D VectorRes = LG_Vector4D(3.5f, 6.7f, 3.0f, 6.f) / 3;
+	/// if the result vector is the same that the other vector.
+	EXPECT_TRUE(VectorRes.Equals(LG_Vector4D(1.16666f, 2.23333f, 1.0f, 2.f), LG_Math::DELTA));
+}
+
+//! Operator / between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_DividedBy_Vector)
+{
+	/// The result vector between the first vector divided by the second vector.
+	LG_Vector4D VectorResult = LG_Vector4D(3.5f, 6.7f, 25.0f, 36.f) / LG_Vector4D(2.2f, 1.5f, 5.0f, 6.f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector4D(1.59090f, 4.46666f, 5.0f, 6.f), LG_Math::DELTA));
+}
+
+//! Operator == between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_Equal_Vector)
+{
+	/// IF the first vector is the same that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector4D(3.50000000f, 6.70000000f, 6.70000000f, 5.5f) == LG_Vector4D(3.50000000f, 6.70000000f, 6.70000000f, 5.5f));
+}
+
+//! Operator != between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_Different_Vector)
+{
+	/// IF the first vector is different that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector4D(3.50000500f, 6.70000000f, 6.70000000f, 5.5f) != LG_Vector4D(3.50000000f, 6.70000001f, 6.70000000f, 8.f));
+}
+
+//! Operator < between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_LeesThan_Vector)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector4D(3.50000100f, 6.70000100f, 6.70000100f, 5.3f) < LG_Vector4D(3.50010000f, 6.70100000f, 6.70100000f, 5.4f));
+}
+
+//! Operator < between 1 Vector and 1 Value Test.
+TEST(Vector4D_Operator, Vector_LessThan_Float)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector4D(3.50000100f, 6.70000100f, 6.70000000f, 5.5f) < 7.00023015f);
+}
+
+//! Operator > between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_GreaterThan_Vector)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector4D(3.50000100f, 6.70000100f, 6.70000100f, 5.5f) > LG_Vector4D(3.50010000f, 6.70100000f, 6.70100000f, 5.56));
+}
+
+//! Operator > between 1 Vector and 1 Value Test.
+TEST(Vector4D_Operator, Vector_GreaterThan_Float)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector4D(3.50000100f, 6.70000100f, 6.70000000f, 5.5f) > 7.00023015f);
+}
+
+//! Operator <= between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_LessOrEqualThan_Vector)
+{
+	/// IF the first vector is less or equal that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector4D(3.50000100f, 6.70100000f, 5.01000000f, 5.5f) <= LG_Vector4D(3.50010000f, 6.70100000f, 5.10000000f, 5.5f));
+}
+
+//! Operator <= between 1 Vector and 1 Value Test.
+TEST(Vector4D_Operator, Vector_LessOrEqualThan_Float)
+{
+	/// IF the first vector is less that the second vector return true, otherwise return false.
+	EXPECT_TRUE(LG_Vector4D(3.50000100f, 7.00023015f, 5.00000000f, 7.00023015f) <= 7.00023015f);
+}
+
+//! Operator >= between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_GreaterOrEqualThan_Vector)
+{
+	/// IF the first vector is greater or equal that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector4D(3.50000100f, 6.70100000f, 5.01000000f, 5.5f) >= LG_Vector4D(3.50010000f, 6.70100000f, 5.00000100f, 5.5f));
+}
+
+//! Operator >= between 1 Vector and 1 Value Test.
+TEST(Vector4D_Operator, Vector_GreaterOrEqualThan_Float)
+{
+	/// IF the first vector is greater that the second vector return false, otherwise return true.
+	EXPECT_FALSE(LG_Vector4D(3.50000100f, 7.00023015f, 5.00000000f, 7.0f) >= 7.00023015f);
+}
+
+//! Operator += between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_PlusEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector4D VectorResult(7.1f, 2.2f, 5.0f, 20.f);
+	/// The result vector between the first vector plus the second vector.
+	VectorResult += LG_Vector4D(3.6f, 4.5f, 5.0f, 10.f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult == LG_Vector4D(10.7f, 6.7f, 10.0f, 30.f));
+}
+
+//! Operator -= between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_MinusEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector4D VectorResult(2.6f, 2.2f, 5.0f, 20.0f);
+	/// The result vector between the first vector minus the second vector.
+	VectorResult -= LG_Vector4D(4.6f, 1.5f, 5.0f, 10.f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector4D(-2.0f, 0.7f, 0.0f, 10.f), LG_Math::DELTA));
+}
+
+//! Operator *= between 1 Vector and 1 number Test.
+TEST(Vector4D_Operator, Vector_TimesEqual_Float)
+{
+	/// The result vector.
+	LG_Vector4D VectorResult(3.50000000f, 6.70000000f, 2.00000000f, 10.f);
+	/// The result vector between the first vector times the float value.
+	VectorResult *= 3.00000000f;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector4D(10.5f, 20.1f, 6.0f, 30.f), LG_Math::DELTA));
+}
+
+//! Operator *= between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_TimesEqual_Vector)
+{
+	/// The result vector.
+	LG_Vector4D VectorResult(3.5f, 6.7f, 2.0f, 5.f);
+	/// The result vector between the first vector times the second vector.
+	VectorResult *= LG_Vector4D(2.2f, 1.5f, 3.0f, 5.f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector4D(7.7f, 10.05f, 6.0f, 25.f), LG_Math::DELTA));
+}
+
+//! Operator /= between 1 Vector and 1 number Test.
+TEST(Vector4D_Operator, Vector_DivideEqualBy_Float)
+{
+	/// The result vector.
+	LG_Vector4D VectorResult(3.5f, 6.7f, 6.0f, 36.f);
+	/// The result vector between the first vector divided by the float value.
+	VectorResult /= 3;
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector4D(1.16666f, 2.23333f, 2.0f, 12.f), LG_Math::DELTA));
+}
+
+//! Operator /= between 2 Vectors Test.
+TEST(Vector4D_Operator, Vector_DivideEqualBy_Vector)
+{
+	/// The result vector.
+	LG_Vector4D VectorResult(3.5f, 6.7f, 6.0f, 10.f);
+	/// The result vector between the first vector divided by the second vector.
+	VectorResult /= LG_Vector4D(2.2f, 1.5f, 2.0f, 10.f);
+	/// If the result vector is the same that the OtherVector.
+	EXPECT_TRUE(VectorResult.Equals(LG_Vector4D(1.59090f, 4.46666f, 3.0f, 1.f), LG_Math::DELTA));
+}
+
+///************************************************************************/
 ///*                     Utilities_Matrices_UnitTest                      */
 ///************************************************************************/
 
