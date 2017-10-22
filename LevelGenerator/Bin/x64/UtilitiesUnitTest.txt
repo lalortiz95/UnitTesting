@@ -1,5 +1,5 @@
 Running main() from gtest_main.cc
-[==========] Running 97 tests from 9 test cases.
+[==========] Running 159 tests from 13 test cases.
 [----------] Global test environment set-up.
 [----------] 10 tests from Wrapping_Var
 [ RUN      ] Wrapping_Var.Char_8_Bits
@@ -13,7 +13,7 @@ Running main() from gtest_main.cc
 [ RUN      ] Wrapping_Var.Double_128_Bits
 [       OK ] Wrapping_Var.Double_128_Bits (0 ms)
 [ RUN      ] Wrapping_Var.Unsigned_Char_8_Bits
-[       OK ] Wrapping_Var.Unsigned_Char_8_Bits (0 ms)
+[       OK ] Wrapping_Var.Unsigned_Char_8_Bits (1 ms)
 [ RUN      ] Wrapping_Var.Unsigned_Short_16_Bits
 [       OK ] Wrapping_Var.Unsigned_Short_16_Bits (0 ms)
 [ RUN      ] Wrapping_Var.Unsigned_Int_32_Bits
@@ -41,7 +41,7 @@ Running main() from gtest_main.cc
 [       OK ] Math_Constant.Epsilon (0 ms)
 [ RUN      ] Math_Constant.Max_Float_Presition
 [       OK ] Math_Constant.Max_Float_Presition (0 ms)
-[----------] 8 tests from Math_Constant (1 ms total)
+[----------] 8 tests from Math_Constant (0 ms total)
 
 [----------] 17 tests from Math_Function
 [ RUN      ] Math_Function.SquareRoot
@@ -84,7 +84,7 @@ Running main() from gtest_main.cc
 [ RUN      ] Vector2D_Function.Magnitude_
 [       OK ] Vector2D_Function.Magnitude_ (0 ms)
 [ RUN      ] Vector2D_Function.DotProduct_
-[       OK ] Vector2D_Function.DotProduct_ (1 ms)
+[       OK ] Vector2D_Function.DotProduct_ (0 ms)
 [ RUN      ] Vector2D_Function.Normalize_
 [       OK ] Vector2D_Function.Normalize_ (0 ms)
 [ RUN      ] Vector2D_Function.Equals_
@@ -92,7 +92,7 @@ Running main() from gtest_main.cc
 [ RUN      ] Vector2D_Function.StaticMagnitude
 [       OK ] Vector2D_Function.StaticMagnitude (0 ms)
 [ RUN      ] Vector2D_Function.StaticDotProduct
-[       OK ] Vector2D_Function.StaticDotProduct (0 ms)
+[       OK ] Vector2D_Function.StaticDotProduct (1 ms)
 [ RUN      ] Vector2D_Function.StaticNormalize
 [       OK ] Vector2D_Function.StaticNormalize (0 ms)
 [----------] 7 tests from Vector2D_Function (1 ms total)
@@ -157,7 +157,7 @@ Running main() from gtest_main.cc
 [       OK ] Vector2DI_Function.StaticDotProduct (0 ms)
 [ RUN      ] Vector2DI_Function.StaticNormalize
 [       OK ] Vector2DI_Function.StaticNormalize (0 ms)
-[----------] 6 tests from Vector2DI_Function (0 ms total)
+[----------] 6 tests from Vector2DI_Function (1 ms total)
 
 [----------] 22 tests from Vector2DI_Operator
 [ RUN      ] Vector2DI_Operator.Vector_Plus_Vector
@@ -189,9 +189,9 @@ Running main() from gtest_main.cc
 [ RUN      ] Vector2DI_Operator.Vector_LessOrEqualThan_Float
 [       OK ] Vector2DI_Operator.Vector_LessOrEqualThan_Float (0 ms)
 [ RUN      ] Vector2DI_Operator.Vector_GreaterOrEqualThan_Vector
-[       OK ] Vector2DI_Operator.Vector_GreaterOrEqualThan_Vector (1 ms)
+[       OK ] Vector2DI_Operator.Vector_GreaterOrEqualThan_Vector (0 ms)
 [ RUN      ] Vector2DI_Operator.Vector_GreaterOrEqualThan_Float
-[       OK ] Vector2DI_Operator.Vector_GreaterOrEqualThan_Float (0 ms)
+[       OK ] Vector2DI_Operator.Vector_GreaterOrEqualThan_Float (1 ms)
 [ RUN      ] Vector2DI_Operator.Vector_PlusEqual_Vector
 [       OK ] Vector2DI_Operator.Vector_PlusEqual_Vector (0 ms)
 [ RUN      ] Vector2DI_Operator.Vector_MinusEqual_Vector
@@ -205,6 +205,142 @@ Running main() from gtest_main.cc
 [ RUN      ] Vector2DI_Operator.Vector_DivideEqualBy_Vector
 [       OK ] Vector2DI_Operator.Vector_DivideEqualBy_Vector (0 ms)
 [----------] 22 tests from Vector2DI_Operator (1 ms total)
+
+[----------] 9 tests from Vector3D_Function
+[ RUN      ] Vector3D_Function.Magnitude_
+[       OK ] Vector3D_Function.Magnitude_ (0 ms)
+[ RUN      ] Vector3D_Function.StaticMagnitude
+[       OK ] Vector3D_Function.StaticMagnitude (0 ms)
+[ RUN      ] Vector3D_Function.DotProduct_
+[       OK ] Vector3D_Function.DotProduct_ (0 ms)
+[ RUN      ] Vector3D_Function.StaitcDotProduct
+[       OK ] Vector3D_Function.StaitcDotProduct (0 ms)
+[ RUN      ] Vector3D_Function.CrossProduct_
+[       OK ] Vector3D_Function.CrossProduct_ (0 ms)
+[ RUN      ] Vector3D_Function.StaticCrossProduct
+[       OK ] Vector3D_Function.StaticCrossProduct (0 ms)
+[ RUN      ] Vector3D_Function.Normalize_
+[       OK ] Vector3D_Function.Normalize_ (0 ms)
+[ RUN      ] Vector3D_Function.StaticNormalize
+[       OK ] Vector3D_Function.StaticNormalize (0 ms)
+[ RUN      ] Vector3D_Function.Equals_
+[       OK ] Vector3D_Function.Equals_ (0 ms)
+[----------] 9 tests from Vector3D_Function (1 ms total)
+
+[----------] 22 tests from Vector3D_Operator
+[ RUN      ] Vector3D_Operator.Vector_Plus_Vector
+[       OK ] Vector3D_Operator.Vector_Plus_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_Minus_Vector
+[       OK ] Vector3D_Operator.Vector_Minus_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_Times_Float
+[       OK ] Vector3D_Operator.Vector_Times_Float (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_Times_Vector
+[       OK ] Vector3D_Operator.Vector_Times_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_DividedBy_Float
+[       OK ] Vector3D_Operator.Vector_DividedBy_Float (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_DividedBy_Vector
+[       OK ] Vector3D_Operator.Vector_DividedBy_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_Equal_Vector
+[       OK ] Vector3D_Operator.Vector_Equal_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_Different_Vector
+[       OK ] Vector3D_Operator.Vector_Different_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_LeesThan_Vector
+[       OK ] Vector3D_Operator.Vector_LeesThan_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_LessThan_Float
+[       OK ] Vector3D_Operator.Vector_LessThan_Float (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_GreaterThan_Vector
+[       OK ] Vector3D_Operator.Vector_GreaterThan_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_GreaterThan_Float
+[       OK ] Vector3D_Operator.Vector_GreaterThan_Float (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_LessOrEqualThan_Vector
+[       OK ] Vector3D_Operator.Vector_LessOrEqualThan_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_LessOrEqualThan_Float
+[       OK ] Vector3D_Operator.Vector_LessOrEqualThan_Float (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_GreaterOrEqualThan_Vector
+[       OK ] Vector3D_Operator.Vector_GreaterOrEqualThan_Vector (1 ms)
+[ RUN      ] Vector3D_Operator.Vector_GreaterOrEqualThan_Float
+[       OK ] Vector3D_Operator.Vector_GreaterOrEqualThan_Float (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_PlusEqual_Vector
+[       OK ] Vector3D_Operator.Vector_PlusEqual_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_MinusEqual_Vector
+[       OK ] Vector3D_Operator.Vector_MinusEqual_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_TimesEqual_Float
+[       OK ] Vector3D_Operator.Vector_TimesEqual_Float (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_TimesEqual_Vector
+[       OK ] Vector3D_Operator.Vector_TimesEqual_Vector (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_DivideEqualBy_Float
+[       OK ] Vector3D_Operator.Vector_DivideEqualBy_Float (0 ms)
+[ RUN      ] Vector3D_Operator.Vector_DivideEqualBy_Vector
+[       OK ] Vector3D_Operator.Vector_DivideEqualBy_Vector (0 ms)
+[----------] 22 tests from Vector3D_Operator (1 ms total)
+
+[----------] 9 tests from Vector4D_Function
+[ RUN      ] Vector4D_Function.Magnitude_
+[       OK ] Vector4D_Function.Magnitude_ (0 ms)
+[ RUN      ] Vector4D_Function.StaticMagnitude
+[       OK ] Vector4D_Function.StaticMagnitude (0 ms)
+[ RUN      ] Vector4D_Function.DotProduct_
+[       OK ] Vector4D_Function.DotProduct_ (0 ms)
+[ RUN      ] Vector4D_Function.StaitcDotProduct
+[       OK ] Vector4D_Function.StaitcDotProduct (0 ms)
+[ RUN      ] Vector4D_Function.CrossProduct_
+[       OK ] Vector4D_Function.CrossProduct_ (0 ms)
+[ RUN      ] Vector4D_Function.StaticCrossProduct
+[       OK ] Vector4D_Function.StaticCrossProduct (0 ms)
+[ RUN      ] Vector4D_Function.Normalize_
+[       OK ] Vector4D_Function.Normalize_ (0 ms)
+[ RUN      ] Vector4D_Function.StaticNormalize
+[       OK ] Vector4D_Function.StaticNormalize (0 ms)
+[ RUN      ] Vector4D_Function.Equals_Function
+[       OK ] Vector4D_Function.Equals_Function (1 ms)
+[----------] 9 tests from Vector4D_Function (1 ms total)
+
+[----------] 22 tests from Vector4D_Operator
+[ RUN      ] Vector4D_Operator.Vector_Plus_Vector
+[       OK ] Vector4D_Operator.Vector_Plus_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_Minus_Vector
+[       OK ] Vector4D_Operator.Vector_Minus_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_Times_Float
+[       OK ] Vector4D_Operator.Vector_Times_Float (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_Times_Vector
+[       OK ] Vector4D_Operator.Vector_Times_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_DividedBy_Float
+[       OK ] Vector4D_Operator.Vector_DividedBy_Float (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_DividedBy_Vector
+[       OK ] Vector4D_Operator.Vector_DividedBy_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_Equal_Vector
+[       OK ] Vector4D_Operator.Vector_Equal_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_Different_Vector
+[       OK ] Vector4D_Operator.Vector_Different_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_LeesThan_Vector
+[       OK ] Vector4D_Operator.Vector_LeesThan_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_LessThan_Float
+[       OK ] Vector4D_Operator.Vector_LessThan_Float (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_GreaterThan_Vector
+[       OK ] Vector4D_Operator.Vector_GreaterThan_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_GreaterThan_Float
+[       OK ] Vector4D_Operator.Vector_GreaterThan_Float (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_LessOrEqualThan_Vector
+[       OK ] Vector4D_Operator.Vector_LessOrEqualThan_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_LessOrEqualThan_Float
+[       OK ] Vector4D_Operator.Vector_LessOrEqualThan_Float (1 ms)
+[ RUN      ] Vector4D_Operator.Vector_GreaterOrEqualThan_Vector
+[       OK ] Vector4D_Operator.Vector_GreaterOrEqualThan_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_GreaterOrEqualThan_Float
+[       OK ] Vector4D_Operator.Vector_GreaterOrEqualThan_Float (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_PlusEqual_Vector
+[       OK ] Vector4D_Operator.Vector_PlusEqual_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_MinusEqual_Vector
+[       OK ] Vector4D_Operator.Vector_MinusEqual_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_TimesEqual_Float
+[       OK ] Vector4D_Operator.Vector_TimesEqual_Float (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_TimesEqual_Vector
+[       OK ] Vector4D_Operator.Vector_TimesEqual_Vector (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_DivideEqualBy_Float
+[       OK ] Vector4D_Operator.Vector_DivideEqualBy_Float (0 ms)
+[ RUN      ] Vector4D_Operator.Vector_DivideEqualBy_Vector
+[       OK ] Vector4D_Operator.Vector_DivideEqualBy_Vector (0 ms)
+[----------] 22 tests from Vector4D_Operator (1 ms total)
 
 [----------] 3 tests from Utilities_Matrix3D
 [ RUN      ] Utilities_Matrix3D.Zero_Function
@@ -220,9 +356,3 @@ Running main() from gtest_main.cc
 [       OK ] Utilities_Matrix4D.Zero_Function (0 ms)
 [ RUN      ] Utilities_Matrix4D.Identity_Function
 Presione una tecla para continuar . . . 
-[       OK ] Utilities_Matrix4D.Identity_Function (2091 ms)
-[----------] 2 tests from Utilities_Matrix4D (2091 ms total)
-
-[----------] Global test environment tear-down
-[==========] 97 tests from 9 test cases ran. (2101 ms total)
-[  PASSED  ] 97 tests.

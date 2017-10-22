@@ -783,60 +783,60 @@ TEST(Vector2DI_Operator, Vector_DivideEqualBy_Vector)
 ///*                     Utilities_Vector3D_UnitTest                      */
 ///************************************************************************/
 
-TEST(Utilities_Vector3D, Magnitude_Function)
+TEST(Vector3D_Function, Magnitude_)
 {
 	LG_Vector3D V(0.f, 5.f, 0.f);
 	EXPECT_TRUE(V.Magnitude() == 5.0f);
 }
 
-TEST(Utilities_Vector3D, StaticMagnitude_Function)
+TEST(Vector3D_Function, StaticMagnitude)
 {
 	LG_Vector3D V(0.f, 5.f, 0.f);
 	float fMAg = LG_Vector3D::Magnitude(V);
 	EXPECT_TRUE(fMAg == 5.0f);
 }
 
-TEST(Utilities_Vector3D, DotProduct_Function)
+TEST(Vector3D_Function, DotProduct_)
 {
 	LG_Vector3D V1(1.f, 2.f, 3.f);
 	LG_Vector3D V2(6.f, 7.f, 8.f);
 	EXPECT_TRUE(V1.Dot(V2) == 44.f);
 }
 
-TEST(Utilities_Vector3D, StaitcDotProduct_Function)
+TEST(Vector3D_Function, StaitcDotProduct)
 {
 	LG_Vector3D V1(1.f, 2.f, 3.f);
 	LG_Vector3D V2(6.f, 7.f, 8.f);
 	EXPECT_TRUE(LG_Vector3D::Dot(V1, V2) == 44.f);
 }
 
-TEST(Utilities_Vector3D, CrossProduct_Function)
+TEST(Vector3D_Function, CrossProduct_)
 {
 	LG_Vector3D V1(2.f, 1.f, -1.f);
 	LG_Vector3D V2(-3.f, 4.f, 1.f);
 	EXPECT_TRUE(V1.Cross3(V2) == LG_Vector3D(-5.f, -1.f, -11.f));
 }
 
-TEST(Utilities_Vector3D, StaticCrossProduct_Function)
+TEST(Vector3D_Function, StaticCrossProduct)
 {
 	LG_Vector3D V1(2.f, 1.f, -1.f);
 	LG_Vector3D V2(-3.f, 4.f, 1.f);
 	EXPECT_TRUE(LG_Vector3D::Cross3(V1, V2) == LG_Vector3D(5.f, 1.f, 11.f));
 }
 
-TEST(Utilities_Vector3D, Normalize_Function)
+TEST(Vector3D_Function, Normalize_)
 {
 	LG_Vector3D V(3.f, 1.f, 2.f);
 	EXPECT_TRUE(V.Normalize() == LG_Vector3D(0.801783681, 0.267261237, 0.534522474));
 }
 
-TEST(Utilities_Vector3D, StaticNormalize_Function)
+TEST(Vector3D_Function, StaticNormalize)
 {
 	LG_Vector3D V(3.f, 1.f, 2.f);
 	EXPECT_TRUE(LG_Vector3D::Normalize(V) == LG_Vector3D(0.801783681, 0.267261237, 0.534522474));
 }
 
-TEST(Utilities_Vector3D, Equals_Function)
+TEST(Vector3D_Function, Equals_)
 {
 	LG_Vector3D V1(3.f, 1.f, 2.f);
 	LG_Vector3D V2(3.f, 1.f, 2.f);
@@ -1038,61 +1038,61 @@ TEST(Vector3D_Operator, Vector_DivideEqualBy_Vector)
 ///************************************************************************/
 
 
-TEST(Utilities_Vector4D, Magnitude_Function)
+TEST(Vector4D_Function, Magnitude_)
 {
 	LG_Vector4D V(0.f, 5.f, 0.f, 0.f);
 	EXPECT_TRUE(V.Magnitude() == 5.0f);
 }
 
-TEST(Utilities_Vector4D, StaticMagnitude_Function)
+TEST(Vector4D_Function, StaticMagnitude)
 {
 	LG_Vector4D V(0.f, 5.f, 0.f, 0.f);
 	float fMAg = LG_Vector4D::Magnitude(V);
 	EXPECT_TRUE(fMAg == 5.0f);
 }
 
-TEST(Utilities_Vector4D, DotProduct_Function)
+TEST(Vector4D_Function, DotProduct_)
 {
 	LG_Vector4D V1(1.f, 2.f, 3.f, 0.f);
 	LG_Vector4D V2(6.f, 7.f, 8.f, 0.f);
 	EXPECT_TRUE(V1.Dot(V2) == 44.f);
 }
 
-TEST(Utilities_Vector4D, StaitcDotProduct_Function)
+TEST(Vector4D_Function, StaitcDotProduct)
 {
 	LG_Vector4D V1(1.f, 2.f, 3.f, 0.f);
 	LG_Vector4D V2(6.f, 7.f, 8.f, 0.f);
 	EXPECT_TRUE(LG_Vector4D::Dot(V1, V2) == 44.f);
 }
 
-TEST(Utilities_Vector4D, CrossProduct_Function)
+TEST(Vector4D_Function, CrossProduct_)
 {
 	LG_Vector4D V1(2.f, 1.f, -1.f, 10.f);
 	LG_Vector4D V2(-3.f, 4.f, 1.f, 2.f);
 	EXPECT_TRUE(V1.Cross(V2) == LG_Vector4D(5.f, 1.f, 11.f, 0.f));
 }
 
-TEST(Utilities_Vector4D, StaticCrossProduct_Function)
+TEST(Vector4D_Function, StaticCrossProduct)
 {
 	LG_Vector4D V1(2.f, 1.f, -1.f, 0.f);
 	LG_Vector4D V2(-3.f, 4.f, 1.f, 0.f);
 	EXPECT_TRUE(LG_Vector4D::Cross(V1, V2) == LG_Vector4D(5.f, 1.f, 11.f, 0.f));
 }
 
-TEST(Utilities_Vector4D, Normalize_Function)
+TEST(Vector4D_Function, Normalize_)
 {
 	LG_Vector4D V(3.f, 1.f, 2.f, 0.f);
 	V.Normalize();
 	EXPECT_TRUE(V == LG_Vector4D(0.801783681, 0.267261237, 0.534522474, 0.f));
 }
 
-TEST(Utilities_Vector4D, StaticNormalize_Function)
+TEST(Vector4D_Function, StaticNormalize)
 {
 	LG_Vector4D V(3.f, 1.f, 2.f, 0.f);
 	EXPECT_TRUE(LG_Vector4D::Normalize(V) == LG_Vector4D(0.801783681, 0.267261237, 0.534522474, 0.f));
 }
 
-TEST(Utilities_Vector4D, Equals_Function)
+TEST(Vector4D_Function, Equals_Function)
 {
 	LG_Vector4D V1(3.f, 1.f, 2.f, 3.f);
 	LG_Vector4D V2(3.f, 1.f, 2.f, 3.f);
