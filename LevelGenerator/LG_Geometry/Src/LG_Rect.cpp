@@ -6,10 +6,12 @@ namespace LevelGenerator
 	//! Default Constructor.
 	LG_Rect::LG_Rect()
 	{
+		m_Direction = LG_Vector3D(0, 0, 0);
 	}
 
 	LG_Rect::LG_Rect(LG_Vector3D Position, float fWidth, float fHeight)
 	{
+		m_Direction = LG_Vector3D(0, 0, 0);
 		Init(Position, fWidth, fHeight);
 	}
 
@@ -60,11 +62,16 @@ namespace LevelGenerator
 	//! 
 	void LG_Rect::Init(LG_Node NodePosition, float fWidth, float fHeight)
 	{
+		
 		/// assign value to the variable
 		m_CenterPosition = NodePosition;
 		m_fHeight = fHeight;
 		m_fWidth = fWidth;
 
+		if (fWidth > fHeight)
+			m_fRadius = fWidth / 2;
+		else
+			m_fRadius = fHeight / 2;
 		/// We initialize all the nodes positions.
 		m_TopLeft.m_Position.X = m_CenterPosition.m_Position.X - (fWidth / 2);
 		m_TopLeft.m_Position.Y = m_CenterPosition.m_Position.Y + (fHeight / 2);
@@ -100,6 +107,22 @@ namespace LevelGenerator
 			RotatedNode.X <= m_BottomRight.m_Position.X &&
 			RotatedNode.Y <= m_TopLeft.m_Position.Y &&
 			RotatedNode.Y >= m_BottomRight.m_Position.Y);
+	}
+
+	void LG_Rect::RestructureNodes()
+	{
+		/// We initialize all the nodes positions.
+		m_TopLeft.m_Position.X = m_CenterPosition.m_Position.X - (m_fWidth / 2);
+		m_TopLeft.m_Position.Y = m_CenterPosition.m_Position.Y + (m_fHeight / 2);
+
+		m_BottomLeft.m_Position.X = m_TopLeft.m_Position.X;
+		m_BottomLeft.m_Position.Y = m_TopLeft.m_Position.Y - m_fHeight;
+
+		m_TopRight.m_Position.X = m_TopLeft.m_Position.X + m_fWidth;
+		m_TopRight.m_Position.Y = m_TopLeft.m_Position.Y;
+
+		m_BottomRight.m_Position.X = m_TopRight.m_Position.X;
+		m_BottomRight.m_Position.Y = m_BottomLeft.m_Position.Y;
 	}
 
 }

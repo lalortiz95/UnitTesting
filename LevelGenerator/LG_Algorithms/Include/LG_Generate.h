@@ -36,9 +36,29 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
+		 *	@var Constant that define the force separation.
+		 */
+		static const int32 SEPARATION_FORCE;
+
+		/**
+		 *	@var Constant that define a Max Force.
+		 */
+		static const int32 MAX_FORCE;
+
+		/**
+		 *	@var Constant that define a Min Force.
+		 */
+		static const int32 MIN_FORCE;
+
+		/**
 		 *	@var Flag that determinate when we can insert a node in front or back of the isoline.
 		 */
 		bool m_bInsertFront;
+
+		/**
+		 *	@var Spawn Zone
+		 */
+		LG_Rect m_SpawnZone;
 
 		/**
 		 *	@var An object of the marching square class. It's used to run the algorithm.
@@ -54,11 +74,6 @@ namespace LevelGenerator
 		 *	@var An object of the Minimum spanning tree class. It's used to run it's algorithm.
 		 */
 		LG_MST m_MST;
-
-		/**
-		 *	@var Spawn Zone
-		 */
-		LG_Rect m_SpawnZone;
 
 		/**
 		 *	@var An object of the delaunay triangulation class. It's used to run it's algorithm.
@@ -123,6 +138,13 @@ namespace LevelGenerator
 		 *	@brief This calls all the algorithms and put them together to generate a procedural level.
 		 */
 		void Run();
+
+		/**
+		 *	@brief This function update the algoritmhs.
+		 *	@param float fDelta: The time to actualizate.
+		 * 	@return true if we need to separate at least one rect, otherwise false.
+		 */
+		bool Update(float fDelta);
 
 		/**
 		 *	@brief This function generate a isoline from Marching Square Cases.
@@ -204,8 +226,27 @@ namespace LevelGenerator
 		void SetTileAs(LG_Tile& TileToChangeFlag);
 
 		/**
-		 *	@brief This function separate the rooms
+		 *	@brief This function separate the rooms.
+		 *	@param LG_Rect* pActualRect: The actual rect.
 		 */
-		void SeparationRooms();
+		void SeparationRooms(LG_Rect* pActualRect);
+
+		/**
+		 *	@brief This function reduce the nodes in the isolines.
+		 */
+		void ReducedIsolines();
+
+		/**
+		 *	@brief This function obtain a cloud nodes from the isolines vector.
+		 */
+		void GetNoudesCloud();
+
+		/**
+		 *	@brief This function limits the strength of a given vector.
+		 *	@param LG_Vector3D VectorTruncate: The vector that we want to truncate.
+		 *	@return the vector truncate.
+		 */
+		LG_Vector3D TruncateVector(LG_Vector3D VectorTruncate);
+	
 	};
 }

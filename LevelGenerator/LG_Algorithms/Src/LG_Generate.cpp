@@ -3,6 +3,16 @@
 
 namespace LevelGenerator
 {
+
+	//! Constant to use a separation force.
+	const int32 LG_Generate::SEPARATION_FORCE = 30;
+
+	//! Constant that define a max force.
+	const int32 LG_Generate::MAX_FORCE = 10;
+
+	//! Constant that define a min force.
+	const int32 LG_Generate::MIN_FORCE = 2;
+
 	//! Default constructor.
 	LG_Generate::LG_Generate()
 	{
@@ -35,6 +45,19 @@ namespace LevelGenerator
 		/// Releases memory.
 		if (m_pActualTile != nullptr)
 			m_pActualTile->Destroy();
+
+		if (m_RoomsVector.size() != 0)
+		{
+			for (Vector<LG_Rect*>::iterator itt = m_RoomsVector.begin();
+				itt != m_RoomsVector.end(); ++itt)
+			{
+				LG_Rect* pTemp = *itt;
+				pTemp->Destroy();
+				delete pTemp;
+				pTemp = nullptr;
+			}
+			m_RoomsVector.clear();
+		}
 	}
 
 	//! This calls all the algorithms and put them together to generate a procedural level.
@@ -42,39 +65,54 @@ namespace LevelGenerator
 	{
 		/// Initialize the variables.
 		Initialize();
-
-		/// 
-		GenerateRooms(30, LG_Vector3D(20, 20, 0), LG_Vector3D(50, 50, 0));
-
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
+		/// 
+		GenerateRooms(30, LG_Vector3D(20, 20, 0), LG_Vector3D(50, 50, 0));
+		///
+		ReducedIsolines();
+		///
+		GetNoudesCloud();
 
-		/// We reduce our vector of isolines.
-		for (int32 i = 0; i < m_IsolineVector.size(); ++i)
-		{
-			m_RDP.Run(0.1f, m_IsolineVector[i]);
-			m_FinalIsolineVector.push_back(m_RDP.m_FinalIsoline);
-			m_RDP.Destroy();
-		}
-
-		/// Store in the nodes cloud all of the nodes in the isoline vector.
-		for (int32 i = 0; i < m_FinalIsolineVector.size(); ++i)
-		{
-			for (int32 j = 0; j < m_FinalIsolineVector[i].m_NodeVector.size(); ++j)
-			{
-				m_FinalIsolineVector[i].m_NodeVector[j].Init();
-				m_ReducedNoudCloud.push_back(&m_FinalIsolineVector[i].m_NodeVector[j]);
-			}
-		}
-
+		while (!Update(0.016f));
 		/// 
 		m_DT.Run((int32)m_SpawnZone.m_fWidth,
 			(int32)m_SpawnZone.m_fHeight,
 			m_SpawnZone.m_CenterPosition.m_Position,
 			&m_RoomsNodesCloud);
 
+		
+
 		///
 		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
+	}
+
+	//! This function update the generate object.
+	bool LG_Generate::Update(float fDelta)
+	{
+		bool bCanStopSeparate = true;
+		/// Iterate the rooms vector to separate.
+		for (Vector<LG_Rect*>::iterator itt = m_RoomsVector.begin();
+			itt != m_RoomsVector.end(); ++itt)
+		{
+			/// Calls the function rooms separation to separate the rooms.
+			SeparationRooms(*itt);
+			/// Truncate the direction of the iterating room.
+			(*itt)->m_Direction = TruncateVector((*itt)->m_Direction);
+			/// If the magnitud of the direction vector is less than the min force.
+			if ((*itt)->m_Direction.Magnitude() <= MIN_FORCE)
+			{
+				(*itt)->m_Direction = LG_Vector3D(0, 0, 0);
+			}
+			/// Else actualize the new position of the rect.
+			else
+			{
+				(*itt)->m_CenterPosition.m_Position += (*itt)->m_Direction * fDelta;
+				(*itt)->RestructureNodes();
+				bCanStopSeparate = false;
+			}
+		}
+		return bCanStopSeparate;
 	}
 
 	//! This function generate a isoline from Marching Square Cases.
@@ -374,7 +412,6 @@ namespace LevelGenerator
 	void LG_Generate::GenerateRooms(int32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize)
 	{
 
-		
 		/// Create a area to spawn the dots.
 		//TODO: hacer que el tamaño dependa de la cantidad de cuartos. Quiza que el área para spawn que sea un circulo.
 		m_SpawnZone.Init(LG_Vector3D(250, 250, 0), 500.0f, 500.0f);
@@ -409,7 +446,7 @@ namespace LevelGenerator
 			/// Add the room to the room's vector.
 			m_RoomsVector[i] = NewRect;
 			m_RoomsNodesCloud.push_back(&m_RoomsVector[i]->m_CenterPosition);
-		}		
+		}
 	}
 
 	//! This function set a new actual tile.
@@ -467,9 +504,92 @@ namespace LevelGenerator
 		}
 	}
 
-	void LG_Generate::SeparationRooms()
+	//!
+	void LG_Generate::SeparationRooms(LG_Rect* pActualRect)
 	{
+		int32 iNumRectsInRadius = 0;
+		/// Create a temp vector to store a temporal value.
+		LG_Vector3D Temp; 		
+		/// Create a vector to store the average.
+		LG_Vector3D Average(0, 0, 0);													      
+		float fDistance;															       
 
+		/// Iterating the rooms vector.
+		for (Vector<LG_Rect*>::iterator itt = m_RoomsVector.begin();
+			itt != m_RoomsVector.end(); ++itt)							                 
+		{
+			/// If the iterating rect is diferent that the actual rect.
+			if ((*itt) != pActualRect)								                       
+			{
+				/// We store the temp direction between the actual rect and the iterating rect.
+				Temp = pActualRect->m_CenterPosition.m_Position - (*itt)->m_CenterPosition.m_Position;     
+				/// We obtain the distance between the actual rect and the iterating rect.
+				fDistance = Temp.Magnitude();   
+				/// If the distance is lees or equal that the radius of the actual rect.
+				if (fDistance <= pActualRect->m_fRadius* 2)                              
+				{
+					/// Add the temp vector to the average.
+					Average += Temp;
+					/// We increase the counter to know how many rects are in the radius of the actual rect.
+					iNumRectsInRadius++;                                                          
+				}
+			}
+		}
+
+		if (iNumRectsInRadius != 0)                                                               
+		{
+			Average = Average / iNumRectsInRadius;                                              
+			if (Average.Magnitude() != 0)                                                 
+			{
+				pActualRect->m_Direction += Average.Normalize() * SEPARATION_FORCE; 
+				return ;
+			}
+		}
+		pActualRect->m_Direction = LG_Vector3D(0, 0, 0);
+	}
+
+
+	void LG_Generate::ReducedIsolines()
+	{
+		/// We reduce our vector of isolines.
+		for (int32 i = 0; i < m_IsolineVector.size(); ++i)
+		{
+			m_RDP.Run(0.1f, m_IsolineVector[i]);
+			m_FinalIsolineVector.push_back(m_RDP.m_FinalIsoline);
+			m_RDP.Destroy();
+		}
+	}
+
+	//! 
+	void LG_Generate::GetNoudesCloud()
+	{
+		/// Store in the nodes cloud all of the nodes in the isoline vector.
+		for (int32 i = 0; i < m_FinalIsolineVector.size(); ++i)
+		{
+			for (int32 j = 0; j < m_FinalIsolineVector[i].m_NodeVector.size(); ++j)
+			{
+				m_FinalIsolineVector[i].m_NodeVector[j].Init();
+				m_ReducedNoudCloud.push_back(&m_FinalIsolineVector[i].m_NodeVector[j]);
+			}
+		}
+	}
+
+	//! This function limits the strength of a given vector.
+	LG_Vector3D LG_Generate::TruncateVector(LG_Vector3D VectorTruncate)
+	{
+		/// If the magnitude of the given vector is lees than the max force.
+		if (VectorTruncate.Magnitude() < MAX_FORCE)
+		{
+			/// Return the same vector.
+			return VectorTruncate;
+		}
+
+		/// Else Normalize the vector that we want to truncate and multiply it by the max force.
+		else
+		{
+			/// Return the result vector.
+			return VectorTruncate.Normalize() * MAX_FORCE;
+		}
 	}
 
 }

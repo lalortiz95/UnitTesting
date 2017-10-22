@@ -45,9 +45,19 @@ namespace LevelGenerator
 		float m_fHeight;
 
 		/**
+		 *	@var This variable stores a radius that define an area.
+		 */
+		float m_fRadius;
+
+		/**
 		 *	@var The center position of the rectangle.
 		 */
 		LG_Node m_CenterPosition;
+
+		/**
+		 *	@var The vector that define a direction.
+		 */
+		LG_Vector3D m_Direction;
 
 		/**
 		 *	@var This matrix is used to check collisions easily.
@@ -106,6 +116,11 @@ namespace LevelGenerator
 		 *	@return true if it's inside otherwise false.
 		 */
 		bool CheckCollision(LG_Node ActualNode,LG_Node StartPoistion);
+
+		/**
+		 *	@brief This function restructure the nodes of the rect after we change its position.
+		 */
+		void RestructureNodes();
 	};
 }
 

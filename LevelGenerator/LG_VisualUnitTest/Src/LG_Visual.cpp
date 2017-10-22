@@ -12,12 +12,6 @@ LG_Visual::LG_Visual()
 	m_ScreenSurface = nullptr;
 	m_Renderer = nullptr;
 
-	m_SecondWindow = nullptr;
-	m_SecondDisplayImage = nullptr;
-	m_SecondScreenSurface = nullptr;
-	m_SecondRenderer = nullptr;
-
-	m_bInitSecondWindow = false;
 	m_sFileName = "Resources\\Textures\\HelloWorld.bmp";
 }
 
@@ -89,68 +83,7 @@ bool LG_Visual::Init()
 			success = false;
 		}
 
-		//////////////////////////////////////////////////////////////////////////
-		if (m_bInitSecondWindow)
-		{
-			/// Create Second window
-			m_SecondWindow = SDL_CreateWindow(
-				"Visual UnitTest",
-				SDL_WINDOWPOS_UNDEFINED,
-				SDL_WINDOWPOS_UNDEFINED,
-				SCREEN_WIDTH,
-				SCREEN_HEIGHT,
-				SDL_WINDOW_SHOWN);
-
-			/// Create the renderer.
-			m_SecondRenderer = SDL_CreateRenderer(m_SecondWindow, -1, SDL_RENDERER_ACCELERATED);
-
-			if (m_SecondRenderer == nullptr)
-			{
-				std::cout << "Renderer could not be created! SDL Error: " << SDL_GetError() << std::endl;
-				success = false;
-			}
-			else
-			{
-				//Initialize renderer color
-				SDL_SetRenderDrawColor(m_SecondRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-				//Initialize PNG loading
-				int imgFlags = IMG_INIT_PNG;
-				if (!(IMG_Init(imgFlags) & imgFlags))
-				{
-					std::cout << "SDL_image could not initialize! SDL_image Error: " << IMG_GetError() << std::endl;
-					success = false;
-				}
-			}
-
-			if (m_SecondWindow != nullptr)
-			{
-				m_SecondScreenSurface = SDL_GetWindowSurface(m_SecondWindow);
-
-				SDL_FillRect(m_SecondScreenSurface, nullptr, SDL_MapRGB(
-					m_SecondScreenSurface->format, 0xFF, 0xFF, 0xFF));
-			}
-			else
-			{
-				std::cout << "Window could not be created! SDL_Error:"
-					<< SDL_GetError() << std::endl;
-				success = false;
-			}
-			for (int32 i = 0; i < 20; ++i)
-			{
-				LG_Node newNode;
-				newNode.m_Position = LG_Vector3D(rand() % (SCREEN_WIDTH / 4), rand() % (SCREEN_HEIGHT / 4), 0);
-				m_NodesCloud.push_back(newNode);
-			}
-
-		}
-
-
-		//////////////////////////////////////////////////////////////////////////
 	}
-
-
-	//////////////////////////////////////////////////////////////////////////
 
 	return success;
 }
@@ -196,27 +129,6 @@ void LG_Visual::Destroy()
 	{
 		SDL_DestroyWindow(m_Window);
 		m_Window = nullptr;
-	}
-
-	/// Deallocate the image to display.
-	if (m_SecondDisplayImage != nullptr)
-	{
-		SDL_FreeSurface(m_SecondDisplayImage);
-		m_SecondDisplayImage = nullptr;
-	}
-
-	/// Deallocate the screen surface.
-	if (m_SecondScreenSurface != nullptr)
-	{
-		SDL_FreeSurface(m_SecondScreenSurface);
-		m_SecondScreenSurface = nullptr;
-	}
-
-	/// Destroy window
-	if (m_SecondWindow != nullptr)
-	{
-		SDL_DestroyWindow(m_SecondWindow);
-		m_SecondWindow = nullptr;
 	}
 
 	m_sFileName = "";
@@ -333,8 +245,8 @@ void LG_Visual::Renderer()
 		SDL_Delay(2000);
 	}*/
 
-	LG_Vector3D pos1, pos2;
 	/*/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
+	LG_Vector3D pos1, pos2;
 	for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
 	{
 		pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
@@ -394,6 +306,12 @@ void LG_Visual::Renderer()
 				Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
 
 				SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+
+				/*/// 
+				LG_Circle Circle;
+				Circle.m_fRadius = AlgorithmGeneration.m_RoomsVector[i]->m_fRadius;
+				Circle.m_Position = AlgorithmGeneration.m_RoomsVector[i]->m_CenterPosition.m_Position;
+				DrawCircle(Circle, LG_Vector3D(255, 0, 255), 50);*/
 
 			}
 
@@ -472,7 +390,7 @@ void LG_Visual::Renderer()
 	}
 	////////////////////////////////////////////////////////////////////////////////////////
 
-	/// For para imprimir cada nodo del triangulo como circulo.
+	/*/// For para imprimir cada nodo del triangulo como circulo.
 	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
 	{
 		/// Aqui rendereamos los vertices de cada triangulo.
@@ -488,7 +406,7 @@ void LG_Visual::Renderer()
 			SDL_RenderPresent(m_Renderer);
 		}
 
-	}
+	}*/
 
 
 	////////////////////////////// DEBUG
@@ -553,217 +471,6 @@ void LG_Visual::Renderer()
 	SDL_RenderPresent(m_Renderer);
 }
 
-void LG_Visual::RenderDelaunay()
-{
-	///Clear screen
-	SDL_RenderClear(m_Renderer);
-	///Clear screen second render
-	SDL_RenderClear(m_SecondRenderer);
-
-	/// The class that generates all of the algorithms.
-	LevelGenerator::LG_Generate AlgorithmGeneration;
-
-	/// We generate our algorithms.
-	AlgorithmGeneration.Run();
-
-	LevelGenerator::LG_Vector3D posToSpawn;
-	LevelGenerator::LG_Vector3D Secondpos;
-	LevelGenerator::LG_Vector3D CircumCenter;
-
-
-	/// Aqui rendereamos los ciruclos creados a partir de cada triangulo de la triangulacion.
-	LG_Vector3D Color{ 0,255,0 };
-
-	/// Aqui se rendera los triangulos de la triangulacion.
-	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
-	{
-
-		for (LevelGenerator::int32 j = 0; j < NODES_PER_TRIANGLE; ++j)
-		{
-			posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_pEdges[j]->m_pFirstNode->m_Position;
-			Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_pEdges[j]->m_pSecondNode->m_Position;
-
-			// Draw red line.
-			SDL_SetRenderDrawColor(m_Renderer, 0xFF, 0x00, 0x00, 0xFF);
-			// en la posición de cada nodo dibujar un punto con SDL.
-			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-			///Update screen
-			SDL_RenderPresent(m_Renderer);
-			SDL_Delay(50);
-		}
-		//DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
-		//	Color,
-		//	50);
-		/////Update screen
-		//SDL_RenderPresent(m_Renderer);
-	}
-
-	/// Creates the nodes' pointers to change it's values.
-	LG_Node* pFirstNode = nullptr;
-	LG_Node* pSecondNode = nullptr;
-
-	/// Creates the triangles' pointers to change it's values.
-	LG_Triangle* pFirstTriangle = nullptr;
-	LG_Triangle* pSecondTriangle = nullptr;
-
-	/// Create a edge's pointer to legalize before.
-	LG_Edge* pActualEdge = nullptr;
-	LG_Triangle* pActualTriangle = AlgorithmGeneration.m_DT.m_pTrianglesVector.front();
-	bool bCanStop = false;
-
-	/// counter to exit the while loop.
-	int32 iBreakWhile = 0;
-
-	while (!bCanStop && iBreakWhile < 500)
-	{
-		bCanStop = true;
-		for (int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
-		{
-			if (!AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_bIsChecked)
-			{
-				pActualTriangle = AlgorithmGeneration.m_DT.m_pTrianglesVector[i];
-				break;
-			}
-		}
-
-		for (int32 j = 0; j < EDGES_PER_TRIANGLE; ++j)
-		{
-
-			pActualEdge = pActualTriangle->m_pEdges[j];
-			if (AlgorithmGeneration.m_DT.FindTrianglesToLegalize(pActualEdge, &pFirstTriangle, &pSecondTriangle))
-			{
-				/// 
-				if (AlgorithmGeneration.m_DT.FindNodesToCreatePolygon(pActualEdge, pFirstTriangle, pSecondTriangle, &pFirstNode, &pSecondNode))
-				{
-					/// If at least one of the nodes was inside the circle we change the arista for a legal one.
-					if (pSecondTriangle->m_CircumcircleCircumference.IsDotInside(pFirstNode->m_Position) ||
-						pFirstTriangle->m_CircumcircleCircumference.IsDotInside(pSecondNode->m_Position))
-					{
-
-						for (LevelGenerator::int32 k = 0; k < NODES_PER_TRIANGLE; ++k)
-						{
-							Secondpos = pFirstTriangle->m_pEdges[k]->m_pSecondNode->m_Position;
-							posToSpawn = pFirstTriangle->m_pEdges[k]->m_pFirstNode->m_Position;
-
-							// Draw red line.
-							SDL_SetRenderDrawColor(m_SecondRenderer, 255, 0, 0, 0xFF);
-							// en la posición de cada nodo dibujar un punto con SDL.
-							SDL_RenderDrawLine(m_SecondRenderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-							///Update screen
-							SDL_RenderPresent(m_SecondRenderer);
-							SDL_Delay(100);
-						}
-
-						for (LevelGenerator::int32 k = 0; k < NODES_PER_TRIANGLE; ++k)
-						{
-							Secondpos = pSecondTriangle->m_pEdges[k]->m_pSecondNode->m_Position;
-							posToSpawn = pSecondTriangle->m_pEdges[k]->m_pFirstNode->m_Position;
-
-							// Draw red line.
-							SDL_SetRenderDrawColor(m_SecondRenderer, 255, 0, 0, 0xFF);
-							// en la posición de cada nodo dibujar un punto con SDL.
-							SDL_RenderDrawLine(m_SecondRenderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-							///Update screen
-							SDL_RenderPresent(m_SecondRenderer);
-							SDL_Delay(100);
-						}
-
-						LG_Triangle* pNewFirstTriangle = AlgorithmGeneration.m_DT.CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pFirstNode);
-						for (LevelGenerator::int32 k = 0; k < NODES_PER_TRIANGLE; ++k)
-						{
-							Secondpos = pNewFirstTriangle->m_pEdges[k]->m_pSecondNode->m_Position;
-							posToSpawn = pNewFirstTriangle->m_pEdges[k]->m_pFirstNode->m_Position;
-
-							// Draw red line.
-							SDL_SetRenderDrawColor(m_SecondRenderer, 0, 0, 255, 0xFF);
-							// en la posición de cada nodo dibujar un punto con SDL.
-							SDL_RenderDrawLine(m_SecondRenderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-							///Update screen
-							SDL_RenderPresent(m_SecondRenderer);
-							SDL_Delay(300);
-						}
-
-						LG_Triangle* pNewSecondTriangle = AlgorithmGeneration.m_DT.CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pSecondNode);
-
-						for (LevelGenerator::int32 k = 0; k < NODES_PER_TRIANGLE; ++k)
-						{
-							posToSpawn = pNewSecondTriangle->m_pEdges[k]->m_pFirstNode->m_Position;
-							Secondpos = pNewSecondTriangle->m_pEdges[k]->m_pSecondNode->m_Position;
-
-							// Draw red line.
-							SDL_SetRenderDrawColor(m_SecondRenderer, 0, 0, 255, 0xFF);
-							// en la posición de cada nodo dibujar un punto con SDL.
-							SDL_RenderDrawLine(m_SecondRenderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-							///Update screen
-							SDL_RenderPresent(m_SecondRenderer);
-							SDL_Delay(300);
-						}
-
-						// with red line.
-						SDL_SetRenderDrawColor(m_SecondRenderer, 255, 255, 255, 0xFF);
-						///Clear screen second render
-						SDL_RenderClear(m_SecondRenderer);
-
-						if (pNewFirstTriangle != nullptr)
-							AlgorithmGeneration.m_DT.m_pTrianglesVector.push_back(pNewFirstTriangle);
-						if (pNewSecondTriangle != nullptr)
-							AlgorithmGeneration.m_DT.m_pTrianglesVector.push_back(pNewSecondTriangle);
-
-						AlgorithmGeneration.m_DT.EraseTriangleFromVector(pFirstTriangle);
-						AlgorithmGeneration.m_DT.EraseTriangleFromVector(pSecondTriangle);
-
-						pActualEdge->Legalize();
-						AlgorithmGeneration.m_DT.EraseEdgeFromVector(pActualEdge);
-						pFirstNode = nullptr;
-						pSecondNode = nullptr;
-						++iBreakWhile;
-						break;
-
-					}
-				}
-			}
-		}
-
-		pActualTriangle->m_bIsChecked = true;
-		bCanStop = AlgorithmGeneration.m_DT.CheckIfAllTrianglesAreTrue();
-	}
-
-	/// Eliminate the edges of the big triangle from de edges' vector.
-	AlgorithmGeneration.m_DT.DeleteEdgesBT();
-	/// Eliminate the triangles that shares position with the big triangle.
-	while (AlgorithmGeneration.m_DT.DeleteTrianglesSharesBT());
-	/// Eliminate the edges that shares position with the big triangle.
-	while (AlgorithmGeneration.m_DT.DeleteEdgesSharesBT());
-
-	// with red line.
-	SDL_SetRenderDrawColor(m_SecondRenderer, 255, 255, 255, 0xFF);
-	///Clear screen second render
-	SDL_RenderClear(m_SecondRenderer);
-
-	/// Aqui se rendera los triangulos de la triangulacion.
-	for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
-	{
-
-		for (LevelGenerator::int32 j = 0; j < NODES_PER_TRIANGLE; ++j)
-		{
-			posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_pEdges[j]->m_pFirstNode->m_Position;
-			Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_pEdges[j]->m_pSecondNode->m_Position;
-
-			// Draw red line.
-			SDL_SetRenderDrawColor(m_SecondRenderer, 0xFF, 0x00, 0x00, 0xFF);
-			// en la posición de cada nodo dibujar un punto con SDL.
-			SDL_RenderDrawLine(m_SecondRenderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-			///Update screen
-			SDL_RenderPresent(m_SecondRenderer);
-			SDL_Delay(200);
-		}
-		//DrawCircle(AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_CircumcircleCircumference,
-		//	Color,
-		//	50);
-		/////Update screen
-		//SDL_RenderPresent(m_Renderer);
-	}
-}
 
 //! This function update the system.
 void LG_Visual::Update(float fTime)
@@ -771,9 +478,6 @@ void LG_Visual::Update(float fTime)
 	/// Update the surface
 	if (m_Window != nullptr)
 		SDL_UpdateWindowSurface(m_Window);
-	/// Update the second window
-	if (m_SecondWindow != nullptr)
-		SDL_UpdateWindowSurface(m_SecondWindow);
 }
 
 //! This function runs all the functions needed to have SDL working.
@@ -818,15 +522,7 @@ void LG_Visual::Run()
 		}
 
 		Update(2000);
-
-		if (m_bInitSecondWindow)
-		{
-			RenderDelaunay();
-		}
-		else
-		{
-			Renderer();
-		}
+		Renderer();
 	}
 
 	/// Releases the memory.
