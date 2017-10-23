@@ -523,15 +523,21 @@ namespace LevelGenerator
 			{
 				/// We store the temp direction between the actual rect and the iterating rect.
 				Temp = pActualRect->m_CenterPosition.m_Position - (*itt)->m_CenterPosition.m_Position;     
-				/// We obtain the distance between the actual rect and the iterating rect.
+				/*/// We obtain the distance between the actual rect and the iterating rect.
 				fDistance = Temp.Magnitude();   
 				/// If the distance is lees or equal that the radius of the actual rect.
-				if (fDistance <= pActualRect->m_fRadius* 2)                              
+				if (fDistance <= pActualRect->m_fRadius * 2)                              
 				{
 					/// Add the temp vector to the average.
 					Average += Temp;
 					/// We increase the counter to know how many rects are in the radius of the actual rect.
 					iNumRectsInRadius++;                                                          
+				}*/
+
+				if (pActualRect->CheckCollisionWithRect(*itt))
+				{
+					Average += Temp;
+					++iNumRectsInRadius;
 				}
 			}
 		}
@@ -542,7 +548,7 @@ namespace LevelGenerator
 			if (Average.Magnitude() != 0)                                                 
 			{
 				pActualRect->m_Direction += Average.Normalize() * SEPARATION_FORCE; 
-				return ;
+				return;
 			}
 		}
 		pActualRect->m_Direction = LG_Vector3D(0, 0, 0);

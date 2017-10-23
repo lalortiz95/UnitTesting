@@ -121,6 +121,13 @@ namespace LevelGenerator
 		 *	@brief This function restructure the nodes of the rect after we change its position.
 		 */
 		void RestructureNodes();
+
+		/**
+		 *	@brief This functions checks if the given rect is colliding with this rect.
+		 *	@param LG_Rect* pRect: The rect that we want to check if doing colision with this.
+		 *	@return if the given rect is colliding with this return true, otherwise return false.
+		 */
+		bool CheckCollisionWithRect(LG_Rect* pRect);
 	};
 }
 
