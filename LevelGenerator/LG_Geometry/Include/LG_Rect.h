@@ -23,7 +23,7 @@ namespace LevelGenerator
 		/**
 		 *	@brief Parameter Constructor.
 		 */
-		LG_Rect(LG_Vector3D Position, float fWidth, float fHeight);
+		LG_Rect(LG_Node CenterNode, float fWidth, float fHeight);
 
 		/**
 		 *	@brief Default Destructor.
@@ -45,14 +45,9 @@ namespace LevelGenerator
 		float m_fHeight;
 
 		/**
-		 *	@var This variable stores a radius that define an area.
+		 *	@var The center node of the rectangle.
 		 */
-		float m_fRadius;
-
-		/**
-		 *	@var The center position of the rectangle.
-		 */
-		LG_Node m_CenterPosition;
+		LG_Node m_CenterNode;
 
 		/**
 		 *	@var The vector that define a direction.
@@ -115,7 +110,7 @@ namespace LevelGenerator
 		 *	@param LG_Node StartPosition: The start position.
 		 *	@return true if it's inside otherwise false.
 		 */
-		bool CheckCollision(LG_Node ActualNode,LG_Node StartPoistion);
+		bool CheckCollision(LG_Node ActualNode, LG_Node StartPoistion);
 
 		/**
 		 *	@brief This function restructure the nodes of the rect after we change its position.

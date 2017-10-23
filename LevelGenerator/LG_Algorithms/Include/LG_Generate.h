@@ -58,7 +58,7 @@ namespace LevelGenerator
 		/**
 		 *	@var Spawn Zone
 		 */
-		LG_Rect m_SpawnZone;
+		LG_Rect* m_pSpawnZone;
 
 		/**
 		 *	@var An object of the marching square class. It's used to run the algorithm.
@@ -140,11 +140,11 @@ namespace LevelGenerator
 		void Run();
 
 		/**
-		 *	@brief This function update the algoritmhs.
+		 *	@brief This function separete the rooms object.
 		 *	@param float fDelta: The time to actualizate.
 		 * 	@return true if we need to separate at least one rect, otherwise false.
 		 */
-		bool Update(float fDelta);
+		bool SeparationRooms(float fDelta);
 
 		/**
 		 *	@brief This function generate a isoline from Marching Square Cases.
@@ -226,10 +226,10 @@ namespace LevelGenerator
 		void SetTileAs(LG_Tile& TileToChangeFlag);
 
 		/**
-		 *	@brief This function separate the rooms.
+		 *	@brief This function get the average of rooms that are colliding with the actual rect.
 		 *	@param LG_Rect* pActualRect: The actual rect.
 		 */
-		void SeparationRooms(LG_Rect* pActualRect);
+		void AverageRoom(LG_Rect* pActualRect);
 
 		/**
 		 *	@brief This function reduce the nodes in the isolines.
