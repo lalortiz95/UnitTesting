@@ -14,7 +14,7 @@ namespace LevelGenerator
 	const int32 LG_Generate::MIN_FORCE = 2;
 
 	//! This constant is used for generating an area to spwan the rooms. 
-	const int32 LG_Generate::SPAWN_ZONE = 5;
+	const int32 LG_Generate::SPAWN_ZONE = 10;
 
 	//! Default constructor.
 	LG_Generate::LG_Generate()
