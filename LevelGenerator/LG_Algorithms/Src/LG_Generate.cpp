@@ -13,6 +13,9 @@ namespace LevelGenerator
 	//! Constant that define a min force.
 	const int32 LG_Generate::MIN_FORCE = 2;
 
+	//! This constant is used for generating an area to spwan the rooms. 
+	const int32 LG_Generate::SPAWN_ZONE = 10;
+
 	//! Default constructor.
 	LG_Generate::LG_Generate()
 	{
@@ -68,7 +71,7 @@ namespace LevelGenerator
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
 		/// Generate rooms that we want to needed 
-		GenerateRooms(30, LG_Vector3D(20, 20, 0), LG_Vector3D(50, 50, 0));
+		GenerateRooms(30, LG_Vector3D(20, 20, 0), LG_Vector3D(70, 70, 0));
 		/// Reduce the isolines in 1 vector of isolines.
 		ReducedIsolines();
 		/// Obtain the nouds cloud from the isolines vector.
@@ -87,9 +90,9 @@ namespace LevelGenerator
 		///
 		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
 
-		/// Release memory.
-		delete m_pSpawnZone;
-		m_pSpawnZone = nullptr;
+		///// Release memory.
+		//delete m_pSpawnZone;
+		//m_pSpawnZone = nullptr;
 	}
 
 	//! This function separete the rooms object.
@@ -425,7 +428,7 @@ namespace LevelGenerator
 		PositionCenterSpawnZone.m_Position = LG_Vector3D(250, 250, 0);
 		/// Create a area to spawn the dots.
 		//TODO: hacer que el tamaño dependa de la cantidad de cuartos. Quiza que el área para spawn que sea un circulo.
-		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone ,500.0f, 500.0f); 
+		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone ,iRoomAmount * SPAWN_ZONE, iRoomAmount * SPAWN_ZONE); 
 
 		m_RoomsVector.resize(iRoomAmount);
 
@@ -446,11 +449,11 @@ namespace LevelGenerator
 		for (int32 i = 0; i < iRoomAmount; ++i)
 		{
 			/// We find a random position for the room we are about to create.
-			PosToSpawn.X = rand() % fMaxX + fMinX;
-			PosToSpawn.Y = rand() % fMaxY + fMinY;
+			PosToSpawn.X = rand() % (fMaxX-fMinX) + fMinX;
+			PosToSpawn.Y = rand() % (fMaxY-fMinY) + fMinY;
 			/// We find a random size for the rectangles upon the given boundaries. 
-			RoomSize.X = rand() % (int32)MaxSize.X + (int32)MinSize.X;
-			RoomSize.Y = rand() % (int32)MaxSize.Y + (int32)MinSize.Y;
+			RoomSize.X = rand() % ((int32)MaxSize.X - (int32)MinSize.X) + (int32)MinSize.X;
+			RoomSize.Y = rand() % ((int32)MaxSize.Y - (int32)MinSize.Y) + (int32)MinSize.Y;
 
 			/// initialize the new room.
 			NewRect = new LG_Rect(PosToSpawn, RoomSize.X, RoomSize.Y);

@@ -51,6 +51,11 @@ namespace LevelGenerator
 		static const int32 MIN_FORCE;
 
 		/**
+		 *	@var Constant that define the area of the spawn zone.
+		 */
+		static const int32 SPAWN_ZONE;
+
+		/**
 		 *	@var Flag that determinate when we can insert a node in front or back of the isoline.
 		 */
 		bool m_bInsertFront;

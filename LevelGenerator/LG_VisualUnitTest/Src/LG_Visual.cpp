@@ -271,6 +271,7 @@ void LG_Visual::Renderer()
 			{
 				// Set the color.
 				SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
+
 				/// Draws the top line of the rectangle.
 				posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
 				posToSpawn.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
@@ -333,6 +334,50 @@ void LG_Visual::Renderer()
 
 			//	}
 			//}
+
+
+			/// Aqui se renderea la zona de spawn cuartos.
+			// Set the color.
+			SDL_SetRenderDrawColor(m_Renderer, 0, 118, 255, 0xFF);
+
+			/// Draws the top line of the rectangle.
+			posToSpawn.X = AlgorithmGeneration.m_pSpawnZone->m_TopLeft.m_Position.X;
+			posToSpawn.Y = AlgorithmGeneration.m_pSpawnZone->m_TopLeft.m_Position.Y;
+											    
+			Secondpos.X = AlgorithmGeneration.m_pSpawnZone->m_TopRight.m_Position.X;
+			Secondpos.Y = AlgorithmGeneration.m_pSpawnZone->m_TopRight.m_Position.Y;
+
+			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+
+			/// Draws the bottom line of the rectangle.
+			posToSpawn.X = AlgorithmGeneration.m_pSpawnZone->m_BottomLeft.m_Position.X;
+			posToSpawn.Y = AlgorithmGeneration.m_pSpawnZone->m_BottomLeft.m_Position.Y;
+
+			Secondpos.X = AlgorithmGeneration.m_pSpawnZone->m_BottomRight.m_Position.X;
+			Secondpos.Y = AlgorithmGeneration.m_pSpawnZone->m_BottomRight.m_Position.Y;
+
+			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+
+			/// Draws the left line of the rectangle.
+			posToSpawn.X = AlgorithmGeneration.m_pSpawnZone->m_BottomLeft.m_Position.X;
+			posToSpawn.Y = AlgorithmGeneration.m_pSpawnZone->m_BottomLeft.m_Position.Y;
+
+			Secondpos.X = AlgorithmGeneration.m_pSpawnZone->m_TopLeft.m_Position.X;
+			Secondpos.Y = AlgorithmGeneration.m_pSpawnZone->m_TopLeft.m_Position.Y;
+
+			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+
+			/// Draws the right line of the rectangle.
+			posToSpawn.X = AlgorithmGeneration.m_pSpawnZone->m_BottomRight.m_Position.X;
+			posToSpawn.Y = AlgorithmGeneration.m_pSpawnZone->m_BottomRight.m_Position.Y;
+
+			Secondpos.X = AlgorithmGeneration.m_pSpawnZone->m_TopRight.m_Position.X;
+			Secondpos.Y = AlgorithmGeneration.m_pSpawnZone->m_TopRight.m_Position.Y;
+
+			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+
+
+
 
 			LG_Vector3D pos1, pos2;
 			/// Aquí  se renderea el minimum spanning tree
