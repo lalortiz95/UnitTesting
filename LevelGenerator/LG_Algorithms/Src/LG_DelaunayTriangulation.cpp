@@ -24,10 +24,12 @@ namespace LevelGenerator
 		Destroy();
 		m_pNodesCloud = NodesCloud;
 
+		/// Find the area to generate the big triangle so that it contains all the nodes.
+		FindFurthestPoints(GridCenter);
 		/// Create a triangle that is outside of the node's cloud.
-		CreateBigTriangle(iGridWidth, iGridHeight, GridCenter);
+		CreateBigTriangle(m_AreaContainingRooms.m_fWidth, m_AreaContainingRooms.m_fHeight, m_AreaContainingRooms.m_CenterNode.m_Position);
 		m_pBigTriangle->m_iID = m_iTrianglesCount;
-		m_iTrianglesCount++;
+		++m_iTrianglesCount;
 		/// Insert the big triangle to the vector.
 		m_pTrianglesVector.push_back(m_pBigTriangle);
 
@@ -39,6 +41,8 @@ namespace LevelGenerator
 	//! This function performs the algorithm.
 	void LG_DelaunayTriangulation::Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Node*>* NodesCloud)
 	{
+		//TODO: create a function that iterates through the nodes cloud, and finds the ones with the furthest positions to the center.
+		// Atore them as the limits for a boundary that will be used to generate the big triangle, replacing the first 3 parameters in this function.
 		/// 
 		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
 		/// The initial triangulation we base our Delaunay algorithm on.
@@ -89,13 +93,13 @@ namespace LevelGenerator
 						{
 
 							LG_Triangle* pNewFirstTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pFirstNode);
-							if(pNewFirstTriangle != nullptr)
-							m_pTrianglesVector.push_back(pNewFirstTriangle);
+							if (pNewFirstTriangle != nullptr)
+								m_pTrianglesVector.push_back(pNewFirstTriangle);
 
 							LG_Triangle* pNewSecondTriangle = CreateTriangle(pFirstNode, pSecondNode, pActualEdge->m_pSecondNode);
-							if(pNewSecondTriangle != nullptr)
-							m_pTrianglesVector.push_back(pNewSecondTriangle);
-						
+							if (pNewSecondTriangle != nullptr)
+								m_pTrianglesVector.push_back(pNewSecondTriangle);
+
 							EraseTriangleFromVector(pFirstTriangle);
 							EraseTriangleFromVector(pSecondTriangle);
 
@@ -231,13 +235,13 @@ namespace LevelGenerator
 				/// the node found as the best one, defined by it's beautiful intrinsic angles.
 				for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
 				{
-					
+
 					/// We triangulate with the actual triangle and the best node.
 					pNewTriangle = CreateTriangle(m_pActualTriangle->m_pEdges[i]->m_pFirstNode,
 						m_pActualTriangle->m_pEdges[i]->m_pSecondNode,
 						pBestNode);
-					if(pNewTriangle != nullptr)
-					m_pTrianglesVector.push_back(pNewTriangle);
+					if (pNewTriangle != nullptr)
+						m_pTrianglesVector.push_back(pNewTriangle);
 				}
 
 				for (int32 i = 0; i < m_pNodesCloud->size(); ++i)
@@ -600,7 +604,7 @@ namespace LevelGenerator
 		}
 
 		LG_Triangle* pNewTriangle = new LG_Triangle(pFirstEdge, pSecondEdge, pThirdEdge, m_iTrianglesCount);
-	
+
 		/// Check if it is needed to add new edges.
 		if (bIsFirstEdgeNew)
 		{
@@ -651,6 +655,33 @@ namespace LevelGenerator
 
 		/// Returns the new created triangle.
 		return NewTriangle;
+	}
+
+	//! This function find the points in the nodes vector, that are furthest away from the center.
+	void LG_DelaunayTriangulation::FindFurthestPoints(const LG_Vector3D& CenterPosition)
+	{
+		/// minimum limits.
+		LG_Vector3D MinLimits = CenterPosition;
+		/// maximum limits.
+		LG_Vector3D MaxLimits = CenterPosition;
+
+		/// 
+		for (int32 i = 0; i < m_pNodesCloud->size(); ++i)
+		{
+			/// We store the position that are further away from the center, to set the minimum values of the boundary where
+			///  we will spawn our rooms.
+			MinLimits.X = LG_Math::Min((*m_pNodesCloud)[i]->m_Position.X, MinLimits.X);
+			MinLimits.Y = LG_Math::Min((*m_pNodesCloud)[i]->m_Position.Y, MinLimits.Y);
+			MinLimits.Z = LG_Math::Min((*m_pNodesCloud)[i]->m_Position.Z, MinLimits.Z);
+
+			/// We now store the minimum values of the boundary where we will spawn our rooms.
+			MaxLimits.X = LG_Math::Max((*m_pNodesCloud)[i]->m_Position.X, MaxLimits.X);
+			MaxLimits.Y = LG_Math::Max((*m_pNodesCloud)[i]->m_Position.Y, MaxLimits.Y);
+			MaxLimits.Z = LG_Math::Max((*m_pNodesCloud)[i]->m_Position.Z, MaxLimits.Z);
+		}
+
+		/// Initialize the area where the rooms will be randomly displaced.
+		m_AreaContainingRooms.Init(CenterPosition, MaxLimits.X - MinLimits.X, MaxLimits.Y - MinLimits.Y);
 	}
 
 	//! This function search 2 triangles that share the same edge

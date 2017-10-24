@@ -5,6 +5,7 @@
 #include <LG_Isoline.h>
 #include <LG_Triangle.h>
 #include <LG_Polygon.h>
+#include <LG_Rect.h>
 
 namespace LevelGenerator
 {
@@ -58,6 +59,11 @@ namespace LevelGenerator
 		LG_Triangle* m_pActualTriangle;
 
 		/**
+		 *	@var Inside of this area are all of the nodes to triangulate with.
+		 */
+		LG_Rect m_AreaContainingRooms;
+
+		/**
 		 *	@var This variable counts the number of triangles created.
 		 */
 		int32 m_iTrianglesCount;
@@ -70,7 +76,7 @@ namespace LevelGenerator
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
-	
+
 		/**
 		 *  @brief This function initialize all variables of the class.
 		 *	@param int32 iGridWidth: The width of the grid.
@@ -158,7 +164,7 @@ namespace LevelGenerator
 		bool DeleteEdgesSharesBT();
 
 		/**
-		 *	@brief Thisfunction delete all edges of the big triangle from the edges' vector 
+		 *	@brief Thisfunction delete all edges of the big triangle from the edges' vector
 		 */
 		void DeleteEdgesBT();
 
@@ -198,5 +204,12 @@ namespace LevelGenerator
 		 *	@return The triangle.
 		 */
 		LG_Triangle CheckIfIsAGoodTriangle(LG_Node* pFirstNode, LG_Node* pSecondNode, LG_Node* pThirdNode);
+
+	private:
+
+		/**
+		 *	@brief This function find the points in the nodes vector, that are furthest away from the center.
+		 */
+		void FindFurthestPoints(const LG_Vector3D& CenterPosition);
 	};
 }

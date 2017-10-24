@@ -14,7 +14,7 @@ namespace LevelGenerator
 	const int32 LG_Generate::MIN_FORCE = 2;
 
 	//! This constant is used for generating an area to spwan the rooms. 
-	const int32 LG_Generate::SPAWN_ZONE = 10;
+	const int32 LG_Generate::SPAWN_ZONE = 5;
 
 	//! Default constructor.
 	LG_Generate::LG_Generate()
@@ -71,7 +71,7 @@ namespace LevelGenerator
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
 		/// Generate rooms that we want to needed 
-		GenerateRooms(30, LG_Vector3D(20, 20, 0), LG_Vector3D(70, 70, 0));
+		GenerateRooms(50, LG_Vector3D(20, 20, 0), LG_Vector3D(70, 70, 0));
 		/// Reduce the isolines in 1 vector of isolines.
 		ReducedIsolines();
 		/// Obtain the nouds cloud from the isolines vector.
@@ -425,7 +425,7 @@ namespace LevelGenerator
 	{
 
 		LG_Node PositionCenterSpawnZone;
-		PositionCenterSpawnZone.m_Position = LG_Vector3D(250, 250, 0);
+		PositionCenterSpawnZone.m_Position = LG_Vector3D(500, 350, 0);
 		/// Create a area to spawn the dots.
 		//TODO: hacer que el tamaño dependa de la cantidad de cuartos. Quiza que el área para spawn que sea un circulo.
 		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone ,iRoomAmount * SPAWN_ZONE, iRoomAmount * SPAWN_ZONE); 
