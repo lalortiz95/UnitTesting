@@ -32,9 +32,9 @@ TEST(Generate_Algorithm, GenerateCasesFromMS)
 	/// The algorithm that unificates the others.
 	LG_Generate GenerateAlgorithm;
 	/// Call its run.
-	GenerateAlgorithm.Run();
+	GenerateAlgorithm.Run(50, LG_Vector3D(20, 20, 0), LG_Vector3D(70, 70, 0));
 
-	int32 iExpectedCases[47] = 
+	int32 iExpectedCases[47] =
 	{
 		14,4,2,13,8,2,7,11,13,8,2,4,2,7,1,8,2,7,
 		14,4,1,11,2,7,14,4,1,11,3,13,8,1,2,7,13,8,

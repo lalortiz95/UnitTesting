@@ -10,3 +10,6 @@
 #else
 #	define LG_ALGORITHMS_EXPORT __declspec(dllimport)
 #endif
+
+
+#define EXPORT_FOR_UNITY __declspec(dllexport)

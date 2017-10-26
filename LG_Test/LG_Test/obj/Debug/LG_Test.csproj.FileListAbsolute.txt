@@ -1,0 +1,5 @@
+C:\Users\Lalo\Documents\School\8vo cuatrimestre\taller de proyectos\Unit Testing\LG_Test\LG_Test\bin\Debug\LG_Test.dll
+C:\Users\Lalo\Documents\School\8vo cuatrimestre\taller de proyectos\Unit Testing\LG_Test\LG_Test\bin\Debug\LG_Test.pdb
+C:\Users\Lalo\Documents\School\8vo cuatrimestre\taller de proyectos\Unit Testing\LG_Test\LG_Test\obj\Debug\LG_Test.csprojResolveAssemblyReference.cache
+C:\Users\Lalo\Documents\School\8vo cuatrimestre\taller de proyectos\Unit Testing\LG_Test\LG_Test\obj\Debug\LG_Test.dll
+C:\Users\Lalo\Documents\School\8vo cuatrimestre\taller de proyectos\Unit Testing\LG_Test\LG_Test\obj\Debug\LG_Test.pdb

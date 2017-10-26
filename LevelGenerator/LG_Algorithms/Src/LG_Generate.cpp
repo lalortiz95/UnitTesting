@@ -3,7 +3,6 @@
 
 namespace LevelGenerator
 {
-
 	//! Constant to use a separation force.
 	const int32 LG_Generate::SEPARATION_FORCE = 30;
 
@@ -64,14 +63,14 @@ namespace LevelGenerator
 	}
 
 	//! This calls all the algorithms and put them together to generate a procedural level.
-	void LG_Generate::Run()
+	void LG_Generate::Run(int32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize)
 	{
 		/// Initialize the variables.
 		Initialize();
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
 		/// Generate rooms that we want to needed 
-		GenerateRooms(50, LG_Vector3D(20, 20, 0), LG_Vector3D(70, 70, 0));
+		GenerateRooms(iRoomAmount, MinSize, MaxSize);
 		/// Reduce the isolines in 1 vector of isolines.
 		ReducedIsolines();
 		/// Obtain the nouds cloud from the isolines vector.
@@ -84,8 +83,6 @@ namespace LevelGenerator
 			(int32)m_pSpawnZone->m_fHeight,
 			m_pSpawnZone->m_CenterNode.m_Position,
 			&m_RoomsNodesCloud);
-
-		
 
 		///
 		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
@@ -428,7 +425,7 @@ namespace LevelGenerator
 		PositionCenterSpawnZone.m_Position = LG_Vector3D(500, 350, 0);
 		/// Create a area to spawn the dots.
 		//TODO: hacer que el tamaño dependa de la cantidad de cuartos. Quiza que el área para spawn que sea un circulo.
-		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone ,iRoomAmount * SPAWN_ZONE, iRoomAmount * SPAWN_ZONE); 
+		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, iRoomAmount * SPAWN_ZONE, iRoomAmount * SPAWN_ZONE);
 
 		m_RoomsVector.resize(iRoomAmount);
 
@@ -449,8 +446,8 @@ namespace LevelGenerator
 		for (int32 i = 0; i < iRoomAmount; ++i)
 		{
 			/// We find a random position for the room we are about to create.
-			PosToSpawn.X = rand() % (fMaxX-fMinX) + fMinX;
-			PosToSpawn.Y = rand() % (fMaxY-fMinY) + fMinY;
+			PosToSpawn.X = rand() % (fMaxX - fMinX) + fMinX;
+			PosToSpawn.Y = rand() % (fMaxY - fMinY) + fMinY;
 			/// We find a random size for the rectangles upon the given boundaries. 
 			RoomSize.X = rand() % ((int32)MaxSize.X - (int32)MinSize.X) + (int32)MinSize.X;
 			RoomSize.Y = rand() % ((int32)MaxSize.Y - (int32)MinSize.Y) + (int32)MinSize.Y;
@@ -524,20 +521,20 @@ namespace LevelGenerator
 		/// A counter to count how many rects are in collision with the actual rect.
 		int32 iNumRectsInRadius = 0;
 		/// Create a temp vector to store a temporal direction.
-		LG_Vector3D TempDirection; 		
+		LG_Vector3D TempDirection;
 		/// Create a vector to store the average.
-		LG_Vector3D Average(0, 0, 0);													      
-																	       
+		LG_Vector3D Average(0, 0, 0);
+
 		/// Iterating the rooms vector.
 		for (Vector<LG_Rect*>::iterator itt = m_RoomsVector.begin();
-			itt != m_RoomsVector.end(); ++itt)							                 
+			itt != m_RoomsVector.end(); ++itt)
 		{
 			/// If the iterating rect is diferent that the actual rect.
-			if ((*itt) != pActualRect)								                       
+			if ((*itt) != pActualRect)
 			{
 				/// We store the temp direction between the actual rect and the iterating rect.
 				TempDirection = pActualRect->m_CenterNode.m_Position - (*itt)->m_CenterNode.m_Position;
-			
+
 				/// Check if the iterating rect is colli
 				if (pActualRect->CheckCollisionWithRect(*itt))
 				{
@@ -550,15 +547,15 @@ namespace LevelGenerator
 		}
 
 		/// We make sure that at least there is a rectangle in collision with the actual rect and not to divide between 0.
-		if (iNumRectsInRadius != 0)                                                               
+		if (iNumRectsInRadius != 0)
 		{
 			/// Divide the average between the num of rects that are in collision with the actual rect.
-			Average = Average / iNumRectsInRadius;        
+			Average = Average / iNumRectsInRadius;
 			/// We make sure that the magnitude of the averge is different to 0.
-			if (Average.Magnitude() != 0)                                                 
+			if (Average.Magnitude() != 0)
 			{
 				/// Normalize the average because we only need the direction of the vector and multiply it by the separation force. 
-				pActualRect->m_Direction += Average.Normalize() * SEPARATION_FORCE; 
+				pActualRect->m_Direction += Average.Normalize() * SEPARATION_FORCE;
 				return;
 			}
 		}
@@ -609,5 +606,16 @@ namespace LevelGenerator
 			return VectorTruncate.Normalize() * MAX_FORCE;
 		}
 	}
+}
 
+EXPORT_FOR_UNITY LevelGenerator::LG_Generate* GenerateLevel(LevelGenerator::int32 iRoomsAmount,
+	LevelGenerator::LG_Vector3D MinSize,
+	LevelGenerator::LG_Vector3D MaxSize)
+{
+	LevelGenerator::LG_Generate* RoomGenerated = new LevelGenerator::LG_Generate();
+
+	RoomGenerated->Run(iRoomsAmount, MinSize, MaxSize);
+
+	//Trucha con los leaks jeje.
+	return RoomGenerated;
 }

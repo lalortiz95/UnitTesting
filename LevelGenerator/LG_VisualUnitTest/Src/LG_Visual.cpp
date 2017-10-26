@@ -150,7 +150,7 @@ void LG_Visual::Renderer()
 	LevelGenerator::LG_Generate AlgorithmGeneration;
 
 	/// We generate our algorithms.
-	AlgorithmGeneration.Run();
+	AlgorithmGeneration.Run(50, LG_Vector3D(20,20,0), LG_Vector3D(70,70,0));
 
 	LevelGenerator::LG_Vector3D posToSpawn;
 	LevelGenerator::LG_Vector3D Secondpos;
