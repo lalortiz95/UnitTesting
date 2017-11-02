@@ -6,8 +6,8 @@
 namespace LevelGenerator
 {
 	/**
-	*	@brief This class is a rectangle.
-	*/
+	 *	@brief This class is a rectangle.
+	 */
 	class LG_GEOMETRY_EXPORT LG_Rect
 	{
 	public:
@@ -111,6 +111,13 @@ namespace LevelGenerator
 		 *	@return true if it's inside otherwise false.
 		 */
 		bool CheckCollision(LG_Node ActualNode, LG_Node StartPoistion);
+
+		/**
+		*	@brief This functions checks if it's colliding with another rect.
+		*	@param LG_Rect OtherRect: the rect we want to see if it's colliding.
+		*	@return true if it's inside otherwise false.
+		*/
+		bool CheckCollision(LG_Rect OtherRect);
 
 		/**
 		 *	@brief This function restructure the nodes of the rect after we change its position.

@@ -278,9 +278,9 @@ namespace LevelGenerator
 
 //extern "C" EXPORT_FOR_UNITY LevelGenerator::LG_Generate* g_pGenerateLevel;
 
-extern "C" EXPORT_FOR_UNITY LevelGenerator::LG_Generate* GenerateLevel(LevelGenerator::int32 iRoomsAmount,
+extern "C" LG_ALGORITHMS_EXPORT LevelGenerator::LG_Generate* GenerateLevel(LevelGenerator::int32 iRoomsAmount,
 	LevelGenerator::LG_Vector3D MinSize,
 	LevelGenerator::LG_Vector3D MaxSize);
 
-extern "C" EXPORT_FOR_UNITY LevelGenerator::LG_Rect** GetRooms();
+extern "C" LG_ALGORITHMS_EXPORT LevelGenerator::LG_Rect** GetRooms();
 

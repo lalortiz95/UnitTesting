@@ -39,6 +39,9 @@
     <ClInclude Include="Include\LG_MST.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Include\LG_HallwayGeneration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_MarchingSquare.cpp">
@@ -60,6 +63,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\LG_MST.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\LG_HallwayGeneration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
