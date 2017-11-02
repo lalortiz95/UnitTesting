@@ -105,6 +105,39 @@ namespace LevelGenerator
 			RotatedNode.Y >= m_BottomRight.m_Position.Y);
 	}
 
+	bool LG_Rect::CheckCollision(LG_Rect OtherRect)
+	{
+		///  For an easier code reading.
+		LG_Vector3D OtherTopRight = OtherRect.m_TopRight.m_Position;
+		LG_Vector3D OtherTopLeft = OtherRect.m_TopLeft.m_Position;
+		LG_Vector3D OtherBottomRight = OtherRect.m_BottomRight.m_Position;
+		LG_Vector3D OtherBottomLeft = OtherRect.m_BottomLeft.m_Position;
+
+		/// See that's inside of the boundaries. It only takes 1 dot to be inside of the boundaries for the collision to be detected.
+		if (m_TopLeft.m_Position.X > OtherTopLeft.X && m_TopLeft.m_Position.X < OtherTopRight.X &&
+			m_TopLeft.m_Position.Y > OtherTopLeft.Y && m_TopLeft.m_Position.Y < OtherBottomLeft.Y)
+		{
+			return true;
+		}
+		if (m_TopRight.m_Position.X > OtherTopLeft.X && m_TopRight.m_Position.X < OtherTopRight.X &&
+			m_TopRight.m_Position.Y > OtherTopLeft.Y && m_TopRight.m_Position.Y < OtherBottomLeft.Y)
+		{
+			return true;
+		}
+		if (m_BottomLeft.m_Position.X > OtherTopLeft.X && m_BottomLeft.m_Position.X < OtherTopRight.X &&
+			m_BottomLeft.m_Position.Y > OtherTopLeft.Y && m_BottomLeft.m_Position.Y < OtherBottomLeft.Y)
+		{
+			return true;
+		}
+		if (m_BottomRight.m_Position.X > OtherTopLeft.X && m_BottomRight.m_Position.X < OtherTopRight.X &&
+			m_BottomRight.m_Position.Y > OtherTopLeft.Y && m_BottomRight.m_Position.Y < OtherBottomLeft.Y)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	void LG_Rect::RestructureNodes()
 	{
 		/// We initialize all the nodes positions.

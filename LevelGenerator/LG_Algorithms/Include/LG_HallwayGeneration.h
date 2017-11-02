@@ -2,6 +2,7 @@
 #include "LG_AlgorithmsPrerequisites.h"
 
 #include <LG_Edge.h>
+#include <LG_Rect.h>
 
 namespace LevelGenerator
 {

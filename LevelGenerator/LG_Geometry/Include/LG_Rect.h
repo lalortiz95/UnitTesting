@@ -113,10 +113,10 @@ namespace LevelGenerator
 		bool CheckCollision(LG_Node ActualNode, LG_Node StartPoistion);
 
 		/**
-		*	@brief This functions checks if it's colliding with another rect.
-		*	@param LG_Rect OtherRect: the rect we want to see if it's colliding.
-		*	@return true if it's inside otherwise false.
-		*/
+		 *	@brief This functions checks if it's colliding with another rect.
+		 *	@param LG_Rect OtherRect: the rect we want to see if it's colliding.
+		 *	@return true if it's inside otherwise false.
+		 */
 		bool CheckCollision(LG_Rect OtherRect);
 
 		/**
