@@ -302,7 +302,7 @@ namespace LevelGenerator
 			}
 
 		///Calculamos la adjunta del lugar dado.
-		float fElevated = LG_Math::Pow(-1, ((col + 1) + (row + 1)));
+		float fElevated = LG_Math::Pow(-1.0f, (((float)col + 1.0f) + ((float)row + 1.0f)));
 		//TODO: corregir esto.
 		return fElevated * (fValues[0] * fValues[3] - fValues[1] * fValues[2]);
 	}

@@ -329,9 +329,8 @@ namespace LevelGenerator
 	}
 
 	//! This operator return the cross product between this vector and other vector.
-	float LG_Vector4D::operator^(const LG_Vector4D& V) const
-	{
-		//TODO: Implementar el operador.
-		return 0.0f;
+	LG_Vector4D LG_Vector4D::operator^(const LG_Vector4D& V) const
+	{		
+		return Cross(*this, V);
 	}
 }

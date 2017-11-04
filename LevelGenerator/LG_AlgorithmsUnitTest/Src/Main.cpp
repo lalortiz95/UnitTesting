@@ -52,9 +52,6 @@ TEST(Generate_Algorithm, GenerateCasesFromMS)
 	EXPECT_TRUE(GenerateAlgorithm.m_FinalIsolineVector[1].m_NodeVector.size() == 4);
 	EXPECT_TRUE(GenerateAlgorithm.m_FinalIsolineVector[2].m_NodeVector.size() == 11);
 
-	int kk = GenerateAlgorithm.m_DT.m_pTrianglesVector.size();
-
-	//Debe generar 39 triangulos.
 	EXPECT_TRUE(GenerateAlgorithm.m_DT.m_pTrianglesVector.size() == 58);
 }
 

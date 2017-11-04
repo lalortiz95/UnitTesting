@@ -45,6 +45,26 @@ namespace LevelGenerator
 		 */
 		Vector<LG_Rect*> m_Rooms;
 
+		/**
+		 *	@var a constant that defines 20 degrees in radians.
+		 */
+		static const float _20_DEGREES;
+
+		/**
+		 *	@var a constant that defines 160 degrees in radians.
+		 */
+		static const float _160_DEGREES;
+
+		/**
+		 *	@var a constant that defines 110 degrees in radians.
+		 */
+		static const float _110_DEGREES;
+		
+		/**
+		 *	@var a constant that defines 70 degrees in radians.
+		 */
+		static const float _70_DEGREES;
+
 		 ///************************************************************************/
 		 ///*						   Class Functions.							  */
 		 ///************************************************************************/

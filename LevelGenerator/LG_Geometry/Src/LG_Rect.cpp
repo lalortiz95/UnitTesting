@@ -6,7 +6,11 @@ namespace LevelGenerator
 	//! Default Constructor.
 	LG_Rect::LG_Rect()
 	{
+		m_CenterNode = LG_Vector3D(0, 0, 0);
 		m_Direction = LG_Vector3D(0, 0, 0);
+		m_fHeight = 0.0f;
+		m_fWidth = 0.0f;
+		m_RotationMatrix.Zero();
 	}
 
 	LG_Rect::LG_Rect(LG_Node CenterNode, float fWidth, float fHeight)
@@ -25,6 +29,7 @@ namespace LevelGenerator
 	//! Function to initialize the variables.
 	void LG_Rect::Init(LG_Vector3D StartPosition, LG_Vector3D EndPosition, float fRange)
 	{
+
 		/// A new vector from the given points, sent to the origin.
 		LG_Vector3D PositionNode = (EndPosition - StartPosition) - (StartPosition - StartPosition);
 
@@ -62,7 +67,6 @@ namespace LevelGenerator
 	//! 
 	void LG_Rect::Init(LG_Node CenterNode, float fWidth, float fHeight)
 	{
-
 		/// assign value to the variable
 		m_CenterNode = CenterNode;
 		m_fHeight = fHeight;
@@ -105,39 +109,6 @@ namespace LevelGenerator
 			RotatedNode.Y >= m_BottomRight.m_Position.Y);
 	}
 
-	bool LG_Rect::CheckCollision(LG_Rect OtherRect)
-	{
-		///  For an easier code reading.
-		LG_Vector3D OtherTopRight = OtherRect.m_TopRight.m_Position;
-		LG_Vector3D OtherTopLeft = OtherRect.m_TopLeft.m_Position;
-		LG_Vector3D OtherBottomRight = OtherRect.m_BottomRight.m_Position;
-		LG_Vector3D OtherBottomLeft = OtherRect.m_BottomLeft.m_Position;
-
-		/// See that's inside of the boundaries. It only takes 1 dot to be inside of the boundaries for the collision to be detected.
-		if (m_TopLeft.m_Position.X > OtherTopLeft.X && m_TopLeft.m_Position.X < OtherTopRight.X &&
-			m_TopLeft.m_Position.Y > OtherTopLeft.Y && m_TopLeft.m_Position.Y < OtherBottomLeft.Y)
-		{
-			return true;
-		}
-		if (m_TopRight.m_Position.X > OtherTopLeft.X && m_TopRight.m_Position.X < OtherTopRight.X &&
-			m_TopRight.m_Position.Y > OtherTopLeft.Y && m_TopRight.m_Position.Y < OtherBottomLeft.Y)
-		{
-			return true;
-		}
-		if (m_BottomLeft.m_Position.X > OtherTopLeft.X && m_BottomLeft.m_Position.X < OtherTopRight.X &&
-			m_BottomLeft.m_Position.Y > OtherTopLeft.Y && m_BottomLeft.m_Position.Y < OtherBottomLeft.Y)
-		{
-			return true;
-		}
-		if (m_BottomRight.m_Position.X > OtherTopLeft.X && m_BottomRight.m_Position.X < OtherTopRight.X &&
-			m_BottomRight.m_Position.Y > OtherTopLeft.Y && m_BottomRight.m_Position.Y < OtherBottomLeft.Y)
-		{
-			return true;
-		}
-
-		return false;
-	}
-
 	void LG_Rect::RestructureNodes()
 	{
 		/// We initialize all the nodes positions.
@@ -155,7 +126,7 @@ namespace LevelGenerator
 	}
 
 	//TODO: Falta checar por tamaños del rect...
-	bool LG_Rect::CheckCollisionWithRect(LG_Rect * pRect)
+	bool LG_Rect::CheckCollision(LG_Rect * pRect)
 	{
 
 		LG_Vector3D tTopLeft = pRect->m_TopLeft.m_Position;
@@ -212,9 +183,9 @@ namespace LevelGenerator
 		}
 		/// Check the bottom left of the parameter rect.
 		if (((tBottomLeft.X >= m_TopLeft.m_Position.X  &&
-			 tBottomLeft.Y >=  m_TopLeft.m_Position.Y) &&
+			tBottomLeft.Y >= m_TopLeft.m_Position.Y) &&
 			(tBottomLeft.X <= m_BottomRight.m_Position.X  &&
-		     tBottomLeft.Y <= m_BottomRight.m_Position.Y)))
+				tBottomLeft.Y <= m_BottomRight.m_Position.Y)))
 		{
 			return true;
 		}
@@ -230,9 +201,9 @@ namespace LevelGenerator
 
 		/// Check the bottom right of the rect.
 		if (((tBottomRight.X >= m_TopLeft.m_Position.X  &&
-			 tBottomRight.Y >=       m_TopLeft.m_Position.Y) &&
+			tBottomRight.Y >= m_TopLeft.m_Position.Y) &&
 			(tBottomRight.X <= m_BottomRight.m_Position.X  &&
-			 tBottomRight.Y <= m_BottomRight.m_Position.Y)))
+				tBottomRight.Y <= m_BottomRight.m_Position.Y)))
 		{
 			return true;
 		}
@@ -240,9 +211,9 @@ namespace LevelGenerator
 
 
 		if ((m_TopLeft.m_Position.X >= tTopLeft.X  &&
-			m_TopRight.m_Position.X <= tBottomRight.X) && 
+			m_TopRight.m_Position.X <= tBottomRight.X) &&
 			(m_TopLeft.m_Position.Y <= tTopLeft.Y && m_BottomRight.m_Position.Y >= tBottomRight.Y))
-				
+
 		{
 			return true;
 		}

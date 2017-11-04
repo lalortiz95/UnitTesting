@@ -1,6 +1,7 @@
 #pragma once
 #include "LG_AlgorithmsPrerequisites.h"
 #include "LG_DelaunayTriangulation.h"
+#include "LG_HallwayGeneration.h"
 #include "LG_MarchingSquare.h"
 #include "LG_Dijkstra.h"
 #include "LG_Voronoi.h"
@@ -93,6 +94,11 @@ namespace LevelGenerator
 		 *	@var An object of the delaunay triangulation class. It's used to run it's algorithm.
 		 */
 		LG_DelaunayTriangulation m_DT;
+
+		/**
+		 *	@var The interface used to generate the hallways.
+		 */
+		LG_HallwayGeneration m_HG;
 
 		/**
 		 *	@var A vector of isolines where we store the marching square output.

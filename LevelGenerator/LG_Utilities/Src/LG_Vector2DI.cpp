@@ -85,7 +85,7 @@ namespace LevelGenerator
 	//! This is an operator to use / between 1 vector and 1 scalar value.
 	LG_Vector2DI LG_Vector2DI::operator/(int32 Value) const
 	{
-		const float RScale = 1.0f / Value;
+		const int32 RScale = 1 / Value;
 		return LG_Vector2DI(X * RScale, Y * RScale);
 	}
 
@@ -189,7 +189,7 @@ namespace LevelGenerator
 	//! This operator divide the values from this vector with a value.
 	LG_Vector2DI& LG_Vector2DI::operator/=(int32 Value)
 	{
-		const float RV = 1.0f / Value;
+		const int32 RV = 1 / Value;
 		X *= RV; Y *= RV;
 		return *this;
 	}

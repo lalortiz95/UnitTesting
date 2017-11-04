@@ -87,6 +87,8 @@ namespace LevelGenerator
 		///
 		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
 
+		m_HG.Run(m_MST.m_FinalTree, m_RoomsVector, 10.f);
+
 		///// Release memory.
 		//delete m_pSpawnZone;
 		//m_pSpawnZone = nullptr;
@@ -536,7 +538,7 @@ namespace LevelGenerator
 				TempDirection = pActualRect->m_CenterNode.m_Position - (*itt)->m_CenterNode.m_Position;
 
 				/// Check if the iterating rect is colli
-				if (pActualRect->CheckCollisionWithRect(*itt))
+				if (pActualRect->CheckCollision(*itt))
 				{
 					/// Add the temp vector to the average.
 					Average += TempDirection;
