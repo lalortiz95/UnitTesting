@@ -15,12 +15,6 @@ namespace LevelGenerator
 		Destroy();
 	}
 
-	//!
-	LG_Node::LG_Node(LG_Node * node)
-	{		
-		//*this = node;
-	}
-
 	//! 
 	LG_Node::LG_Node(LG_Vector3D vPosition)
 	{

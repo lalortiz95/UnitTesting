@@ -277,12 +277,6 @@ namespace LevelGenerator
 			}
 			/// once all the triangles have been checked, we finish the incremental triangulation.
 			bQuit = CheckIfAllTrianglesAreTrue();
-
-			// debugging purposes.
-			if (bQuit)
-			{
-				bQuit = bQuit;
-			}
 		}
 	}
 

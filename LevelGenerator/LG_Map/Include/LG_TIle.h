@@ -29,8 +29,25 @@ namespace LevelGenerator
 		~LG_Tile();
 
 		///**************************************************************************/
+		///*						 Const Variables.								*/
+		///**************************************************************************/
+
+
+		/**
+		 *	@var The constant that define the size per tile..
+		 */
+		static const int32 SIZE_OF_TILE;
+
+		/**
+		 *	@var The constant that define the number of nodes in the tile.
+		 */
+		static const int32 NUM_NODES_PER_TILE;
+
+		///**************************************************************************/
 		///*						  Member Variables.								*/
 		///**************************************************************************/
+
+	public:
 
 		/**
 		 *	@var This value is used to identify the case of the tile.
@@ -106,21 +123,7 @@ namespace LevelGenerator
 		 */
 		LG_Node* m_pDown;
 		
-		///**************************************************************************/
-		///*						 Static Member Variables.						*/
-		///**************************************************************************/
-
-
-		/**
-		 *	@var The constant that define the size per tile..
-		 */
-		static const int32 SIZE_OF_TILE;
-
-		/**
-		 *	@var The constant that define the number of nodes in the tile.
-		 */
-		static const int32 NUM_NODES_PER_TILE;
-
+		
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/

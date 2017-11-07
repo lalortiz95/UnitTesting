@@ -33,12 +33,10 @@ namespace LevelGenerator
 	//! Initializes the variables of the class.
 	void LG_Tile::Init(LG_Vector3D vPosition)
 	{
-		//! A vector to store each nodes position. Calculated with the width, height, and position of the first node.
-		LG_Vector3D TempPosition = vPosition;
 
 		//! The position of each node is calculated upon the given position.
 		//! We assign to the first node the given position.
-		m_Nodes[0].m_Position = TempPosition;
+		m_Nodes[0].m_Position = vPosition;
 		m_pTopLeft = &m_Nodes[0];
 
 		//! We assign the up node.
@@ -47,9 +45,9 @@ namespace LevelGenerator
 		m_pUp = &m_LinesNodes[0];
 
 		//! Now we add the width to that position, so that it give us the next node position.
-		TempPosition.X += SIZE_OF_TILE;
+		vPosition.X += SIZE_OF_TILE;
 		//! We assign the new position to the next node of the array, no to the right of the last one.
-		m_Nodes[1].m_Position = TempPosition;
+		m_Nodes[1].m_Position = vPosition;
 		m_pTopRight = &m_Nodes[1];
 
 		//! We assign the right node.
@@ -58,9 +56,9 @@ namespace LevelGenerator
 		m_pRight = &m_LinesNodes[1];
 
 		//! Now the height is added to the Y component.
-		TempPosition.Y += SIZE_OF_TILE;
+		vPosition.Y += SIZE_OF_TILE;
 		//! That new position is asigned to the next node (Bottom right).
-		m_Nodes[2].m_Position = TempPosition;
+		m_Nodes[2].m_Position = vPosition;
 		m_pBottomRight = &m_Nodes[2];
 
 		//! We assign the bottom node.
@@ -69,9 +67,9 @@ namespace LevelGenerator
 		m_pDown = &m_LinesNodes[2];
 
 		//! We finally substract the width of the x component.
-		TempPosition.X -= SIZE_OF_TILE;
+		vPosition.X -= SIZE_OF_TILE;
 		//! And we assign that final position to the last node (Bottom left).
-		m_Nodes[3].m_Position = TempPosition;
+		m_Nodes[3].m_Position = vPosition;
 		m_pBottomLeft = &m_Nodes[3];
 
 		//! We assign the left node.
@@ -83,6 +81,54 @@ namespace LevelGenerator
 	//! This function realeases the memory of the class.
 	void LG_Tile::Destroy()
 	{
+		/*if (m_pUp != nullptr)
+		{
+			m_pUp->Destroy();
+			delete m_pUp;
+		}
+
+		if (m_pDown != nullptr)
+		{
+			m_pDown->Destroy();
+			delete m_pDown;
+		}
+
+		if (m_pLeft != nullptr)
+		{
+			m_pLeft->Destroy();
+			delete m_pLeft;
+		}
+
+		if (m_pRight != nullptr)
+		{
+			m_pRight->Destroy();
+			delete m_pRight;
+		}
+
+		if (m_pTopLeft != nullptr)
+		{
+			m_pTopLeft->Destroy();
+			delete m_pTopLeft;
+		}
+
+		if (m_pTopRight != nullptr)
+		{
+			m_pTopRight->Destroy();
+			delete m_pTopRight;
+		}
+
+
+		if (m_pBottomLeft != nullptr)
+		{
+			m_pBottomLeft->Destroy();
+			delete m_pBottomLeft;
+		}
+
+		if (m_pBottomRight != nullptr)
+		{
+			m_pBottomRight->Destroy();
+			delete m_pBottomRight;
+		}*/
 
 	}
 

@@ -26,11 +26,6 @@ namespace LevelGenerator
 		~LG_Node();
 
 		/**
-		 *	@brief Copy constructor.
-		 */
-		LG_Node(LG_Node *node);
-
-		/**
 		 *	@brief Parameters Constructor.
 		 */
 		LG_Node(LG_Vector3D vPosition);

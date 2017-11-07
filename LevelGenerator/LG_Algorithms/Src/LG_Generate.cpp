@@ -32,7 +32,7 @@ namespace LevelGenerator
 	void LG_Generate::Initialize()
 	{
 		/// We run marching square with the generated grid.
-		m_MS.Run(2, 10, 10);
+		m_MS.Run(10, 10);
 		/// To have a more readable code.
 		m_TileVector = m_MS.m_pEdgeTiles;
 
@@ -86,7 +86,7 @@ namespace LevelGenerator
 		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
 
 		/// We run the hallway algorithm 
-		m_HG.Run(m_MST.m_FinalTree, m_RoomsVector, 10.f);
+		m_HG.Run(m_MST.m_FinalTree, &m_RoomsVector, 10.f);
 
 		///// Release memory.
 		//delete m_pSpawnZone;

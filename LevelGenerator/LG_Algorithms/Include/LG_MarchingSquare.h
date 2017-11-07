@@ -54,6 +54,11 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
+		 *	@var The contour of the generated shape.
+		 */
+		LG_Isoline m_Outline;
+
+		/**
 		 *	@var A LG_Grid pointer in which we are realizing the algorithm.
 		 */
 		LG_Grid* m_pMap;
@@ -73,11 +78,6 @@ namespace LevelGenerator
 		*/
 		Vector<LG_Tile*> m_pEdgeTiles;
 
-		/**
-		 *	@var The contour of the generated shape.
-		 */
-		LG_Isoline m_Outline;
-
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
@@ -89,11 +89,10 @@ namespace LevelGenerator
 
 		/**
 		 *  @brief This function initialize all variables of the class.
-		 *	@param int32 iCircleAmount: The amount of circles to create.
-		 *	@param int32 tilesX: the amount of tiles in X for the grid.
-		 *	@param int32 tilesY: the amount of tiles in Y for the grid.
+		 *	@param const int32& tilesX: the amount of tiles in X for the grid.
+		 *	@param const int32& tilesY: the amount of tiles in Y for the grid.
 		 */
-		void Init(int32 iCircleAmount, int32 tilesX, int32 tilesY);
+		void Init(const int32& tilesX, const int32& tilesY);
 
 		/**
 		 *	@brief This function free the memory of the class, and destroys it's variables.
@@ -107,11 +106,10 @@ namespace LevelGenerator
 
 		 /**
 		  *	@brief This function is the only one you need to generate marching squares algorithm.
-		  *	@param int32 iCircleAmount: The amount of circles to create.
-		  *	@param int32 iNumTilesX: The amount of tiles to be created in the X Axis.	
-		  * @param int32 iNumTilesY: The amount of tiles to be created in the Y Axis.
+		  *	@param const int32& iNumTilesX: The amount of tiles to be created in the X Axis.	
+		  * @param const int32& iNumTilesY: The amount of tiles to be created in the Y Axis.
 		  */
-		 void Run(int32 iCircleAmount, int32 iNumTilesX, int32 iNumTilesY);
+		 void Run(const int32& iNumTilesX, const int32& iNumTilesY);
 
 	private:
 		 /**
@@ -121,16 +119,16 @@ namespace LevelGenerator
 		
 		/**
 		 *	@brief This function tells us wether or not, a tile's node is inside of a list of circles.
-		 *	@param LG_Node ActualNode: The node to compare with the scalar function.
+		 *	@param const LG_Node& ActualNode: The node to compare with the scalar function.
 		 *	@return true if it's inside, otherwise false.
 		 */
-		bool IsTilesInsideOfCircles(LG_Node ActualNode);
+		bool IsTilesInsideOfCircles(const LG_Node& ActualNode);
 
 		/**
 		 *	@brief This function set a random number of circles.
-		 *	@param int32 iCircleAmount: The amount of circles to create.
+		 *	@param const int32& iCircleAmount: The amount of circles to create.
 		 */
-		void SetCircles(int32 iCircleAmount);
+		void SetCircles(const int32& iCircleAmount);
 
 		/**
 		 *	@brief This function set a random number of circles.

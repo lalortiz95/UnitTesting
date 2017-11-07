@@ -225,14 +225,14 @@ void LG_Visual::Renderer()
 	//}
 
 	/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
-	//LG_Vector3D pos1, pos2;
-	//for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
-	//{
-	//	pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
-	//	pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
-	//	SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
-	//	SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
-	//}
+	LG_Vector3D pos1, pos2;
+	for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
+	{
+		pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
+		pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
+		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
+		SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
+	}
 
 	/// Aquí  se renderean los pasillos //////////////////////////////////////////////////
 	for (int i = 0; i < AlgorithmGeneration.m_HG.m_FinalHallways.size(); ++i)
@@ -717,7 +717,7 @@ void LG_Visual::DrawCircle(LG_Circle circle, LG_Vector3D color, LevelGenerator::
 	/// Sees how long is every line gonna be.
 	if (sides == 0)
 	{
-		sides = (uint32)LevelGenerator::LG_Math::PI2 * circle.m_fRadius / 2;
+		sides = (uint32)LevelGenerator::LG_Math::PI2 * (uint32)circle.m_fRadius / 2;
 	}
 
 	float d_a = LevelGenerator::LG_Math::PI2 / sides,
@@ -741,7 +741,7 @@ void LG_Visual::DrawCircle(LG_Circle circle, LG_Vector3D color, LevelGenerator::
 		angle += d_a;
 
 		/// Set the color for the circle.
-		SDL_SetRenderDrawColor(m_Renderer, (int32)color.X, (int32)color.Y, (int32)color.Z, 0);
+		SDL_SetRenderDrawColor(m_Renderer, (uint8)color.X, (uint8)color.Y, (uint8)color.Z, 0);
 
 		/// Draw the lines that forms the circle.
 		ret =

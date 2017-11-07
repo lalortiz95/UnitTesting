@@ -8,6 +8,8 @@ namespace LevelGenerator
 	{
 		/// Initialization.
 		m_pMap = nullptr;
+		m_pTilesWithCase.clear();
+		m_pEdgeTiles.clear();
 	}
 
 	//! Default destructor.
@@ -26,10 +28,9 @@ namespace LevelGenerator
 	}
 
 	//! This function initialize all variables of the class.
-	void LG_MarchingSquare::Init(int32 iCircleAmount, int32 tilesX, int32 tilesY)
+	void LG_MarchingSquare::Init(const int32& tilesX, const int32& tilesY)
 	{
-		// temp
-		iCircleAmount = iCircleAmount;
+		Destroy();
 		/// Assign memory and initialize the grid.
 		m_pMap = new LG_Grid();
 		m_pMap->Init(tilesX, tilesY);
@@ -51,10 +52,10 @@ namespace LevelGenerator
 	}
 
 	//! This function is the only one you need to generate marching squares algorithm.
-	void LG_MarchingSquare::Run(LG_Grid* gridToWorkWith)
+	void LG_MarchingSquare::Run(LG_Grid* pGridToWorkWith)
 	{
 		/// Initialize the class' variables.
-		Init(gridToWorkWith);
+		Init(pGridToWorkWith);
 		///We see that the grid's got valid information.
 		if (m_pMap == nullptr)	return;
 
@@ -93,10 +94,10 @@ namespace LevelGenerator
 	}
 
 	//! This function is the only one you need to generate marching squares algorithm.
-	void LG_MarchingSquare::Run(int32 iCircleAmount, int32 iNumTilesX, int32 iNumTilesY)
+	void LG_MarchingSquare::Run(const int32& iNumTilesX, const int32& iNumTilesY)
 	{
 		/// Initialize the class' variables.
-		Init(iCircleAmount, iNumTilesX, iNumTilesY);
+		Init(iNumTilesX, iNumTilesY);
 		///We see that the grid's got valid information.
 		if (m_pMap == nullptr)	return;
 
@@ -386,7 +387,7 @@ namespace LevelGenerator
 	}
 
 	//! This function generates a vector of tiles that have cases different than 0.
-	bool LG_MarchingSquare::IsTilesInsideOfCircles(LG_Node ActualNode)
+	bool LG_MarchingSquare::IsTilesInsideOfCircles(const LG_Node& ActualNode)
 	{
 		/// Stores the distance between a node and the circle's center.
 		float fDistance;
@@ -415,7 +416,7 @@ namespace LevelGenerator
 	}
 
 	//! This function set a given number of circles.
-	void LG_MarchingSquare::SetCircles(int32 iCircleAmount)
+	void LG_MarchingSquare::SetCircles(const int32& iCircleAmount)
 	{
 		/// This variable store the actual circle being created.
 		LG_Circle NewCircle;

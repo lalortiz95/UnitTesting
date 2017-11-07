@@ -80,7 +80,7 @@ TEST(MarchingSquare_Algorithm, CheckCases)
 	int32 CorrectCaseValue[9] = { 2,6,4,3,15,12,1,9,8 };
 
 	/// Call the algorithm with one given circle.
-	SpecificCase.Run(2, 10, 10);
+	SpecificCase.Run(10, 10);
 
 	/// We compare that both, the calculated tiles inside, and the ones we know that are inside.
 	/// Are the same.

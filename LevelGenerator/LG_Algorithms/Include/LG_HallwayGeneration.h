@@ -43,7 +43,7 @@ namespace LevelGenerator
 		/**
 		 *	@var Where we store the rooms in the scene. They're used to check collision with the hallways as they're generated.
 		 */
-		Vector<LG_Rect*> m_Rooms;
+		Vector<LG_Rect*>* m_pRooms;
 
 		/**
 		 *	@var Where we store the rooms tha belongs to the iterating connection.
@@ -82,9 +82,9 @@ namespace LevelGenerator
 		 /**
 		  *	@brief Initializes the member variables of the class.
 		  *	@param float fCorridorWidth: the width that the corridor will have.
-		  *	@param Vector<LG_Rect*> m_Rooms: The rooms generated, with their size, position, etc.
+		  *	@param Vector<LG_Rect*>* pRooms: The rooms generated, with their size, position, etc.
 		  */
-		void Init(float fCorridorWidth, Vector<LG_Rect*> Rooms);
+		void Init(float fCorridorWidth, Vector<LG_Rect*>* pRooms);
 
 		/**
 		 *	@brief This function free the memory of the class, and destroys it's variables.
@@ -94,10 +94,10 @@ namespace LevelGenerator
 		/**
 		 *	@brief This function is the only one you need to generate Hallways.
 		 *	@param Vector<LG_Edge*> Connections: The connections upon we build the hallways.
+		 *	@param Vector<LG_Rect*>* pRooms: The rectangles that represent the rooms.
 		 *	@param float fCorridorWidth: the given width to generate the hallways.
-		 *	@param Vector<LG_Rect*> Rooms: The rectangles that represent the rooms.
 		 */
-		void Run(Vector<LG_Edge*> Connections, Vector<LG_Rect*> Rooms, float fCorridorWidth);
+		void Run(Vector<LG_Edge*> Connections, Vector<LG_Rect*>* pRooms, float fCorridorWidth);
 
 	private:
 		/**
