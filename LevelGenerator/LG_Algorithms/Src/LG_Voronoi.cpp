@@ -29,7 +29,8 @@ namespace LevelGenerator
 	//! 
 	void LG_Voronoi::Update(float fDelta)
 	{
-
+		// temp.
+		fDelta = fDelta;
 	}
 
 	void LG_Voronoi::Run()

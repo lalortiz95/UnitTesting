@@ -79,14 +79,13 @@ namespace LevelGenerator
 		/// Update 
 		while (!SeparationRooms(0.016f));
 		/// 
-		m_DT.Run((int32)m_pSpawnZone->m_fWidth,
-			(int32)m_pSpawnZone->m_fHeight,
-			m_pSpawnZone->m_CenterNode.m_Position,
+		m_DT.Run(m_pSpawnZone->m_CenterNode.m_Position,
 			&m_RoomsNodesCloud);
 
 		///
 		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
 
+		/// We run the hallway algorithm 
 		m_HG.Run(m_MST.m_FinalTree, m_RoomsVector, 10.f);
 
 		///// Release memory.
@@ -426,8 +425,7 @@ namespace LevelGenerator
 		LG_Node PositionCenterSpawnZone;
 		PositionCenterSpawnZone.m_Position = LG_Vector3D(500, 350, 0);
 		/// Create a area to spawn the dots.
-		//TODO: hacer que el tamaño dependa de la cantidad de cuartos. Quiza que el área para spawn que sea un circulo.
-		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, iRoomAmount * SPAWN_ZONE, iRoomAmount * SPAWN_ZONE);
+		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, (float)iRoomAmount * (float)SPAWN_ZONE, (float)iRoomAmount * (float)SPAWN_ZONE);
 
 		m_RoomsVector.resize(iRoomAmount);
 
@@ -436,11 +434,11 @@ namespace LevelGenerator
 
 		/// We store the minimum and maximum values to generate random positions for our rooms.
 		LG_Vector3D PosToSpawn(0, 0, 0);
-		int32 fMinX = m_pSpawnZone->m_CenterNode.m_Position.X - (m_pSpawnZone->m_fWidth / 2);
-		int32 fMaxX = m_pSpawnZone->m_CenterNode.m_Position.X + (m_pSpawnZone->m_fWidth / 2);
+		int32 fMinX = (int32)m_pSpawnZone->m_CenterNode.m_Position.X - int32(m_pSpawnZone->m_fWidth / 2);
+		int32 fMaxX = (int32)m_pSpawnZone->m_CenterNode.m_Position.X + int32(m_pSpawnZone->m_fWidth / 2);
 
-		int32 fMinY = m_pSpawnZone->m_CenterNode.m_Position.Y - (m_pSpawnZone->m_fHeight / 2);
-		int32 fMaxY = m_pSpawnZone->m_CenterNode.m_Position.Y + (m_pSpawnZone->m_fHeight / 2);
+		int32 fMinY = (int32)m_pSpawnZone->m_CenterNode.m_Position.Y - int32(m_pSpawnZone->m_fHeight / 2);
+		int32 fMaxY = (int32)m_pSpawnZone->m_CenterNode.m_Position.Y + int32(m_pSpawnZone->m_fHeight / 2);
 
 		/// Where we store the random room size.
 		LG_Vector3D RoomSize;
@@ -448,11 +446,11 @@ namespace LevelGenerator
 		for (int32 i = 0; i < iRoomAmount; ++i)
 		{
 			/// We find a random position for the room we are about to create.
-			PosToSpawn.X = rand() % (fMaxX - fMinX) + fMinX;
-			PosToSpawn.Y = rand() % (fMaxY - fMinY) + fMinY;
+			PosToSpawn.X = float(rand() % (fMaxX - fMinX) + fMinX);
+			PosToSpawn.Y = float(rand() % (fMaxY - fMinY) + fMinY);
 			/// We find a random size for the rectangles upon the given boundaries. 
-			RoomSize.X = rand() % ((int32)MaxSize.X - (int32)MinSize.X) + (int32)MinSize.X;
-			RoomSize.Y = rand() % ((int32)MaxSize.Y - (int32)MinSize.Y) + (int32)MinSize.Y;
+			RoomSize.X = float(rand() % ((int32)MaxSize.X - (int32)MinSize.X) + (int32)MinSize.X);
+			RoomSize.Y = float(rand() % ((int32)MaxSize.Y - (int32)MinSize.Y) + (int32)MinSize.Y);
 
 			/// initialize the new room.
 			NewRect = new LG_Rect(PosToSpawn, RoomSize.X, RoomSize.Y);
@@ -552,12 +550,12 @@ namespace LevelGenerator
 		if (iNumRectsInRadius != 0)
 		{
 			/// Divide the average between the num of rects that are in collision with the actual rect.
-			Average = Average / iNumRectsInRadius;
+			Average = Average / (float)iNumRectsInRadius;
 			/// We make sure that the magnitude of the averge is different to 0.
 			if (Average.Magnitude() != 0)
 			{
 				/// Normalize the average because we only need the direction of the vector and multiply it by the separation force. 
-				pActualRect->m_Direction += Average.Normalize() * SEPARATION_FORCE;
+				pActualRect->m_Direction += Average.Normalize() * (float)SEPARATION_FORCE;
 				return;
 			}
 		}
@@ -605,7 +603,7 @@ namespace LevelGenerator
 		else
 		{
 			/// Return the result vector.
-			return VectorTruncate.Normalize() * MAX_FORCE;
+			return VectorTruncate.Normalize() * (float)MAX_FORCE;
 		}
 	}
 }
@@ -632,9 +630,9 @@ extern "C"
 		LevelGenerator::LG_Generate* generateLevel;
 		generateLevel = &generateLevel->instance();
 
-		int iRoomsAmount = generateLevel->m_RoomsVector.size();
+		int iRoomsAmount = (int)generateLevel->m_RoomsVector.size();
 
-		LevelGenerator::LG_Rect** RoomsArray;
+		LevelGenerator::LG_Rect** RoomsArray = nullptr;
 
 		for (int i = 0; i < iRoomsAmount; ++i)
 		{

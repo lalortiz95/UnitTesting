@@ -17,8 +17,8 @@ namespace LevelGenerator
 
 	//!
 	LG_Node::LG_Node(LG_Node * node)
-	{
-		*this = node;
+	{		
+		//*this = node;
 	}
 
 	//! 

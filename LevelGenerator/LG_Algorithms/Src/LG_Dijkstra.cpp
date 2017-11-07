@@ -37,10 +37,6 @@ namespace LevelGenerator
 		float fActualDistance;
 		/// The new distance.
 		float fNewDistance = 0;
-		/// The old weight of the node.
-		float fOldWeight = 0;
-		/// A flag that tells if a node has already been inserted.
-		bool bExists = false;
 		/// Flag to determinate when a node has the longest distance.
 		bool bIsTheLongest = true;
 
@@ -223,7 +219,7 @@ namespace LevelGenerator
 		Vector<LG_Node*> TempPathNodes;
 		Vector<LG_Node*>::iterator ittErase = m_PathNodes.begin();
 
-		int32 iInitialSize = m_PathNodes.size();
+		int32 iInitialSize = (int32)m_PathNodes.size();
 		float fActualWeight = LG_Math::INFINITE_NUM;
 
 		TempPathNodes.resize(0);

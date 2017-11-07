@@ -28,6 +28,8 @@ namespace LevelGenerator
 	//! This function initialize all variables of the class.
 	void LG_MarchingSquare::Init(int32 iCircleAmount, int32 tilesX, int32 tilesY)
 	{
+		// temp
+		iCircleAmount = iCircleAmount;
 		/// Assign memory and initialize the grid.
 		m_pMap = new LG_Grid();
 		m_pMap->Init(tilesX, tilesY);
@@ -78,7 +80,7 @@ namespace LevelGenerator
 				///If there was a node set to true, we insert the tile in the list.
 				if (bFlag)
 				{
-					m_pMap->m_Grid[i][j].m_iID = m_pTilesWithCase.size();
+					m_pMap->m_Grid[i][j].m_iID = (int32)m_pTilesWithCase.size();
 					m_pTilesWithCase.push_back(&m_pMap->m_Grid[i][j]);
 				}
 				/// Change the flag back to false so that the next tile could get in the list.
@@ -120,7 +122,7 @@ namespace LevelGenerator
 				///If there was a node set to true, we insert the tile in the list.
 				if (bFlag)
 				{
-					m_pMap->m_Grid[i][j].m_iID = m_pTilesWithCase.size();
+					m_pMap->m_Grid[i][j].m_iID = (int32)m_pTilesWithCase.size();
 					m_pTilesWithCase.push_back(&m_pMap->m_Grid[i][j]);
 				}
 				/// Change the flag back to false so that the next tile could get in the list.

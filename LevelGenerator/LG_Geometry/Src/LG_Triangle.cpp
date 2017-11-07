@@ -172,10 +172,8 @@ namespace LevelGenerator
 		float fPerpendicualarSlope_AB, fPerpendicualarSlope_BC, fPerpendicualarSlope_CA;
 		/// Create a variables to store the position of every node of the triangle.
 		float fXa, fYa, fXb, fYb, fXc, fYc;
-		/// Create a final value.
-		float fCircumCenterX = 1, fCircumCenterY = 1;
 		/// 
-		float fB1, fB2, fB3;
+		float fB1, fB2;
 
 		/// We store the positions from the first node.
 		fXa = m_pVertices[FIRST_NODE]->m_Position.X;

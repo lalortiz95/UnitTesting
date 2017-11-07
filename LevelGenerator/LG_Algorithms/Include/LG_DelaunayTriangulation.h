@@ -84,7 +84,7 @@ namespace LevelGenerator
 		 *	@param LG_Vector3D:	The center of the grid.
 		 *	@param Vector<LG_Isoline> PointsCloud: The nodes cloud that we used to generate a triangulation.
 		 */
-		void Init(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Node*>* pCloudNodes);
+		void Init(LG_Vector3D GridCenter, Vector<LG_Node*>* pCloudNodes);
 
 		/**
 		 *  @brief This function releases memory and clears the variables.
@@ -93,12 +93,10 @@ namespace LevelGenerator
 
 		/**
 		 *  @brief This function performs the algorithm.
-		 *  @param int32 iGridWidth: The width of the grid.
-		 *	@param int32 iGridHeight: The height of the grid.
 		 *	@param LG_Vector3D:	The center of the grid.
 		 *	@param Vector<LG_Isoline> PointsCloud: The nodes cloud that we used to generate a triangulation.
 		 */
-		void Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Node*>* pCloudNodes);
+		void Run(LG_Vector3D GridCenter, Vector<LG_Node*>* pCloudNodes);
 
 		/**
 		 *	@brief This function performs an initial triangulation that works as a base for the rest of the algorithm.

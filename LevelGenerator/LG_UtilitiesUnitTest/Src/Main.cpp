@@ -827,13 +827,13 @@ TEST(Vector3D_Function, StaticCrossProduct)
 TEST(Vector3D_Function, Normalize_)
 {
 	LG_Vector3D V(3.f, 1.f, 2.f);
-	EXPECT_TRUE(V.Normalize() == LG_Vector3D(0.801783681, 0.267261237, 0.534522474));
+	EXPECT_TRUE(V.Normalize() == LG_Vector3D(0.801783681f, 0.267261237f, 0.534522474f));
 }
 
 TEST(Vector3D_Function, StaticNormalize)
 {
 	LG_Vector3D V(3.f, 1.f, 2.f);
-	EXPECT_TRUE(LG_Vector3D::Normalize(V) == LG_Vector3D(0.801783681, 0.267261237, 0.534522474));
+	EXPECT_TRUE(LG_Vector3D::Normalize(V) == LG_Vector3D(0.801783681f, 0.267261237f, 0.534522474f));
 }
 
 TEST(Vector3D_Function, Equals_)
@@ -1083,13 +1083,13 @@ TEST(Vector4D_Function, Normalize_)
 {
 	LG_Vector4D V(3.f, 1.f, 2.f, 0.f);
 	V.Normalize();
-	EXPECT_TRUE(V == LG_Vector4D(0.801783681, 0.267261237, 0.534522474, 0.f));
+	EXPECT_TRUE(V == LG_Vector4D(0.801783681f, 0.267261237f, 0.534522474f, 0.f));
 }
 
 TEST(Vector4D_Function, StaticNormalize)
 {
 	LG_Vector4D V(3.f, 1.f, 2.f, 0.f);
-	EXPECT_TRUE(LG_Vector4D::Normalize(V) == LG_Vector4D(0.801783681, 0.267261237, 0.534522474, 0.f));
+	EXPECT_TRUE(LG_Vector4D::Normalize(V) == LG_Vector4D(0.801783681f, 0.267261237f, 0.534522474f, 0.f));
 }
 
 TEST(Vector4D_Function, Equals_Function)
@@ -1185,7 +1185,7 @@ TEST(Vector4D_Operator, Vector_LessThan_Float)
 TEST(Vector4D_Operator, Vector_GreaterThan_Vector)
 {
 	/// IF the first vector is greater that the second vector return false, otherwise return true.
-	EXPECT_FALSE(LG_Vector4D(3.50000100f, 6.70000100f, 6.70000100f, 5.5f) > LG_Vector4D(3.50010000f, 6.70100000f, 6.70100000f, 5.56));
+	EXPECT_FALSE(LG_Vector4D(3.50000100f, 6.70000100f, 6.70000100f, 5.5f) > LG_Vector4D(3.50010000f, 6.70100000f, 6.70100000f, 5.56f));
 }
 
 //! Operator > between 1 Vector and 1 Value Test.

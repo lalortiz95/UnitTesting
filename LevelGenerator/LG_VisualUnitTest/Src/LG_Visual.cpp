@@ -24,7 +24,7 @@ LG_Visual::~LG_Visual()
 //! This function initialize the SDL API.
 bool LG_Visual::Init()
 {
-	srand(time(NULL));
+	srand((uint32)time(NULL));
 	/// Initialization flag
 	bool success = true;
 	/// 
@@ -178,7 +178,7 @@ void LG_Visual::Renderer()
 		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
 		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 
 		/// Draws the bottom line of the rectangle.
 		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
@@ -187,7 +187,7 @@ void LG_Visual::Renderer()
 		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
 		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 
 		/// Draws the left line of the rectangle.
 		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
@@ -196,7 +196,7 @@ void LG_Visual::Renderer()
 		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
 		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 
 		/// Draws the right line of the rectangle.
 		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
@@ -205,37 +205,36 @@ void LG_Visual::Renderer()
 		Secondpos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
 		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 	}
 
 	/// Esto renderea la triangulacion
-	for (LevelGenerator::int32 Q = 0; Q < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++Q)
-	{
+	//for (LevelGenerator::int32 Q = 0; Q < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++Q)
+	//{
 
-		for (LevelGenerator::int32 e = 0; e < NODES_PER_TRIANGLE; ++e)
-		{
-			posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pFirstNode->m_Position;
-			Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pSecondNode->m_Position;
+	//	for (LevelGenerator::int32 e = 0; e < NODES_PER_TRIANGLE; ++e)
+	//	{
+	//		posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pFirstNode->m_Position;
+	//		Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pSecondNode->m_Position;
 
-			// Draw gray line.
-			SDL_SetRenderDrawColor(m_Renderer, 70, 70, 72, 0xFF);
-			// en la posición de cada nodo dibujar un punto con SDL.
-			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-		}
-	}
+	//		// Draw gray line.
+	//		SDL_SetRenderDrawColor(m_Renderer, 70, 70, 72, 0xFF);
+	//		// en la posición de cada nodo dibujar un punto con SDL.
+	//		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//	}
+	//}
 
 	/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
-	LG_Vector3D pos1, pos2;
-	for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
-	{
-		pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
-		pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
-		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
-		SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
-	}
+	//LG_Vector3D pos1, pos2;
+	//for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
+	//{
+	//	pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
+	//	pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
+	//	SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
+	//	SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
+	//}
 
 	/// Aquí  se renderean los pasillos //////////////////////////////////////////////////
-	SDL_Rect* rectToRender = new SDL_Rect;
 	for (int i = 0; i < AlgorithmGeneration.m_HG.m_FinalHallways.size(); ++i)
 	{
 		// pink.
@@ -248,7 +247,7 @@ void LG_Visual::Renderer()
 		Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.X;
 		Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 
 		/// Draws the bottom line of the rectangle.
 		posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.X;
@@ -257,7 +256,7 @@ void LG_Visual::Renderer()
 		Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.X;
 		Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 
 		/// Draws the left line of the rectangle.
 		posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.X;
@@ -266,7 +265,7 @@ void LG_Visual::Renderer()
 		Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopLeft.m_Position.X;
 		Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopLeft.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 
 		/// Draws the right line of the rectangle.
 		posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.X;
@@ -275,7 +274,7 @@ void LG_Visual::Renderer()
 		Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.X;
 		Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 
 		// Draw red line.
 		//SDL_SetRenderDrawColor(m_Renderer, 70, 70, 72, 0xFF);
@@ -627,6 +626,8 @@ void LG_Visual::Update(float fTime)
 	/// Update the surface
 	if (m_Window != nullptr)
 		SDL_UpdateWindowSurface(m_Window);
+
+	fTime = fTime;
 }
 
 //! This function runs all the functions needed to have SDL working.
@@ -716,7 +717,7 @@ void LG_Visual::DrawCircle(LG_Circle circle, LG_Vector3D color, LevelGenerator::
 	/// Sees how long is every line gonna be.
 	if (sides == 0)
 	{
-		sides = LevelGenerator::LG_Math::PI2 * circle.m_fRadius / 2;
+		sides = (uint32)LevelGenerator::LG_Math::PI2 * circle.m_fRadius / 2;
 	}
 
 	float d_a = LevelGenerator::LG_Math::PI2 / sides,
@@ -740,15 +741,15 @@ void LG_Visual::DrawCircle(LG_Circle circle, LG_Vector3D color, LevelGenerator::
 		angle += d_a;
 
 		/// Set the color for the circle.
-		SDL_SetRenderDrawColor(m_Renderer, color.X, color.Y, color.Z, 0);
+		SDL_SetRenderDrawColor(m_Renderer, (int32)color.X, (int32)color.Y, (int32)color.Z, 0);
 
 		/// Draw the lines that forms the circle.
 		ret =
 			SDL_RenderDrawLine(
 				m_Renderer, // SDL_Renderer* renderer: the renderer in which draw 
-				start.X,               // int x1: x of the starting point 
-				start.Y,          // int y1: y of the starting point 
-				end.X,                 // int x2: x of the end point 
-				end.Y);           // int y2: y of the end point 
+				(int32)start.X,               // int x1: x of the starting point 
+				(int32)start.Y,          // int y1: y of the starting point 
+				(int32)end.X,                 // int x2: x of the end point 
+				(int32)end.Y);           // int y2: y of the end point 
 	}
 }

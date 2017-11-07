@@ -102,7 +102,7 @@ namespace LevelGenerator
 		/// Where we store the minimum distance of the edge vectos.
 		float fSmallestMag = LG_Math::INFINITE_NUM;
 		/// The initial size of the net.
-		int32 iInitialSize = InitialNet.size();
+		int32 iInitialSize = (int32)InitialNet.size();
 		/// 
 
 		while (m_OrderedEdges.size() != iInitialSize)

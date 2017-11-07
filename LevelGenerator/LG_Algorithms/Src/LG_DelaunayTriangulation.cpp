@@ -19,7 +19,7 @@ namespace LevelGenerator
 	}
 
 	//! This function initialize all variables of the class.
-	void LG_DelaunayTriangulation::Init(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Node*>* NodesCloud)
+	void LG_DelaunayTriangulation::Init(LG_Vector3D GridCenter, Vector<LG_Node*>* NodesCloud)
 	{
 		Destroy();
 		m_pNodesCloud = NodesCloud;
@@ -27,7 +27,7 @@ namespace LevelGenerator
 		/// Find the area to generate the big triangle so that it contains all the nodes.
 		FindFurthestPoints(GridCenter);
 		/// Create a triangle that is outside of the node's cloud.
-		CreateBigTriangle(m_AreaContainingRooms.m_fWidth, m_AreaContainingRooms.m_fHeight, m_AreaContainingRooms.m_CenterNode.m_Position);
+		CreateBigTriangle((int32)m_AreaContainingRooms.m_fWidth, (int32)m_AreaContainingRooms.m_fHeight, m_AreaContainingRooms.m_CenterNode.m_Position);
 		m_pBigTriangle->m_iID = m_iTrianglesCount;
 		++m_iTrianglesCount;
 		/// Insert the big triangle to the vector.
@@ -39,12 +39,12 @@ namespace LevelGenerator
 
 
 	//! This function performs the algorithm.
-	void LG_DelaunayTriangulation::Run(int32 iGridWidth, int32 iGridHeight, LG_Vector3D GridCenter, Vector<LG_Node*>* NodesCloud)
+	void LG_DelaunayTriangulation::Run(LG_Vector3D GridCenter, Vector<LG_Node*>* NodesCloud)
 	{
 		//TODO: create a function that iterates through the nodes cloud, and finds the ones with the furthest positions to the center.
-		// Atore them as the limits for a boundary that will be used to generate the big triangle, replacing the first 3 parameters in this function.
+		// Store them as the limits for a boundary that will be used to generate the big triangle, replacing the first 3 parameters in this function.
 		/// 
-		Init(iGridWidth, iGridHeight, GridCenter, NodesCloud);
+		Init(GridCenter, NodesCloud);
 		/// The initial triangulation we base our Delaunay algorithm on.
 		IncrementalTriangulation();
 		/// Set all triangle's flags as false.
@@ -138,8 +138,6 @@ namespace LevelGenerator
 		int32 iPosTriangle = 0;
 		Vector<LG_Triangle*>::iterator itt = m_pTrianglesVector.begin();
 
-		/// A counter for all of the dots inside of a triangle, it's needed because if there is only one, we'll triangulate with that.
-		int32 iDotsInside = 0;
 		/// Stores the triangle that we want to know whether it contains good angles or not
 		LG_Triangle TempTri;
 
@@ -154,7 +152,7 @@ namespace LevelGenerator
 		/// here we store all the nodes that we find inside of the actual triangle. This is needed
 		Vector<LG_Node*> pNodesInside;
 		/// Here we store the best node inside of the triangle, and we use the variable to change it's properties.
-		LG_Node* pBestNode;
+		LG_Node* pBestNode = nullptr;
 
 		/// we perform incremental triangulation
 		while (!bQuit)
@@ -163,8 +161,6 @@ namespace LevelGenerator
 			pNodesInside.clear();
 			/// Initialize the best angles array with the default minimum angle needed, this being 100°
 			fBestAngle = fDefaultAngle;
-			/// Clean the best node for this iteration.
-			//BestNode = nullptr;
 			/// Reset the value of the flag for this iteration.
 			bHaveGoodAngles = false;
 			/// 
@@ -210,9 +206,9 @@ namespace LevelGenerator
 						bHaveGoodAngles = true;
 					}
 
-					for (int32 i = 0; i < EDGES_PER_TRIANGLE; ++i)
+					for (int32 k = 0; k < EDGES_PER_TRIANGLE; ++k)
 					{
-						delete TempTri.m_pEdges[i];
+						delete TempTri.m_pEdges[k];
 					}
 				}
 			}
@@ -261,7 +257,7 @@ namespace LevelGenerator
 
 			///  We find the new actual triangle by iterating through their list, and finding a triangle that
 			/// haven't been checked yet.
-			for (int32 i = m_pTrianglesVector.size() - 1; i >= 0; --i)
+			for (int32 i = (int32)m_pTrianglesVector.size() - 1; i >= 0; --i)
 			{
 				/// We find the new actual triangle.
 				if (!m_pTrianglesVector[i]->m_bIsChecked && m_pActualTriangle != m_pTrianglesVector[i])
