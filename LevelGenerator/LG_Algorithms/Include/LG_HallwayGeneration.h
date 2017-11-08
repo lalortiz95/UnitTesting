@@ -95,13 +95,13 @@ namespace LevelGenerator
 		 *	@param LG_Edge* Connection: the connection between two rooms that will be transformed into a hallway.
 		 *	@return the hallway that was created.
 		 */
-		LG_Rect* MakeVerticalHallway(LG_Rect* Room1, LG_Rect* Room2, bool bIsCorner);
+		LG_Rect* MakeVerticalHallway(LG_Rect* Room1, LG_Rect* Room2);
 
 		/**
 		 *	@brief Creates a horizontal hallway between two rooms.
 		 *	@param LG_Edge* Connection: the connection between two rooms that will be transformed into a hallway.
 		 */
-		LG_Rect* MakeHorizontalHallway(LG_Rect* Room1, LG_Rect* Room2, bool bIsCorner);
+		LG_Rect* MakeHorizontalHallway(LG_Rect* Room1, LG_Rect* Room2);
 
 		//LG_Rect* MakeHorizontalHallway(LG_Edge* Connection, bool bIsCorner);
 

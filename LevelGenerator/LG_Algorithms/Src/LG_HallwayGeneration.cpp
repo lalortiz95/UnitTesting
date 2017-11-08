@@ -28,7 +28,10 @@ namespace LevelGenerator
 		m_fHallwayWidth = fCorridorWidth;
 		m_pRooms = Rooms;
 
-
+		for (int32 i = 0; i < m_pRooms->size(); ++i)
+		{
+			(*m_pRooms)[i]->m_bIsChecked = false;
+		}
 	}
 
 	//! This function free the memory of the class, and destroys it's variables.
@@ -48,77 +51,50 @@ namespace LevelGenerator
 		/// The created hallway.
 		LG_Rect* pHallway;
 
+		//TODO: cambiar funciones que generan pasillos para que usen los cuartos y de esa manera estén mejor
+		// calculadas las posiciones de inico y fin de cada pasillo.
+
+		/// Makes hallways with the connections from every room.
 		for (int32 i = 0; i < m_pRooms->size(); ++i)
 		{
-			//TODO: sacar el ángulo entre las conexiones, ver que caso generar a partir de eso.
 			for (int32 j = 0; j < (*m_pRooms)[i]->m_RoomsConnections.size(); ++j)
 			{
-				/// Makes a vector between the room and it's connections.
-				AngleVect = (*m_pRooms)[i]->m_RoomsConnections[j]->m_CenterNode.m_Position - (*m_pRooms)[i]->m_CenterNode.m_Position;
-				AngleVect.Normalize();
-				/// Get the angle it's got.
-				fAngle = LG_Math::Acos(AngleVect.X);
+				if (!(*m_pRooms)[i]->m_RoomsConnections[j]->m_bIsChecked)
+				{
+					/// Makes a vector between the room and it's connections.
+					AngleVect = (*m_pRooms)[i]->m_RoomsConnections[j]->m_CenterNode.m_Position - (*m_pRooms)[i]->m_CenterNode.m_Position;
+					AngleVect.Normalize();
+					/// Get the angle it's got.
+					fAngle = LG_Math::Acos(AngleVect.X);
 
-				/// See in which boundaries is the connection, in order to know what kind of hallway to create.
-				if (fAngle < _20_DEGREES && fAngle > -_20_DEGREES || fAngle > _160_DEGREES && fAngle < -_160_DEGREES)
-				{
-					/// If the angle of the connection is inside of this limits, we consider it a horizontal hallway.
-					pHallway = MakeHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], false);
-					/// Add the hallway in the final vector.
-					m_FinalHallways.push_back(pHallway);
-				}
-				else if (fAngle > _70_DEGREES && fAngle < _110_DEGREES || fAngle < -_70_DEGREES && fAngle > -_110_DEGREES)
-				{
-					/// If the angle of the connection is inside of this limits, we consider it a vertical hallway.
-					pHallway = MakeVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], false);
-					/// Add the hallway in the final vector.
-					m_FinalHallways.push_back(pHallway);
-				}
-				else
-				{
-					/// Any other angle will be represented with a corner hallway.
-					MakeCornerHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+					/// See in which boundaries is the connection, in order to know what kind of hallway to create.
+					if (fAngle < _20_DEGREES && fAngle > -_20_DEGREES || fAngle > _160_DEGREES && fAngle < -_160_DEGREES)
+					{
+						/// If the angle of the connection is inside of this limits, we consider it a horizontal hallway.
+						pHallway = MakeHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+						/// Add the hallway in the final vector.
+						m_FinalHallways.push_back(pHallway);
+					}
+					else if (fAngle > _70_DEGREES && fAngle < _110_DEGREES || fAngle < -_70_DEGREES && fAngle > -_110_DEGREES)
+					{
+						/// If the angle of the connection is inside of this limits, we consider it a vertical hallway.
+						pHallway = MakeVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+						/// Add the hallway in the final vector.
+						m_FinalHallways.push_back(pHallway);
+					}
+					else
+					{
+						/// Any other angle will be represented with a corner hallway.
+						MakeCornerHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+					}
 				}
 			}
+			(*m_pRooms)[i]->m_bIsChecked = true;
 		}
-
-		///// Iterates through all of the connections, to make each one of them a hallway.
-		//for (int32 i = 0; i < Connections.size(); ++i)
-		//{
-		//	/// Makes a vector between both nodes of the connection.
-		//	AngleVect = Connections[i]->m_pFirstNode->m_Position - Connections[i]->m_pSecondNode->m_Position;
-		//	AngleVect.Normalize();
-		//	/// Get the angle it's got.
-		//	fAngle = LG_Math::Acos(AngleVect.X);
-
-		//	/// Stores in the member variables which rooms are the ones from the connection's nodes
-		//	GetConnectionsRooms(Connections[i]);
-
-		//	/// See in which boundaries is the connection, in order to know what kind of hallway to create.
-		//	if (fAngle < _20_DEGREES && fAngle > -_20_DEGREES || fAngle > _160_DEGREES && fAngle < -_160_DEGREES)
-		//	{
-		//		/// If the angle of the connection is inside of this limits, we consider it a horizontal hallway.
-		//		pHallway = MakeHorizontalHallway(Connections[i], false);
-		//		/// Add the hallway in the final vector.
-		//		m_FinalHallways.push_back(pHallway);
-		//	}
-		//	else if (fAngle > _70_DEGREES && fAngle < _110_DEGREES || fAngle < -_70_DEGREES && fAngle > -_110_DEGREES)
-		//	{
-		//		/// If the angle of the connection is inside of this limits, we consider it a vertical hallway.
-		//		pHallway = MakeVerticalHallway(Connections[i], false);
-		//		/// Add the hallway in the final vector.
-		//		m_FinalHallways.push_back(pHallway);
-		//	}
-		//	else
-		//	{
-		//		/// Any other angle will be represented with a corner hallway.
-		//		MakeCornerHallway(Connections[i]);
-		//	}
-		//}
 	}
 
 	//! Creates a vertical hallway between two rooms.
-	LG_Rect* LG_HallwayGeneration::MakeVerticalHallway(LG_Rect* Room1, LG_Rect* Room2, bool bIsCorner)
+	LG_Rect* LG_HallwayGeneration::MakeVerticalHallway(LG_Rect* Room1, LG_Rect* Room2)
 	{
 		/// Where we store the generated room.
 		LG_Rect* pFinalHallway = nullptr;
@@ -126,10 +102,14 @@ namespace LevelGenerator
 		float fMiddlePosX = 0.0f;
 		/// the distance between both rooms in the X axis.
 		float fDistanceBetweenRooms = 0.0f;
-		/// 
+		/// The position of the room that's got a higher value in the Y axis
 		float fTopPosY = 0.0f;
-		/// 
+		/// The position of the room that's got a lower value in the Y axis.
 		float fBottomPosY = 0.0f;
+		/// The position of the room's that's got a lower value in the X axis.
+		float fLeftPosX;
+		/// The position of the room's that's got a lower value in the X axis.
+		float fRightPosX;
 
 		float fTempTopPosY = 0.0f;
 		float fTempBottomPosY = 0.0f;
@@ -137,34 +117,58 @@ namespace LevelGenerator
 		/// Initialize thee final hallway.
 		pFinalHallway = new LG_Rect();
 
+		//TODO: Ver que cuarto está arriba o abajo, y cual está a la derecha o a la izquierda.
+		// Dependiendo de esto tomar los edges pertinentes para que se cree el pasillo en una posición en esos edges.
+
 		/// We find the maximum and minimum and maximum positions in the Y axis of the hallway.
 		fBottomPosY = LG_Math::Max(Room1->m_CenterNode.m_Position.Y, Room2->m_CenterNode.m_Position.Y);
 		fTopPosY = LG_Math::Min(Room1->m_CenterNode.m_Position.Y, Room2->m_CenterNode.m_Position.Y);
 
+		/// We find the maximum and minimum and maximum positions in the X axis of the hallway.
+		fRightPosX = LG_Math::Max(Room1->m_CenterNode.m_Position.X, Room2->m_CenterNode.m_Position.X);
+		fLeftPosX = LG_Math::Min(Room1->m_CenterNode.m_Position.X, Room2->m_CenterNode.m_Position.X);
+
+		/// If the first room is the top room.
+		if (Room1->m_CenterNode.m_Position.Y == fTopPosY)
+		{
+			/// We see if it's at the left or at the right of the other room.
+			if (Room1->m_CenterNode.m_Position.X == fLeftPosX)
+			{
+				/// We calculate the top right, and top left nodes of the hallway.
+				pFinalHallway->m_TopRight = Room1->m_BottomRight;
+				pFinalHallway->m_TopLeft = Room1->m_BottomRight;
+				pFinalHallway->m_TopLeft.m_Position.X -= m_fHallwayWidth;
+			}
+			else if (Room1->m_CenterNode.m_Position.X == fRightPosX)
+			{
+				/// We calculate the top right, and top left nodes of the hallway.
+				pFinalHallway->m_TopLeft = Room1->m_BottomLeft;
+				pFinalHallway->m_TopRight = Room1->m_BottomLeft;
+				pFinalHallway->m_TopRight.m_Position.X += m_fHallwayWidth;
+			}
+		}
+
 		fTempTopPosY = fTopPosY;
 		fTempBottomPosY = fBottomPosY;
 
-		if (!bIsCorner)
+		/// Sees if we need to substract or add to the bottom or top position.
+		if (Room1->m_CenterNode.m_Position.Y == fTempBottomPosY)
 		{
-			/// Sees if we need to substract or add to the bottom or top position.
-			if (Room1->m_CenterNode.m_Position.Y == fTempBottomPosY)
-			{
-				fBottomPosY -= Room1->m_fHeight / 2;
-			}
-			else if (Room1->m_CenterNode.m_Position.Y == fTempTopPosY)
-			{
-				fTopPosY += Room1->m_fHeight / 2;
-			}
+			fBottomPosY -= Room1->m_fHeight / 2;
+		}
+		else if (Room1->m_CenterNode.m_Position.Y == fTempTopPosY)
+		{
+			fTopPosY += Room1->m_fHeight / 2;
+		}
 
 
-			if (Room2->m_CenterNode.m_Position.Y == fTempBottomPosY)
-			{
-				fBottomPosY -= Room2->m_fHeight / 2;
-			}
-			else if (Room2->m_CenterNode.m_Position.Y == fTempTopPosY)
-			{
-				fTopPosY += Room2->m_fHeight / 2;
-			}
+		if (Room2->m_CenterNode.m_Position.Y == fTempBottomPosY)
+		{
+			fBottomPosY -= Room2->m_fHeight / 2;
+		}
+		else if (Room2->m_CenterNode.m_Position.Y == fTempTopPosY)
+		{
+			fTopPosY += Room2->m_fHeight / 2;
 		}
 
 		/// We store the width and height of the hallway. The height depends on the distance between the rooms.
@@ -212,11 +216,11 @@ namespace LevelGenerator
 		return pFinalHallway;
 	}
 
-	
+
 
 	//! Creates a horizontal hallway between two rooms.
 	//LG_Rect* LG_HallwayGeneration::MakeHorizontalHallway(LG_Edge* Connection, bool bIsCorner)
-	LG_Rect* LG_HallwayGeneration::MakeHorizontalHallway(LG_Rect* Room1, LG_Rect* Room2, bool bIsCorner)
+	LG_Rect* LG_HallwayGeneration::MakeHorizontalHallway(LG_Rect* Room1, LG_Rect* Room2)
 	{
 		/// Where we store the generated room.
 		LG_Rect* pFinalHallway = nullptr;
@@ -242,27 +246,23 @@ namespace LevelGenerator
 		fTempLeftPosX = fLeftPosX;
 		fTempRightPosX = fRightPosX;
 
-		if (!bIsCorner)
+		/// Sees if we need to subtract or add to the bottom or top position.
+		if (Room1->m_CenterNode.m_Position.X == fTempRightPosX)
 		{
-			/// Sees if we need to substract or add to the bottom or top position.
-			if (Room1->m_CenterNode.m_Position.X == fTempRightPosX)
-			{
-				fRightPosX -= Room1->m_fWidth / 2;
-			}
-			else if (Room1->m_CenterNode.m_Position.X == fTempLeftPosX)
-			{
-				fLeftPosX += Room1->m_fWidth / 2;
-			}
+			fRightPosX -= Room1->m_fWidth / 2;
+		}
+		else if (Room1->m_CenterNode.m_Position.X == fTempLeftPosX)
+		{
+			fLeftPosX += Room1->m_fWidth / 2;
+		}
 
-			if (Room2->m_CenterNode.m_Position.X == fTempRightPosX)
-			{
-				fRightPosX -= Room2->m_fWidth / 2;
-			}
-			else if (Room2->m_CenterNode.m_Position.X == fTempLeftPosX)
-			{
-				fLeftPosX += Room2->m_fWidth / 2;
-			}
-
+		if (Room2->m_CenterNode.m_Position.X == fTempRightPosX)
+		{
+			fRightPosX -= Room2->m_fWidth / 2;
+		}
+		else if (Room2->m_CenterNode.m_Position.X == fTempLeftPosX)
+		{
+			fLeftPosX += Room2->m_fWidth / 2;
 		}
 
 		/// Assign the final hallway width and height.
@@ -433,13 +433,13 @@ namespace LevelGenerator
 		/// 
 		if (pCorner->m_Position.X == Room1->m_CenterNode.m_Position.X)
 		{
-			VerticalHall = MakeVerticalHallway(pHallwayCorner,Room1, false);
-			HorizontalHall = MakeHorizontalHallway(pHallwayCorner,Room2, false);
+			VerticalHall = MakeVerticalHallway(pHallwayCorner, Room1);
+			HorizontalHall = MakeHorizontalHallway(pHallwayCorner, Room2);
 		}
 		else if (pCorner->m_Position.Y == Room1->m_CenterNode.m_Position.Y)
 		{
-			HorizontalHall = MakeHorizontalHallway(pHallwayCorner, Room1, false);
-			VerticalHall = MakeVerticalHallway(pHallwayCorner, Room2, false);
+			HorizontalHall = MakeHorizontalHallway(pHallwayCorner, Room1);
+			VerticalHall = MakeVerticalHallway(pHallwayCorner, Room2);
 		}
 		else
 		{

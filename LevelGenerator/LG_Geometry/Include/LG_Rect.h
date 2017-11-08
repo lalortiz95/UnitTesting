@@ -45,6 +45,11 @@ namespace LevelGenerator
 		float m_fHeight;
 
 		/**
+		 *	@var A flag to see whether or not the rectangle has been used or not.
+		 */
+		bool m_bIsChecked;
+
+		/**
 		 *	@var The center node of the rectangle.
 		 */
 		LG_Node m_CenterNode;
