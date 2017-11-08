@@ -79,6 +79,11 @@ namespace LevelGenerator
 		 */
 		LG_Node m_BottomLeft;
 
+		/**
+		 *	@var Stores the connections from every room.
+		 */
+		Vector<LG_Rect*> m_RoomsConnections;
+
 		///************************************************************************/
 		///*						   Class Functions.							  */
 		///************************************************************************/
@@ -123,6 +128,17 @@ namespace LevelGenerator
 		 *	@return if the given rect is colliding with this return true, otherwise return false.
 		 */
 		bool CheckCollision(LG_Rect* pRect);
+
+		/**
+		 *	@brief This function stops pointing to the given room.
+		 *	@param LG_Rect* pRoom: The rect that we want to stop pointing at.
+		 */
+		void StopPointingToRect(LG_Rect * pRoom);
+
+		/**
+		 *
+		 */
+		void AddRectConections(const Vector<LG_Node*>& NodeConections, const Vector<LG_Rect*>& RoomsVect);
 	};
 }
 

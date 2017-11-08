@@ -86,9 +86,18 @@ namespace LevelGenerator
 		m_BottomRight.m_Position.Y = m_BottomLeft.m_Position.Y;
 	}
 
-	//! Function to realease memory and destroy objects.
+	//! Function to release memory and destroy objects.
 	void LG_Rect::Destroy()
 	{
+		///  Clears the room's connections.
+		if (m_RoomsConnections.size() != 0)
+		{
+			for (Vector<LG_Rect*>::iterator itt = m_RoomsConnections.begin(); itt != m_RoomsConnections.end(); ++itt)
+			{
+				*itt = nullptr;
+			}
+			m_RoomsConnections.clear();
+		}
 	}
 
 	//! This functions checks if the given node is colliding with the rect.
@@ -128,12 +137,10 @@ namespace LevelGenerator
 	//TODO: Falta checar por tamaños del rect...
 	bool LG_Rect::CheckCollision(LG_Rect * pRect)
 	{
-
 		LG_Vector3D tTopLeft = pRect->m_TopLeft.m_Position;
 		LG_Vector3D tTopRight = pRect->m_TopRight.m_Position;
 		LG_Vector3D tBottomLeft = pRect->m_BottomLeft.m_Position;
 		LG_Vector3D tBottomRight = pRect->m_BottomRight.m_Position;
-
 
 		/// First we check if the top left node of this rect is inside of the given rect.
 		if (((m_TopLeft.m_Position.X >= tTopLeft.X  &&
@@ -228,6 +235,35 @@ namespace LevelGenerator
 		}
 
 		return false;
+	}
+
+	void LG_Rect::StopPointingToRect(LG_Rect * pRect)
+	{
+		for (Vector<LG_Rect*>::iterator itt = m_RoomsConnections.begin(); itt != m_RoomsConnections.end(); ++itt)
+		{
+			if ((*itt) == pRect)
+			{
+				m_RoomsConnections.erase(itt);
+				return;
+			}
+		}
+	}
+
+	//! 
+	void LG_Rect::AddRectConections(const Vector<LG_Node*>& NodeConections, const Vector<LG_Rect*>& RoomsVect)
+	{
+		for (int32 i = 0; i < NodeConections.size(); ++i)
+		{
+			for (int32 j = 0; j < RoomsVect.size(); ++j)
+			{
+				/// Once we find the node that shares position with the room, we associate the both veectors.
+				if (RoomsVect[j]->m_CenterNode.m_Position == NodeConections[i]->m_Position)
+				{
+					m_RoomsConnections.push_back(RoomsVect[j]);
+					break;
+				}
+			}
+		}
 	}
 
 }

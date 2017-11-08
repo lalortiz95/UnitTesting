@@ -273,6 +273,11 @@ namespace LevelGenerator
 		void GetNoudesCloud();
 
 		/**
+		 *	@brief fills the rectangle's connections vector.
+		 */
+		void GenerateRoomsConnections();
+
+		/**
 		 *	@brief This function limits the strength of a given vector.
 		 *	@param LG_Vector3D VectorTruncate: The vector that we want to truncate.
 		 *	@return the vector truncate.

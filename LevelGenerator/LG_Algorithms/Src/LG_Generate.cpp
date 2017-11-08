@@ -82,11 +82,14 @@ namespace LevelGenerator
 		m_DT.Run(m_pSpawnZone->m_CenterNode.m_Position,
 			&m_RoomsNodesCloud);
 
-		///
+		/// minimum spanning tree
 		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
 
+		/// 
+		GenerateRoomsConnections();
+
 		/// We run the hallway algorithm 
-		m_HG.Run(m_MST.m_FinalTree, &m_RoomsVector, 10.f);
+		m_HG.Run(&m_RoomsVector, 10.f);
 
 		///// Release memory.
 		//delete m_pSpawnZone;
@@ -585,6 +588,22 @@ namespace LevelGenerator
 			{
 				m_FinalIsolineVector[i].m_NodeVector[j].Init();
 				m_ReducedNoudCloud.push_back(&m_FinalIsolineVector[i].m_NodeVector[j]);
+			}
+		}
+	}
+
+	void LG_Generate::GenerateRoomsConnections()
+	{
+		/// We assign the ID to the rectangles, associated with the node's ID.
+		for (int32 i = 0; i < m_RoomsVector.size(); ++i)
+		{
+			for (int32 j = 0; j < m_RoomsNodesCloud.size(); ++j)
+			{
+				/// Once we find the node that shares position with the room, we associate the both vectors.
+				if (m_RoomsVector[i]->m_CenterNode.m_Position == m_RoomsNodesCloud[j]->m_Position)
+				{
+					m_RoomsVector[i]->AddRectConections(m_RoomsNodesCloud[j]->m_PointerNodes, m_RoomsVector);
+				}
 			}
 		}
 	}
