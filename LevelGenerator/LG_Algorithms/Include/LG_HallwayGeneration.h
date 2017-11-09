@@ -1,6 +1,7 @@
 #pragma once
 #include "LG_AlgorithmsPrerequisites.h"
 
+#include <LG_Polygon.h>
 #include <LG_Edge.h>
 #include <LG_Rect.h>
 
@@ -38,7 +39,12 @@ namespace LevelGenerator
 		/**
 		 *	@var Where we store the final hallways.
 		 */
-		Vector<LG_Rect*> m_FinalHallways;
+		//Vector<LG_Rect*> m_FinalHallways;
+
+		/**
+		*	@var Where we store the final hallways.
+		*/
+		Vector<LG_Polygon*> m_FinalHallways;
 
 		/**
 		 *	@var Where we store the rooms in the scene. They're used to check collision with the hallways as they're generated.
@@ -59,21 +65,21 @@ namespace LevelGenerator
 		 *	@var a constant that defines 110 degrees in radians.
 		 */
 		static const float _110_DEGREES;
-		
+
 		/**
 		 *	@var a constant that defines 70 degrees in radians.
 		 */
 		static const float _70_DEGREES;
 
-		 ///************************************************************************/
-		 ///*						   Class Functions.							  */
-		 ///************************************************************************/
+		///************************************************************************/
+		///*						   Class Functions.							  */
+		///************************************************************************/
 
-		 /**
-		  *	@brief Initializes the member variables of the class.
-		  *	@param float fCorridorWidth: the width that the corridor will have.
-		  *	@param Vector<LG_Rect*>* pRooms: The rooms generated, with their size, position, etc.
-		  */
+		/**
+		 *	@brief Initializes the member variables of the class.
+		 *	@param float fCorridorWidth: the width that the corridor will have.
+		 *	@param Vector<LG_Rect*>* pRooms: The rooms generated, with their size, position, etc.
+		 */
 		void Init(float fCorridorWidth, Vector<LG_Rect*>* pRooms);
 
 		/**
@@ -116,14 +122,27 @@ namespace LevelGenerator
 		 *	@param The first room that of the connection.
 		 *	@param Second room from the connection.
 		 */
-		//void GetConnectionsRooms(LG_Edge* Connection);
+		 //void GetConnectionsRooms(LG_Edge* Connection);
+
+		 /**
+		  *	@brief Calculates a position for a corner between two connected rooms.
+		  *	@param bool bIsMaximum: lets us know if we need to create the corner with the maximum or minimum positions.
+		  *	@param LG_Rect& VerticalHall: out, the generated hallway.
+		  *	@param LG_Rect& HorizontalHall: out, the generated hallway.
+		  */
+		void CalculateCornerPosition(bool bIsMaximum, LG_Rect*& VerticalHall, LG_Rect*& HorizontalHall, LG_Rect* Room1, LG_Rect* Room2);
 
 		/**
-		 *	@brief Calculates a position for a corner between two connected rooms.
-		 *	@param bool bIsMaximum: lets us know if we need to create the corner with the maximum or minimum positions.
-		 *	@param LG_Rect& VerticalHall: out, the generated hallway.
-		 *	@param LG_Rect& HorizontalHall: out, the generated hallway.
+		 *	@brief Generates a polygon from the hallway rect, and adds it to the final hallway vector.
+		 *	@param LG_Rect* Room1: The vertical or horizonal hallway.
 		 */
-		void CalculateCornerPosition(bool bIsMaximum, LG_Rect*& VerticalHall, LG_Rect*& HorizontalHall, LG_Rect* Room1, LG_Rect* Room2);
+		void GenerateHallwayPollygon(LG_Rect* Room1);
+		
+		/**
+		 *	@brief Generates a polygon from the hallways rectangles, and adds them to the final hallway vector. Used for corners.
+		 *	@param LG_Rect* Room1: The first hallway of the connection.
+		 *	@param LG_Rect* Room2: The second hallway of the connection.
+		 */
+		void GenerateHallwayPollygon(LG_Rect* Room1, LG_Rect* Room2);
 	};
 }

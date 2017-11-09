@@ -72,15 +72,19 @@ namespace LevelGenerator
 					{
 						/// If the angle of the connection is inside of this limits, we consider it a horizontal hallway.
 						pHallway = MakeHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
-						/// Add the hallway in the final vector.
-						m_FinalHallways.push_back(pHallway);
+						/// Creates a polygon
+						GenerateHallwayPollygon(pHallway);
+						// Add the hallway in the final vector.
+						//m_FinalHallways.push_back(pHallway);
 					}
 					else if (fAngle > _70_DEGREES && fAngle < _110_DEGREES || fAngle < -_70_DEGREES && fAngle > -_110_DEGREES)
 					{
 						/// If the angle of the connection is inside of this limits, we consider it a vertical hallway.
 						pHallway = MakeVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
-						/// Add the hallway in the final vector.
-						m_FinalHallways.push_back(pHallway);
+						/// Creates a polygon
+						GenerateHallwayPollygon(pHallway);
+						// Add the hallway in the final vector.
+						//m_FinalHallways.push_back(pHallway);
 					}
 					else
 					{
@@ -128,25 +132,25 @@ namespace LevelGenerator
 		fRightPosX = LG_Math::Max(Room1->m_CenterNode.m_Position.X, Room2->m_CenterNode.m_Position.X);
 		fLeftPosX = LG_Math::Min(Room1->m_CenterNode.m_Position.X, Room2->m_CenterNode.m_Position.X);
 
-		/// If the first room is the top room.
-		if (Room1->m_CenterNode.m_Position.Y == fTopPosY)
-		{
-			/// We see if it's at the left or at the right of the other room.
-			if (Room1->m_CenterNode.m_Position.X == fLeftPosX)
-			{
-				/// We calculate the top right, and top left nodes of the hallway.
-				pFinalHallway->m_TopRight = Room1->m_BottomRight;
-				pFinalHallway->m_TopLeft = Room1->m_BottomRight;
-				pFinalHallway->m_TopLeft.m_Position.X -= m_fHallwayWidth;
-			}
-			else if (Room1->m_CenterNode.m_Position.X == fRightPosX)
-			{
-				/// We calculate the top right, and top left nodes of the hallway.
-				pFinalHallway->m_TopLeft = Room1->m_BottomLeft;
-				pFinalHallway->m_TopRight = Room1->m_BottomLeft;
-				pFinalHallway->m_TopRight.m_Position.X += m_fHallwayWidth;
-			}
-		}
+		///// If the first room is the top room.
+		//if (Room1->m_CenterNode.m_Position.Y == fTopPosY)
+		//{
+		//	/// We see if it's at the left or at the right of the other room.
+		//	if (Room1->m_CenterNode.m_Position.X == fLeftPosX)
+		//	{
+		//		/// We calculate the top right, and top left nodes of the hallway.
+		//		pFinalHallway->m_TopRight = Room1->m_BottomRight;
+		//		pFinalHallway->m_TopLeft = Room1->m_BottomRight;
+		//		pFinalHallway->m_TopLeft.m_Position.X -= m_fHallwayWidth;
+		//	}
+		//	else if (Room1->m_CenterNode.m_Position.X == fRightPosX)
+		//	{
+		//		/// We calculate the top right, and top left nodes of the hallway.
+		//		pFinalHallway->m_TopLeft = Room1->m_BottomLeft;
+		//		pFinalHallway->m_TopRight = Room1->m_BottomLeft;
+		//		pFinalHallway->m_TopRight.m_Position.X += m_fHallwayWidth;
+		//	}
+		//}
 
 		fTempTopPosY = fTopPosY;
 		fTempBottomPosY = fBottomPosY;
@@ -321,25 +325,26 @@ namespace LevelGenerator
 					CalculateCornerPosition(true, pVerticalHallway, pHorizontalHallway, Room1, Room2);
 					break;
 				}
-				else
-				{
-					/// After knowing that it doesn't collide with a room, we make sure that it doesn't collide with another hallway.
-					for (int32 k = 0; k < m_FinalHallways.size(); ++k)
-					{
-						if (m_FinalHallways[k]->CheckCollision(pVerticalHallway) || m_FinalHallways[k]->CheckCollision(pHorizontalHallway))
-						{
-							/// Calculates hallways with the maximum positions.
-							CalculateCornerPosition(true, pVerticalHallway, pHorizontalHallway, Room1, Room2);
-							break;
-						}
-					}
-				}
+				//else
+				//{
+				//	/// After knowing that it doesn't collide with a room, we make sure that it doesn't collide with another hallway.
+				//	for (int32 k = 0; k < m_FinalHallways.size(); ++k)
+				//	{
+				//		if (m_FinalHallways[k]->CheckCollision(pVerticalHallway) || m_FinalHallways[k]->CheckCollision(pHorizontalHallway))
+				//		{
+				//			/// Calculates hallways with the maximum positions.
+				//			CalculateCornerPosition(true, pVerticalHallway, pHorizontalHallway, Room1, Room2);
+				//			break;
+				//		}
+				//	}
+				//}
 			}
 		}
 
+		GenerateHallwayPollygon(Room1, Room2);
 		/// We store the generated hallways.
-		m_FinalHallways.push_back(pVerticalHallway);
-		m_FinalHallways.push_back(pHorizontalHallway);
+		//m_FinalHallways.push_back(pVerticalHallway);
+		//m_FinalHallways.push_back(pHorizontalHallway);
 	}
 
 	//! Returns the two rooms that have the iterating connection.
@@ -446,5 +451,53 @@ namespace LevelGenerator
 			LG_Node* Debug = nullptr;
 			Debug = pCorner;
 		}
+	}
+
+	//! 
+	void LG_HallwayGeneration::GenerateHallwayPollygon(LG_Rect * Room1)
+	{
+		/// The final polygon that represents the hallway. For this case is a simple square.
+		LG_Polygon* Hallway = nullptr;
+		/// the edge that will be filled in order to generate the final hallway.
+		LG_Edge* EdgeToAdd = nullptr;
+
+		/// Assign memory to the edge that forms the polygon.
+		EdgeToAdd = new LG_Edge();
+		///Initialize the first vector of the polygon.
+		EdgeToAdd->Init(&Room1->m_TopLeft, &Room1->m_TopRight);
+		/// 
+		Hallway->InsertEdgeToVector(EdgeToAdd);
+		
+		/// Assign memory to the edge that forms the polygon.
+		EdgeToAdd = new LG_Edge();
+		/// 
+		EdgeToAdd->Init(&Room1->m_TopRight, &Room1->m_BottomRight);
+		/// 
+		Hallway->InsertEdgeToVector(EdgeToAdd);
+
+		/// Assign memory to the edge that forms the polygon.
+		EdgeToAdd = new LG_Edge();
+		/// 
+		EdgeToAdd->Init(&Room1->m_BottomRight, &Room1->m_BottomLeft);
+		/// 
+		Hallway->InsertEdgeToVector(EdgeToAdd);
+
+		/// Assign memory to the edge that forms the polygon.
+		EdgeToAdd = new LG_Edge();
+		/// 
+		EdgeToAdd->Init(&Room1->m_BottomLeft, &Room1->m_TopLeft);
+		/// 
+		Hallway->InsertEdgeToVector(EdgeToAdd);
+
+		/// Add the finished hallway.
+		m_FinalHallways.push_back(Hallway);
+	}
+
+	//! Generates a polygon from the hallways rectangles, and adds them to the final hallway vector. Used for corners.
+	void LG_HallwayGeneration::GenerateHallwayPollygon(LG_Rect * Room1, LG_Rect * Room2)
+	{
+		//TODO: tomar posiciones máximas y mínimas para calcular que posición tendrán los nodos que formarán los vectores
+		// con lo que se va a llenar el poligono, y guardar el poligono en el vector.
+
 	}
 }
