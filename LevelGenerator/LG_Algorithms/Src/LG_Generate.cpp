@@ -48,6 +48,8 @@ namespace LevelGenerator
 		if (m_pActualTile != nullptr)
 			m_pActualTile->Destroy();
 
+		m_DT.Destroy();
+
 		if (m_RoomsVector.size() != 0)
 		{
 			for (Vector<LG_Rect*>::iterator itt = m_RoomsVector.begin();
@@ -539,7 +541,7 @@ namespace LevelGenerator
 				TempDirection = pActualRect->m_CenterNode.m_Position - (*itt)->m_CenterNode.m_Position;
 
 				/// Check if the iterating rect is colli
-				if (pActualRect->CheckCollision(*itt))
+				if (pActualRect->CheckCollision(*itt, 20))
 				{
 					/// Add the temp vector to the average.
 					Average += TempDirection;

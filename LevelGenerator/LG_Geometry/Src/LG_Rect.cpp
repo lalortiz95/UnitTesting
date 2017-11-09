@@ -118,6 +118,119 @@ namespace LevelGenerator
 			RotatedNode.Y >= m_BottomRight.m_Position.Y);
 	}
 
+	bool LG_Rect::CheckCollision(LG_Rect * pRect, float fRange)
+	{
+		LG_Vector3D tTopLeft = pRect->m_TopLeft.m_Position;
+		tTopLeft.X -= fRange;
+		tTopLeft.Y -= fRange;
+
+		LG_Vector3D tTopRight = pRect->m_TopRight.m_Position;
+		tTopRight.X += fRange;
+		tTopRight.Y -= fRange;
+
+		LG_Vector3D tBottomLeft = pRect->m_BottomLeft.m_Position;
+		tBottomLeft.X -= fRange;
+		tBottomLeft.Y += fRange;
+
+		LG_Vector3D tBottomRight = pRect->m_BottomRight.m_Position;
+		tBottomRight.X += fRange;
+		tBottomRight.Y += fRange;
+
+		/// First we check if the top left node of this rect is inside of the given rect.
+		if (((m_TopLeft.m_Position.X >= tTopLeft.X  &&
+			m_TopLeft.m_Position.Y >= tTopLeft.Y) &&
+			(m_TopLeft.m_Position.X <= tBottomRight.X  &&
+				m_TopLeft.m_Position.Y <= tBottomRight.Y)))
+		{
+			return true;
+		}
+		/// check the top left node of the parameter rect.
+		if (((tTopLeft.X >= m_TopLeft.m_Position.X  &&
+			tTopLeft.Y >= m_TopLeft.m_Position.Y) &&
+			(tTopLeft.X <= m_BottomRight.m_Position.X  &&
+				tTopLeft.Y <= m_BottomRight.m_Position.Y)))
+		{
+			return true;
+		}
+
+		/// Check the top right of the rect.
+		if (((m_TopRight.m_Position.X >= tTopLeft.X  &&
+			m_TopRight.m_Position.Y >= tTopLeft.Y) &&
+			(m_TopRight.m_Position.X <= tBottomRight.X  &&
+				m_TopRight.m_Position.Y <= tBottomRight.Y)))
+		{
+			return true;
+		}
+
+		/// Check the top right of the parameter rect.
+		if (((tTopRight.X >= m_TopLeft.m_Position.X  &&
+			tTopRight.Y >= m_TopLeft.m_Position.Y) &&
+			(tTopRight.X <= m_BottomRight.m_Position.X  &&
+				tTopRight.Y <= m_BottomRight.m_Position.Y)))
+		{
+			return true;
+		}
+
+
+
+
+		/// Check the bottom left of the rect.
+		if (((m_BottomLeft.m_Position.X >= tTopLeft.X  &&
+			m_BottomLeft.m_Position.Y >= tTopLeft.Y) &&
+			(m_BottomLeft.m_Position.X <= tBottomRight.X  &&
+				m_BottomLeft.m_Position.Y <= tBottomRight.Y)))
+		{
+			return true;
+		}
+		/// Check the bottom left of the parameter rect.
+		if (((tBottomLeft.X >= m_TopLeft.m_Position.X  &&
+			tBottomLeft.Y >= m_TopLeft.m_Position.Y) &&
+			(tBottomLeft.X <= m_BottomRight.m_Position.X  &&
+				tBottomLeft.Y <= m_BottomRight.m_Position.Y)))
+		{
+			return true;
+		}
+
+		/// Check the bottom right of the rect.
+		if (((m_BottomRight.m_Position.X >= tTopLeft.X  &&
+			m_BottomRight.m_Position.Y >= tTopLeft.Y) &&
+			(m_BottomRight.m_Position.X <= tBottomRight.X  &&
+				m_BottomRight.m_Position.Y <= tBottomRight.Y)))
+		{
+			return true;
+		}
+
+		/// Check the bottom right of the rect.
+		if (((tBottomRight.X >= m_TopLeft.m_Position.X  &&
+			tBottomRight.Y >= m_TopLeft.m_Position.Y) &&
+			(tBottomRight.X <= m_BottomRight.m_Position.X  &&
+				tBottomRight.Y <= m_BottomRight.m_Position.Y)))
+		{
+			return true;
+		}
+
+
+
+		if ((m_TopLeft.m_Position.X >= tTopLeft.X  &&
+			m_TopRight.m_Position.X <= tBottomRight.X) &&
+			(m_TopLeft.m_Position.Y <= tTopLeft.Y && m_BottomRight.m_Position.Y >= tBottomRight.Y))
+
+		{
+			return true;
+		}
+
+
+		if ((tTopLeft.X >= m_TopLeft.m_Position.X  &&
+			tTopRight.X <= m_BottomRight.m_Position.X) &&
+			(tTopLeft.Y <= m_TopLeft.m_Position.Y && tBottomRight.Y >= m_BottomRight.m_Position.Y))
+
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	void LG_Rect::RestructureNodes()
 	{
 		/// We initialize all the nodes positions.

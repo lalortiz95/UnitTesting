@@ -44,7 +44,7 @@ namespace LevelGenerator
 		/**
 		*	@var Where we store the final hallways.
 		*/
-		Vector<LG_Polygon*> m_FinalHallways;
+		Vector<LG_Rect*> m_FinalHallways;
 
 		/**
 		 *	@var Where we store the rooms in the scene. They're used to check collision with the hallways as they're generated.
@@ -57,9 +57,9 @@ namespace LevelGenerator
 		static const float _20_DEGREES;
 
 		/**
-		 *	@var a constant that defines 160 degrees in radians.
+		 *	@var a constant that defines 70 degrees in radians.
 		 */
-		static const float _160_DEGREES;
+		static const float _70_DEGREES;
 
 		/**
 		 *	@var a constant that defines 110 degrees in radians.
@@ -67,9 +67,30 @@ namespace LevelGenerator
 		static const float _110_DEGREES;
 
 		/**
-		 *	@var a constant that defines 70 degrees in radians.
+		 *	@var a constant that defines 160 degrees in radians.
 		 */
-		static const float _70_DEGREES;
+		static const float _160_DEGREES;
+
+		/**
+		 *	@var a constant that defines 200 degrees in radians.
+		 */
+		static const float _200_DEGREES;
+
+		/**
+		 *	@var a constant that defines 250 degrees in radians.
+		 */
+		static const float _250_DEGREES;
+
+		/**
+		 *	@var a constant that defines 290 degrees in radians.
+		 */
+		static const float _290_DEGREES;
+
+		/**
+		*	@var a constant that defines 340 degrees in radians.
+		*/
+		static const float _340_DEGREES;
+
 
 		///************************************************************************/
 		///*						   Class Functions.							  */

@@ -6,9 +6,14 @@
 namespace LevelGenerator
 {
 	const float LG_HallwayGeneration::_20_DEGREES = LG_Math::PI / 9;
-	const float LG_HallwayGeneration::_160_DEGREES = (LG_Math::PI * 8) / 9;
-	const float LG_HallwayGeneration::_110_DEGREES = (LG_Math::PI * 11) / 18;
 	const float LG_HallwayGeneration::_70_DEGREES = (LG_Math::PI * 7) / 18;
+	const float LG_HallwayGeneration::_110_DEGREES = (LG_Math::PI * 11) / 18;
+	const float LG_HallwayGeneration::_160_DEGREES = (LG_Math::PI * 8) / 9;
+	const float  LG_HallwayGeneration::_200_DEGREES = (LG_Math::PI* 10) / 9;
+	const float  LG_HallwayGeneration::_250_DEGREES = (LG_Math::PI * 25) / 18;
+	const float  LG_HallwayGeneration::_290_DEGREES = (LG_Math::PI * 29) / 18;
+	const float  LG_HallwayGeneration::_340_DEGREES = (LG_Math::PI * 34) / 18;
+
 
 	//! Default constructor
 	LG_HallwayGeneration::LG_HallwayGeneration()
@@ -68,29 +73,30 @@ namespace LevelGenerator
 					fAngle = LG_Math::Acos(AngleVect.X);
 
 					/// See in which boundaries is the connection, in order to know what kind of hallway to create.
-					if (fAngle < _20_DEGREES && fAngle > -_20_DEGREES || fAngle > _160_DEGREES && fAngle < -_160_DEGREES)
+					if (fAngle < _20_DEGREES || fAngle > _160_DEGREES)//&& fAngle > -_20_DEGREES || fAngle > _160_DEGREES && fAngle < -_160_DEGREES)
 					{
 						/// If the angle of the connection is inside of this limits, we consider it a horizontal hallway.
 						pHallway = MakeHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
 						/// Creates a polygon
-						GenerateHallwayPollygon(pHallway);
+						//GenerateHallwayPollygon(pHallway);
 						// Add the hallway in the final vector.
-						//m_FinalHallways.push_back(pHallway);
+						m_FinalHallways.push_back(pHallway);
 					}
-					else if (fAngle > _70_DEGREES && fAngle < _110_DEGREES || fAngle < -_70_DEGREES && fAngle > -_110_DEGREES)
+					else if (fAngle > _70_DEGREES && fAngle < _110_DEGREES) // || fAngle < -_70_DEGREES && fAngle > -_110_DEGREES)
 					{
 						/// If the angle of the connection is inside of this limits, we consider it a vertical hallway.
 						pHallway = MakeVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
 						/// Creates a polygon
-						GenerateHallwayPollygon(pHallway);
+						//GenerateHallwayPollygon(pHallway);
 						// Add the hallway in the final vector.
-						//m_FinalHallways.push_back(pHallway);
+						m_FinalHallways.push_back(pHallway);
 					}
 					else
 					{
 						/// Any other angle will be represented with a corner hallway.
 						MakeCornerHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
 					}
+				
 				}
 			}
 			(*m_pRooms)[i]->m_bIsChecked = true;
@@ -319,32 +325,32 @@ namespace LevelGenerator
 			/// See if the iterating rooms collides with the hallway.
 			if ((*m_pRooms)[j] != Room1 && (*m_pRooms)[j] != Room2)
 			{
-				if ((*m_pRooms)[j]->CheckCollision(pVerticalHallway) || (*m_pRooms)[j]->CheckCollision(pHorizontalHallway))
+				if (pVerticalHallway->CheckCollision((*m_pRooms)[j]) || pHorizontalHallway->CheckCollision((*m_pRooms)[j])) // (*m_pRooms)[j]->CheckCollision(pVerticalHallway) || (*m_pRooms)[j]->CheckCollision(pHorizontalHallway))
 				{
 					/// Calculates hallways with the maximum positions.
 					CalculateCornerPosition(true, pVerticalHallway, pHorizontalHallway, Room1, Room2);
 					break;
 				}
-				//else
-				//{
-				//	/// After knowing that it doesn't collide with a room, we make sure that it doesn't collide with another hallway.
-				//	for (int32 k = 0; k < m_FinalHallways.size(); ++k)
-				//	{
-				//		if (m_FinalHallways[k]->CheckCollision(pVerticalHallway) || m_FinalHallways[k]->CheckCollision(pHorizontalHallway))
-				//		{
-				//			/// Calculates hallways with the maximum positions.
-				//			CalculateCornerPosition(true, pVerticalHallway, pHorizontalHallway, Room1, Room2);
-				//			break;
-				//		}
-				//	}
-				//}
+				else
+				{
+					/// After knowing that it doesn't collide with a room, we make sure that it doesn't collide with another hallway.
+					for (int32 k = 0; k < m_FinalHallways.size(); ++k)
+					{
+						if (pVerticalHallway->CheckCollision((*m_pRooms)[j]) || pHorizontalHallway->CheckCollision((*m_pRooms)[j]))//m_FinalHallways[k]->CheckCollision(pVerticalHallway) || m_FinalHallways[k]->CheckCollision(pHorizontalHallway))
+						{
+							/// Calculates hallways with the maximum positions.
+							CalculateCornerPosition(true, pVerticalHallway, pHorizontalHallway, Room1, Room2);
+							break;
+						}
+					}
+				}
 			}
 		}
 
-		GenerateHallwayPollygon(Room1, Room2);
+		//GenerateHallwayPollygon(Room1, Room2);
 		/// We store the generated hallways.
-		//m_FinalHallways.push_back(pVerticalHallway);
-		//m_FinalHallways.push_back(pHorizontalHallway);
+		m_FinalHallways.push_back(pVerticalHallway);
+		m_FinalHallways.push_back(pHorizontalHallway);
 	}
 
 	//! Returns the two rooms that have the iterating connection.
@@ -446,11 +452,7 @@ namespace LevelGenerator
 			HorizontalHall = MakeHorizontalHallway(pHallwayCorner, Room1);
 			VerticalHall = MakeVerticalHallway(pHallwayCorner, Room2);
 		}
-		else
-		{
-			LG_Node* Debug = nullptr;
-			Debug = pCorner;
-		}
+		m_FinalHallways.push_back(pHallwayCorner);
 	}
 
 	//! 
@@ -490,7 +492,7 @@ namespace LevelGenerator
 		Hallway->InsertEdgeToVector(EdgeToAdd);
 
 		/// Add the finished hallway.
-		m_FinalHallways.push_back(Hallway);
+		//m_FinalHallways.push_back(Hallway);
 	}
 
 	//! Generates a polygon from the hallways rectangles, and adds them to the final hallway vector. Used for corners.

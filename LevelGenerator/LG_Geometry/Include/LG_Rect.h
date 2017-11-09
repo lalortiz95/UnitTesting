@@ -123,16 +123,24 @@ namespace LevelGenerator
 		bool CheckCollision(LG_Node ActualNode, LG_Node StartPoistion);
 
 		/**
-		 *	@brief This function restructure the nodes of the rect after we change its position.
-		 */
-		void RestructureNodes();
-
-		/**
 		 *	@brief This functions checks if the given rect is colliding with this rect.
 		 *	@param LG_Rect* pRect: The rect that we want to check if doing colision with this.
 		 *	@return if the given rect is colliding with this return true, otherwise return false.
 		 */
 		bool CheckCollision(LG_Rect* pRect);
+
+		/**
+		 *	@brief This functions checks if the given rect is colliding with this rect.
+		 *	@param LG_Rect* pRect: The rect that we want to check if doing colision with this.
+		 *	@param float fRange: The range that we want.
+		 *	@return if the given rect is colliding with this return true, otherwise return false.
+		 */
+		bool CheckCollision(LG_Rect* pRect, float fRange);
+
+		/**
+		 *	@brief This function restructure the nodes of the rect after we change its position.
+		 */
+		void RestructureNodes();
 
 		/**
 		 *	@brief This function stops pointing to the given room.

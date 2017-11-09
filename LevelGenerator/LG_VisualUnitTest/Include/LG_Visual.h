@@ -121,4 +121,6 @@ private:
 	 *	@param uint32 sides: the sides that the triangle will have.
 	 */
 	void DrawCircle(LG_Circle circle, LG_Vector3D color, LevelGenerator::uint32 sides);
+
+	void FillRect(LG_Vector3D StartPosition, LG_Vector3D EndPosition, float fWidth);
 };
