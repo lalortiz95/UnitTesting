@@ -215,8 +215,14 @@ void LG_Visual::Renderer()
 	// Aqui se renderean los cuartos
 	for (int32 i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
 	{
+		// 
+		SDL_SetRenderDrawColor(m_Renderer, 153, 217, 234, 0xFF);
+		FillRect(AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position,
+			AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position,
+			AlgorithmGeneration.m_RoomsVector[i]->m_fWidth);
+
 		// Set the color.
-		SDL_SetRenderDrawColor(m_Renderer, 239, 228, 176, 0xFF);
+		SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
 
 		/// Draws the top line of the rectangle.
 		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
@@ -253,14 +259,9 @@ void LG_Visual::Renderer()
 		Secondpos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
 
 		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
-
-		FillRect(AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position,
-			AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position,
-			AlgorithmGeneration.m_RoomsVector[i]->m_fWidth);
-
 	}
 
-	 //Esto renderea la triangulacion
+	// //Esto renderea la triangulacion
 	for (LevelGenerator::int32 Q = 0; Q < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++Q)
 	{
 

@@ -164,11 +164,11 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief This calls all the algorithms and put them together to generate a procedural level.
-		 *	@param int32 iRoomAmount: The number of rooms that are going to be created.
+		 *	@param uint32 uiRoomAmount: The number of rooms that are going to be created.
 		 *	@param LG_Vector3D MinSize: the minimum available sizes for the rooms.
 		 *	@param LG_Vector3D MaxSize: the maximum available sizes for the rooms.
 		 */
-		void Run(int32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize);
+		void Run(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize);
 
 		/**
 		 *	@brief This function separate the rooms object.
@@ -233,11 +233,11 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief Generates random positions for the rectangles, and separates them.
-		 *	@param int32 iRoomAmount: The number of rooms that are going to be created.
+		 *	@param uint32 uiRoomAmount: The number of rooms that are going to be created.
 		 *	@param LG_Vector3D MinSize: the minimum available sizes for the rooms.
 		 *	@param LG_Vector3D MaxSize: the maximum available sizes for the rooms.
 		 */
-		void GenerateRooms(int32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize);
+		void GenerateRooms(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize);
 
 		/**
 		 *	@brief This function sets a new actual tile.

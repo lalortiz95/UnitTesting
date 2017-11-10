@@ -65,7 +65,7 @@ namespace LevelGenerator
 	}
 
 	//! This calls all the algorithms and put them together to generate a procedural level.
-	void LG_Generate::Run(int32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize)
+	void LG_Generate::Run(uint32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize)
 	{
 		/// Initialize the variables.
 		Initialize();
@@ -424,15 +424,15 @@ namespace LevelGenerator
 	}
 
 	//! Generates random positions for the rectangles, and separates them.
-	void LG_Generate::GenerateRooms(int32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize)
+	void LG_Generate::GenerateRooms(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize)
 	{
 
 		LG_Node PositionCenterSpawnZone;
 		PositionCenterSpawnZone.m_Position = LG_Vector3D(500, 350, 0);
 		/// Create a area to spawn the dots.
-		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, (float)iRoomAmount * (float)SPAWN_ZONE, (float)iRoomAmount * (float)SPAWN_ZONE);
+		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, (float)uiRoomAmount * (float)SPAWN_ZONE, (float)uiRoomAmount * (float)SPAWN_ZONE);
 
-		m_RoomsVector.resize(iRoomAmount);
+		m_RoomsVector.resize(uiRoomAmount);
 
 		/// The rectangle object that we use to fill the vector.
 		LG_Rect* NewRect = nullptr;
@@ -448,7 +448,7 @@ namespace LevelGenerator
 		/// Where we store the random room size.
 		LG_Vector3D RoomSize;
 
-		for (int32 i = 0; i < iRoomAmount; ++i)
+		for (int32 i = 0; i < uiRoomAmount; ++i)
 		{
 			/// We find a random position for the room we are about to create.
 			PosToSpawn.X = float(rand() % (fMaxX - fMinX) + fMinX);
