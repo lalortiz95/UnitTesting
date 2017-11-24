@@ -11,6 +11,8 @@
 #include <LG_Rect.h>
 #include <LG_Grid.h>
 
+#define LG_WRAPPER_EXPORT __declspec(dllexport) 
+
 namespace LevelGenerator
 {
 	/**
@@ -287,11 +289,9 @@ namespace LevelGenerator
 	};
 }
 
-//extern "C" EXPORT_FOR_UNITY LevelGenerator::LG_Generate* g_pGenerateLevel;
 
-extern "C" LG_ALGORITHMS_EXPORT LevelGenerator::LG_Generate* GenerateLevel(LevelGenerator::int32 iRoomsAmount,
-	LevelGenerator::LG_Vector3D MinSize,
-	LevelGenerator::LG_Vector3D MaxSize);
-
-extern "C" LG_ALGORITHMS_EXPORT LevelGenerator::LG_Rect** GetRooms();
+extern "C"
+{
+	LG_WRAPPER_EXPORT void AQuivaTodoElChou(); //AQui va todo el chou de exportar
+}
 
