@@ -56,9 +56,6 @@ namespace LevelGenerator
 		/// The created hallway.
 		LG_Rect* pHallway;
 
-		//TODO: cambiar funciones que generan pasillos para que usen los cuartos y de esa manera estén mejor
-		// calculadas las posiciones de inico y fin de cada pasillo.
-
 		/// Makes hallways with the connections from every room.
 		for (int32 i = 0; i < m_pRooms->size(); ++i)
 		{
@@ -77,18 +74,12 @@ namespace LevelGenerator
 					{
 						/// If the angle of the connection is inside of this limits, we consider it a horizontal hallway.
 						pHallway = MakeHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
-						/// Creates a polygon
-						//GenerateHallwayPollygon(pHallway);
-						// Add the hallway in the final vector.
 						m_FinalHallways.push_back(pHallway);
 					}
 					else if (fAngle > _70_DEGREES && fAngle < _110_DEGREES) // || fAngle < -_70_DEGREES && fAngle > -_110_DEGREES)
 					{
 						/// If the angle of the connection is inside of this limits, we consider it a vertical hallway.
 						pHallway = MakeVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
-						/// Creates a polygon
-						//GenerateHallwayPollygon(pHallway);
-						// Add the hallway in the final vector.
 						m_FinalHallways.push_back(pHallway);
 					}
 					else
@@ -126,9 +117,6 @@ namespace LevelGenerator
 
 		/// Initialize thee final hallway.
 		pFinalHallway = new LG_Rect();
-
-		//TODO: Ver que cuarto está arriba o abajo, y cual está a la derecha o a la izquierda.
-		// Dependiendo de esto tomar los edges pertinentes para que se cree el pasillo en una posición en esos edges.
 
 		/// We find the maximum and minimum and maximum positions in the Y axis of the hallway.
 		fBottomPosY = LG_Math::Max(Room1->m_CenterNode.m_Position.Y, Room2->m_CenterNode.m_Position.Y);
@@ -325,7 +313,7 @@ namespace LevelGenerator
 			/// See if the iterating rooms collides with the hallway.
 			if ((*m_pRooms)[j] != Room1 && (*m_pRooms)[j] != Room2)
 			{
-				if (pVerticalHallway->CheckCollision((*m_pRooms)[j]) || pHorizontalHallway->CheckCollision((*m_pRooms)[j])) // (*m_pRooms)[j]->CheckCollision(pVerticalHallway) || (*m_pRooms)[j]->CheckCollision(pHorizontalHallway))
+				if (pVerticalHallway->CheckCollision((*m_pRooms)[j]) || pHorizontalHallway->CheckCollision((*m_pRooms)[j])) 
 				{
 					/// Calculates hallways with the maximum positions.
 					CalculateCornerPosition(true, pVerticalHallway, pHorizontalHallway, Room1, Room2);
@@ -336,11 +324,14 @@ namespace LevelGenerator
 					/// After knowing that it doesn't collide with a room, we make sure that it doesn't collide with another hallway.
 					for (int32 k = 0; k < m_FinalHallways.size(); ++k)
 					{
-						if (pVerticalHallway->CheckCollision((*m_pRooms)[j]) || pHorizontalHallway->CheckCollision((*m_pRooms)[j]))//m_FinalHallways[k]->CheckCollision(pVerticalHallway) || m_FinalHallways[k]->CheckCollision(pHorizontalHallway))
+						if (pVerticalHallway != m_FinalHallways[k] && pHorizontalHallway != m_FinalHallways[k])
 						{
-							/// Calculates hallways with the maximum positions.
-							CalculateCornerPosition(true, pVerticalHallway, pHorizontalHallway, Room1, Room2);
-							break;
+							if (pVerticalHallway->CheckCollision(m_FinalHallways[k]) || pHorizontalHallway->CheckCollision(m_FinalHallways[k]))
+							{
+								/// Calculates hallways with the maximum positions.
+								CalculateCornerPosition(true, pVerticalHallway, pHorizontalHallway, Room1, Room2);
+								break;
+							}
 						}
 					}
 				}
@@ -430,12 +421,12 @@ namespace LevelGenerator
 			if (pCorner->m_Position.X == Room1->m_CenterNode.m_Position.X &&
 				pCorner->m_Position.Y == Room1->m_CenterNode.m_Position.Y)
 			{
-				pCorner->m_Position.Y = Room2->m_CenterNode.m_Position.Y;
+				pCorner->m_Position.X = Room2->m_CenterNode.m_Position.X;
 			}
 			else if (pCorner->m_Position.X == Room2->m_CenterNode.m_Position.X &&
 				pCorner->m_Position.Y == Room2->m_CenterNode.m_Position.Y)
 			{
-				pCorner->m_Position.Y = Room1->m_CenterNode.m_Position.Y;
+				pCorner->m_Position.X = Room1->m_CenterNode.m_Position.X;
 			}
 		}
 
@@ -452,7 +443,7 @@ namespace LevelGenerator
 			HorizontalHall = MakeHorizontalHallway(pHallwayCorner, Room1);
 			VerticalHall = MakeVerticalHallway(pHallwayCorner, Room2);
 		}
-		m_FinalHallways.push_back(pHallwayCorner);
+		//m_FinalHallways.push_back(pHallwayCorner);
 	}
 
 	//! 
