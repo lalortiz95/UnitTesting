@@ -11,6 +11,7 @@
 #include <LG_Rect.h>
 #include <LG_Grid.h>
 
+
 namespace LevelGenerator
 {
 	/**
@@ -31,15 +32,6 @@ namespace LevelGenerator
 		 *	@brief Default destructor.
 		 */
 		~LG_Generate();
-
-		/**
-		 *	@brief Singleton class.
-		 */
-		static LG_Generate& instance()
-		{
-			static LG_Generate INSTANCE;
-			return INSTANCE;
-		}
 
 		///**************************************************************************/
 		///*						  Member Variables.								*/
@@ -139,12 +131,6 @@ namespace LevelGenerator
 		 *	@var A pointer that define the actual tile.
 		 */
 		LG_Tile* m_pActualTile;
-
-	private:
-		/**
-		 *	@var Singleton instance. Used for the wrapping functions.
-		 */
-		static LG_Generate* m_pIsntance;
 
 	public:
 
@@ -287,11 +273,5 @@ namespace LevelGenerator
 	};
 }
 
-//extern "C" EXPORT_FOR_UNITY LevelGenerator::LG_Generate* g_pGenerateLevel;
 
-extern "C" LG_ALGORITHMS_EXPORT LevelGenerator::LG_Generate* GenerateLevel(LevelGenerator::int32 iRoomsAmount,
-	LevelGenerator::LG_Vector3D MinSize,
-	LevelGenerator::LG_Vector3D MaxSize);
-
-extern "C" LG_ALGORITHMS_EXPORT LevelGenerator::LG_Rect** GetRooms();
 

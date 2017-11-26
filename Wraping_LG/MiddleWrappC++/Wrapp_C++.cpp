@@ -1,11 +1,66 @@
 
 #include "Wrapp_C++.h"
 
+void LG_Node::SetNodeID(int ID)
+{
+	m_iID = ID;
+}
+void LG_Node::SetNodeValue(float fValue)
+{
+	m_fValue = fValue;
+}
+void LG_Node::SetPosition(LG_Vector3D Position)
+{
+	m_Position = Position;
+}
+void LG_Node::SetNodeParentID(int iParentID)
+{
+	m_pParent->SetNodeID(iParentID);
+}
+void LG_Node::SetNumNodes(int iNumNodes)
+{
+	for (int i = 0; i < iNumNodes; ++i)
+	{
+
+	}
+}
+
+int LG_Node::GetID(int iNodeConnection)
+{
+	return m_Pointers[iNodeConnection]->m_iID;
+}
+
+int LG_Node::GetNodeConnectionsSize()
+{
+	return m_Pointers.size();
+}
+
+int LG_Node::GetNodeID()
+{
+	return m_iID;
+}
+
+float LG_Node::GetNodeValue()
+{
+	return m_fValue;
+}
+
+LG_Vector3D LG_Node::GetNodePosition()
+{
+	return m_Position;
+}
+
 extern "C"
 {
 	float TestMultiply(float a, float b)
 	{
 		return a * b;
+	}
+
+	float TestGlobalVar()
+	{
+		//return GetNodeValue();
+		return 0.f;
 	}
 
 	float TestDivide(float a, float b)
@@ -18,33 +73,18 @@ extern "C"
 		return a / b;
 	}
 
-	LG_Node* TestNode()
+	void Start(int iNodeID, float fNodeValue, float NodePosition, int iParentNodeID, int iSizeNodeConections, float* pos)
 	{
-		LG_Node* pNewNode = new LG_Node();
-		return pNewNode;
-	}
+		LG_Node* gGlobalNode;
+		gGlobalNode = new LG_Node();
+		gGlobalNode->SetNodeID(iNodeID);
+		gGlobalNode->SetNodeValue(fNodeValue);
+		//gGlobalNode->SetPosition(NodePosition);
+		gGlobalNode->SetNodeParentID(iParentNodeID);
+		gGlobalNode->SetNumNodes(iSizeNodeConections);
 
-	void TestPosition(LG_Node& Node, LG_Vector3D Position)
-	{
-		Node.m_Position = Position;
-	}
-
-	LG_Node** TestVectorNodes(LG_Node* pNode)
-	{
-		LG_Node* pNewNode = new LG_Node();
-		pNewNode->m_iID = 1;
-		pNode->m_Pointers.push_back(pNewNode);
-
-		pNewNode = new LG_Node();
-		pNewNode->m_iID = 2;
-		pNode->m_Pointers.push_back(pNewNode);
-
-		LG_Node**  connections = new LG_Node*[pNewNode->m_Pointers.size()];
-		// Stores the node's connections in an array of pointers.
-		for (int i = 0; i < pNewNode->m_Pointers.size(); i++)
-		{
-			connections[i] = pNewNode->m_Pointers[i];
-		}
-		return connections;
+		pos = &gGlobalNode->m_Position.X;
 	}
 }
+
+

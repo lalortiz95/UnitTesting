@@ -59,6 +59,7 @@ namespace LevelGenerator
 		/// Makes hallways with the connections from every room.
 		for (int32 i = 0; i < m_pRooms->size(); ++i)
 		{
+			/// Iterates through every room's connections.
 			for (int32 j = 0; j < (*m_pRooms)[i]->m_RoomsConnections.size(); ++j)
 			{
 				if (!(*m_pRooms)[i]->m_RoomsConnections[j]->m_bIsChecked)
@@ -324,7 +325,11 @@ namespace LevelGenerator
 					/// After knowing that it doesn't collide with a room, we make sure that it doesn't collide with another hallway.
 					for (int32 k = 0; k < m_FinalHallways.size(); ++k)
 					{
+<<<<<<< HEAD
 						if (pVerticalHallway != m_FinalHallways[k] && pHorizontalHallway != m_FinalHallways[k])
+=======
+						if (pVerticalHallway->CheckCollision(m_FinalHallways[k]) || pHorizontalHallway->CheckCollision((m_FinalHallways[k])))
+>>>>>>> ff9809fb4625ecbbfd8440301f3eec5c6289bc40
 						{
 							if (pVerticalHallway->CheckCollision(m_FinalHallways[k]) || pHorizontalHallway->CheckCollision(m_FinalHallways[k]))
 							{

@@ -628,39 +628,3 @@ namespace LevelGenerator
 		}
 	}
 }
-
-LevelGenerator::LG_Generate *LevelGenerator::LG_Generate::m_pIsntance = nullptr;
-extern "C"
-{
-
-	EXPORT_FOR_UNITY LevelGenerator::LG_Generate* GenerateLevel(LevelGenerator::int32 iRoomsAmount,
-		LevelGenerator::LG_Vector3D MinSize,
-		LevelGenerator::LG_Vector3D MaxSize)
-	{
-		LevelGenerator::LG_Generate* generateLevel;
-		generateLevel = &generateLevel->instance();
-
-		generateLevel->Run(iRoomsAmount, MinSize, MaxSize);
-
-		//Trucha con los leaks jeje.
-		return generateLevel;
-	}
-
-	EXPORT_FOR_UNITY LevelGenerator::LG_Rect** GetRooms()
-	{
-		LevelGenerator::LG_Generate* generateLevel;
-		generateLevel = &generateLevel->instance();
-
-		int iRoomsAmount = (int)generateLevel->m_RoomsVector.size();
-
-		LevelGenerator::LG_Rect** RoomsArray = nullptr;
-
-		for (int i = 0; i < iRoomsAmount; ++i)
-		{
-			RoomsArray[i] = generateLevel->m_RoomsVector[i];
-		}
-
-		/// Returns the node cloud that represent the rooms positions.
-		return RoomsArray;
-	}
-}
