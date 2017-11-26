@@ -628,10 +628,3 @@ namespace LevelGenerator
 		}
 	}
 }
-
-
-
-extern "C"
-{
-
-}

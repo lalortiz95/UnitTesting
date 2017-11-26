@@ -12,4 +12,3 @@
 #endif
 
 
-#define EXPORT_FOR_UNITY __declspec(dllexport)

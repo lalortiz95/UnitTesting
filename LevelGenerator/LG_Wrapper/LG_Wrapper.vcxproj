@@ -18,10 +18,15 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\LG_CPPWrapper\Include\LG_CPPWrap.h" />
+    <ClInclude Include="..\LG_CPPWrapper\Include\LG_CPPWrapperPrerequisites.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{EB9F2D87-47B7-400B-8ABE-FC00203F1C54}</ProjectGuid>
-    <RootNamespace>LG_Algorithms</RootNamespace>
+    <ProjectGuid>{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}</ProjectGuid>
+    <RootNamespace>LG_Wrapper</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>LG_CPPWrapper</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -71,25 +76,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Geometry\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Geometry\Include\;$(SolutionDir)LG_Algorithms\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Geometry\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Geometry\Include\;$(SolutionDir)LG_Algorithms\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Geometry\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Geometry\Include\;$(SolutionDir)LG_Algorithms\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Bin\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Geometry\Include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)LG_Utilities\Include\;$(SolutionDir)LG_Map\Include\;$(SolutionDir)LG_Geometry\Include\;$(SolutionDir)LG_Algorithms\Include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Lib\$(PlatformTarget)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -97,17 +102,17 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LG_ALGORITHMS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LG_WRAPPER_EXPORTS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
     </BuildLog>
     <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LG_Map.lib;LG_Utilities.lib;LG_Geometry.lib;LG_Algorithms.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>LG_Map.lib;LG_Utilities.lib;LG_Geometry.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -115,17 +120,17 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LG_ALGORITHMS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LG_WRAPPER_EXPORTS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
     </BuildLog>
     <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LG_Map.lib;LG_Utilities.lib;LG_Geometry.lib;LG_Algorithms.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>LG_Map.lib;LG_Utilities.lib;LG_Geometry.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -135,16 +140,16 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LG_ALGORITHMS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LG_WRAPPER_EXPORTS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LG_Map.lib;LG_Utilities.lib;LG_Geometry.lib;LG_Algorithms.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>LG_Map.lib;LG_Utilities.lib;LG_Geometry.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
     </Link>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
@@ -157,42 +162,21 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LG_ALGORITHMS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LG_WRAPPER_EXPORTS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LG_Map.lib;LG_Utilities.lib;LG_Geometry.lib;LG_Algorithms.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProfileGuidedDatabase>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).pgd</ProfileGuidedDatabase>
       <ImportLibrary>$(SolutionDir)Lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
-      <AdditionalDependencies>LG_Map.lib;LG_Utilities.lib;LG_Geometry.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib\$(Configuration)\$(Platform)\;</AdditionalLibraryDirectories>
     </Link>
     <BuildLog>
       <Path>$(SolutionDir)Intermediate\$(ProjectName)\$(Configuration)\$(Platform).log</Path>
     </BuildLog>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Include\LG_AlgorithmsPrerequisites.h" />
-    <ClInclude Include="Include\LG_DelaunayTriangulation.h" />
-    <ClInclude Include="Include\LG_Dijkstra.h" />
-    <ClInclude Include="Include\LG_Generate.h" />
-    <ClInclude Include="Include\LG_HallwayGeneration.h" />
-    <ClInclude Include="Include\LG_MarchingSquare.h" />
-    <ClInclude Include="Include\LG_MST.h" />
-    <ClInclude Include="Include\LG_RDP.h" />
-    <ClInclude Include="Include\LG_Voronoi.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Src\LG_DelaunayTriangulation.cpp" />
-    <ClCompile Include="Src\LG_Dijkstra.cpp" />
-    <ClCompile Include="Src\LG_Generate.cpp" />
-    <ClCompile Include="Src\LG_HallwayGeneration.cpp" />
-    <ClCompile Include="Src\LG_MarchingSquare.cpp" />
-    <ClCompile Include="Src\LG_MST.cpp" />
-    <ClCompile Include="Src\LG_RDP.cpp" />
-    <ClCompile Include="Src\LG_Voronoi.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

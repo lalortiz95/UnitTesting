@@ -64,6 +64,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LG_CSWrapper", "LG_CSWrappe
 		{225902FA-D56E-40E7-9EE6-6E692C09A3DF} = {225902FA-D56E-40E7-9EE6-6E692C09A3DF}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LG_CPPWrapper", "LG_CPPWrapper\LG_CPPWrapper.vcxproj", "{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -176,6 +178,16 @@ Global
 		{F932304A-D255-48C9-BF46-B8638085DE8C}.Release|x64.Build.0 = Release|Any CPU
 		{F932304A-D255-48C9-BF46-B8638085DE8C}.Release|x86.ActiveCfg = Release|Any CPU
 		{F932304A-D255-48C9-BF46-B8638085DE8C}.Release|x86.Build.0 = Release|Any CPU
+		{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}.Debug|x64.ActiveCfg = Debug|x64
+		{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}.Debug|x64.Build.0 = Debug|x64
+		{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}.Debug|x86.ActiveCfg = Debug|Win32
+		{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}.Debug|x86.Build.0 = Debug|Win32
+		{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}.Release|Any CPU.ActiveCfg = Release|Win32
+		{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}.Release|x64.ActiveCfg = Release|x64
+		{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}.Release|x64.Build.0 = Release|x64
+		{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}.Release|x86.ActiveCfg = Release|Win32
+		{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
