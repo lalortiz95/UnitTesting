@@ -215,14 +215,14 @@ void LG_Visual::Renderer()
 	// Aqui se renderean los cuartos
 	for (int32 i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
 	{
-		// 
+		//// 
 		SDL_SetRenderDrawColor(m_Renderer, 153, 217, 234, 0xFF);
-		FillRect(AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position,
-			AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position,
-			AlgorithmGeneration.m_RoomsVector[i]->m_fWidth);
+		//FillRect(AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position,
+		//	AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position,
+		//	AlgorithmGeneration.m_RoomsVector[i]->m_fWidth);
 
 		// Set the color.
-		SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
+		//SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
 
 		/// Draws the top line of the rectangle.
 		posToSpawn.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
@@ -261,21 +261,21 @@ void LG_Visual::Renderer()
 		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 	}
 
-	// //Esto renderea la triangulacion
-	for (LevelGenerator::int32 Q = 0; Q < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++Q)
-	{
+	//// //Esto renderea la triangulacion
+	//for (LevelGenerator::int32 Q = 0; Q < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++Q)
+	//{
 
-		for (LevelGenerator::int32 e = 0; e < NODES_PER_TRIANGLE; ++e)
-		{
-			posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pFirstNode->m_Position;
-			Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pSecondNode->m_Position;
+	//	for (LevelGenerator::int32 e = 0; e < NODES_PER_TRIANGLE; ++e)
+	//	{
+	//		posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pFirstNode->m_Position;
+	//		Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[Q]->m_pEdges[e]->m_pSecondNode->m_Position;
 
-			// Draw gray line.
-			SDL_SetRenderDrawColor(m_Renderer, 70, 70, 72, 0xFF);
-			// en la posición de cada nodo dibujar un punto con SDL.
-			SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-		}
-	}
+	//		// Draw gray line.
+	//		SDL_SetRenderDrawColor(m_Renderer, 70, 70, 72, 0xFF);
+	//		// en la posición de cada nodo dibujar un punto con SDL.
+	//		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
+	//	}
+	//}
 
 	/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
 	LG_Vector3D pos1, pos2;
