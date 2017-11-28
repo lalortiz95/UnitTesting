@@ -326,7 +326,9 @@ namespace LevelGenerator
 					for (int32 k = 0; k < m_FinalHallways.size(); ++k)
 					{
 
+
 						if (pVerticalHallway != m_FinalHallways[k] && pHorizontalHallway != m_FinalHallways[k])
+
 
 						{
 							if (pVerticalHallway->CheckCollision(m_FinalHallways[k]) || pHorizontalHallway->CheckCollision(m_FinalHallways[k]))
