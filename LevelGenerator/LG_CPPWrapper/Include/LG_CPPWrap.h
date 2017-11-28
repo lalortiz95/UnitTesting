@@ -17,8 +17,8 @@ extern "C"
 		///
 		int GetRoomID(int iPlaceInArray);
 
-		/// 
-		void GetRoomPosition(float& fx, float& fy, float& fz);
+		///
+		void GetRoomPosition(int iPlaceInArray, float& fx, float& fy, float& fz);
 	};
 }
 
