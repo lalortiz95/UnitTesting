@@ -19,11 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\LG_CPPWrapper\Include\LG_CPPWrap.h" />
-    <ClInclude Include="..\LG_CPPWrapper\Include\LG_CPPWrapperPrerequisites.h" />
+    <ClInclude Include="Include\LG_CPPWrap.h" />
+    <ClInclude Include="Include\LG_CPPWrapperPrerequisites.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\LG_CPPWrapper\Src\LG_CPPWrap.cpp" />
+    <ClCompile Include="Src\LG_CPPWrap.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C7AE6AB1-5659-495F-8AAD-5AF0557CFF6B}</ProjectGuid>

@@ -9,7 +9,7 @@ namespace LevelGenerator
 	const float LG_HallwayGeneration::_70_DEGREES = (LG_Math::PI * 7) / 18;
 	const float LG_HallwayGeneration::_110_DEGREES = (LG_Math::PI * 11) / 18;
 	const float LG_HallwayGeneration::_160_DEGREES = (LG_Math::PI * 8) / 9;
-	const float  LG_HallwayGeneration::_200_DEGREES = (LG_Math::PI* 10) / 9;
+	const float  LG_HallwayGeneration::_200_DEGREES = (LG_Math::PI * 10) / 9;
 	const float  LG_HallwayGeneration::_250_DEGREES = (LG_Math::PI * 25) / 18;
 	const float  LG_HallwayGeneration::_290_DEGREES = (LG_Math::PI * 29) / 18;
 	const float  LG_HallwayGeneration::_340_DEGREES = (LG_Math::PI * 34) / 18;
@@ -88,7 +88,7 @@ namespace LevelGenerator
 						/// Any other angle will be represented with a corner hallway.
 						MakeCornerHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
 					}
-				
+
 				}
 			}
 			(*m_pRooms)[i]->m_bIsChecked = true;
@@ -314,7 +314,7 @@ namespace LevelGenerator
 			/// See if the iterating rooms collides with the hallway.
 			if ((*m_pRooms)[j] != Room1 && (*m_pRooms)[j] != Room2)
 			{
-				if (pVerticalHallway->CheckCollision((*m_pRooms)[j]) || pHorizontalHallway->CheckCollision((*m_pRooms)[j])) 
+				if (pVerticalHallway->CheckCollision((*m_pRooms)[j]) || pHorizontalHallway->CheckCollision((*m_pRooms)[j]))
 				{
 					/// Calculates hallways with the maximum positions.
 					CalculateCornerPosition(true, pVerticalHallway, pHorizontalHallway, Room1, Room2);
@@ -325,11 +325,9 @@ namespace LevelGenerator
 					/// After knowing that it doesn't collide with a room, we make sure that it doesn't collide with another hallway.
 					for (int32 k = 0; k < m_FinalHallways.size(); ++k)
 					{
-<<<<<<< HEAD
+
 						if (pVerticalHallway != m_FinalHallways[k] && pHorizontalHallway != m_FinalHallways[k])
-=======
-						if (pVerticalHallway->CheckCollision(m_FinalHallways[k]) || pHorizontalHallway->CheckCollision((m_FinalHallways[k])))
->>>>>>> ff9809fb4625ecbbfd8440301f3eec5c6289bc40
+
 						{
 							if (pVerticalHallway->CheckCollision(m_FinalHallways[k]) || pHorizontalHallway->CheckCollision(m_FinalHallways[k]))
 							{
@@ -465,7 +463,7 @@ namespace LevelGenerator
 		EdgeToAdd->Init(&Room1->m_TopLeft, &Room1->m_TopRight);
 		/// 
 		Hallway->InsertEdgeToVector(EdgeToAdd);
-		
+
 		/// Assign memory to the edge that forms the polygon.
 		EdgeToAdd = new LG_Edge();
 		/// 
