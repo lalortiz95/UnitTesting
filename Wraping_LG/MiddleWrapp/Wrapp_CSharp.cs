@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+//TODO: aquí cargar las dlls de c++ de level generator pa calar que las agarre el unitys eda?
+
 namespace MiddleWrappCSharp
 {
     [StructLayout(LayoutKind.Sequential)]
@@ -35,39 +37,47 @@ namespace MiddleWrappCSharp
 
     public class Wrapp_CSharp
     {
-        // From c++ Dll (unmanaged)
-        [DllImport("MiddleWrappC++", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Start(int iNodeID, float fNodeValue, float NodePosition, int iParentNodeID, int iSizeNodeConections, ref float pos);
+        [DllImport("LG_CPPWrapper", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Run(int iRoomAmount);
 
-        // From c++ Dll (unmanaged)
-        [DllImport("MiddleWrappC++")]
-        public static extern float TestMultiply(float a, float b);
+        //// From c++ Dll (unmanaged)
+        //[DllImport("MiddleWrappC++", CallingConvention = CallingConvention.Cdecl)]
+        //public static extern void Start(int iNodeID, float fNodeValue, float NodePosition, int iParentNodeID, int iSizeNodeConections, ref float pos);
 
-        // From c++ Dll (unmanaged)
-        [DllImport("MiddleWrappC++")]
-        public static extern float TestDivide(float a, float b);
+        //// From c++ Dll (unmanaged)
+        //[DllImport("MiddleWrappC++")]
+        //public static extern float TestMultiply(float a, float b);
 
-        // From c++ Dll (unmanaged)
-        [DllImport("MiddleWrappC++")]
-        public static extern float TestGlobalVar();
+        //// From c++ Dll (unmanaged)
+        //[DllImport("MiddleWrappC++")]
+        //public static extern float TestDivide(float a, float b);
 
-        public static float SharpMultiply(float a, float b)
+        //// From c++ Dll (unmanaged)
+        //[DllImport("MiddleWrappC++")]
+        //public static extern float TestGlobalVar();
+
+        public static void CSRun(int iRoomAmount)
         {
-            return TestMultiply(a, b);
-        }
-        
-        public static float SharpDivide(float a, float b)
-        {
-            return TestDivide(a, b);
+            Run(iRoomAmount);
         }
 
-        public static void SharpStart(int iNodeID, float fNodeValue, float NodePosition, int iParentNodeID, int iSizeNodeConections, ref float FinalPos)
-        {
-            Start(iNodeID, fNodeValue, NodePosition, iParentNodeID, iSizeNodeConections, ref FinalPos);
-        }
-        public float SharpValue()
-        {
-            return TestGlobalVar();
-        }
+        //public static float SharpMultiply(float a, float b)
+        //{
+        //    return TestMultiply(a, b);
+        //}
+
+        //public static float SharpDivide(float a, float b)
+        //{
+        //    return TestDivide(a, b);
+        //}
+
+        //public static void SharpStart(int iNodeID, float fNodeValue, float NodePosition, int iParentNodeID, int iSizeNodeConections, ref float FinalPos)
+        //{
+        //    Start(iNodeID, fNodeValue, NodePosition, iParentNodeID, iSizeNodeConections, ref FinalPos);
+        //}
+        //public float SharpValue()
+        //{
+        //    return TestGlobalVar();
+        //}
     }
 }

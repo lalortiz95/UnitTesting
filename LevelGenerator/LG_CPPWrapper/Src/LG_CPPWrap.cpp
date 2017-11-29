@@ -28,9 +28,7 @@ extern "C"
 
 	void /*LG_CPPWrap::*/Run(int iRoomAmount)
 	{
-
-		
-		//TODO: llamar al run de generate y guardar en la global todo lo generado
+		//
 		g_generate.Run(iRoomAmount, LevelGenerator::LG_Vector3D(20, 20, 0), LevelGenerator::LG_Vector3D(70, 70, 0));
 	}
 

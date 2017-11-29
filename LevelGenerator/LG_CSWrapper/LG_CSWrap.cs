@@ -5,8 +5,6 @@ using System.Runtime.InteropServices;
 
 namespace LG_CSWrapper
 {
-
-
     public class LG_CSWrap
     {
 
@@ -16,7 +14,7 @@ namespace LG_CSWrapper
         [DllImport("LG_CPPWrapper",  CallingConvention = CallingConvention.Cdecl)]
         public static extern int multiplyvalue(int ivalue);
 
-        [DllImport("LG_CPPWrapper",  CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("LG_CPPWrapper", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Run(int iRoomAmount);
 
         [DllImport("LG_CPPWrapper", CallingConvention = CallingConvention.Cdecl)]
