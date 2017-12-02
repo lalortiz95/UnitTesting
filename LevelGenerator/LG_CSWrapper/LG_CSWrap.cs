@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 namespace LG_CSWrapper
 {
 
+
     public class LG_CSRoom
     {
         /**
@@ -49,6 +50,7 @@ namespace LG_CSWrapper
          */
         public float m_fHeight;
     }
+
 
     public class LG_CSWrap
     {
@@ -114,12 +116,10 @@ namespace LG_CSWrapper
             return GetRoomWidth(pGenerate, iRoomArrayPosition);
         }
 
-
         private static float CS_GetRoomHeight(IntPtr pGenerate, int iRoomArrayPosition)
         {
             return GetRoomHeight(pGenerate, iRoomArrayPosition);
         }
-
 
         private static int CS_GetRoomConectionsSize(IntPtr pGenerate, int iRoomArrayPosition)
         {
