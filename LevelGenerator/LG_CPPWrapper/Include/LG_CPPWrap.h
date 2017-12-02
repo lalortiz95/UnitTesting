@@ -26,7 +26,7 @@ LevelGenerator::LG_Generate g_generate;
 
 extern "C"
 {
-	LG_WRAPPER_EXPORT void* MyClass();
+	//LG_WRAPPER_EXPORT void* MyClass();
 
 	LG_WRAPPER_EXPORT int multiplyvalue(int ivalue);
 	
