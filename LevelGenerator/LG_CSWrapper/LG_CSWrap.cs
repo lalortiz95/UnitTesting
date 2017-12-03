@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -10,6 +11,31 @@ namespace LG_CSWrapper
 
     public class LG_CSRoom
     {
+        public LG_CSRoom()
+        {
+            m_fPosX = 0.0f;
+            m_fPosY = 0.0f;
+            m_fPosZ = 0.0f;
+            m_iID = 0;
+            m_iParentID = 0;
+            m_pArrayConectionsID = new List<int>();
+            m_fWidth = 0.0f;
+            m_fHeight = 0.0f;
+        }
+
+        ~LG_CSRoom()
+        {
+            m_fHeight = 0.0f;
+            m_fWidth = 0.0f;
+            m_pArrayConectionsID = new List<int>();
+            m_iParentID = 0;
+            m_iID = 0;
+            m_fPosZ = 0.0f;
+            m_fPosY = 0.0f;
+            m_fPosX = 0.0f;
+        }
+
+
         /**
          *  @var This variable store the position of the room in the X axis. 
          */
@@ -38,7 +64,8 @@ namespace LG_CSWrapper
         /**
          *  @var
          */
-        public List<int> m_pArrayConectionsID = new List<int>();
+        public List<int> m_pArrayConectionsID;
+        //public ArrayList m_pArrayConectionsID = new ArrayList();
 
         /**
          *  @var
@@ -54,7 +81,7 @@ namespace LG_CSWrapper
 
     public class LG_CSWrap
     {
-    
+
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomID", CallingConvention = CallingConvention.Cdecl)]
         public static extern int GetRoomID(IntPtr pGenerate, int iRoomArrayPosition);
 
@@ -90,7 +117,7 @@ namespace LG_CSWrapper
         public static extern float GetRoomPosition_Z(IntPtr pGenerate, int iRoomArrayPosition);
 
 
-        private static IntPtr CS_GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
+        public static IntPtr CS_GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
         int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z)
         {
             return GenerateLevel(iRoomAmount, iMinSizeRoom_X, iMinSizeRoom_Y, iMinSizeRoom_Z, iMaxSizeRoom_X, iMaxSizeRoom_Y, iMaxSizeRoom_Z);
@@ -150,26 +177,23 @@ namespace LG_CSWrapper
 
         public List<LG_CSRoom> m_Rooms = new List<LG_CSRoom>();
 
-        public  IntPtr CS_CreateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
+        public IntPtr CS_CreateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
                                int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z)
         {
-           
+
             IntPtr pGenerateLevel = CS_GenerateLevel(iRoomAmount, iMinSizeRoom_X, iMinSizeRoom_Y, iMinSizeRoom_Z, iMaxSizeRoom_X, iMaxSizeRoom_Y, iMaxSizeRoom_Z);
 
             int RoomAmount = CS_GetRoomAmount(pGenerateLevel);
-
-            m_Rooms.Clear();
-            m_Rooms = new List<LG_CSRoom>(RoomAmount);
 
             for (int i = 0; i < RoomAmount; i++)
             {
 
                 LG_CSRoom newRoom = new LG_CSRoom();
-                /// We assign the room's ID.
+            //    /// We assign the room's ID.
                 newRoom.m_iID = CS_GetRoomID(pGenerateLevel, i);
 
-                /// Store the room's parent.
-                newRoom.m_iParentID = CS_GetRoomsParentID(pGenerateLevel, i);
+                //    /// Store the room's parent.
+                //newRoom.m_iParentID = CS_GetRoomsParentID(pGenerateLevel, i);
 
                 /// Stores the room's Width.
                 newRoom.m_fWidth = CS_GetRoomWidth(pGenerateLevel, i);
@@ -178,18 +202,13 @@ namespace LG_CSWrapper
 
                 /// Coordinates change to work under unity's coordinates system.
                 newRoom.m_fPosX = CS_GetRoomPosition_X(pGenerateLevel, i);
-                newRoom.m_fPosZ = CS_GetRoomPosition_Z(pGenerateLevel, i);
-                newRoom.m_fPosY = CS_GetRoomPosition_Y(pGenerateLevel, i);
+                newRoom.m_fPosY = CS_GetRoomPosition_Z(pGenerateLevel, i);
+                newRoom.m_fPosZ = CS_GetRoomPosition_Y(pGenerateLevel, i);
 
-
-                /// 
                 int iConnectionSize = CS_GetRoomConectionsSize(pGenerateLevel, i);
-
-                newRoom.m_pArrayConectionsID.Clear();
-                newRoom.m_pArrayConectionsID = new List<int>(iConnectionSize);
-                /// 
+                      
                 for (int j = 0; j < iConnectionSize; j++)
-                { 
+                {
                     newRoom.m_pArrayConectionsID.Add(CS_GetOneRoomConectionID(pGenerateLevel, i, j));
                 }
 
