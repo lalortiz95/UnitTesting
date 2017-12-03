@@ -83,6 +83,11 @@ namespace LevelGenerator
 		LG_MST m_MST;
 
 		/**
+		 *	@var An object of the Dijkstra class. It's used to run it's algorithm.
+		 */
+		LG_Dijkstra m_Dijkstra;
+
+		/**
 		 *	@var An object of the delaunay triangulation class. It's used to run it's algorithm.
 		 */
 		LG_DelaunayTriangulation m_DT;

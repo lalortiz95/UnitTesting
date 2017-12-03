@@ -7,15 +7,43 @@ using System.Runtime.InteropServices;
 
 namespace LG_CSWrapper
 {
+    public class LG_Vector3
+    {
+        public LG_Vector3()
+        {
+           X = 0;
+           Y = 0;
+           Z = 0;
+        }
 
+        public LG_Vector3(float fPosX, float fPosY, float fPosZ)
+        {
+            X = fPosX;
+            Y = fPosY;
+            Z = fPosZ;
+        }
+
+        ~LG_Vector3()
+        {
+            X = 0;
+            Y = 0;
+            Z = 0;
+        }
+
+        public float X;
+        public float Y;
+        public float Z;
+    }
 
     public class LG_CSRoom
     {
         public LG_CSRoom()
         {
-            m_fPosX = 0.0f;
-            m_fPosY = 0.0f;
-            m_fPosZ = 0.0f;
+            m_Position = new LG_Vector3(0.0f, 0.0f, 0.0f);
+            m_TopLeftPosition = new LG_Vector3(0.0f, 0.0f, 0.0f);
+            m_TopRightPosition = new LG_Vector3(0.0f, 0.0f, 0.0f);
+            m_BottomLeftPosition = new LG_Vector3(0.0f, 0.0f, 0.0f);
+            m_BottomRightPosition = new LG_Vector3(0.0f, 0.0f, 0.0f);
             m_iID = 0;
             m_iParentID = 0;
             m_pArrayConectionsID = new List<int>();
@@ -30,26 +58,33 @@ namespace LG_CSWrapper
             m_pArrayConectionsID = new List<int>();
             m_iParentID = 0;
             m_iID = 0;
-            m_fPosZ = 0.0f;
-            m_fPosY = 0.0f;
-            m_fPosX = 0.0f;
+          
         }
-
-
-        /**
-         *  @var This variable store the position of the room in the X axis. 
-         */
-        public float m_fPosX;
-
-        /**
-         *  @var This variable store the position of the room in the Y axis.
-         */
-        public float m_fPosY;
 
         /**
          *  @var
          */
-        public float m_fPosZ;
+        public LG_Vector3 m_Position;
+
+        /**
+       *  @var
+       */
+        public LG_Vector3 m_TopLeftPosition;
+
+        /**
+         *  @var
+         */
+        public LG_Vector3 m_TopRightPosition;
+
+        /**
+         *  @var
+         */
+        public LG_Vector3 m_BottomLeftPosition;
+
+        /**
+         *  @var
+         */
+        public LG_Vector3 m_BottomRightPosition;
 
         /**
          *  @var
@@ -65,7 +100,6 @@ namespace LG_CSWrapper
          *  @var
          */
         public List<int> m_pArrayConectionsID;
-        //public ArrayList m_pArrayConectionsID = new ArrayList();
 
         /**
          *  @var
@@ -76,6 +110,7 @@ namespace LG_CSWrapper
          *  @var
          */
         public float m_fHeight;
+
     }
 
 
@@ -83,133 +118,198 @@ namespace LG_CSWrapper
     {
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomID", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetRoomID(IntPtr pGenerate, int iRoomArrayPosition);
+        private static extern int GetRoomID(IntPtr pGenerate, int iRoomArrayPosition);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomsParentID", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetRoomsParentID(IntPtr pGenerate, int iRoomArrayPosition);
+        private static extern int GetRoomsParentID(IntPtr pGenerate, int iRoomArrayPosition);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomWidth", CallingConvention = CallingConvention.Cdecl)]
-        public static extern float GetRoomWidth(IntPtr pGenerate, int iRoomArrayPosition);
+        private static extern float GetRoomWidth(IntPtr pGenerate, int iRoomArrayPosition);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomHeight", CallingConvention = CallingConvention.Cdecl)]
-        public static extern float GetRoomHeight(IntPtr pGenerate, int iRoomArrayPosition);
+        private static extern float GetRoomHeight(IntPtr pGenerate, int iRoomArrayPosition);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomConectionsSize", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetRoomConectionsSize(IntPtr pGenerate, int iRoomArrayPosition);
+        private static extern int GetRoomConectionsSize(IntPtr pGenerate, int iRoomArrayPosition);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetOneRoomConectionID", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetOneRoomConectionID(IntPtr pGenerate, int iRoomArrayPosition, int iRoomConectionPosition);
+        private static extern int GetOneRoomConectionID(IntPtr pGenerate, int iRoomArrayPosition, int iRoomConectionPosition);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GenerateLevel", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
+        private static extern IntPtr GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
         int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomAmount", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GetRoomAmount(IntPtr pGenerate);
+        private static extern int GetRoomAmount(IntPtr pGenerate);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomPosition_X", CallingConvention = CallingConvention.Cdecl)]
-        public static extern float GetRoomPosition_X(IntPtr pGenerate, int iRoomArrayPosition);
+        private static extern float GetRoomPosition_X(IntPtr pGenerate, int iRoomArrayPosition);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomPosition_Y", CallingConvention = CallingConvention.Cdecl)]
-        public static extern float GetRoomPosition_Y(IntPtr pGenerate, int iRoomArrayPosition);
+        private static extern float GetRoomPosition_Y(IntPtr pGenerate, int iRoomArrayPosition);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomPosition_Z", CallingConvention = CallingConvention.Cdecl)]
-        public static extern float GetRoomPosition_Z(IntPtr pGenerate, int iRoomArrayPosition);
+        private static extern float GetRoomPosition_Z(IntPtr pGenerate, int iRoomArrayPosition);
 
 
-        public static IntPtr CS_GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
-        int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z)
-        {
-            return GenerateLevel(iRoomAmount, iMinSizeRoom_X, iMinSizeRoom_Y, iMinSizeRoom_Z, iMaxSizeRoom_X, iMaxSizeRoom_Y, iMaxSizeRoom_Z);
-        }
 
-        private static int CS_GetRoomAmount(IntPtr pGenerate)
-        {
-            return GetRoomAmount(pGenerate);
-        }
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomNodePosition_X", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetRoomNodePosition_X(IntPtr pGenerate, int iRoomArrayPosition, int iNumOfNode);
 
-        private static int CS_GetRoomID(IntPtr pGenerate, int iRoomArrayPosition)
-        {
-            return GetRoomID(pGenerate, iRoomArrayPosition);
-        }
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomNodePosition_Y", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetRoomNodePosition_Y(IntPtr pGenerate, int iRoomArrayPosition, int iNumOfNode);
 
-        private static int CS_GetRoomsParentID(IntPtr pGenerate, int iRoomArrayPosition)
-        {
-            return GetRoomsParentID(pGenerate, iRoomArrayPosition);
-        }
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomNodePosition_Z", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetRoomNodePosition_Z(IntPtr pGenerate, int iRoomArrayPosition, int iNumOfNode);
 
-        private static float CS_GetRoomWidth(IntPtr pGenerate, int iRoomArrayPosition)
-        {
-            return GetRoomWidth(pGenerate, iRoomArrayPosition);
-        }
 
-        private static float CS_GetRoomHeight(IntPtr pGenerate, int iRoomArrayPosition)
-        {
-            return GetRoomHeight(pGenerate, iRoomArrayPosition);
-        }
 
-        private static int CS_GetRoomConectionsSize(IntPtr pGenerate, int iRoomArrayPosition)
-        {
-            return GetRoomConectionsSize(pGenerate, iRoomArrayPosition);
-        }
 
-        private static int CS_GetOneRoomConectionID(IntPtr pGenerate, int iRoomArrayPosition, int iRoomConectionPosition)
-        {
-            return GetOneRoomConectionID(pGenerate, iRoomArrayPosition, iRoomConectionPosition);
-        }
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayAmount", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int GetHallwayAmount(IntPtr pGenerate);
 
-        private static float CS_GetRoomPosition_X(IntPtr pGenerate, int iRoomAmount)
-        {
-            return GetRoomPosition_X(pGenerate, iRoomAmount);
-        }
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayWidth", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetHallwayWidth(IntPtr pGenerate, int iHallwayArrayPosition);
 
-        private static float CS_GetRoomPosition_Y(IntPtr pGenerate, int iRoomAmount)
-        {
-            return GetRoomPosition_Y(pGenerate, iRoomAmount);
-        }
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayHeight", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetHallwayHeight(IntPtr pGenerate, int iHallwayArrayPosition);
 
-        private static float CS_GetRoomPosition_Z(IntPtr pGenerate, int iRoomAmount)
-        {
-            return GetRoomPosition_Z(pGenerate, iRoomAmount);
-        }
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayPosition_X", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetHallwayPosition_X(IntPtr pGenerate, int iHallwayArrayPosition);
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayPosition_Y", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetHallwayPosition_Y(IntPtr pGenerate, int iHallwayArrayPosition);
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayPosition_Z", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetHallwayPosition_Z(IntPtr pGenerate, int iHallwayArrayPosition);
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayNodePosition_X", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetHallwayNodePosition_X(IntPtr pGenerate, int iHallwayArrayPosition, int iNumOfNode);
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayNodePosition_Y", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetHallwayNodePosition_Y(IntPtr pGenerate, int iHallwayArrayPosition, int iNumOfNode);
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayNodePosition_Z", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float GetHallwayNodePosition_Z(IntPtr pGenerate, int iHallwayArrayPosition, int iNumOfNode);
+
+
+
+
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "Pathfinding_DIJKSTRA", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Pathfinding_DIJKSTRA(IntPtr pGenerate, int iStartNode, int iEndNode);
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetPathSize_DIJKSTRA", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int GetPathSize_DIJKSTRA(IntPtr pGenerate);
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetPath_DIJKSTRA_OneByOne", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int GetPath_DIJKSTRA_OneByOne(IntPtr pGenerate, int iPathArrayPosition);
+
+
 
 
 
         public List<LG_CSRoom> m_Rooms = new List<LG_CSRoom>();
+        public List<LG_CSRoom> m_Hallway = new List<LG_CSRoom>();
 
-        public IntPtr CS_CreateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
-                               int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z)
+        public int[] CS_Pathfinding_DIJKSTRA(IntPtr pGenerate, int iStartNode,int iEndNode)
         {
+            int iPathSize = 0;
+            int[] pPath = null;
 
-            IntPtr pGenerateLevel = CS_GenerateLevel(iRoomAmount, iMinSizeRoom_X, iMinSizeRoom_Y, iMinSizeRoom_Z, iMaxSizeRoom_X, iMaxSizeRoom_Y, iMaxSizeRoom_Z);
+            Pathfinding_DIJKSTRA(pGenerate, iStartNode, iEndNode);
+            iPathSize = GetPathSize_DIJKSTRA(pGenerate);
 
-            int RoomAmount = CS_GetRoomAmount(pGenerateLevel);
+            for (int i = 0; i < iPathSize; i++)
+            {
+                pPath[i] = GetPath_DIJKSTRA_OneByOne(pGenerate, i);
+            }
+
+            return pPath;
+        } 
+
+
+        public IntPtr CS_GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
+        int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z)
+        {
+            IntPtr pGenerateLevel = GenerateLevel(iRoomAmount, iMinSizeRoom_X, iMinSizeRoom_Y, iMinSizeRoom_Z, iMaxSizeRoom_X, iMaxSizeRoom_Y, iMaxSizeRoom_Z);
+
+            int RoomAmount = GetRoomAmount(pGenerateLevel);
+            int iHallwayAmount = GetHallwayAmount(pGenerateLevel);
+
+            for (int i = 0; i < iHallwayAmount; ++i)
+            {
+                LG_CSRoom newHallway = new LG_CSRoom();
+
+                /// Stores the room's Width.
+                newHallway.m_fWidth = GetHallwayWidth(pGenerateLevel, i);
+                /// Stores the room's height.
+                newHallway.m_fHeight = GetHallwayHeight(pGenerateLevel, i);
+
+                /// Coordinates change to work under unity's coordinates system.
+                newHallway.m_Position.X = GetHallwayPosition_X(pGenerateLevel, i);
+                newHallway.m_Position.Y = GetHallwayPosition_Z(pGenerateLevel, i);
+                newHallway.m_Position.Z = GetHallwayPosition_Y(pGenerateLevel, i);
+
+                newHallway.m_TopLeftPosition.X = GetHallwayNodePosition_X(pGenerateLevel, i, 0);
+                newHallway.m_TopLeftPosition.Y = GetHallwayNodePosition_Z(pGenerateLevel, i, 0);
+                newHallway.m_TopLeftPosition.Z = GetHallwayNodePosition_Y(pGenerateLevel, i, 0);
+
+                newHallway.m_TopRightPosition.X = GetHallwayNodePosition_X(pGenerateLevel, i, 1);
+                newHallway.m_TopRightPosition.Y = GetHallwayNodePosition_Z(pGenerateLevel, i, 1);
+                newHallway.m_TopRightPosition.Z = GetHallwayNodePosition_Y(pGenerateLevel, i, 1);
+
+                newHallway.m_BottomLeftPosition.X = GetHallwayNodePosition_X(pGenerateLevel, i, 2);
+                newHallway.m_BottomLeftPosition.Y = GetHallwayNodePosition_Z(pGenerateLevel, i, 2);
+                newHallway.m_BottomLeftPosition.Z = GetHallwayNodePosition_Y(pGenerateLevel, i, 2);
+
+                newHallway.m_BottomRightPosition.X = GetHallwayNodePosition_X(pGenerateLevel, i, 3);
+                newHallway.m_BottomRightPosition.Y = GetHallwayNodePosition_Z(pGenerateLevel, i, 3);
+                newHallway.m_BottomRightPosition.Z = GetHallwayNodePosition_Y(pGenerateLevel, i, 3);
+
+                m_Hallway.Add(newHallway);
+            }
+
 
             for (int i = 0; i < RoomAmount; i++)
             {
 
                 LG_CSRoom newRoom = new LG_CSRoom();
-            //    /// We assign the room's ID.
-                newRoom.m_iID = CS_GetRoomID(pGenerateLevel, i);
-
-                //    /// Store the room's parent.
-                //newRoom.m_iParentID = CS_GetRoomsParentID(pGenerateLevel, i);
+                //    /// We assign the room's ID.
+                newRoom.m_iID = GetRoomID(pGenerateLevel, i);
 
                 /// Stores the room's Width.
-                newRoom.m_fWidth = CS_GetRoomWidth(pGenerateLevel, i);
+                newRoom.m_fWidth = GetRoomWidth(pGenerateLevel, i);
                 /// Stores the room's height.
-                newRoom.m_fHeight = CS_GetRoomHeight(pGenerateLevel, i);
+                newRoom.m_fHeight = GetRoomHeight(pGenerateLevel, i);
 
                 /// Coordinates change to work under unity's coordinates system.
-                newRoom.m_fPosX = CS_GetRoomPosition_X(pGenerateLevel, i);
-                newRoom.m_fPosY = CS_GetRoomPosition_Z(pGenerateLevel, i);
-                newRoom.m_fPosZ = CS_GetRoomPosition_Y(pGenerateLevel, i);
+                newRoom.m_Position.X = GetRoomPosition_X(pGenerateLevel, i);
+                newRoom.m_Position.Y = GetRoomPosition_Z(pGenerateLevel, i);
+                newRoom.m_Position.Z = GetRoomPosition_Y(pGenerateLevel, i);
 
-                int iConnectionSize = CS_GetRoomConectionsSize(pGenerateLevel, i);
-                      
+                newRoom.m_TopLeftPosition.X = GetRoomNodePosition_X(pGenerateLevel, i, 0);
+                newRoom.m_TopLeftPosition.Y = GetRoomNodePosition_Z(pGenerateLevel, i, 0);
+                newRoom.m_TopLeftPosition.Z = GetRoomNodePosition_Y(pGenerateLevel, i, 0);
+
+                newRoom.m_TopRightPosition.X = GetRoomNodePosition_X(pGenerateLevel, i, 1);
+                newRoom.m_TopRightPosition.Y = GetRoomNodePosition_Z(pGenerateLevel, i, 1);
+                newRoom.m_TopRightPosition.Z = GetRoomNodePosition_Y(pGenerateLevel, i, 1);
+
+                newRoom.m_BottomLeftPosition.X = GetRoomNodePosition_X(pGenerateLevel, i, 2);
+                newRoom.m_BottomLeftPosition.Y = GetRoomNodePosition_Z(pGenerateLevel, i, 2);
+                newRoom.m_BottomLeftPosition.Z = GetRoomNodePosition_Y(pGenerateLevel, i, 2);
+
+                newRoom.m_BottomRightPosition.X = GetRoomNodePosition_X(pGenerateLevel, i, 3);
+                newRoom.m_BottomRightPosition.Y = GetRoomNodePosition_Z(pGenerateLevel, i, 3);
+                newRoom.m_BottomRightPosition.Z = GetRoomNodePosition_Y(pGenerateLevel, i, 3);
+
+
+                int iConnectionSize = GetRoomConectionsSize(pGenerateLevel, i);
+
                 for (int j = 0; j < iConnectionSize; j++)
                 {
-                    newRoom.m_pArrayConectionsID.Add(CS_GetOneRoomConectionID(pGenerateLevel, i, j));
+                    newRoom.m_pArrayConectionsID.Add(GetOneRoomConectionID(pGenerateLevel, i, j));
                 }
 
                 m_Rooms.Add(newRoom);
@@ -217,5 +317,56 @@ namespace LG_CSWrapper
 
             return pGenerateLevel;
         }
+
+        //private static int CS_GetRoomAmount(IntPtr pGenerate)
+        //{
+        //    return GetRoomAmount(pGenerate);
+        //}
+
+        //private static int CS_GetRoomID(IntPtr pGenerate, int iRoomArrayPosition)
+        //{
+        //    return GetRoomID(pGenerate, iRoomArrayPosition);
+        //}
+
+        //private static int CS_GetRoomsParentID(IntPtr pGenerate, int iRoomArrayPosition)
+        //{
+        //    return GetRoomsParentID(pGenerate, iRoomArrayPosition);
+        //}
+
+        //private static float CS_GetRoomWidth(IntPtr pGenerate, int iRoomArrayPosition)
+        //{
+        //    return GetRoomWidth(pGenerate, iRoomArrayPosition);
+        //}
+
+        //private static float CS_GetRoomHeight(IntPtr pGenerate, int iRoomArrayPosition)
+        //{
+        //    return GetRoomHeight(pGenerate, iRoomArrayPosition);
+        //}
+
+        //private static int CS_GetRoomConectionsSize(IntPtr pGenerate, int iRoomArrayPosition)
+        //{
+        //    return GetRoomConectionsSize(pGenerate, iRoomArrayPosition);
+        //}
+
+        //private static int CS_GetOneRoomConectionID(IntPtr pGenerate, int iRoomArrayPosition, int iRoomConectionPosition)
+        //{
+        //    return GetOneRoomConectionID(pGenerate, iRoomArrayPosition, iRoomConectionPosition);
+        //}
+
+        //private static float CS_GetRoomPosition_X(IntPtr pGenerate, int iRoomAmount)
+        //{
+        //    return GetRoomPosition_X(pGenerate, iRoomAmount);
+        //}
+
+        //private static float CS_GetRoomPosition_Y(IntPtr pGenerate, int iRoomAmount)
+        //{
+        //    return GetRoomPosition_Y(pGenerate, iRoomAmount);
+        //}
+
+        //private static float CS_GetRoomPosition_Z(IntPtr pGenerate, int iRoomAmount)
+        //{
+        //    return GetRoomPosition_Z(pGenerate, iRoomAmount);
+        //}
+
     }
 }

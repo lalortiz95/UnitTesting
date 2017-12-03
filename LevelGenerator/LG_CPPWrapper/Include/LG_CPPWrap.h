@@ -21,6 +21,12 @@ extern "C"
 	LG_WRAPPER_EXPORT void* GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
 		int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z);
 
+
+	///************************************************************************/
+	///*                           Rooms Functions.			                  */
+	///************************************************************************/ 
+
+
 	/**
 	 *	@brief This functions get the size of the vector rooms in the generate level object.
 	 *	@param void* pGenerate: A pointer of generate level.
@@ -54,6 +60,32 @@ extern "C"
 	LG_WRAPPER_EXPORT float GetRoomPosition_Y(void* pGenerate, int iRoomArrayPosition);
 	LG_WRAPPER_EXPORT float GetRoomPosition_Z(void* pGenerate, int iRoomArrayPosition);
 
+	LG_WRAPPER_EXPORT float GetRoomNodePosition_X(void* pGenerate, int iRoomArrayPosition, int iNumOfNode);
+	LG_WRAPPER_EXPORT float GetRoomNodePosition_Y(void* pGenerate, int iRoomArrayPosition, int iNumOfNode);
+	LG_WRAPPER_EXPORT float GetRoomNodePosition_Z(void* pGenerate, int iRoomArrayPosition, int iNumOfNode);
 
+	///************************************************************************/
+	///*                            Hallway Functions.		                  */
+	///************************************************************************/
 
+	LG_WRAPPER_EXPORT int GetHallwayAmount(void* pGenerate);
+
+	LG_WRAPPER_EXPORT float GetHallwayWidth(void* pGenerate, int iHallwayArrayPosition);
+	LG_WRAPPER_EXPORT float GetHallwayHeight(void*pGenerate, int iHallwayArrayPosition);
+
+	LG_WRAPPER_EXPORT float GetHallwayPosition_X(void* pGenerate, int iHallwayArrayPosition);
+	LG_WRAPPER_EXPORT float GetHallwayPosition_Y(void* pGenerate, int iHallwayArrayPosition);
+	LG_WRAPPER_EXPORT float GetHallwayPosition_Z(void* pGenerate, int iHallwayArrayPosition);
+
+	LG_WRAPPER_EXPORT float GetHallwayNodePosition_X(void* pGenerate, int iHallwayArrayPosition, int iNumOfNode);
+	LG_WRAPPER_EXPORT float GetHallwayNodePosition_Y(void* pGenerate, int iHallwayArrayPosition, int iNumOfNode);
+	LG_WRAPPER_EXPORT float GetHallwayNodePosition_Z(void* pGenerate, int iHallwayArrayPosition, int iNumOfNode);
+
+	///************************************************************************/
+	///*                           Pathfinding Functions.                 */
+	///************************************************************************/
+
+	LG_WRAPPER_EXPORT void Pathfinding_DIJKSTRA(void* pGenerate, int iStartNode, int iEndNode);
+	LG_WRAPPER_EXPORT int GetPathSize_DIJKSTRA(void* pGenerate);
+	LG_WRAPPER_EXPORT int GetPath_DIJKSTRA_OneByOne(void* pGenerate, int iPathArrayPosition);
 }
