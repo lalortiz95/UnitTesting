@@ -317,56 +317,5 @@ namespace LG_CSWrapper
 
             return pGenerateLevel;
         }
-
-        //private static int CS_GetRoomAmount(IntPtr pGenerate)
-        //{
-        //    return GetRoomAmount(pGenerate);
-        //}
-
-        //private static int CS_GetRoomID(IntPtr pGenerate, int iRoomArrayPosition)
-        //{
-        //    return GetRoomID(pGenerate, iRoomArrayPosition);
-        //}
-
-        //private static int CS_GetRoomsParentID(IntPtr pGenerate, int iRoomArrayPosition)
-        //{
-        //    return GetRoomsParentID(pGenerate, iRoomArrayPosition);
-        //}
-
-        //private static float CS_GetRoomWidth(IntPtr pGenerate, int iRoomArrayPosition)
-        //{
-        //    return GetRoomWidth(pGenerate, iRoomArrayPosition);
-        //}
-
-        //private static float CS_GetRoomHeight(IntPtr pGenerate, int iRoomArrayPosition)
-        //{
-        //    return GetRoomHeight(pGenerate, iRoomArrayPosition);
-        //}
-
-        //private static int CS_GetRoomConectionsSize(IntPtr pGenerate, int iRoomArrayPosition)
-        //{
-        //    return GetRoomConectionsSize(pGenerate, iRoomArrayPosition);
-        //}
-
-        //private static int CS_GetOneRoomConectionID(IntPtr pGenerate, int iRoomArrayPosition, int iRoomConectionPosition)
-        //{
-        //    return GetOneRoomConectionID(pGenerate, iRoomArrayPosition, iRoomConectionPosition);
-        //}
-
-        //private static float CS_GetRoomPosition_X(IntPtr pGenerate, int iRoomAmount)
-        //{
-        //    return GetRoomPosition_X(pGenerate, iRoomAmount);
-        //}
-
-        //private static float CS_GetRoomPosition_Y(IntPtr pGenerate, int iRoomAmount)
-        //{
-        //    return GetRoomPosition_Y(pGenerate, iRoomAmount);
-        //}
-
-        //private static float CS_GetRoomPosition_Z(IntPtr pGenerate, int iRoomAmount)
-        //{
-        //    return GetRoomPosition_Z(pGenerate, iRoomAmount);
-        //}
-
     }
 }
