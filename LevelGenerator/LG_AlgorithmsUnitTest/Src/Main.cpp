@@ -3,7 +3,6 @@
 #include <LG_MarchingSquare.h>
 #include <LG_Generate.h>
 #include <LG_RDP.h>
-#include <time.h>
 
 #include <gtest/gtest.h>
 

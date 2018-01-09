@@ -1,5 +1,6 @@
 #include "LG_Generate.h"
 #include <LG_Rect.h>
+#include <time.h>
 
 namespace LevelGenerator
 {
@@ -29,8 +30,9 @@ namespace LevelGenerator
 	}
 
 	//! This function initialize all variables of the class.
-	void LG_Generate::Initialize()
+	void LG_Generate::Initialize(int32 iSeed)
 	{
+		srand(iSeed);
 		/// We run marching square with the generated grid.
 		m_MS.Run(10, 10);
 		/// To have a more readable code.
@@ -65,10 +67,10 @@ namespace LevelGenerator
 	}
 
 	//! This calls all the algorithms and put them together to generate a procedural level.
-	void LG_Generate::Run(uint32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize)
+	void LG_Generate::Run(uint32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, int32 iSeed)
 	{
 		/// Initialize the variables.
-		Initialize();
+		Initialize(iSeed);
 		/// Generate an isoline from the cases generated on marching squares.
 		GenerateIsoline();
 		/// Generate rooms that we want to needed 
@@ -448,7 +450,7 @@ namespace LevelGenerator
 		/// Where we store the random room size.
 		LG_Vector3D RoomSize;
 
-		for (int32 i = 0; i < uiRoomAmount; ++i)
+		for (uint32 i = 0; i < uiRoomAmount; ++i)
 		{
 			/// We find a random position for the room we are about to create.
 			PosToSpawn.X = float(rand() % (fMaxX - fMinX) + fMinX);

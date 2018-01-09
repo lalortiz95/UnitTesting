@@ -145,8 +145,9 @@ namespace LevelGenerator
 
 		/**
 		 *  @brief This function initialize all variables of the class.
+		 *	@param iSeed: The given seed to generate the level upon.
 		 */
-		void Initialize();
+		void Initialize(int32 iSeed);
 
 		/**
 		 *	@brief This function free the memory of the class, and destroys it's variables.
@@ -159,7 +160,7 @@ namespace LevelGenerator
 		 *	@param LG_Vector3D MinSize: the minimum available sizes for the rooms.
 		 *	@param LG_Vector3D MaxSize: the maximum available sizes for the rooms.
 		 */
-		void Run(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize);
+		void Run(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, int32 iSeed);
 
 		/**
 		 *	@brief This function separate the rooms object.

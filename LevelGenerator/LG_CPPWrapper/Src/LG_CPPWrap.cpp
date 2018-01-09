@@ -7,12 +7,12 @@ extern "C"
 
 	//! This functions create a generate level object and return it.
 	void * GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
-		int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z)
+		int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z, int iSeed)
 	{
-		LevelGenerator::LG_Vector3D vMin(iMinSizeRoom_X, iMinSizeRoom_Y, iMinSizeRoom_Z);
-		LevelGenerator::LG_Vector3D vMax(iMaxSizeRoom_X, iMaxSizeRoom_Y, iMaxSizeRoom_Z);
+		LevelGenerator::LG_Vector3D vMin((float)iMinSizeRoom_X, (float)iMinSizeRoom_Y, (float)iMinSizeRoom_Z);
+		LevelGenerator::LG_Vector3D vMax((float)iMaxSizeRoom_X, (float)iMaxSizeRoom_Y, (float)iMaxSizeRoom_Z);
 		LevelGenerator::LG_Generate* newGenerate = new LevelGenerator::LG_Generate();
-		newGenerate->Run(iRoomAmount, vMin, vMax);
+		newGenerate->Run(iRoomAmount, vMin, vMax, iSeed);
 		return (void*)newGenerate;
 	}
 
@@ -20,13 +20,13 @@ extern "C"
 	int GetRoomAmount(void * pGenerate)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return  pTempGenerate->m_RoomsVector.size();
+		return  (int)pTempGenerate->m_RoomsVector.size();
 	}
 
 	int GetHallwayAmount(void * pGenerate)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways.size();
+		return (int)pTempGenerate->m_HG.m_FinalHallways.size();
 	}
 
 	//!
@@ -310,7 +310,7 @@ extern "C"
 	int GetPathSize_DIJKSTRA(void* pGenerate)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_Dijkstra.m_BesthPath.size();
+		return (int)pTempGenerate->m_Dijkstra.m_BesthPath.size();
 	}
 
 	 int GetPath_DIJKSTRA_OneByOne(void * pGenerate, int iPathArrayPosition)

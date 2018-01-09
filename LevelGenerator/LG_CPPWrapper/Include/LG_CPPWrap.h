@@ -16,10 +16,11 @@ extern "C"
 	 *	@param int iMaxSizeRoom_X:
 	 *	@param int iMaxSizeRoom_Y:
 	 *	@param int iMaxSizeRoom_Z:
+	 *	@param int iSeed: 
 	 *	@return The generate level object as void*.
 	 */
 	LG_WRAPPER_EXPORT void* GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
-		int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z);
+		int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z, int iSeed);
 
 
 	///************************************************************************/

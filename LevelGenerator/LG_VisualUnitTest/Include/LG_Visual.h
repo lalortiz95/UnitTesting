@@ -1,21 +1,27 @@
 #pragma once
 
 #include <LG_UtilitiesPrerequisites.h>
-#include <time.h>
-#include <iostream>
-#include <LG_Triangle.h>
-
-#include <LG_Circle.h>
 #include <LG_Vector3D.h>
 #include <string.h>
+
+#include <LG_Generate.h>
+
+#include <LG_Triangle.h>
+#include <LG_Circle.h>
+
 #include <SDL.h>
 #include <SDL_image.h>
+
+#include <time.h>
+#include <iostream>
 
 using namespace LevelGenerator;
 
 
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
+
+class LG_Generate;
 
 //TODO: cambiar el string de std por el nuestro.
 
@@ -45,27 +51,27 @@ public:
 	///**************************************************************************/
 
 	/**
-	 *	@brief A pointer to the SDL_Window object.
+	 *	@var A pointer to the SDL_Window object.
 	 */
 	SDL_Window* m_Window;
 
 	/**
-	 *	@brief A Pointer to the SDL_Surface object.
+	 *	@var A Pointer to the SDL_Surface object.
 	 */
 	SDL_Surface* m_ScreenSurface;
 
 	/**
-	 *	@brief A Pointer to the SDL_Surface object.
+	 *	@var A Pointer to the SDL_Surface object.
 	 */
 	SDL_Surface* m_DisplayImage;
 
 	/**
-	 *	@brief The file name.
+	 *	@var The file name.
 	 */
 	std::string m_sFileName;
 
 	/**
-	 *	@brief The SDL renderer.
+	 *	@var The SDL renderer.
 	 */
 	SDL_Renderer* m_Renderer;
 
@@ -110,6 +116,11 @@ public:
 private:
 
 	/**
+	 *	@var The algorithm generation var.
+	 */
+	LevelGenerator::LG_Generate m_AlgorithmGeneration;
+
+	/**
 	 *	@brief Loads individual image as texture.
 	 */
 	SDL_Texture* loadTexture(std::string path);
@@ -122,5 +133,11 @@ private:
 	 */
 	void DrawCircle(LG_Circle circle, LG_Vector3D color, LevelGenerator::uint32 sides);
 
+	/**
+	 *	@brief Draws a circle.
+	 *	@param LG_Vector3D StartPosition: 
+	 *	@param LG_Vector3D EndPosition:
+	 *	@param float fWidth:
+	 */
 	void FillRect(LG_Vector3D StartPosition, LG_Vector3D EndPosition, float fWidth);
 };
