@@ -67,7 +67,7 @@ namespace LevelGenerator
 	}
 
 	//! This calls all the algorithms and put them together to generate a procedural level.
-	void LG_Generate::Run(uint32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, int32 iSeed)
+	void LG_Generate::Run(uint32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, int32 iSeed, float fSeparationRange)
 	{
 		/// Initialize the variables.
 		Initialize(iSeed);
@@ -81,7 +81,7 @@ namespace LevelGenerator
 		GetNoudesCloud();
 
 		/// Update 
-		while (!SeparationRooms(0.016f));
+		while (!SeparationRooms(0.016f, fSeparationRange));
 		/// 
 		m_DT.Run(m_pSpawnZone->m_CenterNode.m_Position,
 			&m_RoomsNodesCloud);
@@ -101,7 +101,7 @@ namespace LevelGenerator
 	}
 
 	//! This function separete the rooms object.
-	bool LG_Generate::SeparationRooms(float fDelta)
+	bool LG_Generate::SeparationRooms(float fDelta, float fSeparationRange)
 	{
 		bool bCanStopSeparate = true;
 		/// Iterate the rooms vector to separate.
@@ -109,7 +109,7 @@ namespace LevelGenerator
 			itt != m_RoomsVector.end(); ++itt)
 		{
 			/// Calls the function separation rooms to separate the rooms.
-			AverageRoom(*itt);
+			AverageRoom(*itt, fSeparationRange);
 			/// Truncate the direction of the iterating room.
 			(*itt)->m_Direction = TruncateVector((*itt)->m_Direction);
 			/// If the magnitud of the direction vector is less than the min force.
@@ -430,7 +430,7 @@ namespace LevelGenerator
 	{
 
 		LG_Node PositionCenterSpawnZone;
-		PositionCenterSpawnZone.m_Position = LG_Vector3D(0, 0, 0);
+		PositionCenterSpawnZone.m_Position = LG_Vector3D(300, 300, 0);
 		/// Create a area to spawn the dots.
 		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, (float)uiRoomAmount * (float)SPAWN_ZONE, (float)uiRoomAmount * (float)SPAWN_ZONE);
 
@@ -523,7 +523,7 @@ namespace LevelGenerator
 	}
 
 	//!
-	void LG_Generate::AverageRoom(LG_Rect* pActualRect)
+	void LG_Generate::AverageRoom(LG_Rect* pActualRect, float fSeparationRange)
 	{
 		/// A counter to count how many rects are in collision with the actual rect.
 		int32 iNumRectsInRadius = 0;
@@ -543,7 +543,7 @@ namespace LevelGenerator
 				TempDirection = pActualRect->m_CenterNode.m_Position - (*itt)->m_CenterNode.m_Position;
 
 				/// Check if the iterating rect is colli
-				if (pActualRect->CheckCollision(*itt, 20))
+				if (pActualRect->CheckCollision(*itt,fSeparationRange))
 				{
 					/// Add the temp vector to the average.
 					Average += TempDirection;

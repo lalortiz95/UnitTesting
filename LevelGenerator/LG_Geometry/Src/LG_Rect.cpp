@@ -89,6 +89,7 @@ namespace LevelGenerator
 	//! Function to release memory and destroy objects.
 	void LG_Rect::Destroy()
 	{
+		//TODO: revisar esto.
 		///  Clears the room's connections.
 		if (m_RoomsConnections.size() != 0)
 		{

@@ -7,12 +7,12 @@ extern "C"
 
 	//! This functions create a generate level object and return it.
 	void * GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
-		int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z, int iSeed)
+		int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z, int iSeed, int iSeparationRange)
 	{
 		LevelGenerator::LG_Vector3D vMin((float)iMinSizeRoom_X, (float)iMinSizeRoom_Y, (float)iMinSizeRoom_Z);
 		LevelGenerator::LG_Vector3D vMax((float)iMaxSizeRoom_X, (float)iMaxSizeRoom_Y, (float)iMaxSizeRoom_Z);
 		LevelGenerator::LG_Generate* newGenerate = new LevelGenerator::LG_Generate();
-		newGenerate->Run(iRoomAmount, vMin, vMax, iSeed);
+		newGenerate->Run(iRoomAmount, vMin, vMax, iSeed, (float)iSeparationRange);
 		return (void*)newGenerate;
 	}
 

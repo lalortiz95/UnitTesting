@@ -8,6 +8,17 @@
 namespace LevelGenerator
 {
 	/**
+	 *	@brief The possible cases that rooms have. It's used to identify which rooms could have a straight hallway instead of a corner one.
+	 */
+	enum eRoomCases
+	{
+		TOP_RIGHT,
+		TOP_LEFT,
+		BOTTOM_RIGHT,
+		BOTTOM_LEFT
+	};
+
+	/**
 	 *	@brief This class Generates hallways between the rooms.
 	 */
 	class LG_ALGORITHMS_EXPORT LG_HallwayGeneration
@@ -35,11 +46,6 @@ namespace LevelGenerator
 		 *	@var The corridor's width.
 		 */
 		float m_fHallwayWidth;
-
-		/**
-		 *	@var Where we store the final hallways.
-		 */
-		//Vector<LG_Rect*> m_FinalHallways;
 
 		/**
 		*	@var Where we store the final hallways.
@@ -117,33 +123,48 @@ namespace LevelGenerator
 		void Run(Vector<LG_Rect*>* pRooms, float fCorridorWidth);
 
 	private:
+
 		/**
 		 *	@brief Creates a vertical hallway between two rooms.
-		 *	@param LG_Edge* Connection: the connection between two rooms that will be transformed into a hallway.
+		 *	@param LG_Rect* pRoom1: the first room used to calculate the vertical hallway.
+		 *	@param LG_Rect* pRoom2: the second room used to calculate the vertical hallway.
 		 *	@return the hallway that was created.
 		 */
-		LG_Rect* MakeVerticalHallway(LG_Rect* Room1, LG_Rect* Room2);
+		LG_Rect* MakeVerticalHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
 
 		/**
 		 *	@brief Creates a horizontal hallway between two rooms.
-		 *	@param LG_Edge* Connection: the connection between two rooms that will be transformed into a hallway.
+		 *	@param LG_Rect* pRoom1: the first room used to calculate the horizontal hallway.
+		 *	@param LG_Rect* pRoom2: the second room used to calculate the horizontal hallway.
+		 *	@return the hallway that was created.
 		 */
-		LG_Rect* MakeHorizontalHallway(LG_Rect* Room1, LG_Rect* Room2);
+		LG_Rect* MakeHorizontalHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
 
 		//LG_Rect* MakeHorizontalHallway(LG_Edge* Connection, bool bIsCorner);
 
 		/**
 		 *	@brief Creates a corner hallway between two rooms. Meaning that the connection was too much of a diagonal.
-		 *	@param LG_Edge* Connection: the connection between two rooms that will be transformed into a hallway.
+		 *	@param LG_Rect* pRoom1: the first room used to calculate the corner hallway.
+		 *	@param LG_Rect* pRoom2: the second room used to calculate the corner hallway.
+		 *	@return the hallway that was created.
 		 */
-		void MakeCornerHallway(LG_Rect* Room1, LG_Rect* Room2);
+		void MakeCornerHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
 
 		/**
-		 *	@brief returns the two rooms that have the iterating connection.
-		 *	@param The first room that of the connection.
-		 *	@param Second room from the connection.
+		 *	@brief Calculates each room's cases.
+		 *	@param LG_Rect* pRoom1: the first room used to calculate the case.
+		 *	@param LG_Rect* pRoom2: the second room used to calculate the case.
+		 *	@return
 		 */
-		 //void GetConnectionsRooms(LG_Edge* Connection);
+		 bool SetRoomsCases(LG_Rect* pRoom1, LG_Rect* pRoom2);
+
+		 /**
+		  *	@brief Check if we can do an horizontal or vertical hallway depending on the room's case.
+		  *	@param LG_Rect* pRoom1: the first room used to calculate.
+		  *	@param LG_Rect* pRoom2: the second room used to calculate.
+		  * @return true if we can do a vertical or horizontal hallway, otherwise return false.
+		  */
+		 bool CheckForStraightHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
 
 		 /**
 		  *	@brief Calculates a position for a corner between two connected rooms.

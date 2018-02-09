@@ -35,6 +35,11 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
+		 *	@var Defines the room's case, being Top_Left, Bottom_Left, Top_Right, or Bottom_Right. See eRoomCases in HallwayGeneration.
+		 */
+		int32 m_iRoomCase;
+
+		/**
 		 *	@var This variable stores the width of the rect.
 		 */
 		float m_fWidth;

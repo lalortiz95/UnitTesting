@@ -159,15 +159,17 @@ namespace LevelGenerator
 		 *	@param uint32 uiRoomAmount: The number of rooms that are going to be created.
 		 *	@param LG_Vector3D MinSize: the minimum available sizes for the rooms.
 		 *	@param LG_Vector3D MaxSize: the maximum available sizes for the rooms.
+		 *  @param float fSeparationRange: the range that we want to separate the rooms.
 		 */
-		void Run(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, int32 iSeed);
+		void Run(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, int32 iSeed, float fSeparationRange);
 
 		/**
 		 *	@brief This function separate the rooms object.
 		 *	@param float fDelta: The time to actualize.
+		 *  @param float fSeparationRange: The range that we want to separate the rooms.
 		 * 	@return true if we need to separate at least one rect, otherwise false.
 		 */
-		bool SeparationRooms(float fDelta);
+		bool SeparationRooms(float fDelta, float fSeparationRange);
 
 		/**
 		 *	@brief This function generate a isoline from Marching Square Cases.
@@ -251,8 +253,9 @@ namespace LevelGenerator
 		/**
 		 *	@brief This function get the average of rooms that are colliding with the actual rect.
 		 *	@param LG_Rect* pActualRect: The actual rect.
+		 *  @param float fSeparationRange: The range that we want to separate the rooms.
 		 */
-		void AverageRoom(LG_Rect* pActualRect);
+		void AverageRoom(LG_Rect* pActualRect, float fSeparationRange);
 
 		/**
 		 *	@brief This function reduce the nodes in the isolines.

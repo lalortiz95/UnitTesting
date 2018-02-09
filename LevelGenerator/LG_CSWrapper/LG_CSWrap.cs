@@ -137,7 +137,7 @@ namespace LG_CSWrapper
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GenerateLevel", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
-        int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z, int iSeed);
+        int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z, int iSeed, int iSeparationRange);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomAmount", CallingConvention = CallingConvention.Cdecl)]
         private static extern int GetRoomAmount(IntPtr pGenerate);
@@ -230,9 +230,9 @@ namespace LG_CSWrapper
 
 
         public IntPtr CS_GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
-        int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z, int iSeed)
+        int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z, int iSeed, int iSeparationRange)
         {
-            IntPtr pGenerateLevel = GenerateLevel(iRoomAmount, iMinSizeRoom_X, iMinSizeRoom_Y, iMinSizeRoom_Z, iMaxSizeRoom_X, iMaxSizeRoom_Y, iMaxSizeRoom_Z, iSeed);
+            IntPtr pGenerateLevel = GenerateLevel(iRoomAmount, iMinSizeRoom_X, iMinSizeRoom_Y, iMinSizeRoom_Z, iMaxSizeRoom_X, iMaxSizeRoom_Y, iMaxSizeRoom_Z, iSeed, iSeparationRange);
 
             int RoomAmount = GetRoomAmount(pGenerateLevel);
             int iHallwayAmount = GetHallwayAmount(pGenerateLevel);
