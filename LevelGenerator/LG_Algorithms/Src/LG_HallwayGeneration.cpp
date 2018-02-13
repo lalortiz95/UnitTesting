@@ -78,16 +78,16 @@ namespace LevelGenerator
 					if (fAngle < _20_DEGREES || fAngle > _160_DEGREES)
 					{
 						/// If the angle of the connection is inside of this limits, we consider it a horizontal hallway.
-						MakeHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
-						//pHallway = MakeHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
-						//m_FinalHallways.push_back(pHallway);
+						//MakeHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+						pHallway = MakeHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+						m_FinalHallways.push_back(pHallway);
 					}
 					else if (fAngle > _70_DEGREES && fAngle < _110_DEGREES)
 					{
 						/// If the angle of the connection is inside of this limits, we consider it a vertical hallway.
-						MakeVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
-						//pHallway = MakeVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
-						//m_FinalHallways.push_back(pHallway);
+						//MakeVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+						pHallway = MakeVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+						m_FinalHallways.push_back(pHallway);
 					}
 					else
 					{
@@ -199,7 +199,7 @@ namespace LevelGenerator
 		pFinalHallway->m_CenterNode.m_Position.Z = 0.0f;
 
 		/// We store the hallway that has just been generated in the final hallways vector.
-		m_FinalHallways.push_back(pFinalHallway);
+		//m_FinalHallways.push_back(pFinalHallway);
 
 		return pFinalHallway;
 	}
@@ -288,7 +288,7 @@ namespace LevelGenerator
 		pFinalHallway->m_CenterNode.m_Position.Z = 0.0f;
 
 		/// We store the hallway that has just been generated in the final hallways vector.
-		m_FinalHallways.push_back(pFinalHallway);
+		//m_FinalHallways.push_back(pFinalHallway);
 
 		return pFinalHallway;
 	}
@@ -305,6 +305,7 @@ namespace LevelGenerator
 			/// We verify that a straight hallway fits through bought rooms.
 			if (CheckForStraightHallway(pRoom1, pRoom2))
 			{
+				//TODO Esto se puede simplificar.
 				return;
 			}
 		}
@@ -352,20 +353,23 @@ namespace LevelGenerator
 		/// Indicates that the first room is to the left of the second one.
 		if (pRoom1->m_TopLeft.m_Position.X < pRoom2->m_TopLeft.m_Position.X)
 		{
-			if (pRoom1->m_TopLeft.m_Position.Y > pRoom2->m_BottomLeft.m_Position.Y)
+			if ((pRoom1->m_TopRight.m_Position.Y > pRoom2->m_BottomLeft.m_Position.Y  && 
+				pRoom1->m_TopRight.m_Position.X < pRoom2->m_BottomLeft.m_Position.X) ||
+				(pRoom1->m_BottomRight.m_Position.Y < pRoom2->m_TopLeft.m_Position.Y &&
+				pRoom1->m_BottomRight.m_Position.X < pRoom2->m_TopLeft.m_Position.X))
 			{
 				return false;
 			}
 
 			/// We see whether the room is at the top, or bottom.
-			if (pRoom1->m_TopLeft.m_Position.Y < pRoom2->m_TopLeft.m_Position.Y)
+			if (pRoom1->m_TopRight.m_Position.Y <= pRoom2->m_TopLeft.m_Position.Y)
 			{
 				/// TOP
 				pRoom1->m_iRoomCase = TOP_LEFT;
 				pRoom2->m_iRoomCase = BOTTOM_RIGHT;
 				return true;
 			}
-			else// if (pRoom1->m_TopLeft.m_Position.Y > pRoom2->m_BottomLeft.m_Position.Y)
+			else
 			{
 				/// BOTTOM
 				pRoom1->m_iRoomCase = BOTTOM_LEFT;
@@ -374,8 +378,16 @@ namespace LevelGenerator
 			}
 		}
 		/// We check if the top left node is in between of the top right and left nodes of the second room.
-		else if (pRoom1->m_TopLeft.m_Position.X < pRoom2->m_TopRight.m_Position.X)
+		else if (pRoom1->m_TopLeft.m_Position.X >= pRoom2->m_TopLeft.m_Position.X)
 		{
+
+			if ((pRoom1->m_BottomLeft.m_Position.Y < pRoom2->m_TopRight.m_Position.Y  &&
+				pRoom1->m_BottomLeft.m_Position.X > pRoom2->m_TopRight.m_Position.X) ||
+				(pRoom1->m_TopLeft.m_Position.Y > pRoom2->m_BottomRight.m_Position.Y &&
+					pRoom1->m_TopLeft.m_Position.X > pRoom2->m_BottomRight.m_Position.X))
+			{
+				return false;
+			}
 
 			/// We see whether the room is at the top, or bottom.
 			if (pRoom1->m_TopLeft.m_Position.Y < pRoom2->m_TopLeft.m_Position.Y)
@@ -385,7 +397,7 @@ namespace LevelGenerator
 				pRoom2->m_iRoomCase = BOTTOM_LEFT;
 				return true;
 			}
-			else// if (pRoom1->m_TopLeft.m_Position.Y > pRoom2->m_BottomLeft.m_Position.Y)
+			else
 			{
 				/// BOTTOM
 				pRoom1->m_iRoomCase = BOTTOM_RIGHT;
@@ -399,227 +411,122 @@ namespace LevelGenerator
 	//! Check if we can do an horizontal or vertical hallway depending on the room's case.
 	bool LG_HallwayGeneration::CheckForStraightHallway(LG_Rect * pRoom1, LG_Rect * pRoom2)
 	{
+
 		/// The first room's case is TOP_LEFT, and the second one's is BOTTOMRIGHT.
 		if (pRoom1->m_iRoomCase == TOP_LEFT)
 		{
 			/// If the first room is next to the second, instead of on top. We see if a straight hall can fit through those rooms.
-			if (pRoom1->m_BottomRight.m_Position.Y > pRoom2->m_TopLeft.m_Position.Y)
+			if (pRoom1->m_BottomRight.m_Position.Y >= pRoom2->m_TopLeft.m_Position.Y)
 			{
 				/// We see if the hallway fits.
 				if (pRoom1->m_BottomRight.m_Position.Y - pRoom2->m_TopLeft.m_Position.Y >= m_fHallwayWidth)
 				{
 					/// Now a new horizontal hallway is created.
-					MakeHorizontalHallway(pRoom1, pRoom2);
+					
+					m_FinalHallways.push_back(MakeHorizontalHallway(pRoom1, pRoom2));
 					return true;
 				}
 				return false;
 			}
 			/// Meaning room 1 is on top of room 2.
-			else if (pRoom1->m_BottomRight.m_Position.Y < pRoom2->m_TopLeft.m_Position.Y)
+			else 
 			{
 				/// We see if the hallway fits.
 				if (pRoom1->m_BottomRight.m_Position.X - pRoom2->m_TopLeft.m_Position.X >= m_fHallwayWidth)
 				{
 					/// Now a new vertical hallway is created.
-					MakeVerticalHallway(pRoom1, pRoom2);
+					m_FinalHallways.push_back(MakeVerticalHallway(pRoom1, pRoom2));
 					return true;
 				}
 				return false;
 			}
-			////TODO: asignar el separation en una variable miembra de esta clase que sea el offset. Es lo que se suma o resta.
-			///// We see in which axis we need to subtract the values in order to find if a straight hallway fits.
-			//if (pRoom1->m_BottomRight.m_Position.X == pRoom2->m_TopLeft.m_Position.X +1/*+ m_fHallwayWidth*/ ||
-			//	pRoom1->m_BottomRight.m_Position.X == pRoom2->m_TopLeft.m_Position.X -1/*- m_fHallwayWidth*/)
-			//{
-			//	/// If the difference of positions in the given axis is greater than the hallway width, it means that a
-			//	/// vertical hallway fits between those rooms.
-			//	if (pRoom1->m_BottomRight.m_Position.Y - pRoom2->m_TopLeft.m_Position.Y >= m_fHallwayWidth)
-			//	{
-			//		/// We make the vertical hallway.
-			//		MakeVerticalHallway(pRoom1, pRoom2);
-			//		return true;
-			//	}
-			//	return false;
-			//}
-			//else if (pRoom1->m_BottomRight.m_Position.Y == pRoom2->m_TopLeft.m_Position.Y +1/*+ m_fHallwayWidth*/ ||
-			//	pRoom1->m_BottomRight.m_Position.Y == pRoom2->m_TopLeft.m_Position.Y -1/*- m_fHallwayWidth*/)
-			//{
-			//	/// If the difference of positions in the given axis is greater than the hallway width, it means that a
-			//	/// horizontal hallway fits between those rooms.
-			//	if (pRoom1->m_BottomRight.m_Position.X - pRoom2->m_TopLeft.m_Position.X >= m_fHallwayWidth)
-			//	{
-			//		/// We make the horizontal hallway.
-			//		MakeHorizontalHallway(pRoom1, pRoom2);
-			//		return true;
-			//	}
-			//	return false;
-			//}
 		}
 
 		/// The first room's case is TOP_RIGHT, and the second one's is BOTTOMLEFT.
 		else if (pRoom1->m_iRoomCase == TOP_RIGHT)
 		{
 			/// If the first room is next to the second, instead of on top. We see if a straight hall can fit through those rooms.
-			if (pRoom1->m_BottomLeft.m_Position.Y > pRoom2->m_TopRight.m_Position.Y)
+			if (pRoom1->m_BottomLeft.m_Position.Y >= pRoom2->m_TopRight.m_Position.Y)
 			{
 				/// We see if the hallway fits.
 				if (pRoom1->m_BottomLeft.m_Position.Y - pRoom2->m_TopRight.m_Position.Y >= m_fHallwayWidth)
 				{
 					/// Now a new horizontal hallway is created.
-					MakeHorizontalHallway(pRoom1, pRoom2);
+					m_FinalHallways.push_back(MakeHorizontalHallway(pRoom1, pRoom2));
 					return true;
 				}
 				return false;
 			}
 			/// Meaning room 1 is on top of room 2.
-			else //if (pRoom1->m_BottomLeft.m_Position.Y < pRoom2->m_TopRight.m_Position.Y)
+			else 
 			{
 				/// We see if the hallway fits.
 				if (pRoom2->m_TopRight.m_Position.X - pRoom1->m_BottomLeft.m_Position.X >= m_fHallwayWidth)
 				{
 					/// Now a new vertical hallway is created.
-					MakeVerticalHallway(pRoom1, pRoom2);
+					m_FinalHallways.push_back(MakeVerticalHallway(pRoom1, pRoom2));
 					return true;
 				}
 				return false;
 			}
-			///// We see in which axis we need to subtract the values in order to find if a straight hallway fits.
-			//if (pRoom1->m_BottomLeft.m_Position.X == pRoom2->m_TopRight.m_Position.X + 1/*+ m_fHallwayWidth*/ ||
-			//	pRoom1->m_BottomLeft.m_Position.X == pRoom2->m_TopRight.m_Position.X - 1/*- m_fHallwayWidth*/)
-			//{
-			//	/// If the difference of positions in the given axis is greater than the hallway width, it means that a
-			//	/// vertical hallway fits between those rooms.
-			//	if (pRoom1->m_BottomLeft.m_Position.Y - pRoom2->m_TopRight.m_Position.Y >= m_fHallwayWidth)
-			//	{
-			//		/// We make the vertical hallway.
-			//		MakeVerticalHallway(pRoom1, pRoom2);
-			//		return true;
-			//	}
-			//	return false;
-			//}
-			//else if (pRoom1->m_BottomLeft.m_Position.Y == pRoom2->m_TopRight.m_Position.Y + 1/*+ m_fHallwayWidth*/ ||
-			//	pRoom1->m_BottomLeft.m_Position.Y == pRoom2->m_TopRight.m_Position.Y - 1/*- m_fHallwayWidth*/)
-			//{
-			//	/// If the difference of positions in the given axis is greater than the hallway width, it means that a
-			//	/// horizontal hallway fits between those rooms.
-			//	if (pRoom1->m_BottomLeft.m_Position.X - pRoom2->m_TopRight.m_Position.X >= m_fHallwayWidth)
-			//	{
-			//		/// We make the horizontal hallway.
-			//		MakeHorizontalHallway(pRoom1, pRoom2);
-			//		return true;
-			//	}
-			//	return false;
-			//}
 		}
 
 		/// CHECK this one
 		else if (pRoom1->m_iRoomCase == BOTTOM_LEFT)
 		{
 			/// If the first room is next to the second, instead of on top. We see if a straight hall can fit through those rooms.
-			if (pRoom1->m_TopRight.m_Position.Y < pRoom2->m_BottomLeft.m_Position.Y)
+			if (pRoom1->m_TopRight.m_Position.Y <= pRoom2->m_BottomLeft.m_Position.Y)
 			{
 				/// We see if the hallway fits.
 				if (pRoom2->m_BottomLeft.m_Position.Y - pRoom1->m_TopRight.m_Position.Y >= m_fHallwayWidth)
 				{
 					/// Now a new horizontal hallway is created.
-					MakeHorizontalHallway(pRoom1, pRoom2);
+					m_FinalHallways.push_back(MakeHorizontalHallway(pRoom1, pRoom2));
 					return true;
 				}
 				return false;
 			}
 			/// Meaning room 2 is on top of room 1.
-			else if (pRoom2->m_BottomLeft.m_Position.Y < pRoom1->m_TopRight.m_Position.Y)
+			else 
 			{
 				/// We see if the hallway fits.
 				if (pRoom1->m_TopRight.m_Position.X - pRoom2->m_BottomLeft.m_Position.X >= m_fHallwayWidth)
 				{
 					/// Now a new vertical hallway is created.
-					MakeVerticalHallway(pRoom1, pRoom2);
+					m_FinalHallways.push_back(MakeVerticalHallway(pRoom1, pRoom2));
 					return true;
 				}
 				return false;
 			}
-
-			///// We see in which axis we need to subtract the values in order to find if a straight hallway fits.
-			//if (pRoom1->m_TopRight.m_Position.X == pRoom2->m_BottomLeft.m_Position.X +1 /*+ m_fHallwayWidth*/ ||
-			//	pRoom1->m_TopRight.m_Position.X == pRoom2->m_BottomLeft.m_Position.X -1/*- m_fHallwayWidth*/)
-			//{
-			//	/// If the difference of positions in the given axis is greater than the hallway width, it means that a
-			//	/// vertical hallway fits between those rooms.
-			//	if (pRoom1->m_TopRight.m_Position.Y - pRoom2->m_BottomLeft.m_Position.Y >= m_fHallwayWidth)
-			//	{
-			//		/// We make the vertical hallway.
-			//		MakeVerticalHallway(pRoom1, pRoom2);
-			//		return true;
-			//	}
-			//	return false;
-			//}
-			//else if (pRoom1->m_TopRight.m_Position.Y == pRoom2->m_BottomLeft.m_Position.Y +1/*+ m_fHallwayWidth*/ ||
-			//	pRoom1->m_TopRight.m_Position.Y == pRoom2->m_BottomLeft.m_Position.Y -1/*- m_fHallwayWidth*/)
-			//{
-			//	/// If the difference of positions in the given axis is greater than the hallway width, it means that a
-			//	/// horizontal hallway fits between those rooms.
-			//	if (pRoom1->m_TopRight.m_Position.X - pRoom2->m_BottomLeft.m_Position.X >= m_fHallwayWidth)
-			//	{
-			//		/// We make the horizontal hallway.
-			//		MakeHorizontalHallway(pRoom1, pRoom2);
-			//		return true;
-			//	}
-			//}
 		}
 
 		/// 
 		else if (pRoom1->m_iRoomCase == BOTTOM_RIGHT)
 		{
 			/// If the first room is next to the second, instead of on top. We see if a straight hall can fit through those rooms.
-			if (pRoom1->m_TopLeft.m_Position.Y < pRoom2->m_BottomRight.m_Position.Y)
+			if (pRoom1->m_TopLeft.m_Position.Y <= pRoom2->m_BottomRight.m_Position.Y)
 			{
 				/// We see if the hallway fits.
 				if (pRoom2->m_BottomRight.m_Position.Y - pRoom1->m_TopLeft.m_Position.Y >= m_fHallwayWidth)
 				{
 					/// Now a new horizontal hallway is created.
-					MakeHorizontalHallway(pRoom1, pRoom2);
+					m_FinalHallways.push_back(MakeHorizontalHallway(pRoom1, pRoom2));
 					return true;
 				}
 				return false;
 			}
 			/// Meaning room 2 is on top of room 1.
-			else if (pRoom2->m_BottomRight.m_Position.Y < pRoom1->m_TopLeft.m_Position.Y)
+			else 
 			{
 				/// We see if the hallway fits.
 				if (pRoom2->m_BottomRight.m_Position.X - pRoom1->m_TopLeft.m_Position.X >= m_fHallwayWidth)
 				{
 					/// Now a new vertical hallway is created.
-					MakeVerticalHallway(pRoom1, pRoom2);
+					m_FinalHallways.push_back(MakeVerticalHallway(pRoom1, pRoom2));
 					return true;
 				}
 				return false;
 			}
-			///// We see in which axis we need to subtract the values in order to find if a straight hallway fits.
-			//if (pRoom1->m_TopLeft.m_Position.X == pRoom2->m_BottomRight.m_Position.X + 1/*+ m_fHallwayWidth*/ ||
-			//	pRoom1->m_TopLeft.m_Position.X == pRoom2->m_BottomRight.m_Position.X - 1/*- m_fHallwayWidth*/)
-			//{
-			//	/// If the difference of positions in the given axis is greater than the hallway width, it means that a
-			//	/// vertical hallway fits between those rooms.
-			//	if (pRoom1->m_TopLeft.m_Position.Y - pRoom2->m_BottomRight.m_Position.Y >= m_fHallwayWidth)
-			//	{
-			//		/// We make the vertical hallway.
-			//		MakeVerticalHallway(pRoom1, pRoom2);
-			//		return true;
-			//	}
-			//}
-			//else if (pRoom1->m_TopLeft.m_Position.Y == pRoom2->m_BottomRight.m_Position.Y + 1/*+ m_fHallwayWidth*/ ||
-			//	pRoom1->m_TopLeft.m_Position.Y == pRoom2->m_BottomRight.m_Position.Y - 1/*- m_fHallwayWidth*/)
-			//{
-			//	/// If the difference of positions in the given axis is greater than the hallway width, it means that a
-			//	/// horizontal hallway fits between those rooms.
-			//	if (pRoom1->m_TopLeft.m_Position.X - pRoom2->m_BottomRight.m_Position.X >= m_fHallwayWidth)
-			//	{
-			//		/// We make the horizontal hallway.
-			//		MakeHorizontalHallway(pRoom1, pRoom2);
-			//		return true;
-			//	}
-			//}
 		}
 
 		return false;

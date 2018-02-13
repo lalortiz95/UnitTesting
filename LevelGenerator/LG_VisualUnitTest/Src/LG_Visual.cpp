@@ -151,7 +151,7 @@ void LG_Visual::Renderer()
 	LevelGenerator::LG_Generate AlgorithmGeneration;
 
 	///// We generate our algorithms.
-	AlgorithmGeneration.Run(50, LG_Vector3D(20, 20, 0), LG_Vector3D(70, 70, 0),23456, 0);
+	AlgorithmGeneration.Run(50, LG_Vector3D(20, 20, 0), LG_Vector3D(70, 70, 0),4399, 0);
 
 	LevelGenerator::LG_Vector3D posToSpawn;
 	LevelGenerator::LG_Vector3D Secondpos;
@@ -236,15 +236,15 @@ void LG_Visual::Renderer()
 	//	}
 	//}
 
-	/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
-	//LG_Vector3D pos1, pos2;
-	//for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
-	//{
-	//	pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
-	//	pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
-	//	SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
-	//	SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
-	//}
+	/*/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
+	LG_Vector3D pos1, pos2;
+	for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
+	{
+		pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
+		pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
+		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
+		SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
+	}*/
 
 
 
