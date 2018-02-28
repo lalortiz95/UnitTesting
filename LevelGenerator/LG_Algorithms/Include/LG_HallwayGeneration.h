@@ -2,8 +2,8 @@
 #include "LG_AlgorithmsPrerequisites.h"
 
 #include <LG_Polygon.h>
-#include <LG_Edge.h>
 #include <LG_Rect.h>
+#include <LG_Vector2D.h>
 
 namespace LevelGenerator
 {
@@ -15,7 +15,12 @@ namespace LevelGenerator
 		TOP_RIGHT,
 		TOP_LEFT,
 		BOTTOM_RIGHT,
-		BOTTOM_LEFT
+		BOTTOM_LEFT,
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN,
+		CASE_NOT_SET
 	};
 
 	/**
@@ -50,7 +55,8 @@ namespace LevelGenerator
 		/**
 		*	@var Where we store the final hallways.
 		*/
-		Vector<LG_Rect*> m_FinalHallways;
+		Vector<std::shared_ptr<LG_Polygon>> m_FinalHallways;
+		//Vector<LG_Polygon*> m_FinalHallways;
 
 		/**
 		 *	@var Where we store the rooms in the scene. They're used to check collision with the hallways as they're generated.
@@ -128,9 +134,32 @@ namespace LevelGenerator
 		 *	@brief Creates a vertical hallway between two rooms.
 		 *	@param LG_Rect* pRoom1: the first room used to calculate the vertical hallway.
 		 *	@param LG_Rect* pRoom2: the second room used to calculate the vertical hallway.
+		 *	@param LG_Vector3D MidPoint: we'll use this midpoint's X position to place the hallway.
+		 */
+		void GenerateVerticalHallway(LG_Rect* pRoom1, LG_Rect* pRoom2, LG_Vector3D MidPoint);
+
+		/**
+		 *	@brief Creates a horizontal hallway between two rooms.
+		 *	@param LG_Rect* pRoom1: the first room used to calculate the horizontal hallway.
+		 *	@param LG_Rect* pRoom2: the second room used to calculate the horizontal hallway.
+		 *	@param LG_Vector3D MidPoint: we'll use this midpoint's Y position to place the hallway.
+		 */
+		void GenerateHorizontalHallway(LG_Rect* pRoom1, LG_Rect* pRoom2, LG_Vector3D MidPoint);
+
+		/**
+		 *	@brief Creates a L shaped hallway between two rooms.
+		 *	@param LG_Rect* pRoom1: the first room used to calculate the horizontal hallway.
+		 *	@param LG_Rect* pRoom2: the second room used to calculate the horizontal hallway.
+		 */
+		void GenerateCornerHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
+
+		/**
+		 *	@brief Creates a vertical hallway between two rooms.
+		 *	@param LG_Rect* pRoom1: the first room used to calculate the vertical hallway.
+		 *	@param LG_Rect* pRoom2: the second room used to calculate the vertical hallway.
 		 *	@return the hallway that was created.
 		 */
-		LG_Rect* MakeVerticalHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
+		LG_Polygon* MakeVerticalHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
 
 		/**
 		 *	@brief Creates a horizontal hallway between two rooms.
@@ -138,9 +167,7 @@ namespace LevelGenerator
 		 *	@param LG_Rect* pRoom2: the second room used to calculate the horizontal hallway.
 		 *	@return the hallway that was created.
 		 */
-		LG_Rect* MakeHorizontalHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
-
-		//LG_Rect* MakeHorizontalHallway(LG_Edge* Connection, bool bIsCorner);
+		LG_Polygon* MakeHorizontalHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
 
 		/**
 		 *	@brief Creates a corner hallway between two rooms. Meaning that the connection was too much of a diagonal.
@@ -154,9 +181,16 @@ namespace LevelGenerator
 		 *	@brief Calculates each room's cases.
 		 *	@param LG_Rect* pRoom1: the first room used to calculate the case.
 		 *	@param LG_Rect* pRoom2: the second room used to calculate the case.
-		 *	@return
 		 */
-		 bool SetRoomsCases(LG_Rect* pRoom1, LG_Rect* pRoom2);
+		 bool SetRoomsCornerCases(LG_Rect* pRoom1, LG_Rect* pRoom2);
+
+		 /**
+		  *	@brief Calculates each room's cases.
+		  *	@param LG_Rect* pRoom1: the first room used to calculate the case.
+		  *	@param LG_Rect* pRoom2: the second room used to calculate the case.
+		  *	@return
+		  */
+		 void SetRoomsCases(LG_Rect* pRoom1, LG_Rect* pRoom2);
 
 		 /**
 		  *	@brief Check if we can do an horizontal or vertical hallway depending on the room's case.
@@ -173,18 +207,5 @@ namespace LevelGenerator
 		  *	@param LG_Rect& HorizontalHall: out, the generated hallway.
 		  */
 		void CalculateCornerPosition(bool bIsMaximum, LG_Rect*& VerticalHall, LG_Rect*& HorizontalHall, LG_Rect* Room1, LG_Rect* Room2);
-
-		/**
-		 *	@brief Generates a polygon from the hallway rect, and adds it to the final hallway vector.
-		 *	@param LG_Rect* Room1: The vertical or horizonal hallway.
-		 */
-		void GenerateHallwayPollygon(LG_Rect* Room1);
-		
-		/**
-		 *	@brief Generates a polygon from the hallways rectangles, and adds them to the final hallway vector. Used for corners.
-		 *	@param LG_Rect* Room1: The first hallway of the connection.
-		 *	@param LG_Rect* Room2: The second hallway of the connection.
-		 */
-		void GenerateHallwayPollygon(LG_Rect* Room1, LG_Rect* Room2);
 	};
 }

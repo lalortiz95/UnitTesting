@@ -25,19 +25,31 @@ namespace LevelGenerator
 
 	}
 
-	//! This function return the magnitude of the vector given in the parameter.
+	//! This function return the magnitude of a vector.
 	float LG_Vector3D::Magnitude()
 	{
 		return sqrt(pow(this->X, 2) +
 			pow(this->Y, 2) +
 			pow(this->Z, 2));
 	}
-	//! This function return the magnitude of the vector given in the parameter.
-	float LG_Vector3D::Magnitude(const LG_Vector3D OtherVector)
+	//! This function return the magnitude of the vector given as a parameter.
+	float LG_Vector3D::Magnitude(const LG_Vector3D& OtherVector)
 	{
 		return sqrt(pow(OtherVector.X, 2) +
 			pow(OtherVector.Y, 2) +
 			pow(OtherVector.Z, 2));
+	}
+
+	//! This function calculates the midpoint between two vectors
+	LG_Vector3D LG_Vector3D::MidPoint(const LG_Vector3D & VectorB)
+	{
+		return LG_Vector3D((X + VectorB.X) / 2, (Y + VectorB.Y) / 2, (Z + VectorB.Z) / 2);
+	}
+
+	//! This function calculates the midpoint between two vectors.
+	LG_Vector3D LG_Vector3D::MidPoint(const LG_Vector3D & VectorA, const LG_Vector3D & VectorB)
+	{
+		return LG_Vector3D((VectorA.X + VectorB.X) / 2, (VectorA.Y + VectorB.Y) / 2, (VectorA.Z + VectorB.Z) / 2);
 	}
 
 	//! This function realize the dot product between 2 vectors.

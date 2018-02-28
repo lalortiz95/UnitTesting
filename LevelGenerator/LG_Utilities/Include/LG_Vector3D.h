@@ -63,17 +63,32 @@ namespace LevelGenerator
 		///************************************************************************/
 
 		/**
-		 *	@brief This function return the magnitude of the vector given in the parameter.
+		 *	@brief This function return the magnitude of a vector.
 		 *	@return the magnitude of the vector.
 		 */
 		float Magnitude();
 
 		/**
-		 *	@brief This function return the magnitude of the vector given in the parameter.
+		 *	@brief This function return the magnitude of the vector given as a parameter.
 		 *	@param const LG_Vector3D& VectorA: The given vector.
 		 *	@return the magnitude of two vectors.
 		 */
-		 static float Magnitude(const LG_Vector3D VectorA);
+		 static float Magnitude(const LG_Vector3D& VectorA);
+
+		 /*
+		  * @brief This function calculates the midpoint between two vectors.
+		  * @param const LG_Vector3D& VectorB: The second vector used to get the middle position.
+		  * @return The position that in the middle of both vectors.
+		  */
+		 LG_Vector3D MidPoint(const LG_Vector3D& VectorB);
+
+		 /*
+		  * @brief This function calculates the midpoint between two vectors.
+		  * @param const LG_Vector3D& VectorA: The first vector used to get the middle position.
+		  * @param const LG_Vector3D& VectorB: The second vector used to get the middle position.
+		  * @return The position that in the middle of both vectors.
+		  */
+		 static LG_Vector3D MidPoint(const LG_Vector3D& VectorA, const LG_Vector3D& VectorB);
 
 		/**
 		 *	@brief This function realizes the dot product between 2 vectors.

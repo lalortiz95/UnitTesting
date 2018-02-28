@@ -151,7 +151,7 @@ void LG_Visual::Renderer()
 	LevelGenerator::LG_Generate AlgorithmGeneration;
 
 	///// We generate our algorithms.
-	AlgorithmGeneration.Run(50, LG_Vector3D(20, 20, 0), LG_Vector3D(70, 70, 0),4399, 0);
+	AlgorithmGeneration.Run(50, LG_Vector3D(40, 40, 0), LG_Vector3D(70, 70, 0), 349, 0);
 
 	LevelGenerator::LG_Vector3D posToSpawn;
 	LevelGenerator::LG_Vector3D Secondpos;
@@ -168,7 +168,7 @@ void LG_Visual::Renderer()
 
 
 
-	
+
 
 
 	//// Aqui se renderean los cuartos
@@ -313,42 +313,52 @@ void LG_Visual::Renderer()
 		//pink.
 		SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
 
-		//Draws the top line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopLeft.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopLeft.m_Position.Y;
+		for (int j = 0; j < AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector.size(); ++j)
+		{
+			//Draws the top line of the rectangle.
+			posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[j]->m_Position.X;
+			posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[j]->m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.Y;
+			if (j + 1 >= AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector.size())
+			{
+				Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[0]->m_Position.X;
+				Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[0]->m_Position.Y;
+			}
 
-		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
+			else
+			{
+				Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[j + 1]->m_Position.X;
+				Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[j + 1]->m_Position.Y;
+			}
+			SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 
-		//Draws the bottom line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.Y;
+			////Draws the bottom line of the rectangle.
+			//posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.X;
+			//posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.Y;
+			//Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.X;
+			//Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
+			//SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 
-		//Draws the left line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.Y;
+			////Draws the left line of the rectangle.
+			//posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.X;
+			//posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopLeft.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopLeft.m_Position.Y;
+			//Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopLeft.m_Position.X;
+			//Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopLeft.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
+			//SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 
-		//Draws the right line of the rectangle.
-		posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.X;
-		posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.Y;
+			////Draws the right line of the rectangle.
+			//posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.X;
+			//posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.Y;
 
-		Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.X;
-		Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.Y;
+			//Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.X;
+			//Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
-
+			//SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
+		}
 	}
 
 	///// Aqui se rendera los triangulos de la triangulacion.
@@ -767,5 +777,5 @@ void LG_Visual::FillRect(LG_Vector3D StartPosition, LG_Vector3D EndPosition, flo
 	{
 		SDL_RenderDrawLine(m_Renderer, StartPosition.X + i, StartPosition.Y, EndPosition.X + i, EndPosition.Y);
 	}
-	
+
 }

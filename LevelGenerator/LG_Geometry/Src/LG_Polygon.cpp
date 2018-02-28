@@ -12,9 +12,15 @@ namespace LevelGenerator
 	{
 	}
 
-	//! This function add a edge to the vector of edges.
-	void LG_Polygon::InsertEdgeToVector(LG_Edge* EdgeToAdd)
+	//! 
+	void LG_Polygon::Destroy()
 	{
-		m_pEdgeVector.push_back(EdgeToAdd);
+	//TODO: Liberar memoria.
+	}
+
+	//! This function add a edge to the vector of edges.
+	void LG_Polygon::InsertNodeToVector(std::shared_ptr<LG_Node> pNewNode)
+	{
+		m_pNodeVector.push_back(pNewNode);
 	}
 }
