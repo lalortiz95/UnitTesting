@@ -5,17 +5,19 @@ namespace LevelGenerator
 	//! Default Constructor.
 	LG_Polygon::LG_Polygon()
 	{
+		m_bIsCorner = false;
 	}
 
 	//! Default Destructor.
 	LG_Polygon::~LG_Polygon()
 	{
+		Destroy();
 	}
 
 	//! 
 	void LG_Polygon::Destroy()
 	{
-	//TODO: Liberar memoria.
+		m_bIsCorner = false;
 	}
 
 	//! This function add a edge to the vector of edges.

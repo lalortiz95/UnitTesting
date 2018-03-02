@@ -236,31 +236,14 @@ void LG_Visual::Renderer()
 	//	}
 	//}
 
-	/*/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
-	LG_Vector3D pos1, pos2;
-	for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
-	{
-		pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
-		pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
-		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
-		SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
-	}*/
-
-
-
-	/// Aqui se renderea la isolinea resultante de MS y RDP.
-	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_NodesCloud.size(); ++i)
+	/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
+	//LG_Vector3D pos1, pos2;
+	//for (int32 i = 0; i < AlgorithmGeneration.m_MST.m_FinalTree.size(); ++i)
 	//{
-	//	posToSpawn = AlgorithmGeneration.m_DT.m_NodesCloud[i].m_Position;
-
-	//	if (i < AlgorithmGeneration.m_DT.m_NodesCloud.size() - 1)
-	//	{
-	//		Secondpos = AlgorithmGeneration.m_DT.m_NodesCloud[i + 1].m_Position;
-	//		//Draw blue line
-	//		SDL_SetRenderDrawColor(m_Renderer, 0x00, 0x00, 0xFF, 0xFF);
-	//		//en la posición de cada nodo dibujar un punto con SDL.
-	//		SDL_RenderDrawLine(m_Renderer, posToSpawn.X, posToSpawn.Y, Secondpos.X, Secondpos.Y);
-	//	}
+	//	pos1 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pFirstNode->m_Position;
+	//	pos2 = AlgorithmGeneration.m_MST.m_FinalTree[i]->m_pSecondNode->m_Position;
+	//	SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
+	//	SDL_RenderDrawLine(m_Renderer, pos1.X, pos1.Y, pos2.X, pos2.Y);
 	//}
 
 	////// Aqui se renderean los cuartos
@@ -331,33 +314,6 @@ void LG_Visual::Renderer()
 				Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[j + 1]->m_Position.Y;
 			}
 			SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
-
-			////Draws the bottom line of the rectangle.
-			//posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.X;
-			//posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.Y;
-
-			//Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.X;
-			//Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.Y;
-
-			//SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
-
-			////Draws the left line of the rectangle.
-			//posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.X;
-			//posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomLeft.m_Position.Y;
-
-			//Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopLeft.m_Position.X;
-			//Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopLeft.m_Position.Y;
-
-			//SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
-
-			////Draws the right line of the rectangle.
-			//posToSpawn.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.X;
-			//posToSpawn.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_BottomRight.m_Position.Y;
-
-			//Secondpos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.X;
-			//Secondpos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_TopRight.m_Position.Y;
-
-			//SDL_RenderDrawLine(m_Renderer, (int32)posToSpawn.X, (int32)posToSpawn.Y, (int32)Secondpos.X, (int32)Secondpos.Y);
 		}
 	}
 

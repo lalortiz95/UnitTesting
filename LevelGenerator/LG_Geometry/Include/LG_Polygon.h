@@ -29,6 +29,11 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
+		 * @var Indicates if the hallway is a corner or not.
+		 */
+		bool m_bIsCorner;
+
+		/**
 		 *	@var A vector of nodes that makes the shape wanted.
 		 */
 		Vector<std::shared_ptr<LG_Node>> m_pNodeVector;
@@ -53,14 +58,14 @@ namespace LevelGenerator
 		 *	@param
 		 *	@return
 		 */
-		//bool CheckCollision(LG_Rect* pOtherRect);
+		 //bool CheckCollision(LG_Rect* pOtherRect);
 
-		/**
-		 *	@brief	This function check if the polygon collision with other polygon.
-		 *	@param	LG_Polygon* pOtherPolygon: The other polygon 
-		 *	@return	true if exist a collision, otherwise false.
-		 */
-		//bool CheckCollision(LG_Polygon* pOtherPolygon);
+		 /**
+		  *	@brief	This function check if the polygon collision with other polygon.
+		  *	@param	LG_Polygon* pOtherPolygon: The other polygon
+		  *	@return	true if exist a collision, otherwise false.
+		  */
+		  //bool CheckCollision(LG_Polygon* pOtherPolygon);
 
 
 	};
