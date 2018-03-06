@@ -40,8 +40,7 @@ namespace LevelGenerator
 		*	@var Where we store the final hallways.
 		*/
 		Vector<std::shared_ptr<LG_Polygon>> m_FinalHallways;
-		//Vector<LG_Polygon*> m_FinalHallways;
-
+		
 		/**
 		 *	@var Where we store the rooms in the scene. They're used to check collision with the hallways as they're generated.
 		 */
@@ -94,6 +93,13 @@ namespace LevelGenerator
 		 *	@param LG_Rect* pRoom1: the first room used to calculate the horizontal hallway.
 		 *	@param LG_Rect* pRoom2: the second room used to calculate the horizontal hallway.
 		 */
-		void GenerateCornerHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
+		std::shared_ptr<LG_Polygon> GenerateCornerHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
+
+		/**
+		 *	@brief See if a corner hallway is colliding and if so it re-scales it until it stops colliding.
+		 *	@param LG_Rect* pRoom1: the first room used to calculate the horizontal hallway.
+		 *	@return std::shared_ptr<LG_Polygon> returns the generated corner hallway.
+		 */
+		std::shared_ptr<LG_Polygon> GetBestPolygon();
 	};
 }

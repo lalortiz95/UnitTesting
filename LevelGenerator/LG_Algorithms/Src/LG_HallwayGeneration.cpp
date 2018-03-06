@@ -48,6 +48,9 @@ namespace LevelGenerator
 		///
 		LG_Vector2D Min_Pos;
 
+		/// 
+		std::shared_ptr<LG_Polygon> spConerHallway = std::make_shared<LG_Polygon>();
+
 		/// We iterate all the rooms and it's connections.
 		for (int32 i = 0; i < m_pRooms->size(); ++i)
 		{
@@ -103,10 +106,8 @@ namespace LevelGenerator
 							}
 						}
 					}
-
 					else if (MidPoint.Y > Max_Pos.Y && MidPoint.Y < Min_Pos.Y)
 					{
-
 						if (MidPoint.Y - m_fHallwayWidth / 2 > Max_Pos.Y)
 						{
 							if (MidPoint.Y + m_fHallwayWidth / 2 < Min_Pos.Y)
@@ -141,11 +142,88 @@ namespace LevelGenerator
 					}
 
 					/// When it couldn't fit in any case, we generate a L shaped hallway.
-					GenerateCornerHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+					spConerHallway = GenerateCornerHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+					m_FinalHallways.push_back(spConerHallway);
+					//for (int32 k = 0; k < m_pRooms->size(); ++k)
+					//{
+					//	/// We make sure that it doesn't check collision with none of it's parent rooms.
+					//	if (spConerHallway->m_pParentRoom_2 != (*m_pRooms)[k] && spConerHallway->m_pParentRoom_1 != (*m_pRooms)[k])
+					//	{
+					//		/// 
+					//		if (spConerHallway->CheckCollision(*(*m_pRooms)[k]))
+					//		{
+					//			LG_Rect* TempRoom1 = spConerHallway->m_pParentRoom_2;
+					//			LG_Rect* TempRoom2 = spConerHallway->m_pParentRoom_1;
+					//			spConerHallway = GenerateCornerHallway(TempRoom1, TempRoom2);
+					//			break;
+					//		}
+					//	}
+					//}
+
 				}/// Closing If the connection have not been checked.
 			}/// Second for
 			(*m_pRooms)[i]->m_bIsChecked = true;
 		}/// First for.
+
+		bool bCheckCollision = true;
+		int32 iCount = 0;
+		/// We will now check collision between the generated corner hallways, and the rooms. So that no hallway overlaps with nothing.
+		while (bCheckCollision)
+		{
+			bCheckCollision = false;
+			/// First the hallways are iterated.
+			for (int32 iActual = 0; iActual < m_FinalHallways.size(); ++iActual)
+			{
+				/// There's only need to check the corner hallways.
+				if (!m_FinalHallways[iActual]->m_bIsCorner) continue;
+
+				/// We iterate all of the rooms to check collision against the hallways.
+				for (int32 iRoomIt = 0; iRoomIt < m_pRooms->size(); ++iRoomIt)
+				{
+					/// We make sure that it doesn't check collision with none of it's parent rooms.
+					if (m_FinalHallways[iActual]->m_pParentRoom_2 != (*m_pRooms)[iRoomIt] && m_FinalHallways[iActual]->m_pParentRoom_1 != (*m_pRooms)[iRoomIt])
+					{
+						if (m_FinalHallways[iActual]->CheckCollision(*(*m_pRooms)[iRoomIt]))
+						{
+							LG_Rect* TempRoom1 = m_FinalHallways[iActual]->m_pParentRoom_2;
+							LG_Rect* TempRoom2 = m_FinalHallways[iActual]->m_pParentRoom_1;
+							m_FinalHallways.erase(m_FinalHallways.begin() + iActual);
+							m_FinalHallways.push_back(GenerateCornerHallway(TempRoom1, TempRoom2));
+							bCheckCollision = true;
+							++iCount;
+							break;
+						}
+						else continue;
+					}
+					else continue;
+				}
+
+				if (!bCheckCollision)
+				{
+					/// We iterate against all the other hallways.
+					for (int32 iIterating = 0; iIterating < m_FinalHallways.size(); ++iIterating)
+					{
+						/// We make sure that we're not checking collision between the same hallways.
+						if (m_FinalHallways[iActual] != m_FinalHallways[iIterating])
+						{
+							/// We now check collision between both hallways.
+							if (m_FinalHallways[iActual]->CheckCollision(m_FinalHallways[iIterating]))
+							{
+								LG_Rect* TempRoom1 = m_FinalHallways[iActual]->m_pParentRoom_2;
+								LG_Rect* TempRoom2 = m_FinalHallways[iActual]->m_pParentRoom_1;
+								m_FinalHallways.erase(m_FinalHallways.begin() + iActual);
+								m_FinalHallways.push_back(GenerateCornerHallway(TempRoom1, TempRoom2));
+								bCheckCollision = true;
+								++iCount;
+								break;
+							}
+						}
+					}
+				}
+
+				if (bCheckCollision) break;
+			}
+		}
 	}
 
 	//! Creates a vertical hallway between two rooms.
@@ -210,12 +288,18 @@ namespace LevelGenerator
 
 		/// 
 		spNewHall->InsertNodeToVector(spTLNode);
-		/// Now that the node has it's position set, we add it to the polygon.
-		spNewHall->InsertNodeToVector(spBLNode);
-		/// 
-		spNewHall->InsertNodeToVector(spBRNode);
 		/// 
 		spNewHall->InsertNodeToVector(spTRNode);
+		/// 
+		spNewHall->InsertNodeToVector(spBRNode);
+		/// Now that the node has it's position set, we add it to the polygon.
+		spNewHall->InsertNodeToVector(spBLNode);
+
+		/// 
+		spNewHall->m_pParentRoom_1 = pRoom1;
+		/// 
+		spNewHall->m_pParentRoom_2 = pRoom2;
+
 		/// 
 		m_FinalHallways.push_back(spNewHall);
 	}
@@ -281,18 +365,24 @@ namespace LevelGenerator
 
 		/// 
 		spNewHall->InsertNodeToVector(spTLNode);
-		/// Now that the node has it's position set, we add it to the polygon.
-		spNewHall->InsertNodeToVector(spBLNode);
-		/// 
-		spNewHall->InsertNodeToVector(spBRNode);
 		/// 
 		spNewHall->InsertNodeToVector(spTRNode);
+		/// 
+		spNewHall->InsertNodeToVector(spBRNode);
+		/// Now that the node has it's position set, we add it to the polygon.
+		spNewHall->InsertNodeToVector(spBLNode);
+
+		/// 
+		spNewHall->m_pParentRoom_1 = pRoom1;
+		/// 
+		spNewHall->m_pParentRoom_2 = pRoom2;
+
 		/// 
 		m_FinalHallways.push_back(spNewHall);
 	}
 
 	//! Creates a L shaped hallway between two rooms.
-	void LG_HallwayGeneration::GenerateCornerHallway(LG_Rect * pRoom1, LG_Rect * pRoom2)
+	std::shared_ptr<LG_Polygon> LG_HallwayGeneration::GenerateCornerHallway(LG_Rect * pRoom1, LG_Rect * pRoom2)
 	{
 		/// Here we fill each one of the polygon's nodes. That will represent the position of the hallway's corners.
 		std::shared_ptr<LG_Polygon> spNewHall = std::make_shared<LG_Polygon>();
@@ -354,7 +444,6 @@ namespace LevelGenerator
 		///
 		spNode3->m_Position.Y += m_fHallwayWidth;
 
-		//TODO:  obtener 2 vectores entre los puntos más cercanos y los más lejanos.que acabamos de calcular. Entre esos nodos calcular la posición de los siguientes.
 		/// The node 0 is the pRoom1's first door node. The door is placed either on the top or the bottom side of the room. 
 		/// Node 1 is the one at the right of the node 0. Making the door for L shaped hallway. 
 		LG_Vector3D n1n2 = spNode1->m_Position - spNode2->m_Position;
@@ -397,6 +486,8 @@ namespace LevelGenerator
 				spNewHall->InsertNodeToVector(spNode5);
 				/// 
 				spNewHall->InsertNodeToVector(spNode1);
+				/// 
+				spNewHall->m_eCase = ROOM1_TOPRIGHT;
 			}
 			else
 			{
@@ -422,8 +513,11 @@ namespace LevelGenerator
 				spNewHall->InsertNodeToVector(spNode4);
 				/// 
 				spNewHall->InsertNodeToVector(spNode1);
+				/// 
+				spNewHall->m_eCase = ROOM1_TOPLEFT;
 			}
 		}
+
 		else
 		{
 			if (bRoom2IsLeft)
@@ -450,6 +544,8 @@ namespace LevelGenerator
 				spNewHall->InsertNodeToVector(spNode5);
 				/// 
 				spNewHall->InsertNodeToVector(spNode1);
+				///
+				spNewHall->m_eCase = ROOM1_BOTTOMRIGHT;
 			}
 			else
 			{
@@ -475,9 +571,18 @@ namespace LevelGenerator
 				spNewHall->InsertNodeToVector(spNode4);
 				/// 
 				spNewHall->InsertNodeToVector(spNode1);
+				///
+				spNewHall->m_eCase = ROOM1_BOTTOMLEFT;
 			}
 		}
 
-		m_FinalHallways.push_back(spNewHall);
+		/// 
+		spNewHall->m_pParentRoom_1 = pRoom1;
+		/// 
+		spNewHall->m_pParentRoom_2 = pRoom2;
+
+
+		return spNewHall;
+		//		m_FinalHallways.push_back(spNewHall);
 	}
 }
