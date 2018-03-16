@@ -50,6 +50,10 @@ namespace LevelGenerator
 
 		/// 
 		std::shared_ptr<LG_Polygon> spConerHallway = std::make_shared<LG_Polygon>();
+		/// 
+		std::shared_ptr<LG_Polygon> spSecondCornerHallway = std::make_shared<LG_Polygon>();
+		/// 
+		std::shared_ptr<LG_Polygon> spCorner2 = std::make_shared<LG_Polygon>();
 
 		/// We iterate all the rooms and it's connections.
 		for (int32 i = 0; i < m_pRooms->size(); ++i)
@@ -144,86 +148,58 @@ namespace LevelGenerator
 					/// When it couldn't fit in any case, we generate a L shaped hallway.
 					spConerHallway = GenerateCornerHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
 					m_FinalHallways.push_back(spConerHallway);
-					//for (int32 k = 0; k < m_pRooms->size(); ++k)
-					//{
-					//	/// We make sure that it doesn't check collision with none of it's parent rooms.
-					//	if (spConerHallway->m_pParentRoom_2 != (*m_pRooms)[k] && spConerHallway->m_pParentRoom_1 != (*m_pRooms)[k])
-					//	{
-					//		/// 
-					//		if (spConerHallway->CheckCollision(*(*m_pRooms)[k]))
-					//		{
-					//			LG_Rect* TempRoom1 = spConerHallway->m_pParentRoom_2;
-					//			LG_Rect* TempRoom2 = spConerHallway->m_pParentRoom_1;
-					//			spConerHallway = GenerateCornerHallway(TempRoom1, TempRoom2);
-					//			break;
-					//		}
-					//	}
-					//}
 
 				}/// Closing If the connection have not been checked.
 			}/// Second for
 			(*m_pRooms)[i]->m_bIsChecked = true;
 		}/// First for.
 
-		bool bCheckCollision = true;
-		int32 iCount = 0;
+		bool bCheckCollisionWithHallways = true;
+
+		//TODO: Una en un chingo vale verga se queda en el while sin salir... que pedo correjir..
+		//TODO: Tambien con una separacion muy grande ocurre el mismo problema... que pedo correjir.
 		/// We will now check collision between the generated corner hallways, and the rooms. So that no hallway overlaps with nothing.
-		while (bCheckCollision)
+		while (bCheckCollisionWithHallways)
 		{
-			bCheckCollision = false;
+			bCheckCollisionWithHallways = false;
 			/// First the hallways are iterated.
 			for (int32 iActual = 0; iActual < m_FinalHallways.size(); ++iActual)
 			{
 				/// There's only need to check the corner hallways.
 				if (!m_FinalHallways[iActual]->m_bIsCorner) continue;
 
-				/// We iterate all of the rooms to check collision against the hallways.
-				for (int32 iRoomIt = 0; iRoomIt < m_pRooms->size(); ++iRoomIt)
+				/// We iterate against all the other hallways.
+				for (int32 iIterating = 0; iIterating < m_FinalHallways.size(); ++iIterating)
 				{
-					/// We make sure that it doesn't check collision with none of it's parent rooms.
-					if (m_FinalHallways[iActual]->m_pParentRoom_2 != (*m_pRooms)[iRoomIt] && m_FinalHallways[iActual]->m_pParentRoom_1 != (*m_pRooms)[iRoomIt])
+					/// We make sure that we're not checking collision between the same hallways.
+					if (m_FinalHallways[iActual] != m_FinalHallways[iIterating])
 					{
-						if (m_FinalHallways[iActual]->CheckCollision(*(*m_pRooms)[iRoomIt]))
+						/// We now check collision between both hallways.
+						if (m_FinalHallways[iActual]->CheckCollision(m_FinalHallways[iIterating]))
 						{
 							LG_Rect* TempRoom1 = m_FinalHallways[iActual]->m_pParentRoom_2;
 							LG_Rect* TempRoom2 = m_FinalHallways[iActual]->m_pParentRoom_1;
 							m_FinalHallways.erase(m_FinalHallways.begin() + iActual);
 							m_FinalHallways.push_back(GenerateCornerHallway(TempRoom1, TempRoom2));
-							bCheckCollision = true;
-							++iCount;
+							bCheckCollisionWithHallways = true;
 							break;
 						}
-						else continue;
-					}
-					else continue;
-				}
-
-				if (!bCheckCollision)
-				{
-					/// We iterate against all the other hallways.
-					for (int32 iIterating = 0; iIterating < m_FinalHallways.size(); ++iIterating)
-					{
-						/// We make sure that we're not checking collision between the same hallways.
-						if (m_FinalHallways[iActual] != m_FinalHallways[iIterating])
-						{
-							/// We now check collision between both hallways.
-							if (m_FinalHallways[iActual]->CheckCollision(m_FinalHallways[iIterating]))
-							{
-								LG_Rect* TempRoom1 = m_FinalHallways[iActual]->m_pParentRoom_2;
-								LG_Rect* TempRoom2 = m_FinalHallways[iActual]->m_pParentRoom_1;
-								m_FinalHallways.erase(m_FinalHallways.begin() + iActual);
-								m_FinalHallways.push_back(GenerateCornerHallway(TempRoom1, TempRoom2));
-								bCheckCollision = true;
-								++iCount;
-								break;
-							}
-						}
 					}
 				}
-
-				if (bCheckCollision) break;
+				if (bCheckCollisionWithHallways) break;
 			}
 		}
+
+		/// First the hallways are iterated.
+		for (int32 iActual = 0; iActual < m_FinalHallways.size(); ++iActual)
+		{
+			/// There's only need to check the corner hallways.
+			if (!m_FinalHallways[iActual]->m_bIsCorner) continue;
+
+			ReorganizeCornerHallway(m_FinalHallways[iActual], spSecondCornerHallway);
+		}
+
+
 	}
 
 	//! Creates a vertical hallway between two rooms.
@@ -584,5 +560,356 @@ namespace LevelGenerator
 
 		return spNewHall;
 		//		m_FinalHallways.push_back(spNewHall);
+	}
+
+	float LG_HallwayGeneration::GetLongestDistance(LG_Polygon hallwayToMove)
+	{
+		LG_Vector3D HorizontalMagnitude;
+		LG_Vector3D VerticalMagnitude;
+		switch (hallwayToMove.m_eCase)
+		{
+		case ROOM1_TOPRIGHT:
+
+			/// Create a horizontal vector to determinate the magnitude.
+			HorizontalMagnitude = hallwayToMove.m_pNodeVector[0]->m_Position - hallwayToMove.m_pParentRoom_1->m_BottomLeft.m_Position;
+			/// Create a vertical vector to determinate the magnitude.
+			VerticalMagnitude = hallwayToMove.m_pNodeVector[2]->m_Position - hallwayToMove.m_pParentRoom_2->m_TopRight.m_Position;
+
+			/// Compares both magnitudes and return the biggest one.
+			if (HorizontalMagnitude.Magnitude() >= VerticalMagnitude.Magnitude())
+				return HorizontalMagnitude.Magnitude();
+
+			else
+				return VerticalMagnitude.Magnitude();
+
+			break;
+
+		case ROOM1_TOPLEFT:
+
+			/// Create a horizontal vector to determinate the magnitude.
+			HorizontalMagnitude = hallwayToMove.m_pParentRoom_1->m_BottomRight.m_Position - hallwayToMove.m_pNodeVector[5]->m_Position;
+			/// Create a vertical vector to determinate the magnitude.
+			VerticalMagnitude = hallwayToMove.m_pNodeVector[3]->m_Position - hallwayToMove.m_pParentRoom_2->m_TopLeft.m_Position;
+
+			/// Compares both magnitudes and returns the biggest one.
+			if (HorizontalMagnitude.Magnitude() >= VerticalMagnitude.Magnitude())
+				return HorizontalMagnitude.Magnitude();
+
+			else
+				return VerticalMagnitude.Magnitude();
+
+			break;
+
+		case ROOM1_BOTTOMLEFT:
+
+			/// Create a vertical vector to determinate the magnitude.
+			HorizontalMagnitude = hallwayToMove.m_pParentRoom_1->m_TopRight.m_Position - hallwayToMove.m_pNodeVector[5]->m_Position;
+			/// Create a horizontal vector to determinate the magnitude.
+			VerticalMagnitude = hallwayToMove.m_pParentRoom_2->m_BottomLeft.m_Position - hallwayToMove.m_pNodeVector[3]->m_Position;
+
+			/// Compares both magnitudes and returns the biggest one.
+			if (HorizontalMagnitude.Magnitude() >= VerticalMagnitude.Magnitude())
+				return HorizontalMagnitude.Magnitude();
+
+			else
+				return VerticalMagnitude.Magnitude();
+
+			break;
+
+		case ROOM1_BOTTOMRIGHT:
+			/// Create a horizontal vector to determinate the magnitude.
+			HorizontalMagnitude = hallwayToMove.m_pNodeVector[0]->m_Position - hallwayToMove.m_pParentRoom_1->m_TopLeft.m_Position;
+			/// Create a vertical vector to determinate the magnitude.
+			VerticalMagnitude = hallwayToMove.m_pParentRoom_2->m_BottomRight.m_Position - hallwayToMove.m_pNodeVector[2]->m_Position;
+
+			/// Compares both magnitudes and returns the biggest one.
+			if (HorizontalMagnitude.Magnitude() >= VerticalMagnitude.Magnitude())
+				return HorizontalMagnitude.Magnitude();
+
+			else
+				return VerticalMagnitude.Magnitude();
+
+			break;
+
+		default:
+			break;
+		}
+		return 0.0f;
+	}
+
+	bool LG_HallwayGeneration::MoveCorner(std::shared_ptr<LG_Polygon> CornerToMove, LG_Rect* CollisionRoom)
+	{
+		bool bFlagX = false;
+		bool bFlagY = false;
+		/// Depending oon the hall's case we see how to move it so that it doesn't collide.
+		switch (CornerToMove->m_eCase)
+		{
+		case ROOM1_TOPRIGHT:
+			//TODO: mover el nodo 0 del pasillo hacia el bottom left del cuarto 1. Y mover el nodo 2 del pasillo al top right del cuarto 2.
+
+			/// Check if the corner is collision with the room.
+			while (CornerToMove->CheckCollision(*CollisionRoom))
+			{
+				/// Move the position of the hallway.
+
+				/// Check if 
+				if (CornerToMove->m_pNodeVector[0]->m_Position.X >= CornerToMove->m_pParentRoom_1->m_BottomLeft.m_Position.X)
+				{
+					/// We move the nodes that represent  the door of room 1.
+					--CornerToMove->m_pNodeVector[0]->m_Position.X;
+					--CornerToMove->m_pNodeVector[5]->m_Position.X;
+
+					/// We move the inner and outer nodes. 
+					--CornerToMove->m_pNodeVector[1]->m_Position.X;
+					--CornerToMove->m_pNodeVector[4]->m_Position.X;
+				}
+				else
+				{
+					bFlagX = true;
+				}
+
+				/// Check if 
+				if (CornerToMove->m_pNodeVector[2]->m_Position.Y >= CornerToMove->m_pParentRoom_2->m_TopRight.m_Position.Y)
+				{
+					/// We move the nodes that represent  the door of room 1.
+					--CornerToMove->m_pNodeVector[2]->m_Position.Y;
+					--CornerToMove->m_pNodeVector[3]->m_Position.Y;
+
+					/// We move the inner and outer nodes. 
+					--CornerToMove->m_pNodeVector[1]->m_Position.Y;
+					--CornerToMove->m_pNodeVector[4]->m_Position.Y;
+				}
+				else
+				{
+					bFlagY = true;
+				}
+
+				if (bFlagX && bFlagY)
+					return false;
+			}
+
+			return true;
+			break;
+
+		case ROOM1_TOPLEFT:
+			// TODO: mover el nodo 1 del pasillo hacia el bottom right del cuarto 1. Y el nodo 2 del pasillo hacia el top left dle cuarto 2.
+
+			/// Check if the corner is collision with the room.
+			while (CornerToMove->CheckCollision(*CollisionRoom))
+			{
+				/// Move the position of the hallway.
+
+				/// Check if 
+				if (CornerToMove->m_pNodeVector[5]->m_Position.X <= CornerToMove->m_pParentRoom_1->m_BottomRight.m_Position.X)
+				{
+					/// We move the nodes that represent  the door of room 1.
+					++CornerToMove->m_pNodeVector[0]->m_Position.X;
+					++CornerToMove->m_pNodeVector[5]->m_Position.X;
+
+					/// We move the inner and outer nodes. 
+					++CornerToMove->m_pNodeVector[1]->m_Position.X;
+					++CornerToMove->m_pNodeVector[4]->m_Position.X;
+				}
+				else
+				{
+					bFlagX = true;
+				}
+
+				/// Check if 
+				if (CornerToMove->m_pNodeVector[3]->m_Position.Y >= CornerToMove->m_pParentRoom_2->m_TopLeft.m_Position.Y)
+				{
+					/// We move the nodes that represent  the door of room 1.
+					--CornerToMove->m_pNodeVector[2]->m_Position.Y;
+					--CornerToMove->m_pNodeVector[3]->m_Position.Y;
+
+					/// We move the inner and outer nodes. 
+					--CornerToMove->m_pNodeVector[1]->m_Position.Y;
+					--CornerToMove->m_pNodeVector[4]->m_Position.Y;
+				}
+				else
+				{
+					bFlagY = true;
+				}
+
+				if (bFlagX && bFlagY)
+					return false;
+			}
+
+			return true;
+			break;
+
+		case ROOM1_BOTTOMRIGHT:
+			// TODO: mover el nodo 0 del pasillo hacia el top left del cuarto 1. Y el nodo 3 hacia el bottom right del cuarto 2
+
+			/// Check if the corner is collision with the room.
+			while (CornerToMove->CheckCollision(*CollisionRoom))
+			{
+				/// Move the position of the hallway.
+
+				/// Check if 
+				if (CornerToMove->m_pNodeVector[0]->m_Position.X >= CornerToMove->m_pParentRoom_1->m_TopLeft.m_Position.X)
+				{
+					/// We move the nodes that represent  the door of room 1.
+					--CornerToMove->m_pNodeVector[0]->m_Position.X;
+					--CornerToMove->m_pNodeVector[5]->m_Position.X;
+
+					/// We move the inner and outer nodes. 
+					--CornerToMove->m_pNodeVector[1]->m_Position.X;
+					--CornerToMove->m_pNodeVector[4]->m_Position.X;
+				}
+				else
+				{
+					bFlagX = true;
+				}
+
+				/// Check if 
+				if (CornerToMove->m_pNodeVector[2]->m_Position.Y <= CornerToMove->m_pParentRoom_2->m_BottomRight.m_Position.Y)
+				{
+					/// We move the nodes that represent  the door of room 1.
+					++CornerToMove->m_pNodeVector[2]->m_Position.Y;
+					++CornerToMove->m_pNodeVector[3]->m_Position.Y;
+
+					/// We move the inner and outer nodes. 
+					++CornerToMove->m_pNodeVector[1]->m_Position.Y;
+					++CornerToMove->m_pNodeVector[4]->m_Position.Y;
+				}
+				else
+				{
+					bFlagY = true;
+				}
+
+				if (bFlagX && bFlagY)
+					return false;
+			}
+
+			return true;
+			break;
+
+		case ROOM1_BOTTOMLEFT:
+			// TODO: mover el nodo 1 del pasillo hacia el top right del cuarto 1. Y el nodo 3 hacía el bottom left del cuarto 2.
+			/// Check if the corner is collision with the room.
+			while (CornerToMove->CheckCollision(*CollisionRoom))
+			{
+				/// Move the position of the hallway.
+
+				/// Check if 
+				if (CornerToMove->m_pNodeVector[5]->m_Position.X <= CornerToMove->m_pParentRoom_1->m_TopRight.m_Position.X)
+				{
+					/// We move the nodes that represent  the door of room 1.
+					++CornerToMove->m_pNodeVector[0]->m_Position.X;
+					++CornerToMove->m_pNodeVector[5]->m_Position.X;
+
+					/// We move the inner and outer nodes. 
+					++CornerToMove->m_pNodeVector[1]->m_Position.X;
+					++CornerToMove->m_pNodeVector[4]->m_Position.X;
+				}
+				else
+				{
+					bFlagX = true;
+				}
+
+				/// Check if 
+				if (CornerToMove->m_pNodeVector[3]->m_Position.Y <= CornerToMove->m_pParentRoom_2->m_BottomLeft.m_Position.Y)
+				{
+					/// We move the nodes that represent  the door of room 1.
+					++CornerToMove->m_pNodeVector[2]->m_Position.Y;
+					++CornerToMove->m_pNodeVector[3]->m_Position.Y;
+
+					/// We move the inner and outer nodes. 
+					++CornerToMove->m_pNodeVector[1]->m_Position.Y;
+					++CornerToMove->m_pNodeVector[4]->m_Position.Y;
+				}
+				else
+				{
+					bFlagY = true;
+				}
+
+				if (bFlagX && bFlagY)
+					return false;
+			}
+
+			return true;
+			break;
+
+		default:
+			break;
+		}
+	}
+	void LG_HallwayGeneration::ReorganizeCornerHallway(std::shared_ptr<LG_Polygon> CornerToReorganize, std::shared_ptr<LG_Polygon> SecondCorner)
+	{
+
+		for (int32 k = 0; k < m_pRooms->size(); ++k)
+		{
+			/// We make sure that it doesn't check collision with none of it's parent rooms.
+			if (CornerToReorganize->m_pParentRoom_2 != (*m_pRooms)[k] && CornerToReorganize->m_pParentRoom_1 != (*m_pRooms)[k])
+			{
+				/// 
+				if (CornerToReorganize->CheckCollision(*(*m_pRooms)[k]))
+				{
+					LG_Rect* TempRoom1 = CornerToReorganize->m_pParentRoom_2;
+					LG_Rect* TempRoom2 = CornerToReorganize->m_pParentRoom_1;
+					SecondCorner = GenerateCornerHallway(TempRoom1, TempRoom2);
+
+					/// We see between which rooms is better to generate the hallway. Based on the distance between the rooms and the hallway.
+					/// The more distance we have, the more we can move the hallways so that they don't collide with other objects.
+					float fDistance1 = GetLongestDistance(*CornerToReorganize);
+					float fDistance2 = GetLongestDistance(*SecondCorner);
+
+					/// the first hallway we calculated is best for moving it and avoiding collisions.
+					if (fDistance1 >= fDistance2)
+					{
+						// TODO: recorrer el pasillo lo más que se pueda para la dirección que le toque.
+						//dependiendo del caso del pasillo, igual y generar una función que se encargue de eso, qué pedo?
+						if (MoveCorner(CornerToReorganize, (*m_pRooms)[k]))
+						{
+							//TODO: Insertar la esquina como que ya se armo. Checar logica pero break.
+							break;
+						}
+
+						else
+						{
+							///
+							if (MoveCorner(SecondCorner, (*m_pRooms)[k]))
+							{
+								//TODO: Insertar la esquina como que ya se armo. Checar logica pero break.
+								CornerToReorganize = SecondCorner;
+								break;
+							}
+							else
+							{
+								//TODO: Ninguna esquina funciono que pedo ???
+							}
+						}
+
+					}
+					/// The second hall we generated is best to implement.
+					else
+					{
+						///
+						if (MoveCorner(SecondCorner, (*m_pRooms)[k]))
+						{
+							//TODO: Insertar la esquina como que ya se armo. Checar logica pero break.
+							CornerToReorganize = SecondCorner;
+							break;
+						}
+						else
+						{
+							if (MoveCorner(CornerToReorganize, (*m_pRooms)[k]))
+							{
+								// TODO: Insertar la esquina como que ya se armo.Checar logica pero break.
+
+								break;
+							}
+
+							else
+							{
+								//TODO: Ninguna esquina funciono que pedo ???
+							}
+						}
+					}
+					break;
+				}
+			}
+		}
 	}
 }

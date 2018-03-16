@@ -23,7 +23,7 @@ LG_Visual::~LG_Visual()
 //! This function initialize the SDL API.
 bool LG_Visual::Init()
 {
-	//srand((uint32)time(NULL));
+	srand(time(NULL));
 	/// Initialization flag
 	bool success = true;
 	/// 
@@ -163,7 +163,7 @@ void LG_Visual::Renderer()
 	SDL_RenderClear(m_Renderer);
 
 	/// We generate our algorithms.
-	AlgorithmGeneration.Run(50, LG_Vector3D(40, 40, 0), LG_Vector3D(70, 70, 0), 6, 10);
+	AlgorithmGeneration.Run(50, LG_Vector3D(40, 40, 0), LG_Vector3D(70, 70, 0), rand(), 30); //, 25346, 0);
 
 
 	/*/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
@@ -272,8 +272,6 @@ void LG_Visual::Update(float fTime)
 	/// Update the surface
 	if (m_Window != nullptr)
 		SDL_UpdateWindowSurface(m_Window);
-
-	fTime = fTime;
 }
 
 //! This function runs all the functions needed to have SDL working.
@@ -314,6 +312,10 @@ void LG_Visual::Run()
 			if (e.type == SDL_QUIT)
 			{
 				bQuit = true;
+			}
+			if (e.type == SDL_MOUSEBUTTONDOWN)
+			{
+				Renderer();
 			}
 		}
 

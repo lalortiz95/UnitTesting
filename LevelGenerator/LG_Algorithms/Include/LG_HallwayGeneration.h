@@ -96,6 +96,27 @@ namespace LevelGenerator
 		std::shared_ptr<LG_Polygon> GenerateCornerHallway(LG_Rect* pRoom1, LG_Rect* pRoom2);
 
 		/**
+		 *	@brief Gets the longest distance from a polygon to it's parents corners.
+		 *	@param CASES_FOR_CORNER eCase
+		 *	@return float
+		 */
+		float GetLongestDistance(LG_Polygon hallwayToMove);
+		
+		/**
+		 *	@brief Depending on the corner's case, we move it so that it doesn't collide with anything else.
+		 *	@param std::shared_ptr<LG_Polygon> CornerToMove: The corner that will be modified.
+		 *	@param LG_Rect* CollisionRoom: The room for check the collision with the polygon.
+		 *	@return true if the polygon was able to move stopping the collision, if after moving it still collides return false.
+		 */
+		bool MoveCorner(std::shared_ptr<LG_Polygon> CornerToMove, LG_Rect* CollisionRoom);
+
+		/**
+		 *
+		 *
+		 */
+		void ReorganizeCornerHallway(std::shared_ptr<LG_Polygon> CornerToMove, std::shared_ptr<LG_Polygon> SecondCorner);
+
+		/**
 		 *	@brief See if a corner hallway is colliding and if so it re-scales it until it stops colliding.
 		 *	@param LG_Rect* pRoom1: the first room used to calculate the horizontal hallway.
 		 *	@return std::shared_ptr<LG_Polygon> returns the generated corner hallway.
