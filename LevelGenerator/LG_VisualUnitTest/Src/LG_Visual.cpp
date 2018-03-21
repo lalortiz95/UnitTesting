@@ -163,7 +163,7 @@ void LG_Visual::Renderer()
 	SDL_RenderClear(m_Renderer);
 
 	/// We generate our algorithms.
-	AlgorithmGeneration.Run(50, LG_Vector3D(40, 40, 0), LG_Vector3D(70, 70, 0), rand(), 30); //, 25346, 0);
+	AlgorithmGeneration.Run(50, LG_Vector3D(40, 40, 0), LG_Vector3D(70, 70, 0), rand(), 0/* rand() % 11*/); //, 25346, 0);
 
 
 	/*/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////

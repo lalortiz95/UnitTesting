@@ -11,9 +11,9 @@ namespace LG_CSWrapper
     {
         public LG_Vector3()
         {
-           X = 0;
-           Y = 0;
-           Z = 0;
+            X = 0;
+            Y = 0;
+            Z = 0;
         }
 
         public LG_Vector3(float fPosX, float fPosY, float fPosZ)
@@ -33,6 +33,40 @@ namespace LG_CSWrapper
         public float X;
         public float Y;
         public float Z;
+    }
+
+    public class LG_CSPolygon
+    {
+        public LG_CSPolygon()
+        {
+
+        }
+
+        ~LG_CSPolygon()
+        {
+
+        }
+
+        /**
+       *  @var
+       */
+        public List<LG_Vector3> m_pNodesPosition;
+
+        public int iFirstParentRoom;
+        public int iSecondParentRoom;
+    }
+
+    public class LG_CSHallway
+    {
+        /**
+         *  @var
+         */
+        public LG_CSPolygon HallwayShape;
+
+        /**
+         *  @var
+         */
+        public bool bIsCorner;
     }
 
     public class LG_CSRoom
@@ -58,7 +92,7 @@ namespace LG_CSWrapper
             m_pArrayConectionsID = new List<int>();
             m_iParentID = 0;
             m_iID = 0;
-          
+
         }
 
         /**
@@ -163,34 +197,25 @@ namespace LG_CSWrapper
         private static extern float GetRoomNodePosition_Z(IntPtr pGenerate, int iRoomArrayPosition, int iNumOfNode);
 
 
-
+        //TODO:
+        //  Generar clase de Pasillo que tenga propiedades similares a las definidas en el código de C++. Para con este llenar variables en sus respectivas funciones.
+        //  Y llenar una lista de pasillos con las que se pueda trabjar en el espacio tridimensional para representar la escena adecuadamente.
+        //TODO: darle cuerpo a la función para la cantidad de nodos de cada pasillo.
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayAmount", CallingConvention = CallingConvention.Cdecl)]
         private static extern int GetHallwayAmount(IntPtr pGenerate);
 
-        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayWidth", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayWidth(IntPtr pGenerate, int iHallwayArrayPosition);
-
-        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayHeight", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayHeight(IntPtr pGenerate, int iHallwayArrayPosition);
-
-        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayPosition_X", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayPosition_X(IntPtr pGenerate, int iHallwayArrayPosition);
-
-        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayPosition_Y", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayPosition_Y(IntPtr pGenerate, int iHallwayArrayPosition);
-
-        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayPosition_Z", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayPosition_Z(IntPtr pGenerate, int iHallwayArrayPosition);
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetNodeAmountFromHallway", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int GetNodeAmountFromHawllway(IntPtr pGenerate);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayNodePosition_X", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayNodePosition_X(IntPtr pGenerate, int iHallwayArrayPosition, int iNumOfNode);
+        private static extern float GetHallwayPosition_X(IntPtr pGenerate, int iHallwayArrayPosition, int iNode);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayNodePosition_Y", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayNodePosition_Y(IntPtr pGenerate, int iHallwayArrayPosition, int iNumOfNode);
+        private static extern float GetHallwayPosition_Y(IntPtr pGenerate, int iHallwayArrayPosition, int iNode);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayNodePosition_Z", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayNodePosition_Z(IntPtr pGenerate, int iHallwayArrayPosition, int iNumOfNode);
+        private static extern float GetHallwayPosition_Z(IntPtr pGenerate, int iHallwayArrayPosition, int iNode);
 
 
 
@@ -210,9 +235,9 @@ namespace LG_CSWrapper
 
 
         public List<LG_CSRoom> m_Rooms = new List<LG_CSRoom>();
-        public List<LG_CSRoom> m_Hallway = new List<LG_CSRoom>();
+        public List<LG_CSHallway> m_Hallway = new List<LG_CSHallway>();
 
-        public int[] CS_Pathfinding_DIJKSTRA(IntPtr pGenerate, int iStartNode,int iEndNode)
+        public int[] CS_Pathfinding_DIJKSTRA(IntPtr pGenerate, int iStartNode, int iEndNode)
         {
             int iPathSize = 0;
             int[] pPath = null;
@@ -226,7 +251,7 @@ namespace LG_CSWrapper
             }
 
             return pPath;
-        } 
+        }
 
 
         public IntPtr CS_GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
@@ -236,36 +261,25 @@ namespace LG_CSWrapper
 
             int RoomAmount = GetRoomAmount(pGenerateLevel);
             int iHallwayAmount = GetHallwayAmount(pGenerateLevel);
+            int iNodeAmount = GetNodeAmountFromHawllway(pGenerateLevel);
+
+            LG_CSHallway newHallway;
 
             for (int i = 0; i < iHallwayAmount; ++i)
             {
-                LG_CSRoom newHallway = new LG_CSRoom();
+                /// We allocate memory for a new hallway that is going to be generated.
+                newHallway = new LG_CSHallway();
 
-                /// Stores the room's Width.
-                newHallway.m_fWidth = GetHallwayWidth(pGenerateLevel, i);
-                /// Stores the room's height.
-                newHallway.m_fHeight = GetHallwayHeight(pGenerateLevel, i);
+                for (int j = 0; j < iNodeAmount; ++j)
+                {
+                    /// Here we store the position of every node, from every hallway
+                    newHallway.HallwayShape.m_pNodesPosition[j].X = GetHallwayPosition_X(pGenerateLevel, i, j);
+                    newHallway.HallwayShape.m_pNodesPosition[j].Y = GetHallwayPosition_Y(pGenerateLevel, i, j);
+                    newHallway.HallwayShape.m_pNodesPosition[j].Z = GetHallwayPosition_Z(pGenerateLevel, i, j);
+                }
 
-                /// Coordinates change to work under unity's coordinates system.
-                newHallway.m_Position.X = GetHallwayPosition_X(pGenerateLevel, i);
-                newHallway.m_Position.Y = GetHallwayPosition_Z(pGenerateLevel, i);
-                newHallway.m_Position.Z = GetHallwayPosition_Y(pGenerateLevel, i);
-
-                newHallway.m_TopLeftPosition.X = GetHallwayNodePosition_X(pGenerateLevel, i, 0);
-                newHallway.m_TopLeftPosition.Y = GetHallwayNodePosition_Z(pGenerateLevel, i, 0);
-                newHallway.m_TopLeftPosition.Z = GetHallwayNodePosition_Y(pGenerateLevel, i, 0);
-
-                newHallway.m_TopRightPosition.X = GetHallwayNodePosition_X(pGenerateLevel, i, 1);
-                newHallway.m_TopRightPosition.Y = GetHallwayNodePosition_Z(pGenerateLevel, i, 1);
-                newHallway.m_TopRightPosition.Z = GetHallwayNodePosition_Y(pGenerateLevel, i, 1);
-
-                newHallway.m_BottomLeftPosition.X = GetHallwayNodePosition_X(pGenerateLevel, i, 2);
-                newHallway.m_BottomLeftPosition.Y = GetHallwayNodePosition_Z(pGenerateLevel, i, 2);
-                newHallway.m_BottomLeftPosition.Z = GetHallwayNodePosition_Y(pGenerateLevel, i, 2);
-
-                newHallway.m_BottomRightPosition.X = GetHallwayNodePosition_X(pGenerateLevel, i, 3);
-                newHallway.m_BottomRightPosition.Y = GetHallwayNodePosition_Z(pGenerateLevel, i, 3);
-                newHallway.m_BottomRightPosition.Z = GetHallwayNodePosition_Y(pGenerateLevel, i, 3);
+                //TODO: guardar si es corner, y el resto de las variables necesarias para generar los pasillos.
+                //newHallway.bIsCorner = 
 
                 m_Hallway.Add(newHallway);
             }

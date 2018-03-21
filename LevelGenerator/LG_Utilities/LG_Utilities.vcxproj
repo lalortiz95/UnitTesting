@@ -172,6 +172,7 @@
     <ClInclude Include="Include\LG_Vector2D.h" />
     <ClInclude Include="Include\LG_Vector2DI.h" />
     <ClInclude Include="Include\LG_Vector3D.h" />
+    <ClInclude Include="Include\LG_Vector3DI.h" />
     <ClInclude Include="Include\LG_Vector4D.h" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
     <ClCompile Include="Src\LG_Vector2D.cpp" />
     <ClCompile Include="Src\LG_Vector2DI.cpp" />
     <ClCompile Include="Src\LG_Vector3D.cpp" />
+    <ClCompile Include="Src\LG_Vector3DI.cpp" />
     <ClCompile Include="Src\LG_Vector4D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

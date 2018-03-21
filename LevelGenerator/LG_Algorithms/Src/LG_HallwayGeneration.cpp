@@ -645,12 +645,10 @@ namespace LevelGenerator
 		switch (CornerToMove->m_eCase)
 		{
 		case ROOM1_TOPRIGHT:
-			//TODO: mover el nodo 0 del pasillo hacia el bottom left del cuarto 1. Y mover el nodo 2 del pasillo al top right del cuarto 2.
-
 			/// Check if the corner is collision with the room.
 			while (CornerToMove->CheckCollision(*CollisionRoom))
 			{
-				/// Move the position of the hallway.
+				/// Move the position of the hallway. node 0 from the hall to the bottom left node of room 1. And node 2 from the hallway is moved towards top right node from room 2.
 
 				/// Check if 
 				if (CornerToMove->m_pNodeVector[0]->m_Position.X >= CornerToMove->m_pParentRoom_1->m_BottomLeft.m_Position.X)
@@ -840,10 +838,11 @@ namespace LevelGenerator
 
 		for (int32 k = 0; k < m_pRooms->size(); ++k)
 		{
+			//TODO: revisar error que colisiona con sus cuartos padres.
 			/// We make sure that it doesn't check collision with none of it's parent rooms.
 			if (CornerToReorganize->m_pParentRoom_2 != (*m_pRooms)[k] && CornerToReorganize->m_pParentRoom_1 != (*m_pRooms)[k])
 			{
-				/// 
+				/// We check collision with the iterating room.
 				if (CornerToReorganize->CheckCollision(*(*m_pRooms)[k]))
 				{
 					LG_Rect* TempRoom1 = CornerToReorganize->m_pParentRoom_2;

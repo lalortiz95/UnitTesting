@@ -33,18 +33,6 @@
     <ClInclude Include="Include\LG_Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\LG_Rect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\LG_Circle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\LG_Isoline.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\LG_Node.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Include\LG_Matrix3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,7 +54,7 @@
     <ClInclude Include="Include\LG_UtilityMacro.h">
       <Filter>Header Files\Prerequisites</Filter>
     </ClInclude>
-    <ClInclude Include="Include\LG_Line.h">
+    <ClInclude Include="Include\LG_Vector3DI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -86,25 +74,13 @@
     <ClCompile Include="Src\LG_Math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\LG_Rect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\LG_Circle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\LG_Isoline.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\LG_Node.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\LG_Matrix3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Src\LG_Matrix4D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\LG_Line.cpp">
+    <ClCompile Include="Src\LG_Vector3DI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

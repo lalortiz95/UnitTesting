@@ -71,17 +71,11 @@ extern "C"
 	///************************************************************************/
 
 	LG_WRAPPER_EXPORT int GetHallwayAmount(void* pGenerate);
+	LG_WRAPPER_EXPORT int GetNodeAmountFromHallway(void* pGenerate, int iHallway);
 
-	LG_WRAPPER_EXPORT float GetHallwayWidth(void* pGenerate, int iHallwayArrayPosition);
-	LG_WRAPPER_EXPORT float GetHallwayHeight(void*pGenerate, int iHallwayArrayPosition);
-
-	LG_WRAPPER_EXPORT float GetHallwayPosition_X(void* pGenerate, int iHallwayArrayPosition);
-	LG_WRAPPER_EXPORT float GetHallwayPosition_Y(void* pGenerate, int iHallwayArrayPosition);
-	LG_WRAPPER_EXPORT float GetHallwayPosition_Z(void* pGenerate, int iHallwayArrayPosition);
-
-	LG_WRAPPER_EXPORT float GetHallwayNodePosition_X(void* pGenerate, int iHallwayArrayPosition, int iNumOfNode);
-	LG_WRAPPER_EXPORT float GetHallwayNodePosition_Y(void* pGenerate, int iHallwayArrayPosition, int iNumOfNode);
-	LG_WRAPPER_EXPORT float GetHallwayNodePosition_Z(void* pGenerate, int iHallwayArrayPosition, int iNumOfNode);
+	LG_WRAPPER_EXPORT float GetHallwayNodePosition_X(void* pGenerate, int iHallway, int iNode);
+	LG_WRAPPER_EXPORT float GetHallwayNodePosition_Y(void* pGenerate, int iHallway, int iNode);
+	LG_WRAPPER_EXPORT float GetHallwayNodePosition_Z(void* pGenerate, int iHallway, int iNode);
 
 	///************************************************************************/
 	///*                           Pathfinding Functions.                 */

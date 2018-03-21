@@ -56,10 +56,11 @@ namespace LevelGenerator
 
 		/**
 		 *	@brief Checks if there is a dot inside of the circle.
-		 *	@param LG_Node dotToCheck:  the node that we want to know if it's inside.
+		 *	@param LG_Vector3D dotToCheck:  the node that we want to know if it's inside.
 		 *	@return true when the dot was inside.
 		 */
 		bool IsDotInside(LG_Vector3D dotToCheck);
+
 	};
 
 }

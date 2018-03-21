@@ -24,60 +24,60 @@ bool CompareTilesVector(int32 *CorrectTiles, Vector<LG_Tile*> CalculatedTiles)
 	///we return true. As the 2 vectors are equals.
 	return true;
 }
-
-TEST(HallwayGeneration_Constant, 20_Degrees)
-{
-	LG_HallwayGeneration TestFunction;
-	EXPECT_TRUE(TestFunction._20_DEGREES == LG_Math::PI / 9);
-}
-
-TEST(HallwayGeneration_Constant, 70_Degrees)
-{
-	LG_HallwayGeneration TestFunction;
-	EXPECT_TRUE(TestFunction._70_DEGREES == (LG_Math::PI * 7) / 18);
-
-}
-
-TEST(HallwayGeneration_Constant, 110_Degrees)
-{
-	LG_HallwayGeneration TestFunction;
-	EXPECT_TRUE(TestFunction._110_DEGREES == (LG_Math::PI * 11) / 18);
-
-}
-
-TEST(HallwayGeneration_Constant, 160_Degrees)
-{
-	LG_HallwayGeneration TestFunction;
-	EXPECT_TRUE(TestFunction._160_DEGREES == (LG_Math::PI * 8) / 9);
-
-}
-
-TEST(HallwayGeneration_Constant, 200_Degrees)
-{
-	LG_HallwayGeneration TestFunction;
-	EXPECT_TRUE(TestFunction._200_DEGREES == (LG_Math::PI * 10) / 9);
-}
-
-TEST(HallwayGeneration_Constant, 250_Degrees)
-{
-	LG_HallwayGeneration TestFunction;
-	EXPECT_TRUE(TestFunction._250_DEGREES == (LG_Math::PI * 25) / 18);
-
-}
-
-TEST(HallwayGeneration_Constant, 290_Degrees)
-{
-	LG_HallwayGeneration TestFunction;
-	EXPECT_TRUE(TestFunction._290_DEGREES == (LG_Math::PI * 29) / 18);
-
-}
-
-TEST(HallwayGeneration_Constant, 340_Degrees)
-{
-	LG_HallwayGeneration TestFunction;
-	EXPECT_TRUE(TestFunction._340_DEGREES == (LG_Math::PI * 34) / 18);
-
-}
+//
+//TEST(HallwayGeneration_Constant, 20_Degrees)
+//{
+//	LG_HallwayGeneration TestFunction;
+//	EXPECT_TRUE(TestFunction._20_DEGREES == LG_Math::PI / 9);
+//}
+//
+//TEST(HallwayGeneration_Constant, 70_Degrees)
+//{
+//	LG_HallwayGeneration TestFunction;
+//	EXPECT_TRUE(TestFunction._70_DEGREES == (LG_Math::PI * 7) / 18);
+//
+//}
+//
+//TEST(HallwayGeneration_Constant, 110_Degrees)
+//{
+//	LG_HallwayGeneration TestFunction;
+//	EXPECT_TRUE(TestFunction._110_DEGREES == (LG_Math::PI * 11) / 18);
+//
+//}
+//
+//TEST(HallwayGeneration_Constant, 160_Degrees)
+//{
+//	LG_HallwayGeneration TestFunction;
+//	EXPECT_TRUE(TestFunction._160_DEGREES == (LG_Math::PI * 8) / 9);
+//
+//}
+//
+//TEST(HallwayGeneration_Constant, 200_Degrees)
+//{
+//	LG_HallwayGeneration TestFunction;
+//	EXPECT_TRUE(TestFunction._200_DEGREES == (LG_Math::PI * 10) / 9);
+//}
+//
+//TEST(HallwayGeneration_Constant, 250_Degrees)
+//{
+//	LG_HallwayGeneration TestFunction;
+//	EXPECT_TRUE(TestFunction._250_DEGREES == (LG_Math::PI * 25) / 18);
+//
+//}
+//
+//TEST(HallwayGeneration_Constant, 290_Degrees)
+//{
+//	LG_HallwayGeneration TestFunction;
+//	EXPECT_TRUE(TestFunction._290_DEGREES == (LG_Math::PI * 29) / 18);
+//
+//}
+//
+//TEST(HallwayGeneration_Constant, 340_Degrees)
+//{
+//	LG_HallwayGeneration TestFunction;
+//	EXPECT_TRUE(TestFunction._340_DEGREES == (LG_Math::PI * 34) / 18);
+//
+//}
 
 
 

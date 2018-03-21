@@ -29,6 +29,12 @@ extern "C"
 		return (int)pTempGenerate->m_HG.m_FinalHallways.size();
 	}
 
+	int GetNodeAmountFromHallway(void * pGenerate, int iHallway)
+	{
+		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
+		return (int)pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_pNodeVector.size();
+	}
+
 	//!
 	int GetRoomID(void * pGenerate, int iRoomArrayPosition)
 	{
@@ -168,117 +174,29 @@ extern "C"
 	}
 
 
+	//////////////////////////////////////////////////////////////////////////
+	//PASILLOS
 
-	//!
-	float GetHallwayWidth(void * pGenerate, int iHallwayArrayPosition)
+	float GetHallwayNodePosition_X(void* pGenerate, int iHallway, int iNode)
 	{
+		// 
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_fWidth;
+		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_pNodeVector[iNode]->m_Position.X;
 	}
 
-	//!
-	float GetHallwayHeight(void * pGenerate, int iHallwayArrayPosition)
+	float GetHallwayNodePosition_Y(void * pGenerate, int iHallway, int iNode)
 	{
+		// 
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_fHeight;
+		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_pNodeVector[iNode]->m_Position.Y;
 	}
 
-	//!
-	float GetHallwayPosition_X(void * pGenerate, int iHallwayArrayPosition)
+	float GetHallwayNodePosition_Z(void * pGenerate, int iHallway, int iNode)
 	{
+		// 
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_CenterNode.m_Position.X;
+		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_pNodeVector[iNode]->m_Position.Z;
 	}
-
-	//!
-	float GetHallwayPosition_Y(void * pGenerate, int iHallwayArrayPosition)
-	{
-		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_CenterNode.m_Position.Y;
-	}
-
-	//!
-	float GetHallwayPosition_Z(void * pGenerate, int iHallwayArrayPosition)
-	{
-		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_CenterNode.m_Position.Z;
-	}
-
-	//!
-	float GetHallwayNodePosition_X(void * pGenerate, int iHallwayArrayPosition, int iNumOfNode)
-	{
-		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-
-
-		if (0 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_TopLeft.m_Position.X;
-		}
-		else if (1 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_TopRight.m_Position.X;
-		}
-		else if (2 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_BottomRight.m_Position.X;
-		}
-		else if (3 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_BottomLeft.m_Position.X;
-		}
-		else return 0;
-	}
-
-	//!
-	float GetHallwayNodePosition_Y(void * pGenerate, int iHallwayArrayPosition, int iNumOfNode)
-	{
-		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-
-
-		if (0 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_TopLeft.m_Position.Y;
-		}
-		else if (1 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_TopRight.m_Position.Y;
-		}
-		else if (2 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_BottomRight.m_Position.Y;
-		}
-		else if (3 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_BottomLeft.m_Position.Y;
-		}
-		else return 0;
-	}
-
-	//!
-	float GetHallwayNodePosition_Z(void * pGenerate, int iHallwayArrayPosition, int iNumOfNode)
-	{
-		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-
-
-		if (0 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_TopLeft.m_Position.Z;
-		}
-		else if (1 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_TopRight.m_Position.Z;
-		}
-		else if (2 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_BottomRight.m_Position.Z;
-		}
-		else if (3 == iNumOfNode)
-		{
-			return pTempGenerate->m_HG.m_FinalHallways[iHallwayArrayPosition]->m_BottomLeft.m_Position.Z;
-		}
-		else return 0;
-	}
-
 
 
 

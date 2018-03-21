@@ -82,14 +82,14 @@ namespace LevelGenerator
 
 		/// Update 
 		while (!SeparationRooms(0.016f, fSeparationRange));
-		/// 
+		/// Delaunay triangulation is applied.
 		m_DT.Run(m_pSpawnZone->m_CenterNode.m_Position,
 			&m_RoomsNodesCloud);
 
 		/// minimum spanning tree
 		m_MST.Run(m_DT.m_pEdgeVector, m_DT.m_pTrianglesVector);
 
-		/// 
+		/// Now we make connections, meaning hallways, to the rooms.
 		GenerateRoomsConnections();
 
 		/// We run the hallway algorithm 
