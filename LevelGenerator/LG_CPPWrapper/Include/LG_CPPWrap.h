@@ -39,7 +39,7 @@ extern "C"
 	/**
 	 *	@brief Returns the ID of an asked room.
 	 *	@param void* pGenerate: A pointer of generate level.
-	 *	@param int iRoomArrayPosition: The position in the array of rooms that containts the one we want to get the information from. 
+	 *	@param int iRoomArrayPosition: The position in the array of rooms that contains the one we want to get the information from. 
 	 *	@return The room's ID.
 	 */
 	LG_WRAPPER_EXPORT int GetRoomID(void* pGenerate, int iRoomArrayPosition);
@@ -47,7 +47,7 @@ extern "C"
 	/**
 	 *	@brief Returns the asked room's ID.
 	 *	@param void* pGenerate: A pointer of generate level.
-	 *	@param int iRoomArrayPosition: The position in the array of rooms that containts the one we want to get the information from. 
+	 *	@param int iRoomArrayPosition: The position in the array of rooms that contains the one we want to get the information from. 
 	 *	@return The room's parent ID.
 	 */
 	LG_WRAPPER_EXPORT int GetRoomsParentID(void* pGenerate, int iRoomArrayPosition);
@@ -70,8 +70,30 @@ extern "C"
 	///*                            Hallway Functions.		                  */
 	///************************************************************************/
 
+	/**
+	 *	@brief Returns the total amount of hallways in the dungeon.
+	 *	@param void* pGenerate: A pointer of a generate level object.
+	 *	@return The amount of hallways.
+	 */
 	LG_WRAPPER_EXPORT int GetHallwayAmount(void* pGenerate);
+
+	/**
+	 *	@brief A hall could have 4 or 6 nodes, depending on whether it's a corner or a straight hall. So this function tells you how many nodes does a hallway haves.
+	 *	@param void* pGenerate: A pointer of a generate level object.
+	 *	@param int iHallway: The position in the array of hallways that contains the one we want to get the information from.
+	 *	@return The amount of nodes from the hall.
+	 */
 	LG_WRAPPER_EXPORT int GetNodeAmountFromHallway(void* pGenerate, int iHallway);
+
+	/**
+	 *	@brief Tells if a hallway is a corner or a straight hall.
+	 *	@param void* pGenerate: A pointer of a generate level object.
+	 *	@param int iHallway: The position in the array of hallways that contains the one we want to get the information from.
+	 *	@return True if the corridor is a corner.
+	 */
+	LG_WRAPPER_EXPORT bool IsCorner(void * pGenerate, int iHallway);
+
+	//TODO: comentiza perrona.
 
 	LG_WRAPPER_EXPORT float GetHallwayNodePosition_X(void* pGenerate, int iHallway, int iNode);
 	LG_WRAPPER_EXPORT float GetHallwayNodePosition_Y(void* pGenerate, int iHallway, int iNode);

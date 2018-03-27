@@ -176,22 +176,22 @@
     <ClInclude Include="Include\LG_AlgorithmsPrerequisites.h" />
     <ClInclude Include="Include\LG_DelaunayTriangulation.h" />
     <ClInclude Include="Include\LG_Dijkstra.h" />
+    <ClInclude Include="Include\LG_Door.h" />
     <ClInclude Include="Include\LG_Generate.h" />
+    <ClInclude Include="Include\LG_Hallway.h" />
     <ClInclude Include="Include\LG_HallwayGeneration.h" />
-    <ClInclude Include="Include\LG_MarchingSquare.h" />
     <ClInclude Include="Include\LG_MST.h" />
-    <ClInclude Include="Include\LG_RDP.h" />
-    <ClInclude Include="Include\LG_Voronoi.h" />
+    <ClInclude Include="Include\LG_Room.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_DelaunayTriangulation.cpp" />
     <ClCompile Include="Src\LG_Dijkstra.cpp" />
+    <ClCompile Include="Src\LG_Door.cpp" />
     <ClCompile Include="Src\LG_Generate.cpp" />
+    <ClCompile Include="Src\LG_Hallway.cpp" />
     <ClCompile Include="Src\LG_HallwayGeneration.cpp" />
-    <ClCompile Include="Src\LG_MarchingSquare.cpp" />
     <ClCompile Include="Src\LG_MST.cpp" />
-    <ClCompile Include="Src\LG_RDP.cpp" />
-    <ClCompile Include="Src\LG_Voronoi.cpp" />
+    <ClCompile Include="Src\LG_Room.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

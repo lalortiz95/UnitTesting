@@ -35,11 +35,6 @@ namespace LevelGenerator
 		///**************************************************************************/
 
 		/**
-		 *	@var Defines the room's case, being Top_Left, Bottom_Left, Top_Right, or Bottom_Right. See eRoomCases in HallwayGeneration.
-		 */
-		int32 m_iRoomCase;
-
-		/**
 		 *	@var This variable stores the width of the rect.
 		 */
 		float m_fWidth;
@@ -48,11 +43,6 @@ namespace LevelGenerator
 		 *	@var This variable stores the height of the rect.
 		 */
 		float m_fHeight;
-
-		/**
-		 *	@var A flag to see whether or not the rectangle has been used or not.
-		 */
-		bool m_bIsChecked;
 
 		/**
 		 *	@var The center node of the rectangle.
@@ -88,11 +78,6 @@ namespace LevelGenerator
 		 *	@var The bottom node on the left of the tile.
 		 */
 		LG_Node m_BottomLeft;
-
-		/**
-		 *	@var Stores the connections from every room.
-		 */
-		Vector<LG_Rect*> m_RoomsConnections;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */
@@ -146,17 +131,6 @@ namespace LevelGenerator
 		 *	@brief This function restructure the nodes of the rect after we change its position.
 		 */
 		void RestructureNodes();
-
-		/**
-		 *	@brief This function stops pointing to the given room.
-		 *	@param LG_Rect* pRoom: The rect that we want to stop pointing at.
-		 */
-		void StopPointingToRect(LG_Rect * pRoom);
-
-		/**
-		 *
-		 */
-		void AddRectConections(const Vector<LG_Node*>& NodeConections, const Vector<LG_Rect*>& RoomsVect);
 	};
 }
 

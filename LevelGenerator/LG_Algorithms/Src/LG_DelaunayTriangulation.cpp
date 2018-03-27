@@ -41,9 +41,8 @@ namespace LevelGenerator
 	//! This function performs the algorithm.
 	void LG_DelaunayTriangulation::Run(LG_Vector3D GridCenter, Vector<LG_Node*>* NodesCloud)
 	{
-		//TODO: create a function that iterates through the nodes cloud, and finds the ones with the furthest positions to the center.
-		// Store them as the limits for a boundary that will be used to generate the big triangle, replacing the first 3 parameters in this function.
-		/// 
+		/// iterates through the nodes cloud, and finds the ones with the furthest positions to the center.
+		/// Store them as the limits for a boundary that will be used to generate the big triangle.
 		Init(GridCenter, NodesCloud);
 		/// The initial triangulation we base our Delaunay algorithm on.
 		IncrementalTriangulation();
@@ -213,7 +212,7 @@ namespace LevelGenerator
 				}
 			}
 
-			/// If the triangles inside of the actual triangle dont make good angles, but it had dots inside
+			/// If the triangles inside of the actual triangle don't make good angles, but it had dots inside
 			/// we still need to triangulate, so we set the best node as the first of the list.
 			if (!bHaveGoodAngles && !bHasNoDotsInside)
 			{

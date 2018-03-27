@@ -144,6 +144,8 @@ void LG_Visual::Destroy()
 //! his function renderer the system.
 void LG_Visual::Renderer()
 {
+	/// Set the color.
+	SDL_SetRenderDrawColor(m_Renderer, 45, 45, 48, 0xFF);
 	///Clear screen
 	SDL_RenderClear(m_Renderer);
 
@@ -162,8 +164,9 @@ void LG_Visual::Renderer()
 	///Clear screen
 	SDL_RenderClear(m_Renderer);
 
+	/// Semilla bien chingona   41241  separacion 0
 	/// We generate our algorithms.
-	AlgorithmGeneration.Run(50, LG_Vector3D(40, 40, 0), LG_Vector3D(70, 70, 0), rand(), 0/* rand() % 11*/); //, 25346, 0);
+	AlgorithmGeneration.Run(50, LG_Vector3D(40, 40, 0), LG_Vector3D(70, 70, 0), rand(), rand() % 11); //, 25346, 0);
 
 
 	/*/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
@@ -182,38 +185,38 @@ void LG_Visual::Renderer()
 		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
 
 		/// Draws the top line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
+		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopLeft.m_Position.X;
+		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopLeft.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
+		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopRight.m_Position.X;
+		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopRight.m_Position.Y;
 
 		SDL_RenderDrawLine(m_Renderer, FirstPos.X, FirstPos.Y, SecondPos.X, SecondPos.Y);
 
 		/// Draws the bottom line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.Y;
+		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomLeft.m_Position.X;
+		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomLeft.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
+		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomRight.m_Position.X;
+		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomRight.m_Position.Y;
 
 		SDL_RenderDrawLine(m_Renderer, FirstPos.X, FirstPos.Y, SecondPos.X, SecondPos.Y);
 
 		/// Draws the left line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomLeft.m_Position.Y;
+		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomLeft.m_Position.X;
+		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomLeft.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopLeft.m_Position.Y;
+		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopLeft.m_Position.X;
+		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopLeft.m_Position.Y;
 
 		SDL_RenderDrawLine(m_Renderer, FirstPos.X, FirstPos.Y, SecondPos.X, SecondPos.Y);
 
 		/// Draws the right line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_BottomRight.m_Position.Y;
+		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomRight.m_Position.X;
+		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomRight.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_TopRight.m_Position.Y;
+		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopRight.m_Position.X;
+		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopRight.m_Position.Y;
 
 		SDL_RenderDrawLine(m_Renderer, FirstPos.X, FirstPos.Y, SecondPos.X, SecondPos.Y);
 
@@ -225,22 +228,22 @@ void LG_Visual::Renderer()
 		//pink.
 		SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
 
-		for (int j = 0; j < AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector.size(); ++j)
+		for (int j = 0; j < AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector.size(); ++j)
 		{
 			//Draws the top line of the rectangle.
-			FirstPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[j]->m_Position.X;
-			FirstPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[j]->m_Position.Y;
+			FirstPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j]->m_Position.X;
+			FirstPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j]->m_Position.Y;
 
-			if (j + 1 >= AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector.size())
+			if (j + 1 >= AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector.size())
 			{
-				SecondPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[0]->m_Position.X;
-				SecondPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[0]->m_Position.Y;
+				SecondPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[0]->m_Position.X;
+				SecondPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[0]->m_Position.Y;
 			}
 
 			else
 			{
-				SecondPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[j + 1]->m_Position.X;
-				SecondPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pNodeVector[j + 1]->m_Position.Y;
+				SecondPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j + 1]->m_Position.X;
+				SecondPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j + 1]->m_Position.Y;
 			}
 			SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
 		}
@@ -263,6 +266,7 @@ void LG_Visual::Renderer()
 	//}
 	///Update screen
 	SDL_RenderPresent(m_Renderer);
+	AlgorithmGeneration.Destroy();
 }
 
 
@@ -315,12 +319,13 @@ void LG_Visual::Run()
 			}
 			if (e.type == SDL_MOUSEBUTTONDOWN)
 			{
+				Update(200);
 				Renderer();
 			}
 		}
 
-		Update(2000);
-		Renderer();
+		
+		//Renderer();
 	}
 
 	/// Releases the memory.

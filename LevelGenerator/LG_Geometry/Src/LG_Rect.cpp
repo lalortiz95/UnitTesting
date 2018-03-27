@@ -89,16 +89,7 @@ namespace LevelGenerator
 	//! Function to release memory and destroy objects.
 	void LG_Rect::Destroy()
 	{
-		//TODO: revisar esto.
-		///  Clears the room's connections.
-		if (m_RoomsConnections.size() != 0)
-		{
-			for (Vector<LG_Rect*>::iterator itt = m_RoomsConnections.begin(); itt != m_RoomsConnections.end(); ++itt)
-			{
-				*itt = nullptr;
-			}
-			m_RoomsConnections.clear();
-		}
+		
 	}
 
 	//! This functions checks if the given node is colliding with the rect.
@@ -350,34 +341,4 @@ namespace LevelGenerator
 
 		return false;
 	}
-
-	void LG_Rect::StopPointingToRect(LG_Rect * pRect)
-	{
-		for (Vector<LG_Rect*>::iterator itt = m_RoomsConnections.begin(); itt != m_RoomsConnections.end(); ++itt)
-		{
-			if ((*itt) == pRect)
-			{
-				m_RoomsConnections.erase(itt);
-				return;
-			}
-		}
-	}
-
-	//! 
-	void LG_Rect::AddRectConections(const Vector<LG_Node*>& NodeConections, const Vector<LG_Rect*>& RoomsVect)
-	{
-		for (int32 i = 0; i < NodeConections.size(); ++i)
-		{
-			for (int32 j = 0; j < RoomsVect.size(); ++j)
-			{
-				/// Once we find the node that shares position with the room, we associate the both veectors.
-				if (RoomsVect[j]->m_CenterNode.m_Position == NodeConections[i]->m_Position)
-				{
-					m_RoomsConnections.push_back(RoomsVect[j]);
-					break;
-				}
-			}
-		}
-	}
-
 }

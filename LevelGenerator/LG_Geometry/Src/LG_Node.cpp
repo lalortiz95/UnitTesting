@@ -50,6 +50,7 @@ namespace LevelGenerator
 			}
 			m_PointerNodes.clear();
 		}
+		m_pParentNode = nullptr;
 	}
 
 	//! This function stops pointing to the given node.

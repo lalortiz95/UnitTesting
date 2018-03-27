@@ -31,8 +31,6 @@ namespace LevelGenerator
 		///*						  Member Variables.								*/
 		///**************************************************************************/
 
-	//private:
-
 		/**
 		 *	@var The cloud of nodes.
 		 */
@@ -76,7 +74,7 @@ namespace LevelGenerator
 	public:
 
 		/**
-		 *	@brief This function initialize dijkstra algorithm.
+		 *	@brief This function initialize Dijkstra algorithm.
 		 *	@param const Vector<LG_Node>& NodeCloud: The cloud of nodes that we want to travel.
 		 *	@param LG_Node* pStartNode: The starting node.
 		 *	@param LG_Node* pEndNode: The node that we want to reach.

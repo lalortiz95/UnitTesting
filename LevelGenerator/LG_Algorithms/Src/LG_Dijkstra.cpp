@@ -48,7 +48,7 @@ namespace LevelGenerator
 		/// End the while when the actual node is the same that the end node.
 		while (m_pActualNode != m_pEndNode)
 		{
-			/// Iterating the actual's pointer nodes to get the smaller distance.
+			/// Iterating the actual pointer's nodes to get the smaller distance.
 			for (; itt_1 != m_pActualNode->m_PointerNodes.end(); ++itt_1)
 			{
 				/// Obtain the distance between the actual node and the iterating node.

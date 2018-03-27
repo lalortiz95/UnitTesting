@@ -33,31 +33,48 @@ namespace LG_CSWrapper
         public float X;
         public float Y;
         public float Z;
+
+        public LG_Vector3 MidPoint(LG_Vector3 OtherVector)
+        {
+            return new LG_Vector3((X + OtherVector.X) / 2, (Y + OtherVector.Y) / 2, (Z + OtherVector.Z) / 2);
+        }
     }
 
     public class LG_CSPolygon
     {
         public LG_CSPolygon()
         {
-
+            m_pNodesPosition = new List<LG_Vector3>();
         }
 
         ~LG_CSPolygon()
         {
-
+            m_pNodesPosition = new List<LG_Vector3>();
         }
 
         /**
        *  @var
        */
         public List<LG_Vector3> m_pNodesPosition;
-
-        public int iFirstParentRoom;
-        public int iSecondParentRoom;
     }
 
     public class LG_CSHallway
     {
+        public LG_CSHallway()
+        {
+            HallwayShape = new LG_CSPolygon();
+            iFirstParentRoom = 0;
+            iSecondParentRoom = 0;
+            bIsCorner = false;
+        }
+
+        ~LG_CSHallway()
+        {
+            iFirstParentRoom = 0;
+            iSecondParentRoom = 0;
+            bIsCorner = false;
+        }
+
         /**
          *  @var
          */
@@ -67,6 +84,9 @@ namespace LG_CSWrapper
          *  @var
          */
         public bool bIsCorner;
+
+        public int iFirstParentRoom;
+        public int iSecondParentRoom;
     }
 
     public class LG_CSRoom
@@ -197,16 +217,16 @@ namespace LG_CSWrapper
         private static extern float GetRoomNodePosition_Z(IntPtr pGenerate, int iRoomArrayPosition, int iNumOfNode);
 
 
-        //TODO:
-        //  Generar clase de Pasillo que tenga propiedades similares a las definidas en el código de C++. Para con este llenar variables en sus respectivas funciones.
-        //  Y llenar una lista de pasillos con las que se pueda trabjar en el espacio tridimensional para representar la escena adecuadamente.
         //TODO: darle cuerpo a la función para la cantidad de nodos de cada pasillo.
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayAmount", CallingConvention = CallingConvention.Cdecl)]
         private static extern int GetHallwayAmount(IntPtr pGenerate);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetNodeAmountFromHallway", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int GetNodeAmountFromHawllway(IntPtr pGenerate);
+        private static extern int GetNodeAmountFromHawllway(IntPtr pGenerate, int iHallway);
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "IsCorner", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool IsCorner(IntPtr pGenerate, int iHallway);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayNodePosition_X", CallingConvention = CallingConvention.Cdecl)]
         private static extern float GetHallwayPosition_X(IntPtr pGenerate, int iHallwayArrayPosition, int iNode);
@@ -261,26 +281,33 @@ namespace LG_CSWrapper
 
             int RoomAmount = GetRoomAmount(pGenerateLevel);
             int iHallwayAmount = GetHallwayAmount(pGenerateLevel);
-            int iNodeAmount = GetNodeAmountFromHawllway(pGenerateLevel);
+            int iNodeAmount = 0;
 
             LG_CSHallway newHallway;
+            LG_Vector3 newVector;
 
             for (int i = 0; i < iHallwayAmount; ++i)
             {
                 /// We allocate memory for a new hallway that is going to be generated.
                 newHallway = new LG_CSHallway();
+                iNodeAmount = GetNodeAmountFromHawllway(pGenerateLevel, i);
 
                 for (int j = 0; j < iNodeAmount; ++j)
                 {
+                    newVector = new LG_Vector3();
+
                     /// Here we store the position of every node, from every hallway
-                    newHallway.HallwayShape.m_pNodesPosition[j].X = GetHallwayPosition_X(pGenerateLevel, i, j);
-                    newHallway.HallwayShape.m_pNodesPosition[j].Y = GetHallwayPosition_Y(pGenerateLevel, i, j);
-                    newHallway.HallwayShape.m_pNodesPosition[j].Z = GetHallwayPosition_Z(pGenerateLevel, i, j);
+                    newVector.X = GetHallwayPosition_X(pGenerateLevel, i, j);
+                    newVector.Y = GetHallwayPosition_Z(pGenerateLevel, i, j);
+                    newVector.Z = GetHallwayPosition_Y(pGenerateLevel, i, j);
+
+                    newHallway.HallwayShape.m_pNodesPosition.Add(newVector);
                 }
 
-                //TODO: guardar si es corner, y el resto de las variables necesarias para generar los pasillos.
-                //newHallway.bIsCorner = 
+                /// A flag that stores if the hallway is a corner.
+                newHallway.bIsCorner = IsCorner(pGenerateLevel, i);
 
+                /// The hallway is inserted to the list of hallways.
                 m_Hallway.Add(newHallway);
             }
 
