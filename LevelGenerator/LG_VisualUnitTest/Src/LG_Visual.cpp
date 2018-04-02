@@ -23,7 +23,7 @@ LG_Visual::~LG_Visual()
 //! This function initialize the SDL API.
 bool LG_Visual::Init()
 {
-	srand(time(NULL));
+	srand((int32)time(NULL));
 	/// Initialization flag
 	bool success = true;
 	/// 
@@ -185,40 +185,40 @@ void LG_Visual::Renderer()
 		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
 
 		/// Draws the top line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopLeft.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopLeft.m_Position.Y;
+		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.X;
+		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopRight.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopRight.m_Position.Y;
+		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.X;
+		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, FirstPos.X, FirstPos.Y, SecondPos.X, SecondPos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
 
 		/// Draws the bottom line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomLeft.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomLeft.m_Position.Y;
+		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.X;
+		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomRight.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomRight.m_Position.Y;
+		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.X;
+		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, FirstPos.X, FirstPos.Y, SecondPos.X, SecondPos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
 
 		/// Draws the left line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomLeft.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomLeft.m_Position.Y;
+		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.X;
+		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopLeft.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopLeft.m_Position.Y;
+		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.X;
+		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, FirstPos.X, FirstPos.Y, SecondPos.X, SecondPos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
 
 		/// Draws the right line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomRight.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_BottomRight.m_Position.Y;
+		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.X;
+		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopRight.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pRect->m_TopRight.m_Position.Y;
+		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.X;
+		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, FirstPos.X, FirstPos.Y, SecondPos.X, SecondPos.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
 
 	}
 
@@ -413,7 +413,7 @@ void LG_Visual::FillRect(LG_Vector3D StartPosition, LG_Vector3D EndPosition, flo
 {
 	for (int32 i = 0; i < fWidth; ++i)
 	{
-		SDL_RenderDrawLine(m_Renderer, StartPosition.X + i, StartPosition.Y, EndPosition.X + i, EndPosition.Y);
+		SDL_RenderDrawLine(m_Renderer, (int32)StartPosition.X + i, (int32)StartPosition.Y, (int32)EndPosition.X + i, (int32)EndPosition.Y);
 	}
 
 }

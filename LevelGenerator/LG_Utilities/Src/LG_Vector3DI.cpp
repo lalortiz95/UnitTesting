@@ -28,14 +28,14 @@ namespace LevelGenerator
 	//! This function return the magnitude of a vector.
 	int32 LG_Vector3DI::Magnitude()
 	{
-		return sqrt(pow(this->X, 2) +
+		return (int32)sqrt(pow(this->X, 2) +
 			pow(this->Y, 2) +
 			pow(this->Z, 2));
 	}
 	//! This function return the magnitude of the vector given as a parameter.
 	int32 LG_Vector3DI::Magnitude(const LG_Vector3DI& OtherVector)
 	{
-		return sqrt(pow(OtherVector.X, 2) +
+		return (int32)sqrt(pow(OtherVector.X, 2) +
 			pow(OtherVector.Y, 2) +
 			pow(OtherVector.Z, 2));
 	}
@@ -142,7 +142,7 @@ namespace LevelGenerator
 	//! This is an operator to use / between 1 vector and 1 scalar value.
 	LG_Vector3DI LG_Vector3DI::operator/(int32 Value) const
 	{
-		const int32 RScale = 1.f / Value;
+		const int32 RScale = 1 / Value;
 		return LG_Vector3DI(X * RScale,
 			Y * RScale,
 			Z * RScale);

@@ -124,8 +124,9 @@ namespace LevelGenerator
 		 *	@param uint32 uiRoomAmount: The number of rooms that are going to be created.
 		 *	@param LG_Vector3D MinSize: the minimum available sizes for the rooms.
 		 *	@param LG_Vector3D MaxSize: the maximum available sizes for the rooms.
+		 *	@param float fHeight: The position used to spawn the ceilings.
 		 */
-		void GenerateRooms(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize);
+		void GenerateRooms(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, float fHeight);
 
 		/**
 		 *	@brief This function separate the rooms object.

@@ -3,22 +3,46 @@
 
 namespace LevelGenerator
 {
+	//! Default constructor.
 	LG_Hallway::LG_Hallway()
 	{
 		m_pPolygon = new LG_Polygon();
-		m_bIsCorner = false;
 		m_pParentRoom_1 = nullptr;
 		m_pParentRoom_2 = nullptr;
-		m_pDoors = nullptr;
+		m_pFirstDoor = nullptr;
+		m_pSecondDoor = nullptr;
 		m_Floors.clear();
 		m_Ceilings.clear();
 	}
 
-
+	//! Default destructor.
 	LG_Hallway::~LG_Hallway()
 	{
+		/// Call the destroy function.
 		Destroy();
 	}
+
+	//! This function create a doors for the hallway.
+	void LG_Hallway::CreateDoors(LG_Node* pFD_FP, LG_Node* pFD_SP, LG_Node* pSD_FP, LG_Node* pSD_SP)
+	{
+		/// Create the first door of the hallway.
+		m_pFirstDoor = new LG_Door(pFD_FP, pFD_SP);
+		/// Create the second door of the hallway.
+		m_pSecondDoor = new LG_Door(pSD_FP, pSD_SP);
+	}
+
+	//! This function create a ceilings for the hallway.
+	void LG_Hallway::CreateCeilings()
+	{
+		
+	}
+
+	//! This function create a floors for the hallway.
+	void LG_Hallway::CreateFloors()
+	{
+		
+	}
+
 
 	//! This function release the memory of the object.
 	void LG_Hallway::Destroy()
@@ -51,19 +75,31 @@ namespace LevelGenerator
 		/// Clear the vector of floors.
 		m_Floors.clear();
 
-		/// check if the vector of doors is not nullptr.
-		if (m_pDoors != nullptr)
+		/// Check if the second door is not nullptr.
+		if (m_pSecondDoor != nullptr)
 		{
-			m_pDoors = nullptr;
-			m_pDoors->clear();
+			/// Call the destroy function of the door.
+			m_pSecondDoor->Destroy();
+			/// Delete the memory.
+			delete m_pSecondDoor;
+			/// Set as nullptr.
+			m_pSecondDoor = nullptr;
+		}
+
+		/// Check if the first door is not nullptr.
+		if (m_pFirstDoor != nullptr)
+		{
+			/// Call the destroy function of the door.
+			m_pFirstDoor->Destroy();
+			/// Delete the memory.
+			delete m_pFirstDoor;
+			/// Set as nullptr.
+			m_pFirstDoor = nullptr;
 		}
 
 		/// Reset the parent's pointers.
 		m_pParentRoom_2 = nullptr;
 		m_pParentRoom_1 = nullptr;
-
-		/// Reset the flag as false.
-		m_bIsCorner = false;
 
 		/// Check if this pointer has memory.
 		if (m_pPolygon != nullptr)
@@ -82,7 +118,7 @@ namespace LevelGenerator
 	{
 		if (m_pPolygon->m_pNodeVector.size() != 0)
 		{
-			if (!m_bIsCorner)
+			if (m_eHallwayType != CORNER)
 			{
 				///
 				LG_Rect TempRect;
@@ -92,7 +128,7 @@ namespace LevelGenerator
 				TempRect.m_BottomRight = *m_pPolygon->m_pNodeVector[BOTTOM_RIGHT];
 				TempRect.m_BottomLeft = *m_pPolygon->m_pNodeVector[BOTTOM_LEFT];
 
-				return pOtherRoom->m_pRect->CheckCollision(&TempRect);
+				return pOtherRoom->m_pFloor->CheckCollision(&TempRect);
 			}
 			else
 			{
@@ -103,7 +139,7 @@ namespace LevelGenerator
 				///
 				CreateTempRects(ThisTempHorizontal, ThisTempVertical, *this);
 				///
-				return (pOtherRoom->m_pRect->CheckCollision(&ThisTempHorizontal) || pOtherRoom->m_pRect->CheckCollision(&ThisTempVertical));
+				return (pOtherRoom->m_pFloor->CheckCollision(&ThisTempHorizontal) || pOtherRoom->m_pFloor->CheckCollision(&ThisTempVertical));
 			}
 		}
 		return false;
@@ -124,7 +160,7 @@ namespace LevelGenerator
 			LG_Rect TempVertical;
 
 			/// If this object is not a corner.
-			if (!m_bIsCorner)
+			if (m_eHallwayType != CORNER)
 			{
 				/// Assign the nodes to the temp rect from this polygon. 
 				ThisPoly.m_TopLeft = *m_pPolygon->m_pNodeVector[TOP_LEFT];
@@ -133,7 +169,7 @@ namespace LevelGenerator
 				ThisPoly.m_BottomLeft = *m_pPolygon->m_pNodeVector[BOTTOM_LEFT];
 
 				/// If the other polygon is not a corner.
-				if (!pOtherHallway->m_bIsCorner)
+				if (pOtherHallway->m_eHallwayType != CORNER)
 				{
 					/// Assign the nodes to the temp rect from the other polygon.
 					OtherPoly.m_TopLeft = *pOtherHallway->m_pPolygon->m_pNodeVector[TOP_LEFT];
@@ -159,7 +195,7 @@ namespace LevelGenerator
 			else
 			{
 				/// If the other polygon is not a corner.
-				if (!pOtherHallway->m_bIsCorner)
+				if (pOtherHallway->m_eHallwayType != CORNER)
 				{
 					/// Assign the nodes to the temp rect from the other polygon.
 					OtherPoly.m_TopLeft = *pOtherHallway->m_pPolygon->m_pNodeVector[TOP_LEFT];
@@ -194,12 +230,11 @@ namespace LevelGenerator
 		return false;
 	}
 
-
 	//! This function generates two temp rects from the hallway to determinate the collision.
 	void LG_Hallway::CreateTempRects(LG_Rect & rHorizontal, LG_Rect & rVertical, const LG_Hallway& pHallway)
 	{
 		///
-		if (pHallway.m_eCase == ROOM1_TOPRIGHT)
+		if (pHallway.m_eCaseCorner == ROOM1_TOPRIGHT)
 		{
 			rVertical.m_TopLeft = *pHallway.m_pPolygon->m_pNodeVector[0];
 			rVertical.m_TopRight = *pHallway.m_pPolygon->m_pNodeVector[5];
@@ -215,7 +250,7 @@ namespace LevelGenerator
 		}
 
 		///
-		else if (pHallway.m_eCase == ROOM1_TOPLEFT)
+		else if (pHallway.m_eCaseCorner == ROOM1_TOPLEFT)
 		{
 			rVertical.m_TopLeft = *pHallway.m_pPolygon->m_pNodeVector[0];
 			rVertical.m_TopRight = *pHallway.m_pPolygon->m_pNodeVector[5];
@@ -231,7 +266,7 @@ namespace LevelGenerator
 		}
 
 		///
-		else if (pHallway.m_eCase == ROOM1_BOTTOMRIGHT)
+		else if (pHallway.m_eCaseCorner == ROOM1_BOTTOMRIGHT)
 		{
 
 			rHorizontal.m_TopLeft = *pHallway.m_pPolygon->m_pNodeVector[3];
@@ -248,7 +283,7 @@ namespace LevelGenerator
 		}
 
 		///
-		else if (pHallway.m_eCase == ROOM1_BOTTOMLEFT)
+		else if (pHallway.m_eCaseCorner == ROOM1_BOTTOMLEFT)
 		{
 			rVertical.m_BottomLeft = *pHallway.m_pPolygon->m_pNodeVector[0];
 			rVertical.m_TopLeft = *pHallway.m_pPolygon->m_pNodeVector[1];

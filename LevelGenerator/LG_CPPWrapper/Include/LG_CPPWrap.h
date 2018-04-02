@@ -12,16 +12,15 @@ extern "C"
 	 *	@param int iRoomAmount: The number of rooms that we want to create.
 	 *	@param int iMinSizeRoom_X:
 	 *	@param int iMinSizeRoom_Y:
-	 *	@param int iMinSizeRoom_Z:
 	 *	@param int iMaxSizeRoom_X:
 	 *	@param int iMaxSizeRoom_Y:
-	 *	@param int iMaxSizeRoom_Z:
+	 *	@param int iHeight:
 	 *	@param int iSeed: 
 	 *  @param int iSeparateRange:
 	 *	@return The generate level object as void*.
 	 */
-	LG_WRAPPER_EXPORT void* GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y, int iMinSizeRoom_Z,
-		int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iMaxSizeRoom_Z, int iSeed, int iSeparateRange);
+	LG_WRAPPER_EXPORT void* GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y,
+		int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iHeight, int iSeed, int iSeparateRange);
 
 
 	///************************************************************************/

@@ -100,7 +100,16 @@ namespace LevelGenerator
 		void Init(LG_Node Position, float fWidth, float fHeight);
 
 		/**
-		 *	@brief Function to realease memory and destroy objects.
+		 *	@brief This function receives 4 nodes, and from that it calculates width, height, and the center node.
+		 *	@param LG_Vector3D TopLeft: The first node of the plane.
+		 *	@param LG_Vector3D TopRight: The second node of the plane.
+		 *	@param LG_Vector3D BottomLeft: The third node of the plane.
+		 *	@param LG_Vector3D BottomRight: The fourth node of the plane..
+		 */
+		void Init(LG_Vector3D TopLeft, LG_Vector3D TopRight, LG_Vector3D BottomLeft, LG_Vector3D BottomRight);
+
+		/**
+		 *	@brief Function to release memory and destroy objects.
 		 */
 		void Destroy();
 

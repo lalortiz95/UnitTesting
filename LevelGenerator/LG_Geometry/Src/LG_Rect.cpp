@@ -86,10 +86,29 @@ namespace LevelGenerator
 		m_BottomRight.m_Position.Y = m_BottomLeft.m_Position.Y;
 	}
 
+	//! This function receives 4 nodes, and from that it calculates width, height, and the center node.
+	void LG_Rect::Init(LG_Vector3D TopLeft, LG_Vector3D TopRight, LG_Vector3D BottomLeft, LG_Vector3D BottomRight)
+	{
+		/// The corner nodes from the rectangle are assigned. 
+		m_TopLeft = TopLeft;
+		m_TopRight = TopRight;
+		m_BottomLeft = BottomLeft;
+		m_BottomRight = BottomRight;
+
+		/// To calculate  the center position of the plane, we take the middle position of the hypotenuse.
+		m_CenterNode = LG_Vector3D::MidPoint(m_TopLeft.m_Position, m_BottomRight.m_Position);
+
+		/// We calculate the width, which is the magnitude of a vector between the left and right nodes.
+		m_fWidth = LG_Vector3D(m_TopRight.m_Position - m_TopLeft.m_Position).Magnitude();
+
+		/// Now the height is calculated in a similar way that the width was.
+		m_fHeight = LG_Vector3D(m_BottomRight.m_Position - m_TopRight.m_Position).Magnitude();
+	}
+
 	//! Function to release memory and destroy objects.
 	void LG_Rect::Destroy()
 	{
-		
+
 	}
 
 	//! This functions checks if the given node is colliding with the rect.
