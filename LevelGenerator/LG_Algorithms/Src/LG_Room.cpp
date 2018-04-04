@@ -28,6 +28,7 @@ namespace LevelGenerator
 	//! This function initialize the area of the room.
 	void LG_Room::Init(LG_Vector3D vPosToSpawn, float fWidth, float fHeight, float fDepth)
 	{
+		m_fHeight = fHeight;
 		m_bIsChecked = false;
 		m_iRoomCase = 0;
 		m_pFloor = nullptr;
@@ -132,10 +133,10 @@ namespace LevelGenerator
 	//!
 	void LG_Room::CreateWalls()
 	{
-		///  A Temp vectors to store the doors.
+		///  A Temp vectors to store the door's positions.
 		Vector<float> RightDoors, LeftDoors, TopDoors, BottomDoors;
 
-		/// Iterate the vector of doors to find their sides counter clock-wise.
+		/// Iterate the vector of doors to find their side. counter clock-wise.
 		for (int32 i = 0; i < m_Doors.size(); ++i)
 		{
 			if (m_Doors[i]->m_pFirstPosition->m_Position.X == m_pFloor->m_TopLeft.m_Position.X)
@@ -163,21 +164,77 @@ namespace LevelGenerator
 			}
 		}
 
-		
-			std::sort(RightDoors.begin(), RightDoors.end());
-			std::sort(LeftDoors.begin(), LeftDoors.end());
-			std::sort(TopDoors.begin(), TopDoors.end());
-			std::sort(BottomDoors.begin(), BottomDoors.end());
-	
-			//TODO: Se necesita generar una posicion temporal para cada nodo utilizando los de la lista de flotantes y los de el m_pFloor 
-			// Los que se generan temporal deben de checarse a mano uno por uno.
-		for (int32 i = 0; i < RightDoors.size(); ++i)
-		{
-			LG_Rect* pNewRect = new LG_Rect();
-			//LG_Vector3D TempPosition = ;
-			//pNewRect->Init(m_pFloor->m_BottomLeft, RightDoors[i],)
-		}
+		///we now sort the door nodes from the smallest to the biggest. For every wall, with that information we'll calculate the wall positions.
+		std::sort(RightDoors.begin(), RightDoors.end());
+		std::sort(LeftDoors.begin(), LeftDoors.end());
+		std::sort(TopDoors.begin(), TopDoors.end());
+		std::sort(BottomDoors.begin(), BottomDoors.end());
 
+		/// The walls from all the room are now calculated and stored.
+		CalculateWallNodes(RightDoors, m_pFloor->m_TopRight.m_Position, m_pFloor->m_BottomRight.m_Position, false);
+
+		CalculateWallNodes(TopDoors, m_pFloor->m_TopLeft.m_Position, m_pFloor->m_TopRight.m_Position, true);
+
+		CalculateWallNodes(LeftDoors, m_pFloor->m_TopLeft.m_Position, m_pFloor->m_BottomLeft.m_Position, false);
+
+		CalculateWallNodes(BottomDoors, m_pFloor->m_BottomLeft.m_Position, m_pFloor->m_BottomRight.m_Position, true);
+
+		/////  We now proceed to calculate the top room's doors.
+		//for (int32 i = 0; i < TopDoors.size(); ++i)
+		//{
+		//	/// Allocate memory to the rectangle that will represent the wall.
+		//	pNewRect = new LG_Rect();
+		//
+		//	///This is for the first iteration
+		//	if (i < 1)
+		//	{
+		//		/// We store the position for the top left node of the wall.
+		//		WallTopLeft = m_pFloor->m_TopLeft.m_Position;
+		//		WallTopLeft.Z = m_fHeight;
+		//		/// Now the top right is calculated.
+		//		WallTopRight = WallTopLeft;
+		//		WallTopRight.X = TopDoors[i];
+		//
+		//		///Bottom left node's position is now calculated.
+		//		WallBottomLeft = m_pFloor->m_TopLeft.m_Position;
+		//
+		//		/// Here we calculate the position for the bottom right node of the wall.
+		//		WallBottomRight = WallBottomLeft;
+		//		WallBottomRight.X = TopDoors[i];
+		//	}
+		//	/// This is used in the last iteration
+		//	else if (i > RightDoors.size() - 1)
+		//	{
+		//		/// The wall is being calculated between the last position from the list, and the floor bottom right corner.
+		//		WallTopRight = m_pFloor->m_TopRight.m_Position;
+		//		WallTopRight.Z = m_fHeight;
+		//
+		//		WallTopLeft = WallTopRight;
+		//		WallTopLeft.X = TopDoors[i];
+		//		WallBottomRight = m_pFloor->m_TopRight.m_Position;
+		//		WallBottomLeft = WallBottomRight;
+		//		WallBottomLeft.X = TopDoors[i];
+		//	}
+		//	/// All the iterations in between.
+		//	else
+		//	{
+		//		WallBottomLeft = m_pFloor->m_TopLeft.m_Position;
+		//		WallBottomLeft.X = TopDoors[i];
+		//
+		//		WallBottomRight = WallBottomLeft;
+		//		WallBottomRight.X = TopDoors[i + 1];
+		//
+		//		WallTopLeft = WallBottomLeft;
+		//		WallTopLeft.Z = m_fHeight;
+		//
+		//		WallTopRight = WallTopLeft;
+		//		WallTopRight.Z = m_fHeight;
+		//	}
+		//	/// Now the wall is created with all of it's components.
+		//	pNewRect->Init(m_pFloor->m_TopRight.m_Position, WallTopLeft, m_pFloor->m_TopRight.m_Position, WallBottomRight);
+		//	/// We now store the new wall that has just been created.
+		//	m_Walls.push_back(pNewRect);
+		//}
 	}
 
 	//!
@@ -201,5 +258,119 @@ namespace LevelGenerator
 		m_pCeiling->m_TopRight.m_Position.Z = fHeight;
 		/// All of the nodes.
 		m_pCeiling->m_CenterNode.m_Position.Z = fHeight;
+	}
+
+	//! This function calculates 4 nodes of a rectangle that will represent a wall, and then stores that wall in a vector.
+	void LG_Room::CalculateWallNodes(Vector<float> sideDoors, LG_Vector3D FirstNode, LG_Vector3D SecondNode, bool bIsHorizontal)
+	{
+		LG_Vector3D WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight;
+		LG_Rect* pNewRect = nullptr;
+
+		/// Here we generate all the walls from the right side of the room. And they are stored in a wall vector.
+		for (int32 i = 0; i < sideDoors.size(); ++i)
+		{
+			pNewRect = new LG_Rect();
+			///This is for the first iteration
+			if (i < 1)
+			{
+				/// We store the position for the top left node of the wall.
+				WallTopLeft = FirstNode;
+				WallTopLeft.Z = m_fHeight;
+
+				/// Now the top right is calculated.
+				WallTopRight = WallTopLeft;
+				/// 
+				if (bIsHorizontal)
+				{
+					WallTopRight.X = sideDoors[i];
+				}
+				else
+				{
+					WallTopRight.Y = sideDoors[i];
+				}
+
+				///Bottom left node's position is now calculated.
+				WallBottomLeft = FirstNode;
+
+				/// Here we calculate the position for the bottom right node of the wall.
+				WallBottomRight = WallBottomLeft;
+				/// 
+				if (bIsHorizontal)
+				{
+					WallBottomRight.X = sideDoors[i];
+				}
+				else
+				{
+					WallBottomRight.Y = sideDoors[i];
+				}
+			}
+			/// This is used in the last iteration
+			else if (i > sideDoors.size() - 1)
+			{
+				/// The wall is being calculated between the last position from the list, and the floor bottom right corner.
+				WallTopRight = SecondNode;
+				WallTopRight.Z = m_fHeight;
+
+				WallTopLeft = WallTopRight;
+
+				if (bIsHorizontal)
+				{
+					WallTopLeft.X = sideDoors[i];
+				}
+				else
+				{
+					WallTopLeft.Y = sideDoors[i];
+				}
+
+				WallBottomRight = SecondNode;
+
+				WallBottomLeft = WallBottomRight;
+
+				if (bIsHorizontal)
+				{
+					WallBottomLeft.X = sideDoors[i];
+				}
+				else
+				{
+					WallBottomLeft.Y = sideDoors[i];
+				}
+			}
+			/// All the iterations in between.
+			else
+			{
+				WallBottomLeft = FirstNode;
+
+				if (bIsHorizontal)
+				{
+					WallBottomLeft.X = sideDoors[i];
+				}
+				else
+				{
+					WallBottomLeft.Y = sideDoors[i];
+				}
+
+				WallBottomRight = WallBottomLeft;
+
+				if (bIsHorizontal)
+				{
+					WallBottomRight.X = sideDoors[i + 1];
+				}
+				else
+				{
+					WallBottomRight.Y = sideDoors[i + 1];
+				}
+
+				WallTopLeft = WallBottomLeft;
+				WallTopLeft.Z = m_fHeight;
+
+				WallTopRight = WallTopLeft;
+				WallTopRight.Z = m_fHeight;
+			}
+
+			/// Now the wall is created with all of it's components.
+			pNewRect->Init(WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight);
+			/// We now store the new wall that has just been created.
+			m_Walls.push_back(pNewRect);
+		}
 	}
 }

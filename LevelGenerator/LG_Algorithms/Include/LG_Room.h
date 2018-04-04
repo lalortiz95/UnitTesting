@@ -47,6 +47,11 @@ namespace LevelGenerator
 		bool m_bIsChecked;
 
 		/**
+		 *	@var How tall the room is.
+		 */
+		float m_fHeight;
+
+		/**
 		 *	@var Defines the room's case, being Top_Left, Bottom_Left, Top_Right, or Bottom_Right. See eRoomCases in HallwayGeneration.
 		 */
 		int32 m_iRoomCase;
@@ -107,7 +112,7 @@ namespace LevelGenerator
 		 *	@param const Vector<LG_Room*>& RoomsVector:
 		 */
 		void AddRoomConnections(const Vector<LG_Node*>& NodeConnections, const Vector<LG_Room*>& RoomsVector);
-	
+
 		/**
 		 *	@brief This function assign the connections of the room.
 		 */
@@ -129,6 +134,16 @@ namespace LevelGenerator
 		 *	@param float fHeight: the height given by the user that states how tall a room is.
 		 */
 		void CreateCeiling(LG_Vector3D vPosToSpawn, float fWidth, float fDepth, float fHeight);
+
+	private:
+		/**
+		 *	@brief This function calculates 4 nodes of a rectangle that will represent a wall, and then stores that wall in a vector.
+		 *	@param Vector<float> sideDoors: the door's positions of 1 out of 4 walls available (top, right, bottom, left).
+		 *	@param LG_Vector3D FristNode: one of the floor's nodes. A corner to start calculating the positions of the wall's nodes, is the one with the minimum value in the axis needed.
+		 *	@param LG_Vector3D SecondNode: one of the floor's nodes. A corner to end calculating the positions of the wall's nodes, is the one with the maximum value in the axis needed.
+		 *	@param bool bIsHorizontal: this is needed to see in which axis the wall will be calculated, being X or Y the possible options.
+		 */
+		void CalculateWallNodes(Vector<float> sideDoors, LG_Vector3D FirstNode, LG_Vector3D SecondNode, bool bIsHorizontal);
 	};
 }
 
