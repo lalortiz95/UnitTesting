@@ -75,7 +75,7 @@ namespace LevelGenerator
 		GenerateRoomsConnections();
 
 		/// We run the hallway algorithm 
-		m_HG.Run(&m_RoomsVector, 10.f);
+		m_HG.Run(&m_RoomsVector, 10.f, MaxSize.Z);
 
 		/// 
 		for (int32 i = 0; i < m_RoomsVector.size(); ++i)

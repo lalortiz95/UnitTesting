@@ -6,24 +6,28 @@ namespace LevelGenerator
 	//! Default constructor.
 	LG_Door::LG_Door()
 	{
-		/// Set as 0 the width and height.
-		m_fWidth = m_fHeight = 0;
 
 		/// Set the pointers as nullptr.
 		m_pFirstPosition = nullptr;
 		m_pSecondPosition = nullptr;
 
-		/// Set the ID as 0.
-		m_iID = 0;
-
 	}
 
 	//! Parameter constructor.
-	LG_Door::LG_Door(LG_Node * pFirstPosition, LG_Node * pSecondPosition)
+	LG_Door::LG_Door(LG_Node * pFirstPosition, LG_Node * pSecondPosition, float fHeight)
 	{
 		/// Set the position of the nodes.
 		m_pFirstPosition = pFirstPosition;
 		m_pSecondPosition = pSecondPosition;
+		m_pRectDimension = new LG_Rect();
+		LG_Vector3D TopLeft, TopRight;
+		TopLeft = m_pFirstPosition->m_Position;
+		TopRight = m_pSecondPosition->m_Position;
+		TopLeft.Z = fHeight;
+		TopRight.Z = fHeight;
+
+		m_pRectDimension->Init(TopLeft, TopRight, m_pFirstPosition->m_Position, m_pSecondPosition->m_Position);
+
 	}
 
 	//! Default destructor.
@@ -36,14 +40,16 @@ namespace LevelGenerator
 	//! This function release all the memory of the object.
 	void LG_Door::Destroy()
 	{
-		/// Set as 0 the width and height.
-		m_fWidth = m_fHeight = 0;
+		if (m_pRectDimension != nullptr)
+		{
+			m_pRectDimension->Destroy();
+			delete m_pRectDimension;
+			m_pRectDimension = nullptr;
+		}
 
 		/// Set the pointers as nullptr.
 		m_pFirstPosition = nullptr;
 		m_pSecondPosition = nullptr;
 
-		/// Set the ID as 0.
-		m_iID = 0;
 	}
 }

@@ -74,6 +74,11 @@ namespace LevelGenerator
 		HALLWAY_CASE m_eHallwayType;
 
 		/**
+		 *	@var The height of the hallway.
+		 */
+		float m_fHeight;
+
+		/**
 		 *	@var pointer to the first parent room.
 		 */
 		LG_Room* m_pParentRoom_1;
@@ -107,6 +112,11 @@ namespace LevelGenerator
 		 *	@var A vector of ceilings for the hallway.
 		 */
 		Vector<LG_Rect*> m_Ceilings;
+
+		/**
+		 *	@var A Vector to stores the walls of the hallway.
+		 */
+		Vector<LG_Rect*> m_Walls;
 
 		///**************************************************************************/
 		///*						  Class Functions.								*/
@@ -152,6 +162,34 @@ namespace LevelGenerator
 		 */
 		void CreateFloors();
 
+		/**
+		 *	@brief This function create a one wall for the hallway.
+		 *	@param LG_Vector3D BottomLeft: The bottom left of the wall.
+		 *	@param LG_Vector3D BottomRight: The bottom right of the wall.
+		 *	@return Thew wall that was created.
+		 */
+		LG_Rect* CreateWall(LG_Vector3D BottomLeft, LG_Vector3D BottomRight);
+
+		/**
+		 *	@brief This function delete the walls of the hallway.
+		 */
+		void DestroyWalls();
+
+		/**
+		 *	@brief This function delete the floors of the hallway.
+		 */
+		void DestroyFloors();
+
+		 /**
+		  *	@brief This function delete the ceilings of the hallway.
+		  */
+		void DestroyCeilings();
+
+		/**
+		 *	@brief This function recreate the walls,floors and ceilings of the hallway.
+		 *	@param CASES_FOR_CORNER eCase: The case of the corner for the hallway.
+		 */
+		void ReorganizeVariables(CASES_FOR_CORNER eCase);
 	private:
 
 		/**

@@ -6,8 +6,7 @@ namespace LevelGenerator
 	//! Default Constructor.
 	LG_Rect::LG_Rect()
 	{
-		m_CenterNode = LG_Vector3D(0, 0, 0);
-		m_Direction = LG_Vector3D(0, 0, 0);
+		m_CenterNode = m_BottomLeft = m_BottomRight = m_TopLeft = m_TopRight = m_Direction = LG_Vector3D(0, 0, 0);
 		m_fHeight = 0.0f;
 		m_fWidth = 0.0f;
 		m_RotationMatrix.Zero();
@@ -15,7 +14,7 @@ namespace LevelGenerator
 
 	LG_Rect::LG_Rect(LG_Node CenterNode, float fWidth, float fHeight)
 	{
-		m_Direction = LG_Vector3D(0, 0, 0);
+		m_CenterNode = m_BottomLeft = m_BottomRight = m_TopLeft = m_TopRight = m_Direction = LG_Vector3D(0, 0, 0);
 		Init(CenterNode, fWidth, fHeight);
 	}
 
@@ -29,7 +28,6 @@ namespace LevelGenerator
 	//! Function to initialize the variables.
 	void LG_Rect::Init(LG_Vector3D StartPosition, LG_Vector3D EndPosition, float fRange)
 	{
-
 		/// A new vector from the given points, sent to the origin.
 		LG_Vector3D PositionNode = (EndPosition - StartPosition) - (StartPosition - StartPosition);
 
@@ -67,6 +65,7 @@ namespace LevelGenerator
 	//! 
 	void LG_Rect::Init(LG_Node CenterNode, float fWidth, float fHeight)
 	{
+		
 		/// assign value to the variable
 		m_CenterNode = CenterNode;
 		m_fHeight = fHeight;
@@ -108,7 +107,14 @@ namespace LevelGenerator
 	//! Function to release memory and destroy objects.
 	void LG_Rect::Destroy()
 	{
-
+		m_BottomLeft.Destroy();
+		m_BottomRight.Destroy();
+		m_TopLeft.Destroy();
+		m_TopRight.Destroy();
+		m_CenterNode = m_BottomLeft = m_BottomRight = m_TopLeft = m_TopRight = m_Direction = LG_Vector3D(0, 0, 0);
+		m_fHeight = 0.0f;
+		m_fWidth = 0.0f;
+		m_RotationMatrix.Zero();
 	}
 
 	//! This functions checks if the given node is colliding with the rect.

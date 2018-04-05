@@ -178,85 +178,119 @@ void LG_Visual::Renderer()
 		SDL_RenderDrawLine(m_Renderer, FirstPos.X, FirstPos.Y, SecondPos.X, SecondPos.Y);
 	}*/
 
-	////// Aqui se renderean los cuartos
-	for (int32 i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
-	{
-		/// Sets the color of the rectangle.
-		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
+	//////// Aqui se renderean los cuartos
+	//for (int32 i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
+	//{
+	//	/// Sets the color of the rectangle.
+	//	SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
 
-		/// Draws the top line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.Y;
+	//	/// Draws the top line of the rectangle.
+	//	FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.X;
+	//	FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.Y;
+	//	SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.X;
+	//	SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
+	//	SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
 
-		/// Draws the bottom line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.Y;
+	//	/// Draws the bottom line of the rectangle.
+	//	FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.X;
+	//	FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.Y;
+	//	SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.X;
+	//	SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
+	//	SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
 
-		/// Draws the left line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.Y;
+	//	/// Draws the left line of the rectangle.
+	//	FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.X;
+	//	FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomLeft.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.Y;
+	//	SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.X;
+	//	SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopLeft.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
+	//	SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
 
-		/// Draws the right line of the rectangle.
-		FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.X;
-		FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.Y;
+	//	/// Draws the right line of the rectangle.
+	//	FirstPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.X;
+	//	FirstPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_BottomRight.m_Position.Y;
 
-		SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.X;
-		SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.Y;
+	//	SecondPos.X = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.X;
+	//	SecondPos.Y = AlgorithmGeneration.m_RoomsVector[i]->m_pFloor->m_TopRight.m_Position.Y;
 
-		SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
+	//	SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
 
-	}
+	//}
 
-	/// Aquí  se renderean los pasillos //////////////////////////////////////////////////
+	///// Aquí  se renderean los pasillos //////////////////////////////////////////////////
+	//for (int i = 0; i < AlgorithmGeneration.m_HG.m_FinalHallways.size(); ++i)
+	//{
+	//	//pink.
+	//	SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
+
+	//	for (int j = 0; j < AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector.size(); ++j)
+	//	{
+	//		//Draws the top line of the rectangle.
+	//		FirstPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j]->m_Position.X;
+	//		FirstPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j]->m_Position.Y;
+
+	//		if (j + 1 >= AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector.size())
+	//		{
+	//			SecondPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[0]->m_Position.X;
+	//			SecondPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[0]->m_Position.Y;
+	//		}
+
+	//		else
+	//		{
+	//			SecondPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j + 1]->m_Position.X;
+	//			SecondPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j + 1]->m_Position.Y;
+	//		}
+	//		SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
+	//	}
+	//}
+
+
+	
+
 	for (int i = 0; i < AlgorithmGeneration.m_HG.m_FinalHallways.size(); ++i)
 	{
-		//pink.
+		
+		//Draws the top line of the rectangle.
 		SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
+		SDL_RenderDrawLine(	m_Renderer,
+			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pFirstDoor->m_pFirstPosition->m_Position.X,
+			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pFirstDoor->m_pFirstPosition->m_Position.Y,
+			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pFirstDoor->m_pSecondPosition->m_Position.X,
+			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pFirstDoor->m_pSecondPosition->m_Position.Y);
 
-		for (int j = 0; j < AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector.size(); ++j)
+		SDL_RenderDrawLine(m_Renderer,
+			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pSecondDoor->m_pFirstPosition->m_Position.X,
+			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pSecondDoor->m_pFirstPosition->m_Position.Y,
+			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pSecondDoor->m_pSecondPosition->m_Position.X,
+			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pSecondDoor->m_pSecondPosition->m_Position.Y);
+
+		for (int j = 0; j < AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls.size(); ++j)
 		{
 			//Draws the top line of the rectangle.
-			FirstPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j]->m_Position.X;
-			FirstPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j]->m_Position.Y;
-
-			if (j + 1 >= AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector.size())
-			{
-				SecondPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[0]->m_Position.X;
-				SecondPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[0]->m_Position.Y;
-			}
-
-			else
-			{
-				SecondPos.X = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j + 1]->m_Position.X;
-				SecondPos.Y = AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pPolygon->m_pNodeVector[j + 1]->m_Position.Y;
-			}
-			SDL_RenderDrawLine(m_Renderer, (int32)FirstPos.X, (int32)FirstPos.Y, (int32)SecondPos.X, (int32)SecondPos.Y);
+			SDL_SetRenderDrawColor(m_Renderer, rand() % 254, rand() % 254, rand() % 254, 0xFF);
+			SDL_RenderDrawLine(
+				m_Renderer,
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_BottomLeft.m_Position.X,
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_BottomLeft.m_Position.Y,
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_BottomRight.m_Position.X,
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_BottomRight.m_Position.Y);
 		}
 	}
 
-	/// Aquí voa renderear paredes, puertas y la vergaes.
+	/// Aquí voa renderear paredes, puertas y la verga es.
 	for (int i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
 	{
-		//cyan
-		SDL_SetRenderDrawColor(m_Renderer, 35, 227, 32, 0xFF);
+		
+		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
 
 		for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Walls.size(); ++j)
 		{
+			
 			//TODO: draw a line between the bottom nodes of each rect.
 			SDL_RenderDrawLine(
 				m_Renderer,

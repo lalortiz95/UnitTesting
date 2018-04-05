@@ -1,7 +1,7 @@
 #pragma once
 #include "LG_AlgorithmsPrerequisites.h"
 
-#include <LG_Node.h>
+#include <LG_Rect.h>
 
 namespace LevelGenerator
 {
@@ -23,8 +23,9 @@ namespace LevelGenerator
 		 *	@brief Parameter constructor.
 		 *	@param LG_Node* pFirstPosition: The first position of the door.
 		 *	@param LG_Node* pSecondPosition: The second position of the door.
+		 *	@param float fHeight: The height of the door.
 		 */
-		LG_Door(LG_Node* pFirstPosition, LG_Node* pSecondPosition);
+		LG_Door(LG_Node* pFirstPosition, LG_Node* pSecondPosition, float fHeight);
 
 		/**
 		 *	@brief Default destructor.
@@ -34,21 +35,6 @@ namespace LevelGenerator
 		///**************************************************************************/
 		///*						  Member Variables.								*/
 		///**************************************************************************/
-
-		/**
-		 *	@var This varible is used to define a ID it's unique.
-		 */
-		int32 m_iID;
-
-		/**
-		 *	@var This variable store the width of the door.
-		 */
-		float m_fWidth;
-
-		/**
-		 *	@var This variable store the height of the door.
-		 */
-		float m_fHeight;
 
 		/**
 		 *	@var This flag is used when filling the door and wall vectors.
@@ -64,6 +50,11 @@ namespace LevelGenerator
 		 *	@var The second position of the door.
 		 */
 		LG_Node* m_pSecondPosition;
+
+		/**
+		 *	@var This pointer store all the position and dimensions of the door.
+		 */
+		LG_Rect* m_pRectDimension;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */

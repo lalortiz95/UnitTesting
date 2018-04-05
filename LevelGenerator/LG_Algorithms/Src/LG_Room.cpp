@@ -45,6 +45,19 @@ namespace LevelGenerator
 	//! This function release all the memory that was used in the room.
 	void LG_Room::Destroy()
 	{
+		/// Repeat this until the size will be zero.
+		while (m_Walls.size() != 0)
+		{
+			/// Call the destroy function of the last element of the array.
+			m_Walls[m_Walls.size() - 1]->Destroy();
+			/// Release the memory of the last element.
+			delete m_Walls[m_Walls.size() - 1];
+			/// Pop the last element.
+			m_Walls.pop_back();
+		}
+		/// Reset the vector.
+		m_Walls.clear();
+
 		/// If the pointer of ceiling is not nullptr.
 		if (m_pCeiling != nullptr)
 		{
@@ -179,62 +192,6 @@ namespace LevelGenerator
 
 		CalculateWallNodes(BottomDoors, m_pFloor->m_BottomLeft.m_Position, m_pFloor->m_BottomRight.m_Position, true);
 
-		/////  We now proceed to calculate the top room's doors.
-		//for (int32 i = 0; i < TopDoors.size(); ++i)
-		//{
-		//	/// Allocate memory to the rectangle that will represent the wall.
-		//	pNewRect = new LG_Rect();
-		//
-		//	///This is for the first iteration
-		//	if (i < 1)
-		//	{
-		//		/// We store the position for the top left node of the wall.
-		//		WallTopLeft = m_pFloor->m_TopLeft.m_Position;
-		//		WallTopLeft.Z = m_fHeight;
-		//		/// Now the top right is calculated.
-		//		WallTopRight = WallTopLeft;
-		//		WallTopRight.X = TopDoors[i];
-		//
-		//		///Bottom left node's position is now calculated.
-		//		WallBottomLeft = m_pFloor->m_TopLeft.m_Position;
-		//
-		//		/// Here we calculate the position for the bottom right node of the wall.
-		//		WallBottomRight = WallBottomLeft;
-		//		WallBottomRight.X = TopDoors[i];
-		//	}
-		//	/// This is used in the last iteration
-		//	else if (i > RightDoors.size() - 1)
-		//	{
-		//		/// The wall is being calculated between the last position from the list, and the floor bottom right corner.
-		//		WallTopRight = m_pFloor->m_TopRight.m_Position;
-		//		WallTopRight.Z = m_fHeight;
-		//
-		//		WallTopLeft = WallTopRight;
-		//		WallTopLeft.X = TopDoors[i];
-		//		WallBottomRight = m_pFloor->m_TopRight.m_Position;
-		//		WallBottomLeft = WallBottomRight;
-		//		WallBottomLeft.X = TopDoors[i];
-		//	}
-		//	/// All the iterations in between.
-		//	else
-		//	{
-		//		WallBottomLeft = m_pFloor->m_TopLeft.m_Position;
-		//		WallBottomLeft.X = TopDoors[i];
-		//
-		//		WallBottomRight = WallBottomLeft;
-		//		WallBottomRight.X = TopDoors[i + 1];
-		//
-		//		WallTopLeft = WallBottomLeft;
-		//		WallTopLeft.Z = m_fHeight;
-		//
-		//		WallTopRight = WallTopLeft;
-		//		WallTopRight.Z = m_fHeight;
-		//	}
-		//	/// Now the wall is created with all of it's components.
-		//	pNewRect->Init(m_pFloor->m_TopRight.m_Position, WallTopLeft, m_pFloor->m_TopRight.m_Position, WallBottomRight);
-		//	/// We now store the new wall that has just been created.
-		//	m_Walls.push_back(pNewRect);
-		//}
 	}
 
 	//!
@@ -285,7 +242,6 @@ namespace LevelGenerator
 			m_Walls.push_back(pNewRect);
 		}
 
-		//TODO: corregir cuando hay 2 puertas o más en un pasillo.
 		/// Here we generate all the walls from the right side of the room. And they are stored in a wall vector.
 		for (int32 i = 0; i < sideDoors.size(); ++i)
 		{

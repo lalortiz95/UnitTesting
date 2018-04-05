@@ -66,8 +66,9 @@ namespace LevelGenerator
 		 *	@brief This function is the only one you need to generate Hallways.
 		 *	@param Vector<LG_Room*>* pRooms: The rectangles that represent the rooms.
 		 *	@param float fCorridorWidth: the given width to generate the hallways.
+		 *	@param float fHeight: The height for the hallways.
 		 */
-		void Run(Vector<LG_Room*>* pRooms, float fCorridorWidth);
+		void Run(Vector<LG_Room*>* pRooms, float fCorridorWidth, float fHeight);
 
 	private:
 
@@ -76,23 +77,26 @@ namespace LevelGenerator
 		 *	@param LG_Room* pRoom1: the first room used to calculate the vertical hallway.
 		 *	@param LG_Room* pRoom2: the second room used to calculate the vertical hallway.
 		 *	@param LG_Vector3D MidPoint: we'll use this midpoint's X position to place the hallway.
+		 *	@param float fHeight: The height of the hallway.
 		 */
-		void GenerateVerticalHallway(LG_Room* pRoom1, LG_Room* pRoom2, LG_Vector3D MidPoint);
+		void GenerateVerticalHallway(LG_Room* pRoom1, LG_Room* pRoom2, LG_Vector3D MidPoint, float fHeight);
 
 		/**
 		 *	@brief Creates a horizontal hallway between two rooms.
 		 *	@param LG_Rect* pRoom1: the first room used to calculate the horizontal hallway.
 		 *	@param LG_Rect* pRoom2: the second room used to calculate the horizontal hallway.
 		 *	@param LG_Vector3D MidPoint: we'll use this midpoint's Y position to place the hallway.
+		 *	@param float fHeight: The height of the hallway.
 		 */
-		void GenerateHorizontalHallway(LG_Room* pRoom1, LG_Room* pRoom2, LG_Vector3D MidPoint);
+		void GenerateHorizontalHallway(LG_Room* pRoom1, LG_Room* pRoom2, LG_Vector3D MidPoint, float fHeight);
 
 		/**
 		 *	@brief Creates a L shaped hallway between two rooms.
 		 *	@param LG_Room* pRoom1: the first room used to calculate the horizontal hallway.
 		 *	@param LG_Room* pRoom2: the second room used to calculate the horizontal hallway.
+		 *	@param float fHeight: The height of the hallway.
 		 */
-		LG_Hallway* GenerateCornerHallway(LG_Room* pRoom1, LG_Room* pRoom2);
+		LG_Hallway* GenerateCornerHallway(LG_Room* pRoom1, LG_Room* pRoom2, float fHeight);
 
 		/**
 		 *	@brief Gets the longest distance from a polygon to it's parents corners.
@@ -113,7 +117,7 @@ namespace LevelGenerator
 		 *
 		 *
 		 */
-		void ReorganizeCornerHallway(LG_Hallway* pCornerToMove,LG_Hallway* pSecondCorner);
+		LG_Hallway* ReorganizeCornerHallway(LG_Hallway* pCornerToMove, float fHeight);
 
 	};
 }

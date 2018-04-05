@@ -26,26 +26,97 @@ namespace LevelGenerator
 	void LG_Hallway::CreateDoors(LG_Node* pFD_FP, LG_Node* pFD_SP, LG_Node* pSD_FP, LG_Node* pSD_SP)
 	{
 		/// Create the first door of the hallway.
-		m_pFirstDoor = new LG_Door(pFD_FP, pFD_SP);
+		m_pFirstDoor = new LG_Door(pFD_FP, pFD_SP, m_fHeight);
 		/// Create the second door of the hallway.
-		m_pSecondDoor = new LG_Door(pSD_FP, pSD_SP);
+		m_pSecondDoor = new LG_Door(pSD_FP, pSD_SP, m_fHeight);
 	}
 
 	//! This function create a ceilings for the hallway.
 	void LG_Hallway::CreateCeilings()
 	{
-		
+		if (m_eHallwayType != CORNER)
+		{
+			LG_Rect* pNewCeiling = new LG_Rect();
+			pNewCeiling->Init(m_pPolygon->m_pNodeVector[0]->m_Position, m_pPolygon->m_pNodeVector[1]->m_Position, m_pPolygon->m_pNodeVector[3]->m_Position, m_pPolygon->m_pNodeVector[2]->m_Position);
+			pNewCeiling->m_BottomLeft.m_Position.Z = m_fHeight;
+			pNewCeiling->m_BottomRight.m_Position.Z = m_fHeight;
+			pNewCeiling->m_TopLeft.m_Position.Z = m_fHeight;
+			pNewCeiling->m_TopRight.m_Position.Z = m_fHeight;
+			pNewCeiling->m_CenterNode.m_Position.Z = m_fHeight;
+			m_Ceilings.push_back(pNewCeiling);
+		}
+
+		else
+		{
+
+		}
 	}
 
 	//! This function create a floors for the hallway.
 	void LG_Hallway::CreateFloors()
 	{
-		
+		if (m_eHallwayType != CORNER)
+		{
+			LG_Rect* pNewFloor = new LG_Rect();
+			pNewFloor->Init(m_pPolygon->m_pNodeVector[0]->m_Position, m_pPolygon->m_pNodeVector[1]->m_Position, m_pPolygon->m_pNodeVector[3]->m_Position, m_pPolygon->m_pNodeVector[2]->m_Position);
+			m_Floors.push_back(pNewFloor);
+		}
+		else
+		{
+
+		}
 	}
 
+	//! This function create a one wall for the hallway.
+	LG_Rect * LG_Hallway::CreateWall(LG_Vector3D BottomLeft, LG_Vector3D BottomRight)
+	{
+		LG_Rect* pNewWall = new LG_Rect();
+		LG_Vector3D TopLeft, TopRight;
+		TopLeft = BottomLeft;
+		TopRight = BottomRight;
+		TopLeft.Z = m_fHeight;
+		TopLeft.Z = m_fHeight;
+		pNewWall->Init(TopLeft, TopRight, BottomLeft, BottomRight);
+		return pNewWall;
+	}
 
-	//! This function release the memory of the object.
-	void LG_Hallway::Destroy()
+	//! Delete the memory of the walls.
+	void LG_Hallway::DestroyWalls()
+	{
+		/// Repeat this until the size will be zero.
+		while (m_Walls.size() != 0)
+		{
+			/// Call the destroy function of the last element of the array.
+			m_Walls[m_Walls.size() - 1]->Destroy();
+			/// Release the memory of the last element.
+			delete m_Walls[m_Walls.size() - 1];
+			/// Pop the last element.
+			m_Walls.pop_back();
+		}
+		/// Reset the vector.
+		m_Walls.clear();
+	}
+
+	//! This function delete the floors of the hallway.
+	void LG_Hallway::DestroyFloors()
+	{
+		/// Repeat until the vector of ceilings has empty.
+		while (m_Floors.size() != 0)
+		{
+			/// Call the destroy function of the last element of the floors vector.
+			m_Floors[m_Floors.size() - 1]->Destroy();
+			/// Delete the memory of the last element.
+			delete m_Floors[m_Floors.size() - 1];
+			/// pop the last element.
+			m_Floors.pop_back();
+		}
+
+		/// Clear the vector of floors.
+		m_Floors.clear();
+	}
+
+	//! This function delete the ceilings of the hallway.
+	void LG_Hallway::DestroyCeilings()
 	{
 		/// Repeat until the vector of ceilings has empty.
 		while (m_Ceilings.size() != 0)
@@ -60,20 +131,56 @@ namespace LevelGenerator
 
 		/// Clear the vector of ceilings.
 		m_Ceilings.clear();
+	}
 
-		/// Repeat until the vector of ceilings has empty.
-		while (m_Floors.size() != 0)
-		{
-			/// Call the destroy function of the last element of the floors vector.
-			m_Floors[m_Floors.size() - 1]->Destroy();
-			/// Delete the memory of the last element.
-			delete m_Floors[m_Floors.size() - 1];
-			/// pop the last element.
-			m_Floors.pop_back();
-		}
+	//! This function recreate the walls,floors and ceilings of the hallway.
+	void LG_Hallway::ReorganizeVariables(CASES_FOR_CORNER eCase)
+	{
+		/// Delete the walls.
+		DestroyWalls();
+		/// Delete the ceilings.
+		DestroyCeilings();
+		/// Delete the floors.
+		DestroyFloors();
 
-		/// Clear the vector of floors.
-		m_Floors.clear();
+		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[0]->m_Position, m_pPolygon->m_pNodeVector[1]->m_Position));
+		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[1]->m_Position, m_pPolygon->m_pNodeVector[2]->m_Position));
+		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[3]->m_Position, m_pPolygon->m_pNodeVector[4]->m_Position));
+		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[4]->m_Position, m_pPolygon->m_pNodeVector[5]->m_Position));
+
+		//if (eCase == ROOM1_TOPRIGHT)
+		//{
+		//	
+
+		//}
+
+		//else if (eCase == ROOM1_TOPLEFT)
+		//{
+		//	
+
+		//}
+
+		//else if (eCase == ROOM1_BOTTOMRIGHT)
+		//{
+		//	
+		//}
+
+		//else if (eCase == ROOM1_BOTTOMLEFT)
+		//{
+		//	
+		//}
+	}
+
+
+	//! This function release the memory of the object.
+	void LG_Hallway::Destroy()
+	{
+		/// Erase the memory of the walls.
+		DestroyWalls();
+		/// Erase the memory of the ceilings.
+		DestroyCeilings();
+		/// Erase the memory of the floors.
+		DestroyFloors();
 
 		/// Check if the second door is not nullptr.
 		if (m_pSecondDoor != nullptr)
@@ -110,7 +217,7 @@ namespace LevelGenerator
 			delete m_pPolygon;
 			/// Assign as nullptr.
 			m_pPolygon = nullptr;
-		}	
+		}
 	}
 
 	//! This function check if the hallway collision with other room.

@@ -53,7 +53,7 @@ namespace LevelGenerator
 	}
 
 	//! This function is the only one you need to generate Hallways.
-	void LG_HallwayGeneration::Run(Vector<LG_Room*>* pRooms, float fCorridorWidth)
+	void LG_HallwayGeneration::Run(Vector<LG_Room*>* pRooms, float fCorridorWidth, float fHeight)
 	{
 		Init(fCorridorWidth, pRooms);
 
@@ -68,7 +68,7 @@ namespace LevelGenerator
 		LG_Hallway* pConerHallway = nullptr;
 		/// 
 		LG_Hallway* pSecondCornerHallway = nullptr;
-	
+
 		/// We iterate all the rooms and it's connections.
 		for (int32 i = 0; i < m_pRooms->size(); ++i)
 		{
@@ -97,7 +97,7 @@ namespace LevelGenerator
 							if (MidPoint.X + m_fHallwayWidth / 2 < Min_Pos.X)
 							{
 								/// Generate a vertical hallway.
-								GenerateVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint);
+								GenerateVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 								continue;
 							}
 							else
@@ -107,7 +107,7 @@ namespace LevelGenerator
 								{
 									MidPoint.X -= fDifference;
 									/// Generate a vertical hallway.
-									GenerateVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint);
+									GenerateVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 									continue;
 								}
 							}
@@ -119,7 +119,7 @@ namespace LevelGenerator
 							{
 								MidPoint.X += fDifference;
 								/// Generate a vertical hallway.
-								GenerateVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint);
+								GenerateVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 								continue;
 							}
 						}
@@ -131,7 +131,7 @@ namespace LevelGenerator
 							if (MidPoint.Y + m_fHallwayWidth / 2 < Min_Pos.Y)
 							{
 								/// Generate a vertical hallway.
-								GenerateHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint);
+								GenerateHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 								continue;
 							}
 							else
@@ -141,7 +141,7 @@ namespace LevelGenerator
 								{
 									MidPoint.Y -= fDifference;
 									/// Generate a vertical hallway.
-									GenerateHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint);
+									GenerateHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 									continue;
 								}
 							}
@@ -153,14 +153,14 @@ namespace LevelGenerator
 							{
 								MidPoint.Y += fDifference;
 								/// Generate a vertical hallway.
-								GenerateHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint);
+								GenerateHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 								continue;
 							}
 						}
 					}
 
 					/// When it couldn't fit in any case, we generate a L shaped hallway.
-					pConerHallway = GenerateCornerHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j]);
+					pConerHallway = GenerateCornerHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], fHeight);
 					m_FinalHallways.push_back(pConerHallway);
 
 				}/// Closing If the connection have not been checked.
@@ -193,8 +193,10 @@ namespace LevelGenerator
 						{
 							LG_Room* TempRoom1 = m_FinalHallways[iActual]->m_pParentRoom_2;
 							LG_Room* TempRoom2 = m_FinalHallways[iActual]->m_pParentRoom_1;
+							m_FinalHallways[iActual]->Destroy();
+							delete m_FinalHallways[iActual];
 							m_FinalHallways.erase(m_FinalHallways.begin() + iActual);
-							m_FinalHallways.push_back(GenerateCornerHallway(TempRoom1, TempRoom2));
+							m_FinalHallways.push_back(GenerateCornerHallway(TempRoom1, TempRoom2, fHeight));
 							bCheckCollisionWithHallways = true;
 							break;
 						}
@@ -210,7 +212,7 @@ namespace LevelGenerator
 			/// There's only need to check the corner hallways.
 			if (m_FinalHallways[iActual]->m_eHallwayType == VERTICAL)
 			{
-				
+
 				if ((m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_BottomLeft.m_Position.Y == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.Y)
 					|| (m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_TopLeft.m_Position.Y == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.Y))
 				{
@@ -241,35 +243,52 @@ namespace LevelGenerator
 
 			else
 			{
-				ReorganizeCornerHallway(m_FinalHallways[iActual], pSecondCornerHallway);
 
-				if ((m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_BottomLeft.m_Position.X == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.X)
-					|| (m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_BottomRight.m_Position.X == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.X)
-					|| (m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_TopRight.m_Position.Y == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.Y)
-					|| (m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_BottomRight.m_Position.Y == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.Y))
+				pSecondCornerHallway = ReorganizeCornerHallway(m_FinalHallways[iActual], fHeight);
+
+				if (pSecondCornerHallway != nullptr)
 				{
-					m_FinalHallways[iActual]->m_pParentRoom_1->m_Doors.push_back(m_FinalHallways[iActual]->m_pFirstDoor);
-					m_FinalHallways[iActual]->m_pParentRoom_2->m_Doors.push_back(m_FinalHallways[iActual]->m_pSecondDoor);
+					//TODO: Iterar el for con un iterador para saber exactamente cual es el que queremos sacar.
+					// Despues de sacarlo insertar el nuevo corner en la lista en la posicion donde estaba el anterior.
+					// Utilizar el mismo contador para saber la posicion del arreglo en donde queremos insertar el corner.
+					// Hacer lo mismo que abajo y listo.
+					// Cuando se saca y se inserta el nuevo corner terminar el for con un break. acontinuacion repetir esto dentro de un while pero es sumamente importante que
+					// se inicialize el for donde nos habiamos quedado ya que si no se generaran nuevas puertas para los cuartos en las mismas posiciones donde se encontraban
+					// las que ya tenia osea se hacen puertas de mas inecesarias...
 				}
+
 				else
 				{
-					m_FinalHallways[iActual]->m_pParentRoom_1->m_Doors.push_back(m_FinalHallways[iActual]->m_pSecondDoor);
-					m_FinalHallways[iActual]->m_pParentRoom_2->m_Doors.push_back(m_FinalHallways[iActual]->m_pFirstDoor);
+					if ((m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_BottomLeft.m_Position.X == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.X)
+						|| (m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_BottomRight.m_Position.X == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.X)
+						|| (m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_TopRight.m_Position.Y == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.Y)
+						|| (m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_BottomRight.m_Position.Y == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.Y))
+					{
+						m_FinalHallways[iActual]->m_pParentRoom_1->m_Doors.push_back(m_FinalHallways[iActual]->m_pFirstDoor);
+						m_FinalHallways[iActual]->m_pParentRoom_2->m_Doors.push_back(m_FinalHallways[iActual]->m_pSecondDoor);
+					}
+					else
+					{
+						m_FinalHallways[iActual]->m_pParentRoom_1->m_Doors.push_back(m_FinalHallways[iActual]->m_pSecondDoor);
+						m_FinalHallways[iActual]->m_pParentRoom_2->m_Doors.push_back(m_FinalHallways[iActual]->m_pFirstDoor);
+					}
 				}
-
 			}
 		}
 
 	}
 
 	//! Creates a vertical hallway between two rooms.
-	void LG_HallwayGeneration::GenerateVerticalHallway(LG_Room * pRoom1, LG_Room * pRoom2, LG_Vector3D MidPoint)
+	void LG_HallwayGeneration::GenerateVerticalHallway(LG_Room * pRoom1, LG_Room * pRoom2, LG_Vector3D MidPoint, float fHeight)
 	{
 		/// Boolean used to know which room is on top of which one.
 		bool bRoom1IsOnTop;
 
 		/// Here we fill each one of the polygon's nodes. That will represent the position of the hallway's corners.
 		LG_Hallway* pNewHall = new LG_Hallway();
+
+		///
+		pNewHall->m_fHeight = fHeight;
 		/// We make them shared pointers to avoid memory leaks.
 
 		/// The bottom left node is the first one thats calculated.
@@ -331,8 +350,13 @@ namespace LevelGenerator
 		pNewHall->m_pPolygon->InsertNodeToVector(pBRNode);
 		/// Now that the node has it's position set, we add it to the polygon.
 		pNewHall->m_pPolygon->InsertNodeToVector(pBLNode);
-
+		///
 		pNewHall->CreateDoors(pTLNode, pTRNode, pBLNode, pBRNode);
+
+		/// Here create the rectangles that represent the hallway's walls.
+		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pTLNode->m_Position, pBLNode->m_Position));
+		///
+		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pTRNode->m_Position, pBRNode->m_Position));
 		/// 
 		pNewHall->m_pParentRoom_1 = pRoom1;
 		/// 
@@ -343,13 +367,16 @@ namespace LevelGenerator
 	}
 
 	//! Creates a horizontal hallway between two rooms.
-	void LG_HallwayGeneration::GenerateHorizontalHallway(LG_Room * pRoom1, LG_Room * pRoom2, LG_Vector3D MidPoint)
+	void LG_HallwayGeneration::GenerateHorizontalHallway(LG_Room * pRoom1, LG_Room * pRoom2, LG_Vector3D MidPoint, float fHeight)
 	{
 		/// Boolean used to know which room is at the left or right side of the other.
 		bool bRoom1IsLeft;
 
 		/// Here we fill each one of the polygon's nodes. That will represent the position of the hallway's corners.
 		LG_Hallway* pNewHall = new LG_Hallway();
+
+		///
+		pNewHall->m_fHeight = fHeight;
 		/// We make them shared pointers to avoid memory leaks.
 		/// The bottom left node is the first one thats calculated.
 		LG_Node* pBLNode = new LG_Node();
@@ -413,6 +440,11 @@ namespace LevelGenerator
 		/// Create the doors of the hallway.
 		pNewHall->CreateDoors(pTLNode, pBLNode, pTRNode, pBRNode);
 
+		/// Here create the rectangles that represent the hallway's walls.
+		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pTLNode->m_Position, pTRNode->m_Position));
+		///
+		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pBLNode->m_Position, pBRNode->m_Position));
+
 		/// 
 		pNewHall->m_pParentRoom_1 = pRoom1;
 		/// 
@@ -423,10 +455,12 @@ namespace LevelGenerator
 	}
 
 	//! Creates a L shaped hallway between two rooms.
-	LG_Hallway* LG_HallwayGeneration::GenerateCornerHallway(LG_Room * pRoom1, LG_Room * pRoom2)
+	LG_Hallway* LG_HallwayGeneration::GenerateCornerHallway(LG_Room * pRoom1, LG_Room * pRoom2, float fHeight)
 	{
 		/// Here we fill each one of the polygon's nodes. That will represent the position of the hallway's corners.
 		LG_Hallway* pNewHall = new LG_Hallway();
+		///
+		pNewHall->m_fHeight = fHeight;
 		/// We make them shared pointers to avoid memory leaks.
 		/// The nodes that will be used to fill the polygon
 		LG_Node* spNode0 = new LG_Node();
@@ -497,7 +531,7 @@ namespace LevelGenerator
 		/// We store the magnitudes from each connection.
 		float fDistancen1n2 = n1n2.Magnitude();
 		float fDistancen1n3 = n1n3.Magnitude();
-	
+
 		/// n1n3 will represent the X axis from the outer node, while n1n2 will have the inner value in X axis.
 		if (fDistancen1n2 < fDistancen1n3)
 		{
@@ -527,6 +561,15 @@ namespace LevelGenerator
 				pNewHall->m_pPolygon->InsertNodeToVector(spNode1);
 
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
+
+				/// Here create the rectangles that represent the hallway's walls.
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode4->m_Position));
+				///
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode2->m_Position));
+				/// 
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode3->m_Position, spNode5->m_Position));
+				///
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode1->m_Position));
 				/// 
 				pNewHall->m_eCaseCorner = ROOM1_TOPRIGHT;
 			}
@@ -556,6 +599,15 @@ namespace LevelGenerator
 				pNewHall->m_pPolygon->InsertNodeToVector(spNode1);
 				///
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
+
+				/// Here create the rectangles that represent the hallway's walls.
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode5->m_Position));
+				///
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode3->m_Position));
+				/// 
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode2->m_Position, spNode4->m_Position));
+				///
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode1->m_Position));
 				/// 
 				pNewHall->m_eCaseCorner = ROOM1_TOPLEFT;
 			}
@@ -589,6 +641,15 @@ namespace LevelGenerator
 				pNewHall->m_pPolygon->InsertNodeToVector(spNode1);
 				///
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
+
+				/// Here create the rectangles that represent the hallway's walls.
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode4->m_Position));
+				///
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode3->m_Position));
+				/// 
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode2->m_Position, spNode5->m_Position));
+				///
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode1->m_Position));
 				///
 				pNewHall->m_eCaseCorner = ROOM1_BOTTOMRIGHT;
 			}
@@ -618,6 +679,15 @@ namespace LevelGenerator
 				pNewHall->m_pPolygon->InsertNodeToVector(spNode1);
 				///
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
+
+				/// Here create the rectangles that represent the hallway's walls.
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode5->m_Position));
+				///
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode2->m_Position));
+				/// 
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode3->m_Position, spNode4->m_Position));
+				///
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode1->m_Position));
 				///
 				pNewHall->m_eCaseCorner = ROOM1_BOTTOMLEFT;
 			}
@@ -753,14 +823,17 @@ namespace LevelGenerator
 				}
 
 				if (bFlagX && bFlagY)
+				{
+					CornerToMove->ReorganizeVariables(ROOM1_TOPRIGHT);
 					return false;
+				}
 			}
-
+			CornerToMove->ReorganizeVariables(ROOM1_TOPRIGHT);
 			return true;
 			break;
 
 		case ROOM1_TOPLEFT:
-			
+
 			/// Check if the corner is collision with the room.
 			while (CornerToMove->CheckCollisionWithRoom(CollisionRoom))
 			{
@@ -799,14 +872,18 @@ namespace LevelGenerator
 				}
 
 				if (bFlagX && bFlagY)
+				{
+					CornerToMove->ReorganizeVariables(ROOM1_TOPLEFT);
 					return false;
+				}
 			}
 
+			CornerToMove->ReorganizeVariables(ROOM1_TOPLEFT);
 			return true;
 			break;
 
 		case ROOM1_BOTTOMRIGHT:
-			
+
 			/// Check if the corner is collision with the room.
 			while (CornerToMove->CheckCollisionWithRoom(CollisionRoom))
 			{
@@ -845,14 +922,17 @@ namespace LevelGenerator
 				}
 
 				if (bFlagX && bFlagY)
+				{
+					CornerToMove->ReorganizeVariables(ROOM1_BOTTOMRIGHT);
 					return false;
+				}
 			}
-
+			CornerToMove->ReorganizeVariables(ROOM1_BOTTOMRIGHT);
 			return true;
 			break;
 
 		case ROOM1_BOTTOMLEFT:
-			
+
 			/// Check if the corner is collision with the room.
 			while (CornerToMove->CheckCollisionWithRoom(CollisionRoom))
 			{
@@ -891,9 +971,13 @@ namespace LevelGenerator
 				}
 
 				if (bFlagX && bFlagY)
+				{
+					CornerToMove->ReorganizeVariables(ROOM1_BOTTOMLEFT);
 					return false;
+				}
 			}
 
+			CornerToMove->ReorganizeVariables(ROOM1_BOTTOMLEFT);
 			return true;
 			break;
 
@@ -902,7 +986,9 @@ namespace LevelGenerator
 			break;
 		}
 	}
-	void LG_HallwayGeneration::ReorganizeCornerHallway(LG_Hallway* CornerToReorganize, LG_Hallway* SecondCorner)
+
+	//!
+	LG_Hallway* LG_HallwayGeneration::ReorganizeCornerHallway(LG_Hallway* CornerToReorganize, float fHeight)
 	{
 
 		for (int32 k = 0; k < m_pRooms->size(); ++k)
@@ -915,35 +1001,35 @@ namespace LevelGenerator
 				{
 					LG_Room* TempRoom1 = CornerToReorganize->m_pParentRoom_2;
 					LG_Room* TempRoom2 = CornerToReorganize->m_pParentRoom_1;
-					SecondCorner = GenerateCornerHallway(TempRoom1, TempRoom2);
+					LG_Hallway* pSecondCorner = GenerateCornerHallway(TempRoom1, TempRoom2, fHeight);
 
 					/// We see between which rooms is better to generate the hallway. Based on the distance between the rooms and the hallway.
 					/// The more distance we have, the more we can move the hallways so that they don't collide with other objects.
 					float fDistance1 = GetLongestDistance(CornerToReorganize);
-					float fDistance2 = GetLongestDistance(SecondCorner);
+					float fDistance2 = GetLongestDistance(pSecondCorner);
 
 					/// the first hallway we calculated is best for moving it and avoiding collisions.
 					if (fDistance1 >= fDistance2)
 					{
-						
+
 						if (MoveCorner(CornerToReorganize, (*m_pRooms)[k]))
 						{
 							//TODO: Insertar la esquina como que ya se armo. Checar logica pero break.
 
 							/// Call the destroy function of the second corner.
-							SecondCorner->Destroy();
+							pSecondCorner->Destroy();
 							/// Erase the allocated memory for this hallway.
-							delete SecondCorner;
+							delete pSecondCorner;
 							/// Set as nullptr.
-							SecondCorner = nullptr;
+							pSecondCorner = nullptr;
 							/// Finish this iteration.
-							break;
+							return pSecondCorner;
 						}
 
 						else
 						{
 							///
-							if (MoveCorner(SecondCorner, (*m_pRooms)[k]))
+							if (MoveCorner(pSecondCorner, (*m_pRooms)[k]))
 							{
 								//TODO: Insertar la esquina como que ya se armo. Checar logica pero break.
 
@@ -953,10 +1039,8 @@ namespace LevelGenerator
 								delete CornerToReorganize;
 								/// Set as nullptr.
 								CornerToReorganize = nullptr;
-								/// Finish this iteration.
-								CornerToReorganize = SecondCorner;
-
-								break;
+								/// 
+								return pSecondCorner;
 							}
 							else
 							{
@@ -969,7 +1053,7 @@ namespace LevelGenerator
 					else
 					{
 						///
-						if (MoveCorner(SecondCorner, (*m_pRooms)[k]))
+						if (MoveCorner(pSecondCorner, (*m_pRooms)[k]))
 						{
 							//TODO: Insertar la esquina como que ya se armo. Checar logica pero break.
 
@@ -980,9 +1064,7 @@ namespace LevelGenerator
 							/// Set as nullptr.
 							CornerToReorganize = nullptr;
 							/// Finish this iteration.
-							CornerToReorganize = SecondCorner;
-
-							break;
+							return pSecondCorner;
 						}
 						else
 						{
@@ -991,13 +1073,13 @@ namespace LevelGenerator
 								// TODO: Insertar la esquina como que ya se armo.Checar logica pero break.
 
 								/// Call the destroy function of the second corner.
-								SecondCorner->Destroy();
+								pSecondCorner->Destroy();
 								/// Erase the allocated memory for this hallway.
-								delete SecondCorner;
+								delete pSecondCorner;
 								/// Set as nullptr.
-								SecondCorner = nullptr;
-								/// Finish this iteration.
-								break;
+								pSecondCorner = nullptr;
+								/// 
+								return pSecondCorner;
 							}
 
 							else
