@@ -118,6 +118,7 @@ namespace LevelGenerator
 		 */
 		void CreateWalls();
 
+	private:
 		/**
 		 *	@brief This function generates a floor object for the room.
 		 *	@param LG_Vector3D vPosToSpawn: The center position of the rectangle that represents the floor.
@@ -135,7 +136,6 @@ namespace LevelGenerator
 		 */
 		void CreateCeiling(LG_Vector3D vPosToSpawn, float fWidth, float fDepth, float fHeight);
 
-	private:
 		/**
 		 *	@brief This function calculates 4 nodes of a rectangle that will represent a wall, and then stores that wall in a vector.
 		 *	@param Vector<float> sideDoors: the door's positions of 1 out of 4 walls available (top, right, bottom, left).

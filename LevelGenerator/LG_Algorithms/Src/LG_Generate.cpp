@@ -77,6 +77,12 @@ namespace LevelGenerator
 		/// We run the hallway algorithm 
 		m_HG.Run(&m_RoomsVector, 10.f);
 
+		/// 
+		for (int32 i = 0; i < m_RoomsVector.size(); ++i)
+		{
+			m_RoomsVector[i]->CreateWalls();
+		}
+
 		/// Call the destroy function to release memory of the spawn zone.
 		m_pSpawnZone->Destroy();
 		/// Release memory.
@@ -119,10 +125,7 @@ namespace LevelGenerator
 
 	//! Generates random positions for the rectangles, and separates them.
 	void LG_Generate::GenerateRooms(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, float fHeight)
-	{
-		//TODO: hacer que se llene un vector de paredes desde una esquina a una puerta, de donde acaba esa puerta a otra esquina o puerta, y así sucesivamente.
-		// Generar una función donde se realice lo anterior.
-
+	{	
 		//TODO: hacer techo que tenga las mismas posiciones que el piso (código de abajo) pero con otra posición en Z.
 		///
 		LG_Node PositionCenterSpawnZone;

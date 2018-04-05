@@ -266,6 +266,26 @@ namespace LevelGenerator
 		LG_Vector3D WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight;
 		LG_Rect* pNewRect = nullptr;
 
+		if (sideDoors.size() == 0)
+		{
+			pNewRect = new LG_Rect();
+
+			WallBottomLeft = FirstNode;
+			WallBottomRight = SecondNode;
+
+			WallTopLeft = WallBottomLeft;
+			WallTopLeft.Z = m_fHeight;
+
+			WallTopRight = WallBottomRight;
+			WallTopRight.Z = m_fHeight;
+
+			/// Now the wall is created with all of it's components.
+			pNewRect->Init(WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight);
+			/// We now store the new wall that has just been created.
+			m_Walls.push_back(pNewRect);
+		}
+
+		//TODO: corregir cuando hay 2 puertas o más en un pasillo.
 		/// Here we generate all the walls from the right side of the room. And they are stored in a wall vector.
 		for (int32 i = 0; i < sideDoors.size(); ++i)
 		{
@@ -281,13 +301,9 @@ namespace LevelGenerator
 				WallTopRight = WallTopLeft;
 				/// 
 				if (bIsHorizontal)
-				{
 					WallTopRight.X = sideDoors[i];
-				}
 				else
-				{
 					WallTopRight.Y = sideDoors[i];
-				}
 
 				///Bottom left node's position is now calculated.
 				WallBottomLeft = FirstNode;
@@ -296,16 +312,12 @@ namespace LevelGenerator
 				WallBottomRight = WallBottomLeft;
 				/// 
 				if (bIsHorizontal)
-				{
 					WallBottomRight.X = sideDoors[i];
-				}
 				else
-				{
 					WallBottomRight.Y = sideDoors[i];
-				}
 			}
 			/// This is used in the last iteration
-			else if (i > sideDoors.size() - 1)
+			else if (i + 1 >= sideDoors.size())
 			{
 				/// The wall is being calculated between the last position from the list, and the floor bottom right corner.
 				WallTopRight = SecondNode;
@@ -314,55 +326,48 @@ namespace LevelGenerator
 				WallTopLeft = WallTopRight;
 
 				if (bIsHorizontal)
-				{
 					WallTopLeft.X = sideDoors[i];
-				}
 				else
-				{
 					WallTopLeft.Y = sideDoors[i];
-				}
 
 				WallBottomRight = SecondNode;
 
 				WallBottomLeft = WallBottomRight;
 
 				if (bIsHorizontal)
-				{
 					WallBottomLeft.X = sideDoors[i];
-				}
 				else
-				{
 					WallBottomLeft.Y = sideDoors[i];
-				}
 			}
 			/// All the iterations in between.
 			else
 			{
+				/// We skip all pair numbers to avoid writing walls over the doors.
+				if (i % 2 == 0)
+				{
+					continue;
+				}
 				WallBottomLeft = FirstNode;
 
-				if (bIsHorizontal)
-				{
+				/// We see in which axis we are affecting the wall's bottom left node.
+				if (bIsHorizontal)	
 					WallBottomLeft.X = sideDoors[i];
-				}
-				else
-				{
+				else 
 					WallBottomLeft.Y = sideDoors[i];
-				}
 
+				/// 
 				WallBottomRight = WallBottomLeft;
 
+				/// 
 				if (bIsHorizontal)
-				{
 					WallBottomRight.X = sideDoors[i + 1];
-				}
 				else
-				{
 					WallBottomRight.Y = sideDoors[i + 1];
-				}
 
+				/// 
 				WallTopLeft = WallBottomLeft;
 				WallTopLeft.Z = m_fHeight;
-
+				/// 
 				WallTopRight = WallTopLeft;
 				WallTopRight.Z = m_fHeight;
 			}

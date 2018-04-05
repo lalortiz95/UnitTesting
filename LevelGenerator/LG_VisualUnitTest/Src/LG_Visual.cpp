@@ -166,7 +166,7 @@ void LG_Visual::Renderer()
 
 	/// Semilla bien chingona   41241  separacion 0
 	/// We generate our algorithms.
-	AlgorithmGeneration.Run(50, LG_Vector3D(40, 40, 0), LG_Vector3D(70, 70, 0), rand(), rand() % 11); //, 25346, 0);
+	AlgorithmGeneration.Run(50, LG_Vector3D(40, 40, 0), LG_Vector3D(70, 70, 30), rand(), rand() % 11); //, 25346, 0);
 
 
 	/*/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
@@ -249,6 +249,24 @@ void LG_Visual::Renderer()
 		}
 	}
 
+	/// Aquí voa renderear paredes, puertas y la vergaes.
+	for (int i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
+	{
+		//cyan
+		SDL_SetRenderDrawColor(m_Renderer, 35, 227, 32, 0xFF);
+
+		for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Walls.size(); ++j)
+		{
+			//TODO: draw a line between the bottom nodes of each rect.
+			SDL_RenderDrawLine(
+				m_Renderer,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomLeft.m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomLeft.m_Position.Y,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomRight.m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomRight.m_Position.Y);
+		}
+	}
+
 	///// Aqui se rendera los triangulos de la triangulacion.
 	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
 	//{
@@ -324,7 +342,7 @@ void LG_Visual::Run()
 			}
 		}
 
-		
+
 		//Renderer();
 	}
 
