@@ -26,6 +26,7 @@ namespace LevelGenerator
 		TopLeft.Z = fHeight;
 		TopRight.Z = fHeight;
 
+		/// Call the init function to create the center node.
 		m_pRectDimension->Init(TopLeft, TopRight, m_pFirstPosition->m_Position, m_pSecondPosition->m_Position);
 
 	}

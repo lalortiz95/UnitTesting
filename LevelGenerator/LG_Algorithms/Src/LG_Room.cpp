@@ -183,6 +183,16 @@ namespace LevelGenerator
 		std::sort(TopDoors.begin(), TopDoors.end());
 		std::sort(BottomDoors.begin(), BottomDoors.end());
 
+
+
+		int32 iTest = RightDoors.size() + LeftDoors.size() + TopDoors.size() + BottomDoors.size();
+
+		if (TopDoors.size() == 2 && iTest == 2)
+		{
+			int32 iPrueba = 0;
+			iPrueba = iTest;
+		}
+		
 		/// The walls from all the room are now calculated and stored.
 		CalculateWallNodes(RightDoors, m_pFloor->m_TopRight.m_Position, m_pFloor->m_BottomRight.m_Position, false);
 
@@ -191,6 +201,9 @@ namespace LevelGenerator
 		CalculateWallNodes(LeftDoors, m_pFloor->m_TopLeft.m_Position, m_pFloor->m_BottomLeft.m_Position, false);
 
 		CalculateWallNodes(BottomDoors, m_pFloor->m_BottomLeft.m_Position, m_pFloor->m_BottomRight.m_Position, true);
+
+
+		
 
 	}
 
@@ -221,11 +234,11 @@ namespace LevelGenerator
 	void LG_Room::CalculateWallNodes(Vector<float> sideDoors, LG_Vector3D FirstNode, LG_Vector3D SecondNode, bool bIsHorizontal)
 	{
 		LG_Vector3D WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight;
-		LG_Rect* pNewRect = nullptr;
+		LG_Wall* pNewRect = nullptr;
 
 		if (sideDoors.size() == 0)
 		{
-			pNewRect = new LG_Rect();
+			pNewRect = new LG_Wall();
 
 			WallBottomLeft = FirstNode;
 			WallBottomRight = SecondNode;
@@ -238,14 +251,20 @@ namespace LevelGenerator
 
 			/// Now the wall is created with all of it's components.
 			pNewRect->Init(WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight);
+
+			/// State if the wall is horizontal or vertical.
+			pNewRect->m_bIsHorizontal = bIsHorizontal;
+
 			/// We now store the new wall that has just been created.
 			m_Walls.push_back(pNewRect);
+
+			return;
 		}
 
 		/// Here we generate all the walls from the right side of the room. And they are stored in a wall vector.
 		for (int32 i = 0; i < sideDoors.size(); ++i)
 		{
-			pNewRect = new LG_Rect();
+			pNewRect = new LG_Wall();
 			///This is for the first iteration
 			if (i < 1)
 			{
@@ -327,6 +346,9 @@ namespace LevelGenerator
 				WallTopRight = WallTopLeft;
 				WallTopRight.Z = m_fHeight;
 			}
+
+			/// Now is stated if the wall is horizontal or not.
+			pNewRect->m_bIsHorizontal = bIsHorizontal;
 
 			/// Now the wall is created with all of it's components.
 			pNewRect->Init(WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight);

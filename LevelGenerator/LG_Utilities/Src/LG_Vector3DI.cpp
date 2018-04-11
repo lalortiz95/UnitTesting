@@ -284,7 +284,7 @@ namespace LevelGenerator
 	//! This operator divide the values from this vector with a value.
 	LG_Vector3DI& LG_Vector3DI::operator/=(int32 Value)
 	{
-		const int32 RV = 1.f / Value;
+		const int32 RV = 1 / Value;
 
 		X *= RV;
 		Y *= RV;

@@ -104,8 +104,9 @@ namespace LevelGenerator
 		 *	@param LG_Vector3D MinSize: the minimum available sizes for the rooms.
 		 *	@param LG_Vector3D MaxSize: the maximum available sizes for the rooms.
 		 *  @param float fSeparationRange: the range that we want to separate the rooms.
+		 *	@param float fHallwayWidth: The size that the hallways will have.
 		 */
-		void Run(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, int32 iSeed, float fSeparationRange);
+		void Run(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, int32 iSeed, float fSeparationRange, float fHallwayWidth);
 
 		/**
 		 *	@brief This function free the memory of the class, and destroys it's variables.

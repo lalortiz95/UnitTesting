@@ -2,7 +2,7 @@
 #include "LG_AlgorithmsPrerequisites.h"
 
 
-#include <LG_Rect.h>
+#include "LG_Wall.h"
 #include <LG_Door.h>
 
 namespace LevelGenerator
@@ -69,7 +69,7 @@ namespace LevelGenerator
 		/**
 		 *	@var Stores all the walls contained in the room. separated by corners or doors.
 		 */
-		Vector<LG_Rect*> m_Walls;
+		Vector<LG_Wall*> m_Walls;
 
 		/**
 		 *	@var The doors that have the room.
@@ -80,7 +80,6 @@ namespace LevelGenerator
 		 *	@var Stores the connections from every room.
 		 */
 		Vector<LG_Room*> m_RoomsConnections;
-
 
 		///************************************************************************/
 		///*						   Class Functions.							  */

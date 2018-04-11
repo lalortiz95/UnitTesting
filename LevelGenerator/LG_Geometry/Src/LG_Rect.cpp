@@ -264,6 +264,25 @@ namespace LevelGenerator
 		m_BottomRight.m_Position.Y = m_BottomLeft.m_Position.Y;
 	}
 
+	//! This function restructure the nodes of the rect after we change its position.
+	void LG_Rect::RestructureNodes(LG_Vector3D vCenterPosition)
+	{
+		m_CenterNode.m_Position.X = vCenterPosition.X;
+		m_CenterNode.m_Position.Y = vCenterPosition.Y;
+		/// We initialize all the nodes positions.
+		m_TopLeft.m_Position.X = m_CenterNode.m_Position.X - (m_fWidth / 2);
+		m_TopLeft.m_Position.Y = m_CenterNode.m_Position.Y - (m_fHeight / 2);
+
+		m_BottomLeft.m_Position.X = m_TopLeft.m_Position.X;
+		m_BottomLeft.m_Position.Y = m_TopLeft.m_Position.Y + m_fHeight;
+
+		m_TopRight.m_Position.X = m_TopLeft.m_Position.X + m_fWidth;
+		m_TopRight.m_Position.Y = m_TopLeft.m_Position.Y;
+
+		m_BottomRight.m_Position.X = m_TopRight.m_Position.X;
+		m_BottomRight.m_Position.Y = m_BottomLeft.m_Position.Y;
+	}
+
 	//TODO: Falta checar por tamaños del rect...
 	bool LG_Rect::CheckCollision(LG_Rect * pRect)
 	{

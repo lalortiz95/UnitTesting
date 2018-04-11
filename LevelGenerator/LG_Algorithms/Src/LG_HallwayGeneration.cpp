@@ -69,7 +69,7 @@ namespace LevelGenerator
 		/// 
 		LG_Hallway* pSecondCornerHallway = nullptr;
 
-		/// We iterate all the rooms and it's connections.
+		/// We iterate all the rooms and it's connections to make a hallway for every connection between them.
 		for (int32 i = 0; i < m_pRooms->size(); ++i)
 		{
 			for (int32 j = 0; j < (*m_pRooms)[i]->m_RoomsConnections.size(); ++j)
@@ -206,6 +206,7 @@ namespace LevelGenerator
 			}
 		}
 
+		/// Once we have all the doors created, we insert them to the rooms.
 		/// First the hallways are iterated.
 		for (int32 iActual = 0; iActual < m_FinalHallways.size(); ++iActual)
 		{
@@ -255,6 +256,7 @@ namespace LevelGenerator
 					// Cuando se saca y se inserta el nuevo corner terminar el for con un break. acontinuacion repetir esto dentro de un while pero es sumamente importante que
 					// se inicialize el for donde nos habiamos quedado ya que si no se generaran nuevas puertas para los cuartos en las mismas posiciones donde se encontraban
 					// las que ya tenia osea se hacen puertas de mas inecesarias...
+
 				}
 
 				else
@@ -354,9 +356,15 @@ namespace LevelGenerator
 		pNewHall->CreateDoors(pTLNode, pTRNode, pBLNode, pBRNode);
 
 		/// Here create the rectangles that represent the hallway's walls.
-		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pTLNode->m_Position, pBLNode->m_Position));
+		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pTLNode->m_Position, pBLNode->m_Position, false));
 		///
-		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pTRNode->m_Position, pBRNode->m_Position));
+		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pTRNode->m_Position, pBRNode->m_Position, false));
+		
+		/// 
+		pNewHall->CreateFloors();
+		/// 
+		pNewHall->CreateCeilings();
+
 		/// 
 		pNewHall->m_pParentRoom_1 = pRoom1;
 		/// 
@@ -441,9 +449,14 @@ namespace LevelGenerator
 		pNewHall->CreateDoors(pTLNode, pBLNode, pTRNode, pBRNode);
 
 		/// Here create the rectangles that represent the hallway's walls.
-		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pTLNode->m_Position, pTRNode->m_Position));
+		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pTLNode->m_Position, pTRNode->m_Position, true));
 		///
-		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pBLNode->m_Position, pBRNode->m_Position));
+		pNewHall->m_Walls.push_back(pNewHall->CreateWall(pBLNode->m_Position, pBRNode->m_Position, true));
+
+		/// 
+		pNewHall->CreateFloors();
+		/// 
+		pNewHall->CreateCeilings();
 
 		/// 
 		pNewHall->m_pParentRoom_1 = pRoom1;
@@ -563,13 +576,13 @@ namespace LevelGenerator
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
 
 				/// Here create the rectangles that represent the hallway's walls.
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode4->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode4->m_Position, false));
 				///
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode2->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode2->m_Position, true));
 				/// 
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode3->m_Position, spNode5->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode3->m_Position, spNode5->m_Position, true));
 				///
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode1->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode1->m_Position, false));
 				/// 
 				pNewHall->m_eCaseCorner = ROOM1_TOPRIGHT;
 			}
@@ -601,13 +614,13 @@ namespace LevelGenerator
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
 
 				/// Here create the rectangles that represent the hallway's walls.
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode5->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode5->m_Position, false));
 				///
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode3->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode3->m_Position, true));
 				/// 
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode2->m_Position, spNode4->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode2->m_Position, spNode4->m_Position, true));
 				///
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode1->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode1->m_Position, false));
 				/// 
 				pNewHall->m_eCaseCorner = ROOM1_TOPLEFT;
 			}
@@ -643,13 +656,13 @@ namespace LevelGenerator
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
 
 				/// Here create the rectangles that represent the hallway's walls.
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode4->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode4->m_Position, false));
 				///
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode3->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode3->m_Position, true));
 				/// 
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode2->m_Position, spNode5->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode2->m_Position, spNode5->m_Position, true));
 				///
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode1->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode1->m_Position, false));
 				///
 				pNewHall->m_eCaseCorner = ROOM1_BOTTOMRIGHT;
 			}
@@ -681,13 +694,13 @@ namespace LevelGenerator
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
 
 				/// Here create the rectangles that represent the hallway's walls.
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode5->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode5->m_Position, false));
 				///
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode2->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode2->m_Position, true));
 				/// 
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode3->m_Position, spNode4->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode3->m_Position, spNode4->m_Position, true));
 				///
-				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode1->m_Position));
+				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode1->m_Position, false));
 				///
 				pNewHall->m_eCaseCorner = ROOM1_BOTTOMLEFT;
 			}

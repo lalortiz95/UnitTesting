@@ -68,15 +68,16 @@ namespace LevelGenerator
 	}
 
 	//! This function create a one wall for the hallway.
-	LG_Rect * LG_Hallway::CreateWall(LG_Vector3D BottomLeft, LG_Vector3D BottomRight)
+	LG_Wall * LG_Hallway::CreateWall(LG_Vector3D BottomLeft, LG_Vector3D BottomRight, bool bIsHorizontal)
 	{
-		LG_Rect* pNewWall = new LG_Rect();
+		LG_Wall* pNewWall = new LG_Wall();
 		LG_Vector3D TopLeft, TopRight;
 		TopLeft = BottomLeft;
 		TopRight = BottomRight;
 		TopLeft.Z = m_fHeight;
-		TopLeft.Z = m_fHeight;
+		TopRight.Z = m_fHeight;
 		pNewWall->Init(TopLeft, TopRight, BottomLeft, BottomRight);
+		pNewWall->m_bIsHorizontal = bIsHorizontal;
 		return pNewWall;
 	}
 
@@ -143,10 +144,14 @@ namespace LevelGenerator
 		/// Delete the floors.
 		DestroyFloors();
 
-		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[0]->m_Position, m_pPolygon->m_pNodeVector[1]->m_Position));
-		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[1]->m_Position, m_pPolygon->m_pNodeVector[2]->m_Position));
-		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[3]->m_Position, m_pPolygon->m_pNodeVector[4]->m_Position));
-		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[4]->m_Position, m_pPolygon->m_pNodeVector[5]->m_Position));
+		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[0]->m_Position, m_pPolygon->m_pNodeVector[1]->m_Position, false));
+		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[1]->m_Position, m_pPolygon->m_pNodeVector[2]->m_Position, true));
+		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[3]->m_Position, m_pPolygon->m_pNodeVector[4]->m_Position, true));
+		m_Walls.push_back(CreateWall(m_pPolygon->m_pNodeVector[4]->m_Position, m_pPolygon->m_pNodeVector[5]->m_Position, false));
+
+
+		//TODO: Esto solo es para los pasillos que son esquinas. checar con los vertical y horizontal.
+		ReorganizeDoors(m_pPolygon->m_pNodeVector[0]->m_Position, m_pPolygon->m_pNodeVector[5]->m_Position, m_pPolygon->m_pNodeVector[2]->m_Position, m_pPolygon->m_pNodeVector[3]->m_Position);
 
 		//if (eCase == ROOM1_TOPRIGHT)
 		//{
@@ -404,5 +409,22 @@ namespace LevelGenerator
 			rHorizontal.m_BottomLeft.m_Position.X = pHallway.m_pPolygon->m_pNodeVector[1]->m_Position.X;
 			rHorizontal.m_BottomLeft.m_Position.Y = pHallway.m_pPolygon->m_pNodeVector[3]->m_Position.Y;
 		}
+	}
+
+	//!
+	void LG_Hallway::ReorganizeDoors(LG_Vector3D FD_FP, LG_Vector3D FD_SP, LG_Vector3D SD_FP, LG_Vector3D SD_SP)
+	{
+		LG_Vector3D TopRight, TopLeft;
+		TopRight = FD_FP;
+		TopLeft = FD_SP;
+		TopRight.Z = m_fHeight;
+		TopLeft.Z = m_fHeight;
+		m_pFirstDoor->m_pRectDimension->Init(TopLeft, TopRight, FD_FP, FD_SP);
+
+		TopRight = SD_FP;
+		TopLeft = SD_SP;
+		TopRight.Z = m_fHeight;
+		TopLeft.Z = m_fHeight;
+		m_pSecondDoor->m_pRectDimension->Init(TopLeft, TopRight, SD_FP, SD_SP);
 	}
 }

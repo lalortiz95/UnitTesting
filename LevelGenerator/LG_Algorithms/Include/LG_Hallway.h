@@ -116,7 +116,7 @@ namespace LevelGenerator
 		/**
 		 *	@var A Vector to stores the walls of the hallway.
 		 */
-		Vector<LG_Rect*> m_Walls;
+		Vector<LG_Wall*> m_Walls;
 
 		///**************************************************************************/
 		///*						  Class Functions.								*/
@@ -166,9 +166,10 @@ namespace LevelGenerator
 		 *	@brief This function create a one wall for the hallway.
 		 *	@param LG_Vector3D BottomLeft: The bottom left of the wall.
 		 *	@param LG_Vector3D BottomRight: The bottom right of the wall.
+		 *	@param bool bIsHorizontal: states if the wall is horizontal or vertical, as seen from upside down.
 		 *	@return Thew wall that was created.
 		 */
-		LG_Rect* CreateWall(LG_Vector3D BottomLeft, LG_Vector3D BottomRight);
+		LG_Wall* CreateWall(LG_Vector3D BottomLeft, LG_Vector3D BottomRight, bool bIsHorizontal);
 
 		/**
 		 *	@brief This function delete the walls of the hallway.
@@ -190,6 +191,13 @@ namespace LevelGenerator
 		 *	@param CASES_FOR_CORNER eCase: The case of the corner for the hallway.
 		 */
 		void ReorganizeVariables(CASES_FOR_CORNER eCase);
+
+		/**
+		*
+		*/
+		void ReorganizeDoors(LG_Vector3D FD_FP, LG_Vector3D FD_SP, LG_Vector3D SD_FP, LG_Vector3D SD_SP);
+
+		
 	private:
 
 		/**
@@ -199,6 +207,7 @@ namespace LevelGenerator
 		 *  @param const LG_Hallway& pHallway: The hallway that we want to use to create both rects.
 		 */
 		void CreateTempRects(LG_Rect& rHorizontal, LG_Rect& rVertical, const LG_Hallway& pHallway);
+
 	};
 }
 

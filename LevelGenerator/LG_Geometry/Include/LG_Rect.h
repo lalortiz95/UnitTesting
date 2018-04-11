@@ -140,6 +140,12 @@ namespace LevelGenerator
 		 *	@brief This function restructure the nodes of the rect after we change its position.
 		 */
 		void RestructureNodes();
+
+		/**
+	     *	@brief This function restructure the nodes of the rect after we change its position.
+		 *	@param LG_Vector3D vCenterPosition: The position of the center node.
+		 */
+		void RestructureNodes(LG_Vector3D vCenterPosition);
 	};
 }
 

@@ -182,6 +182,7 @@
     <ClInclude Include="Include\LG_HallwayGeneration.h" />
     <ClInclude Include="Include\LG_MST.h" />
     <ClInclude Include="Include\LG_Room.h" />
+    <ClInclude Include="Include\LG_Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\LG_DelaunayTriangulation.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Src\LG_HallwayGeneration.cpp" />
     <ClCompile Include="Src\LG_MST.cpp" />
     <ClCompile Include="Src\LG_Room.cpp" />
+    <ClCompile Include="Src\LG_Wall.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

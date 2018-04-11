@@ -52,7 +52,7 @@ namespace LevelGenerator
 	}
 
 	//! This calls all the algorithms and put them together to generate a procedural level.
-	void LG_Generate::Run(uint32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, int32 iSeed, float fSeparationRange)
+	void LG_Generate::Run(uint32 iRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, int32 iSeed, float fSeparationRange, float fHallwayWidth)
 	{
 
 		/// Initialize the seed.
@@ -61,7 +61,7 @@ namespace LevelGenerator
 		/// Generate rooms that we want to needed 
 		GenerateRooms(iRoomAmount, MinSize, MaxSize, MaxSize.Z);
 
-		/// We separate the rooms with a simple separation force. 
+		/// We separate the rooms with a simple separation force, and a range. 
 		while (!SeparationRooms(0.016f, fSeparationRange));
 
 		/// Delaunay triangulation is applied.
@@ -75,7 +75,7 @@ namespace LevelGenerator
 		GenerateRoomsConnections();
 
 		/// We run the hallway algorithm 
-		m_HG.Run(&m_RoomsVector, 10.f, MaxSize.Z);
+		m_HG.Run(&m_RoomsVector, fHallwayWidth, MaxSize.Z);
 
 		/// 
 		for (int32 i = 0; i < m_RoomsVector.size(); ++i)
@@ -113,8 +113,10 @@ namespace LevelGenerator
 			{
 				/// Actualize the new position for the iterating room.
 				(*itt)->m_pFloor->m_CenterNode.m_Position += (*itt)->m_pFloor->m_Direction * fDelta;
-				/// Restructure the nodes of the iterating rect.
+				/// Restructure the floor nodes' of the room.
 				(*itt)->m_pFloor->RestructureNodes();
+				/// Restructure the ceiling nodes' of the room.
+				(*itt)->m_pCeiling->RestructureNodes((*itt)->m_pFloor->m_CenterNode.m_Position);
 				/// Set this flag as false to determinate that algorithm has at least one rectangle without separating.
 				bCanStopSeparate = false;
 			}
@@ -130,7 +132,7 @@ namespace LevelGenerator
 		///
 		LG_Node PositionCenterSpawnZone;
 
-		PositionCenterSpawnZone.m_Position = LG_Vector3D(300, 300, 0);
+		PositionCenterSpawnZone.m_Position = LG_Vector3D(0, 0, 0);
 		/// Create a area to spawn the dots.
 		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, (float)uiRoomAmount * (float)SPAWN_ZONE, (float)uiRoomAmount * (float)SPAWN_ZONE);
 
