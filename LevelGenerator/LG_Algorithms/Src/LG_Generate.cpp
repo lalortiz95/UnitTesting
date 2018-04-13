@@ -132,7 +132,7 @@ namespace LevelGenerator
 		///
 		LG_Node PositionCenterSpawnZone;
 
-		PositionCenterSpawnZone.m_Position = LG_Vector3D(0, 0, 0);
+		PositionCenterSpawnZone.m_Position = LG_Vector3D(300, 300, 0);
 		/// Create a area to spawn the dots.
 		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, (float)uiRoomAmount * (float)SPAWN_ZONE, (float)uiRoomAmount * (float)SPAWN_ZONE);
 

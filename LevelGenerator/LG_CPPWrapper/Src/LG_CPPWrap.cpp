@@ -147,16 +147,16 @@ extern "C"
 		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_pCeiling->m_fHeight;
 	}
 
-	LG_WRAPPER_EXPORT float GetRoomWallCenterPos_X(void * pGenerate, int iRoomArrayPos, int iWallArrayPos)
-	{
-		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_CenterNode.m_Position.X;
-	}
-
 	LG_WRAPPER_EXPORT bool IsRoomWallHorizontal(void * pGenerate, int iRoom, int iWall)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
 		return pTempGenerate->m_RoomsVector[iRoom]->m_Walls[iWall]->m_bIsHorizontal;
+	}
+
+	LG_WRAPPER_EXPORT float GetRoomWallCenterPos_X(void * pGenerate, int iRoomArrayPos, int iWallArrayPos)
+	{
+		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
+		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_CenterNode.m_Position.X;
 	}
 
 	LG_WRAPPER_EXPORT float GetRoomWallCenterPos_Y(void * pGenerate, int iRoomArrayPos, int iWallArrayPos)
@@ -212,141 +212,6 @@ extern "C"
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
 		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Doors[iDoorArrPos]->m_pRectDimension->m_fHeight;
 	}
-
-	//!
-	//float GetRoomWidth(void * pGenerate, int iRoomArrayPosition)
-	//{
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-	//	return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_fWidth;
-	//}
-
-	////!
-	//float GetRoomHeight(void * pGenerate, int iRoomArrayPosition)
-	//{
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-	//	return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_fHeight;
-	//}
-
-	////!
-	//float GetRoomPosition_X(void * pGenerate, int iRoomArrayPosition)
-	//{
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-	//	return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_CenterNode.m_Position.X;
-	//}
-
-	////!
-	//float GetRoomPosition_Y(void * pGenerate, int iRoomArrayPosition)
-	//{
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-	//	return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_CenterNode.m_Position.Y;
-	//}
-
-	////!
-	//float GetRoomPosition_Z(void * pGenerate, int iRoomArrayPosition)
-	//{
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-	//	return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_CenterNode.m_Position.Z;
-	//}
-
-	////!
-	//float GetRoomNodePosition_X(void * pGenerate, int iRoomArrayPosition, int iNumOfNode)
-	//{
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-
-
-	//	if (0 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_TopLeft.m_Position.X;
-	//	}
-	//	else if (1 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_TopRight.m_Position.X;
-	//	}
-	//	else if (2 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_BottomRight.m_Position.X;
-	//	}
-	//	else if (3 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_BottomLeft.m_Position.X;
-	//	}
-	//	else return 0;
-	//}
-
-	////!
-	//float GetRoomNodePosition_Y(void * pGenerate, int iRoomArrayPosition, int iNumOfNode)
-	//{
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-
-
-	//	if (0 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_TopLeft.m_Position.Y;
-	//	}
-	//	else if (1 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_TopRight.m_Position.Y;
-	//	}
-	//	else if (2 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_BottomRight.m_Position.Y;
-	//	}
-	//	else if (3 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_BottomLeft.m_Position.Y;
-	//	}
-	//	else return 0;
-	//}
-
-	////!
-	//float GetRoomNodePosition_Z(void * pGenerate, int iRoomArrayPosition, int iNumOfNode)
-	//{
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-
-
-	//	if (0 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_TopLeft.m_Position.Z;
-	//	}
-	//	else if (1 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_TopRight.m_Position.Z;
-	//	}
-	//	else if (2 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_BottomRight.m_Position.Z;
-	//	}
-	//	else if (3 == iNumOfNode)
-	//	{
-	//		return pTempGenerate->m_RoomsVector[iRoomArrayPosition]->m_pFloor->m_BottomLeft.m_Position.Z;
-	//	}
-	//	else return 0;
-	//}
-
-
-	//////////////////////////////////////////////////////////////////////////
-	//PASILLOS
-
-	//float GetHallwayNodePosition_X(void* pGenerate, int iHallway, int iNode)
-	//{
-	//	// 
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-	//	return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_pPolygon->m_pNodeVector[iNode]->m_Position.X;
-	//}
-
-	//float GetHallwayNodePosition_Y(void * pGenerate, int iHallway, int iNode)
-	//{
-	//	// 
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-	//	return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_pPolygon->m_pNodeVector[iNode]->m_Position.Y;
-	//}
-
-	//float GetHallwayNodePosition_Z(void * pGenerate, int iHallway, int iNode)
-	//{
-	//	// 
-	//	LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-	//	return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_pPolygon->m_pNodeVector[iNode]->m_Position.Z;
-	//}
 
 	//! If a hallway is a corner or a straight hall.
 	bool IsCorner(void * pGenerate, int iHallway)

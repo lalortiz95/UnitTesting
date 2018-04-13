@@ -557,10 +557,7 @@ namespace LG_CSWrapper
                 iNodeAmount = GetHallwayCeilingsAmount(pGenerateLevel, i);
 
                 for (int j = 0; j < iNodeAmount; j++)
-                {
-                    /// We allocate memory for a new hallway that is going to be generated.
-                    //newHallway = new LG_CSHallway();
-
+                { 
                     /// We once again recycle our variables to complete the loop by storing the ceilings.
                     newVector = new LG_Vector3();
                     newVector.X = GetHallwayCeilingCenterPosition_X(pGenerateLevel, i, j);
@@ -605,12 +602,6 @@ namespace LG_CSWrapper
                     TempRect.m_bIsHorizontal = IsRoomWallHorizontal(pGenerateLevel, i, j);
 
                     newRoom.m_Walls.Add(TempRect);
-                    //newRoom.m_Walls[j].m_CenterPosition.X = GetRoomWallCenterPosition_X(pGenerateLevel, i, j);
-                    //newRoom.m_Walls[j].m_CenterPosition.Y = GetRoomWallCenterPosition_Y(pGenerateLevel, i, j);
-                    //newRoom.m_Walls[j].m_CenterPosition.Z = GetRoomWallCenterPosition_Z(pGenerateLevel, i, j);
-
-                    //newRoom.m_Walls[j].m_fHeight = GetRoomWallHeight(pGenerateLevel, i, j);
-                    //newRoom.m_Walls[j].m_fWidth = GetRoomWallWidth(pGenerateLevel, i, j);
                 }
 
                 //TODO: llenar la infomación en temporales y después agregarlas al floor?
@@ -622,9 +613,6 @@ namespace LG_CSWrapper
 
                 TempRect = new LG_CSRect(newVector, GetRoomFloorHeight(pGenerateLevel, i), GetRoomFloorWidth(pGenerateLevel, i));
                 newRoom.m_Floor = TempRect;
-                //newRoom.m_Floor.m_CenterPosition.X = GetRoomFloorCenterPosition_X(pGenerateLevel, i);
-                //newRoom.m_Floor.m_CenterPosition.Y = GetRoomFloorCenterPosition_Y(pGenerateLevel, i);
-                //newRoom.m_Floor.m_CenterPosition.Z = GetRoomFloorCenterPosition_Z(pGenerateLevel, i);
 
                 /// Here the floor is stored in the iterating new room.
                 newVector = new LG_Vector3();
@@ -644,32 +632,6 @@ namespace LG_CSWrapper
                 }
 
                 m_Rooms.Add(newRoom);
-
-                /// Stores the room's Width.
-                //newRoom.m_fWidth = GetRoomWidth(pGenerateLevel, i);
-                /// Stores the room's height.
-                //newRoom.m_fHeight = GetRoomHeight(pGenerateLevel, i);
-                //
-                /// Coordinates change to work under unity's coordinates system.
-                //newRoom.m_Position.X = GetRoomPosition_X(pGenerateLevel, i);
-                //newRoom.m_Position.Y = GetRoomPosition_Z(pGenerateLevel, i);
-                //newRoom.m_Position.Z = GetRoomPosition_Y(pGenerateLevel, i);
-                //
-                //newRoom.m_TopLeftPosition.X = GetRoomNodePosition_X(pGenerateLevel, i, 0);
-                //newRoom.m_TopLeftPosition.Y = GetRoomNodePosition_Z(pGenerateLevel, i, 0);
-                //newRoom.m_TopLeftPosition.Z = GetRoomNodePosition_Y(pGenerateLevel, i, 0);
-                //
-                //newRoom.m_TopRightPosition.X = GetRoomNodePosition_X(pGenerateLevel, i, 1);
-                //newRoom.m_TopRightPosition.Y = GetRoomNodePosition_Z(pGenerateLevel, i, 1);
-                //newRoom.m_TopRightPosition.Z = GetRoomNodePosition_Y(pGenerateLevel, i, 1);
-                //
-                //newRoom.m_BottomLeftPosition.X = GetRoomNodePosition_X(pGenerateLevel, i, 2);
-                //newRoom.m_BottomLeftPosition.Y = GetRoomNodePosition_Z(pGenerateLevel, i, 2);
-                //newRoom.m_BottomLeftPosition.Z = GetRoomNodePosition_Y(pGenerateLevel, i, 2);
-                //
-                //newRoom.m_BottomRightPosition.X = GetRoomNodePosition_X(pGenerateLevel, i, 3);
-                //newRoom.m_BottomRightPosition.Y = GetRoomNodePosition_Z(pGenerateLevel, i, 3);
-                //newRoom.m_BottomRightPosition.Z = GetRoomNodePosition_Y(pGenerateLevel, i, 3);
             }
 
             return pGenerateLevel;

@@ -249,23 +249,26 @@ void LG_Visual::Renderer()
 	//	}
 	//}
 
-	for (int i = 0; i < AlgorithmGeneration.m_HG.m_FinalHallways.size(); ++i)
-	{
-		//Draws the top line of the rectangle.
-		SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
-		SDL_RenderDrawLine(m_Renderer,
-			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pFirstDoor->m_pFirstPosition->m_Position.X,
-			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pFirstDoor->m_pFirstPosition->m_Position.Y,
-			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pFirstDoor->m_pSecondPosition->m_Position.X,
-			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pFirstDoor->m_pSecondPosition->m_Position.Y);
+	
 
-		SDL_RenderDrawLine(m_Renderer,
-			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pSecondDoor->m_pFirstPosition->m_Position.X,
-			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pSecondDoor->m_pFirstPosition->m_Position.Y,
-			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pSecondDoor->m_pSecondPosition->m_Position.X,
-			(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_pSecondDoor->m_pSecondPosition->m_Position.Y);
-	}
+	///// Aqui se renderean las puertas de pasillos y cuartos.
+	//for (int i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
+	//{
+	//	//Draws the top line of the rectangle.
 
+	//	for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Doors.size(); ++j)
+	//	{
+	//		SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
+	//		SDL_RenderDrawLine(m_Renderer,
+	//			(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.X,
+	//			(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.Y,
+	//			(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.X,
+	//			(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.Y);
+	//	}
+
+	//}
+
+	/// Aqui se renderean las paredes de cada pasillo.
 	for (int i = 0; i < AlgorithmGeneration.m_HG.m_FinalHallways.size(); ++i)
 	{
 		for (int j = 0; j < AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls.size(); ++j)
@@ -283,12 +286,25 @@ void LG_Visual::Renderer()
 	}
 
 	
-	/// Aquí voa renderear paredes, puertas y la verga es.
+	/// Aquí voa renderean las paredes de cada cuarto.
 	for (int i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
 	{
 		
-		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
+		
 
+		for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Doors.size(); ++j)
+		{
+			SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
+			SDL_RenderDrawLine(m_Renderer,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.Y,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.Y);
+			SDL_RenderPresent(m_Renderer);
+			SDL_Delay(500);
+		}
+
+		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
 		for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Walls.size(); ++j)
 		{
 			
@@ -299,14 +315,17 @@ void LG_Visual::Renderer()
 				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomLeft.m_Position.Y,
 				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomRight.m_Position.X,
 				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomRight.m_Position.Y);
-		}
+		}	
 	}
 	
+	
 	///// Aqui se rendera los triangulos de la triangulacion.
+	//LG_Vector3D posToSpawn, Secondpos;
 	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)
 	//{
 	//	for (LevelGenerator::int32 j = 0; j < NODES_PER_TRIANGLE; ++j)
 	//	{
+	//		
 	//		posToSpawn = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_pEdges[j]->m_pFirstNode->m_Position;
 	//		Secondpos = AlgorithmGeneration.m_DT.m_pTrianglesVector[i]->m_pEdges[j]->m_pSecondNode->m_Position;
 	//		// Draw red line.

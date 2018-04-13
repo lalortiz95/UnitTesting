@@ -152,25 +152,29 @@ namespace LevelGenerator
 		/// Iterate the vector of doors to find their side. counter clock-wise.
 		for (int32 i = 0; i < m_Doors.size(); ++i)
 		{
-			if (m_Doors[i]->m_pFirstPosition->m_Position.X == m_pFloor->m_TopLeft.m_Position.X)
+			if (m_Doors[i]->m_pFirstPosition->m_Position.X == m_pFloor->m_TopLeft.m_Position.X 
+				&& m_Doors[i]->m_pSecondPosition->m_Position.X == m_pFloor->m_TopLeft.m_Position.X)
 			{
 				LeftDoors.push_back(m_Doors[i]->m_pFirstPosition->m_Position.Y);
 				LeftDoors.push_back(m_Doors[i]->m_pSecondPosition->m_Position.Y);
 			}
 
-			else if (m_Doors[i]->m_pFirstPosition->m_Position.Y == m_pFloor->m_BottomLeft.m_Position.Y)
+			else if (m_Doors[i]->m_pFirstPosition->m_Position.Y == m_pFloor->m_BottomLeft.m_Position.Y 
+				&& m_Doors[i]->m_pSecondPosition->m_Position.Y == m_pFloor->m_BottomLeft.m_Position.Y)
 			{
 				BottomDoors.push_back(m_Doors[i]->m_pFirstPosition->m_Position.X);
 				BottomDoors.push_back(m_Doors[i]->m_pSecondPosition->m_Position.X);
 			}
 
-			else if (m_Doors[i]->m_pFirstPosition->m_Position.X == m_pFloor->m_BottomRight.m_Position.X)
+			else if (m_Doors[i]->m_pFirstPosition->m_Position.X == m_pFloor->m_BottomRight.m_Position.X 
+				&& m_Doors[i]->m_pSecondPosition->m_Position.X == m_pFloor->m_BottomRight.m_Position.X)
 			{
 				RightDoors.push_back(m_Doors[i]->m_pFirstPosition->m_Position.Y);
 				RightDoors.push_back(m_Doors[i]->m_pSecondPosition->m_Position.Y);
 			}
 
-			else if (m_Doors[i]->m_pFirstPosition->m_Position.Y == m_pFloor->m_TopRight.m_Position.Y)
+			else if (m_Doors[i]->m_pFirstPosition->m_Position.Y == m_pFloor->m_TopRight.m_Position.Y 
+				&& m_Doors[i]->m_pSecondPosition->m_Position.Y == m_pFloor->m_TopRight.m_Position.Y)
 			{
 				TopDoors.push_back(m_Doors[i]->m_pFirstPosition->m_Position.X);
 				TopDoors.push_back(m_Doors[i]->m_pSecondPosition->m_Position.X);
@@ -183,16 +187,6 @@ namespace LevelGenerator
 		std::sort(TopDoors.begin(), TopDoors.end());
 		std::sort(BottomDoors.begin(), BottomDoors.end());
 
-
-
-		int32 iTest = RightDoors.size() + LeftDoors.size() + TopDoors.size() + BottomDoors.size();
-
-		if (TopDoors.size() == 2 && iTest == 2)
-		{
-			int32 iPrueba = 0;
-			iPrueba = iTest;
-		}
-		
 		/// The walls from all the room are now calculated and stored.
 		CalculateWallNodes(RightDoors, m_pFloor->m_TopRight.m_Position, m_pFloor->m_BottomRight.m_Position, false);
 
@@ -201,9 +195,6 @@ namespace LevelGenerator
 		CalculateWallNodes(LeftDoors, m_pFloor->m_TopLeft.m_Position, m_pFloor->m_BottomLeft.m_Position, false);
 
 		CalculateWallNodes(BottomDoors, m_pFloor->m_BottomLeft.m_Position, m_pFloor->m_BottomRight.m_Position, true);
-
-
-		
 
 	}
 
@@ -268,18 +259,6 @@ namespace LevelGenerator
 			///This is for the first iteration
 			if (i < 1)
 			{
-				/// We store the position for the top left node of the wall.
-				WallTopLeft = FirstNode;
-				WallTopLeft.Z = m_fHeight;
-
-				/// Now the top right is calculated.
-				WallTopRight = WallTopLeft;
-				/// 
-				if (bIsHorizontal)
-					WallTopRight.X = sideDoors[i];
-				else
-					WallTopRight.Y = sideDoors[i];
-
 				///Bottom left node's position is now calculated.
 				WallBottomLeft = FirstNode;
 
@@ -290,21 +269,19 @@ namespace LevelGenerator
 					WallBottomRight.X = sideDoors[i];
 				else
 					WallBottomRight.Y = sideDoors[i];
+
+				/// We store the position for the top left node of the wall.
+				WallTopLeft = WallBottomLeft;
+				WallTopLeft.Z = m_fHeight;
+
+				/// Now the top right is calculated.
+				WallTopRight = WallBottomRight;
+				/// 
+				WallTopRight.Z = m_fHeight;
 			}
 			/// This is used in the last iteration
 			else if (i + 1 >= sideDoors.size())
 			{
-				/// The wall is being calculated between the last position from the list, and the floor bottom right corner.
-				WallTopRight = SecondNode;
-				WallTopRight.Z = m_fHeight;
-
-				WallTopLeft = WallTopRight;
-
-				if (bIsHorizontal)
-					WallTopLeft.X = sideDoors[i];
-				else
-					WallTopLeft.Y = sideDoors[i];
-
 				WallBottomRight = SecondNode;
 
 				WallBottomLeft = WallBottomRight;
@@ -313,6 +290,13 @@ namespace LevelGenerator
 					WallBottomLeft.X = sideDoors[i];
 				else
 					WallBottomLeft.Y = sideDoors[i];
+
+				/// The wall is being calculated between the last position from the list, and the floor bottom right corner.
+				WallTopRight = WallBottomRight;
+				WallTopRight.Z = m_fHeight;
+
+				WallTopLeft = WallBottomLeft;
+				WallTopLeft.Z = m_fHeight;
 			}
 			/// All the iterations in between.
 			else
@@ -325,12 +309,12 @@ namespace LevelGenerator
 				WallBottomLeft = FirstNode;
 
 				/// We see in which axis we are affecting the wall's bottom left node.
-				if (bIsHorizontal)	
+				if (bIsHorizontal)
 					WallBottomLeft.X = sideDoors[i];
-				else 
+				else
 					WallBottomLeft.Y = sideDoors[i];
 
-				/// 
+				///
 				WallBottomRight = WallBottomLeft;
 
 				/// 
@@ -343,7 +327,7 @@ namespace LevelGenerator
 				WallTopLeft = WallBottomLeft;
 				WallTopLeft.Z = m_fHeight;
 				/// 
-				WallTopRight = WallTopLeft;
+				WallTopRight = WallBottomRight;
 				WallTopRight.Z = m_fHeight;
 			}
 
