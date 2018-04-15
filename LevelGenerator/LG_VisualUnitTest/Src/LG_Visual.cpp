@@ -251,22 +251,22 @@ void LG_Visual::Renderer()
 
 	
 
-	///// Aqui se renderean las puertas de pasillos y cuartos.
-	//for (int i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
-	//{
-	//	//Draws the top line of the rectangle.
+	/// Aqui se renderean las puertas de pasillos y cuartos.
+	for (int i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
+	{
+		//Draws the top line of the rectangle.
 
-	//	for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Doors.size(); ++j)
-	//	{
-	//		SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
-	//		SDL_RenderDrawLine(m_Renderer,
-	//			(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.X,
-	//			(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.Y,
-	//			(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.X,
-	//			(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.Y);
-	//	}
+		for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Doors.size(); ++j)
+		{
+			SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
+			SDL_RenderDrawLine(m_Renderer,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.Y,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.Y);
+		}
 
-	//}
+	}
 
 	/// Aqui se renderean las paredes de cada pasillo.
 	for (int i = 0; i < AlgorithmGeneration.m_HG.m_FinalHallways.size(); ++i)
@@ -289,21 +289,6 @@ void LG_Visual::Renderer()
 	/// Aquí voa renderean las paredes de cada cuarto.
 	for (int i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
 	{
-		
-		
-
-		for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Doors.size(); ++j)
-		{
-			SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
-			SDL_RenderDrawLine(m_Renderer,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.X,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.Y,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.X,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.Y);
-			SDL_RenderPresent(m_Renderer);
-			SDL_Delay(500);
-		}
-
 		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
 		for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Walls.size(); ++j)
 		{

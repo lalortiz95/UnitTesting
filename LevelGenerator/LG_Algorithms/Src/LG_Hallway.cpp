@@ -45,10 +45,28 @@ namespace LevelGenerator
 			pNewCeiling->m_CenterNode.m_Position.Z = m_fHeight;
 			m_Ceilings.push_back(pNewCeiling);
 		}
-
 		else
 		{
+			LG_Rect* pNewCeiling;
+			for (int32 i = 0; i < m_Floors.size(); ++i)
+			{
+				pNewCeiling = new LG_Rect();
+				/// 
+				pNewCeiling->Init(m_Floors[i]->m_TopLeft.m_Position, 
+					m_Floors[i]->m_TopRight.m_Position, 
+					m_Floors[i]->m_BottomLeft.m_Position, 
+					m_Floors[i]->m_BottomRight.m_Position);
 
+				/// the height is now changed to the height.
+				pNewCeiling->m_BottomLeft.m_Position.Z = m_fHeight;
+				pNewCeiling->m_BottomRight.m_Position.Z = m_fHeight;
+				pNewCeiling->m_TopLeft.m_Position.Z = m_fHeight;
+				pNewCeiling->m_TopRight.m_Position.Z = m_fHeight;
+				pNewCeiling->m_CenterNode.m_Position.Z = m_fHeight;
+				///
+				m_Ceilings.push_back(pNewCeiling);
+
+			}
 		}
 	}
 
@@ -63,7 +81,187 @@ namespace LevelGenerator
 		}
 		else
 		{
+			if (m_eCaseCorner == ROOM1_TOPRIGHT)
+			{
+				// Top left: node 0 [0], top right: node 1 [5], bottom left: node 4 [1], bottom right: bottom left's Y position, top right's X position.
+				/// There will be 3 floors, two rectangles for both hallway directions, one square in the corner to patch the missing gap.
+				/// The first floor (vertical) is generated.
+				LG_Rect* pNewFloor = new LG_Rect();
+				LG_Vector3D topLeft = m_pPolygon->m_pNodeVector[0]->m_Position;
+				LG_Vector3D topRight = m_pPolygon->m_pNodeVector[5]->m_Position;
+				LG_Vector3D bottomLeft = m_pPolygon->m_pNodeVector[1]->m_Position;
+				LG_Vector3D bottomRight = topRight;
+				bottomRight.Y = bottomLeft.Y;
+				/// 
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// The floor is now stored in the hallway's vector.
+				m_Floors.push_back(pNewFloor);
 
+				/// Now the second floor is generated (horizontal)
+				// Top left: node 2 [2], Top right: node 4 [1], Bottom left: node 3 [3], bottom right: bottom left's Y pos, and top right's X pos.
+				pNewFloor = new LG_Rect();
+				topLeft = m_pPolygon->m_pNodeVector[2]->m_Position;
+				topRight = m_pPolygon->m_pNodeVector[1]->m_Position;
+				bottomLeft = m_pPolygon->m_pNodeVector[3]->m_Position;
+				bottomRight = topRight;
+				bottomRight.Y = bottomLeft.Y;
+				/// 
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// 
+				m_Floors.push_back(pNewFloor);
+
+				/// Now the third and last floor is calculated.
+				pNewFloor = new LG_Rect();
+				// Top left: node 4 [1], top right: top left's Y pos, and bottom right X position., BottomLeft: bottom right's Y pos and top left's X pos, Bottom Right: node 5 [4]
+				/// 
+				topRight = m_pPolygon->m_pNodeVector[4]->m_Position;
+				topRight.Y = m_pPolygon->m_pNodeVector[1]->m_Position.Y;
+				/// 
+				bottomLeft = m_pPolygon->m_pNodeVector[4]->m_Position;
+				bottomLeft.X = m_pPolygon->m_pNodeVector[1]->m_Position.X;
+				pNewFloor->Init(m_pPolygon->m_pNodeVector[1]->m_Position, topRight, bottomLeft, m_pPolygon->m_pNodeVector[4]->m_Position);
+				/// 
+				m_Floors.push_back(pNewFloor);
+			}
+			else if (m_eCaseCorner == ROOM1_TOPLEFT)
+			{
+				// Top left: node 0 [0], top right: node 1 [5], bottom left: node 4 [4], bottom right: bottom left Y and top right X
+				/// There will be 3 floors, two rectangles for both hallway directions, one square in the corner to patch the missing gap.
+				/// The first floor (vertical) is generated.
+				LG_Rect* pNewFloor = new LG_Rect();
+				LG_Vector3D topLeft = m_pPolygon->m_pNodeVector[0]->m_Position;
+				LG_Vector3D topRight = m_pPolygon->m_pNodeVector[5]->m_Position;
+				LG_Vector3D bottomLeft = m_pPolygon->m_pNodeVector[4]->m_Position;
+				LG_Vector3D bottomRight = topRight;
+				bottomRight.Y = bottomLeft.Y;
+				/// 
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// The floor is now stored in the hallway's vector.
+				m_Floors.push_back(pNewFloor);
+
+				/// Now the second floor is generated (horizontal)
+				// Top left: node 4 [4], Top right: node 2 [3], Bottom left: BR_Y_pos and TL_X_pos, bottom right: node 3 [2].
+				pNewFloor = new LG_Rect();
+				topLeft = m_pPolygon->m_pNodeVector[4]->m_Position;
+				topRight = m_pPolygon->m_pNodeVector[3]->m_Position;
+				bottomRight = m_pPolygon->m_pNodeVector[2]->m_Position;
+				bottomLeft = bottomRight;
+				bottomLeft.X = topLeft.X;
+				/// 
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// 
+				m_Floors.push_back(pNewFloor);
+
+				/// Now the third and last floor is calculated.
+				pNewFloor = new LG_Rect();
+				// Top left: TR_Y_pos and BL_X_pos, top right: node 4 [4], BottomLeft: node 5 [1], Bottom Right BL_Y_pos and TR_X_pos:
+				bottomLeft = m_pPolygon->m_pNodeVector[1]->m_Position;
+				topRight = m_pPolygon->m_pNodeVector[4]->m_Position;
+				/// 
+				topLeft = topRight;
+				topLeft.X = bottomLeft.X;
+				/// 
+				bottomRight = bottomLeft;
+				bottomRight.X = topRight.X;
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// 
+				m_Floors.push_back(pNewFloor);
+			}
+			else if (m_eCaseCorner == ROOM1_BOTTOMRIGHT)
+			{
+				// Top left: node 4 [1], top right:, bottom left: node 0 [0], bottom right: node 1 [5]
+				/// There will be 3 floors, two rectangles for both hallway directions, one square in the corner to patch the missing gap.
+				/// The first floor (vertical) is generated.
+				LG_Rect* pNewFloor = new LG_Rect();
+				LG_Vector3D topLeft = m_pPolygon->m_pNodeVector[1]->m_Position;
+				LG_Vector3D topRight = topLeft;
+				LG_Vector3D bottomLeft = m_pPolygon->m_pNodeVector[0]->m_Position;
+				LG_Vector3D bottomRight = m_pPolygon->m_pNodeVector[5]->m_Position;
+
+				topRight.X = bottomRight.X;
+				/// 
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// The floor is now stored in the hallway's vector.
+				m_Floors.push_back(pNewFloor);
+
+				/// Now the second floor is generated (horizontal)
+				// Top left: node 2 [3], Top right: TL_Ypos BL_Xpos, Bottom left: node 3 [2], bottom right: node 4 [1].
+				pNewFloor = new LG_Rect();
+				topLeft = m_pPolygon->m_pNodeVector[3]->m_Position;
+				topRight = topLeft;
+				bottomLeft = m_pPolygon->m_pNodeVector[2]->m_Position;
+				bottomRight = m_pPolygon->m_pNodeVector[1]->m_Position;
+				topRight.X = bottomRight.X;
+				/// 
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// 
+				m_Floors.push_back(pNewFloor);
+
+				/// Now the third and last floor is calculated.
+				pNewFloor = new LG_Rect();
+				// Top left: TR_Y_pos and BL_X_pos, top right: node 5 [4], BottomLeft: node 4 [1], Bottom Right BL_Y_pos and TR_X_pos:
+				bottomLeft = m_pPolygon->m_pNodeVector[1]->m_Position;
+				topRight = m_pPolygon->m_pNodeVector[4]->m_Position;
+				/// 
+				topLeft = topRight;
+				topLeft.X = bottomLeft.X;
+				/// 
+				bottomRight = bottomLeft;
+				bottomRight.X = topRight.X;
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// 
+				m_Floors.push_back(pNewFloor);
+			}
+			else if (m_eCaseCorner == ROOM1_BOTTOMLEFT)
+			{
+				//este caso parece estar bien, uno está mal. on it.
+				// Top left: TR_Ypos and BL_Xpos, top right: node 4 [4], bottom left: node 0 [0], bottom right: node 1 [5]
+				/// There will be 3 floors, two rectangles for both hallway directions, one square in the corner to patch the missing gap.
+				/// The first floor (vertical) is generated.
+				LG_Rect* pNewFloor = new LG_Rect();
+				LG_Vector3D topLeft;// = m_pPolygon->m_pNodeVector[1]->m_Position;
+				LG_Vector3D topRight = m_pPolygon->m_pNodeVector[4]->m_Position;
+				LG_Vector3D bottomLeft = m_pPolygon->m_pNodeVector[0]->m_Position;
+				LG_Vector3D bottomRight = m_pPolygon->m_pNodeVector[5]->m_Position;
+
+				topLeft = topRight;
+				topLeft.X = bottomLeft.X;
+				/// 
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// The floor is now stored in the hallway's vector.
+				m_Floors.push_back(pNewFloor);
+
+				/// Now the second floor is generated (horizontal)
+				// Top left: TR_Ypos and BL_Xpos, Top right: node 2 [2], Bottom left: node 4 [4], bottom right: node 3 [3].
+				pNewFloor = new LG_Rect();
+				topLeft;// = m_pPolygon->m_pNodeVector[3]->m_Position;
+				topRight = m_pPolygon->m_pNodeVector[2]->m_Position;
+				bottomLeft = m_pPolygon->m_pNodeVector[4]->m_Position;
+				bottomRight = m_pPolygon->m_pNodeVector[3]->m_Position;
+				topLeft = topRight;
+				topLeft.X = bottomLeft.X;
+				/// 
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// 
+				m_Floors.push_back(pNewFloor);
+
+				/// Now the third and last floor is calculated.
+				pNewFloor = new LG_Rect();
+				// Top left: node 5 [1], top right: , BottomLeft: , Bottom Right node 4 [4]:
+				/// 
+				topLeft = m_pPolygon->m_pNodeVector[1]->m_Position;
+				/// 
+				bottomRight = m_pPolygon->m_pNodeVector[4]->m_Position;
+				
+				topRight = topLeft;
+				topRight.X = bottomRight.X;
+				bottomLeft = bottomRight;
+				bottomLeft.X = topLeft.X;
+
+				pNewFloor->Init(topLeft, topRight, bottomLeft, bottomRight);
+				/// 
+				m_Floors.push_back(pNewFloor);
+			}
 		}
 	}
 

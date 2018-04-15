@@ -476,9 +476,9 @@ namespace LevelGenerator
 	//! Creates a L shaped hallway between two rooms.
 	LG_Hallway* LG_HallwayGeneration::GenerateCornerHallway(LG_Room * pRoom1, LG_Room * pRoom2, float fHeight)
 	{
-		/// Here we fill each one of the polygon's nodes. That will represent the position of the hallway's corners.
+		///we allocate memory to what will become the next corner hallway.
 		LG_Hallway* pNewHall = new LG_Hallway();
-		///
+		/// initialize it's height.
 		pNewHall->m_fHeight = fHeight;
 		/// We make them shared pointers to avoid memory leaks.
 		/// The nodes that will be used to fill the polygon
@@ -538,7 +538,7 @@ namespace LevelGenerator
 		///
 		spNode3->m_Position.Y += m_fHallwayWidth;
 
-		/// The node 0 is the pRoom1's first door node. The door is placed either on the top or the bottom side of the room. 
+		/// The node 0 is the pRoom1's first door node. The door is placed either on the top or the bottom wall of the room. 
 		/// Node 1 is the one at the right of the node 0. Making the door for L shaped hallway. 
 		LG_Vector3D n1n2 = spNode1->m_Position - spNode2->m_Position;
 		/// Node 2 is the top node of the door from one wall of the side walls of the room.
@@ -551,11 +551,15 @@ namespace LevelGenerator
 		float fDistancen1n2 = n1n2.Magnitude();
 		float fDistancen1n3 = n1n3.Magnitude();
 
+
+		//TODO: calcular las posiciones que tendrán los pisos de los pasillos con los nodos calculados, y llamar función que cree piso a partir de esos nodos.
 		/// n1n3 will represent the X axis from the outer node, while n1n2 will have the inner value in X axis.
 		if (fDistancen1n2 < fDistancen1n3)
 		{
 			if (bRoom2IsLeft)
 			{
+				/// 
+				pNewHall->m_eCaseCorner = ROOM1_TOPRIGHT;
 				/// Inner corner node. 
 				spNode4->m_Position = spNode0->m_Position;
 				/// 
@@ -580,6 +584,10 @@ namespace LevelGenerator
 				pNewHall->m_pPolygon->InsertNodeToVector(spNode1);
 
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
+				/// 
+				pNewHall->CreateFloors();
+				/// 
+				pNewHall->CreateCeilings();
 
 				/// Here create the rectangles that represent the hallway's walls.
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode4->m_Position, false));
@@ -589,11 +597,12 @@ namespace LevelGenerator
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode3->m_Position, spNode5->m_Position, true));
 				///
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode1->m_Position, false));
-				/// 
-				pNewHall->m_eCaseCorner = ROOM1_TOPRIGHT;
 			}
 			else
 			{
+				/// the case of the corner, room1 top left, room 2 bottom right.
+				pNewHall->m_eCaseCorner = ROOM1_TOPLEFT;
+				
 				/// Inner corner node. 
 				spNode4->m_Position = spNode1->m_Position;
 				/// 
@@ -618,6 +627,10 @@ namespace LevelGenerator
 				pNewHall->m_pPolygon->InsertNodeToVector(spNode1);
 				///
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
+				/// 
+				pNewHall->CreateFloors();
+				/// 
+				pNewHall->CreateCeilings();
 
 				/// Here create the rectangles that represent the hallway's walls.
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode5->m_Position, false));
@@ -627,8 +640,6 @@ namespace LevelGenerator
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode2->m_Position, spNode4->m_Position, true));
 				///
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode1->m_Position, false));
-				/// 
-				pNewHall->m_eCaseCorner = ROOM1_TOPLEFT;
 			}
 		}
 
@@ -636,6 +647,8 @@ namespace LevelGenerator
 		{
 			if (bRoom2IsLeft)
 			{
+				///
+				pNewHall->m_eCaseCorner = ROOM1_BOTTOMRIGHT;
 				/// Inner corner node. 
 				spNode4->m_Position = spNode0->m_Position;
 				/// 
@@ -660,6 +673,10 @@ namespace LevelGenerator
 				pNewHall->m_pPolygon->InsertNodeToVector(spNode1);
 				///
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
+				/// 
+				pNewHall->CreateFloors();
+				/// 
+				pNewHall->CreateCeilings();
 
 				/// Here create the rectangles that represent the hallway's walls.
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode4->m_Position, false));
@@ -669,11 +686,11 @@ namespace LevelGenerator
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode2->m_Position, spNode5->m_Position, true));
 				///
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode5->m_Position, spNode1->m_Position, false));
-				///
-				pNewHall->m_eCaseCorner = ROOM1_BOTTOMRIGHT;
 			}
 			else
 			{
+				///
+				pNewHall->m_eCaseCorner = ROOM1_BOTTOMLEFT;
 				/// Inner corner node. 
 				spNode4->m_Position = spNode1->m_Position;
 				/// 
@@ -698,6 +715,10 @@ namespace LevelGenerator
 				pNewHall->m_pPolygon->InsertNodeToVector(spNode1);
 				///
 				pNewHall->CreateDoors(spNode0, spNode1, spNode2, spNode3);
+				/// 
+				pNewHall->CreateFloors();
+				/// 
+				pNewHall->CreateCeilings();
 
 				/// Here create the rectangles that represent the hallway's walls.
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode0->m_Position, spNode5->m_Position, false));
@@ -707,8 +728,6 @@ namespace LevelGenerator
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode3->m_Position, spNode4->m_Position, true));
 				///
 				pNewHall->m_Walls.push_back(pNewHall->CreateWall(spNode4->m_Position, spNode1->m_Position, false));
-				///
-				pNewHall->m_eCaseCorner = ROOM1_BOTTOMLEFT;
 			}
 		}
 

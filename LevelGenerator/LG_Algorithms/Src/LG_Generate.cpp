@@ -74,6 +74,7 @@ namespace LevelGenerator
 		/// Now we make connections, meaning hallways, to the rooms.
 		GenerateRoomsConnections();
 
+		//TODO: create ceilings and floors for hallways.
 		/// We run the hallway algorithm 
 		m_HG.Run(&m_RoomsVector, fHallwayWidth, MaxSize.Z);
 
@@ -128,11 +129,10 @@ namespace LevelGenerator
 	//! Generates random positions for the rectangles, and separates them.
 	void LG_Generate::GenerateRooms(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, float fHeight)
 	{	
-		//TODO: hacer techo que tenga las mismas posiciones que el piso (código de abajo) pero con otra posición en Z.
 		///
 		LG_Node PositionCenterSpawnZone;
 
-		PositionCenterSpawnZone.m_Position = LG_Vector3D(300, 300, 0);
+		PositionCenterSpawnZone.m_Position = LG_Vector3D(0, 0, 0);
 		/// Create a area to spawn the dots.
 		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, (float)uiRoomAmount * (float)SPAWN_ZONE, (float)uiRoomAmount * (float)SPAWN_ZONE);
 
