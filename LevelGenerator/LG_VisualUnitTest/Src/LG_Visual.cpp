@@ -166,7 +166,7 @@ void LG_Visual::Renderer()
 
 	/// Semilla bien chingona   41241  separacion 0
 	/// We generate our algorithms.
-	AlgorithmGeneration.Run(50, LG_Vector3D(25, 25, 0), LG_Vector3D(70, 70, 70), 2452, 0, 10.0f);// rand(), rand() % 11, 3.0f); //, 25346, 0);
+	AlgorithmGeneration.Run(20, LG_Vector3D(25, 25, 0), LG_Vector3D(35, 35, 10), 1818, 0, 5.0f);//10.0f);// rand(), rand() % 11, 3.0f); //, 25346, 0);
 
 
 	/*/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////
@@ -249,7 +249,7 @@ void LG_Visual::Renderer()
 	//	}
 	//}
 
-	
+
 
 	/// Aqui se renderean las puertas de pasillos y cuartos.
 	for (int i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
@@ -271,39 +271,61 @@ void LG_Visual::Renderer()
 	/// Aqui se renderean las paredes de cada pasillo.
 	for (int i = 0; i < AlgorithmGeneration.m_HG.m_FinalHallways.size(); ++i)
 	{
+
+		SDL_SetRenderDrawColor(m_Renderer, rand()%254, rand()%254, rand()%254, 0xFF);
+
 		for (int j = 0; j < AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls.size(); ++j)
 		{
 			//Draws the top line of the rectangle.
-			SDL_SetRenderDrawColor(m_Renderer, 255, 255, 0, 0xFF);
+			//SDL_SetRenderDrawColor(m_Renderer, 255, 255, 0, 0xFF);
 			SDL_RenderDrawLine(
 				m_Renderer,
-				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_BottomLeft.m_Position.X,
-				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_BottomLeft.m_Position.Y,
-				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_BottomRight.m_Position.X,
-				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_BottomRight.m_Position.Y);
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_TopLeft.m_Position.X,
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_TopLeft.m_Position.Y,
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_TopRight.m_Position.X,
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_TopRight.m_Position.Y);
+
+
 		}
-		
+
 	}
 
-	
+
 	/// Aquí voa renderean las paredes de cada cuarto.
 	for (int i = 0; i < AlgorithmGeneration.m_RoomsVector.size(); ++i)
 	{
+/*
+		for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Doors.size(); ++j)
+		{
+			SDL_SetRenderDrawColor(m_Renderer, 255, 105, 180, 0xFF);
+			SDL_RenderDrawLine(m_Renderer,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pFirstPosition->m_Position.Y,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Doors[j]->m_pSecondPosition->m_Position.Y);
+
+			SDL_Delay(500);
+			SDL_RenderPresent(m_Renderer);
+		}*/
+
 		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 255, 0xFF);
 		for (int j = 0; j < AlgorithmGeneration.m_RoomsVector[i]->m_Walls.size(); ++j)
 		{
-			
+
 			//TODO: draw a line between the bottom nodes of each rect.
 			SDL_RenderDrawLine(
 				m_Renderer,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomLeft.m_Position.X,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomLeft.m_Position.Y,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomRight.m_Position.X,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_BottomRight.m_Position.Y);
-		}	
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_TopLeft.m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_TopLeft.m_Position.Y,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_TopRight.m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_TopRight.m_Position.Y);
+
+		}
+		
+		SDL_RenderPresent(m_Renderer);
 	}
-	
-	
+
+
 	///// Aqui se rendera los triangulos de la triangulacion.
 	//LG_Vector3D posToSpawn, Secondpos;
 	//for (LevelGenerator::int32 i = 0; i < AlgorithmGeneration.m_DT.m_pTrianglesVector.size(); ++i)

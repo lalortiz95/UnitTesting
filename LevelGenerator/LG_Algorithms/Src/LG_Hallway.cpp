@@ -350,28 +350,9 @@ namespace LevelGenerator
 
 		//TODO: Esto solo es para los pasillos que son esquinas. checar con los vertical y horizontal.
 		ReorganizeDoors(m_pPolygon->m_pNodeVector[0]->m_Position, m_pPolygon->m_pNodeVector[5]->m_Position, m_pPolygon->m_pNodeVector[2]->m_Position, m_pPolygon->m_pNodeVector[3]->m_Position);
-
-		//if (eCase == ROOM1_TOPRIGHT)
-		//{
-		//	
-
-		//}
-
-		//else if (eCase == ROOM1_TOPLEFT)
-		//{
-		//	
-
-		//}
-
-		//else if (eCase == ROOM1_BOTTOMRIGHT)
-		//{
-		//	
-		//}
-
-		//else if (eCase == ROOM1_BOTTOMLEFT)
-		//{
-		//	
-		//}
+		m_eCaseCorner = eCase;
+		CreateFloors();
+		CreateCeilings();
 	}
 
 

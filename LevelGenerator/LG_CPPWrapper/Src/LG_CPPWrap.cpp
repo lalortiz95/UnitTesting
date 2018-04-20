@@ -16,20 +16,26 @@ extern "C"
 		return (void*)newGenerate;
 	}
 
-	//! This functions get the size of the vector rooms in the generate level object.
-	int GetRoomAmount(void * pGenerate)
+	LG_WRAPPER_EXPORT void DestroyLevel(void* pGenerate)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return  (int)pTempGenerate->m_RoomsVector.size();
+		pTempGenerate->Destroy();
+	}
+
+	//! This functions get the size of the vector rooms in the generate level object.
+	LG_WRAPPER_EXPORT int GetRoomAmount(void * pGenerate)
+	{
+		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
+		return (int)pTempGenerate->m_RoomsVector.size();
 	}
 
 	LG_WRAPPER_EXPORT int GetRoomWallsAmount(void * pGenerate, int iRoom)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return  (int)pTempGenerate->m_RoomsVector[iRoom]->m_Walls.size();
+		return (int)pTempGenerate->m_RoomsVector[iRoom]->m_Walls.size();
 	}
 
-	int GetHallwayAmount(void * pGenerate)
+	LG_WRAPPER_EXPORT int GetHallwayAmount(void * pGenerate)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
 		return (int)pTempGenerate->m_HG.m_FinalHallways.size();
@@ -151,6 +157,17 @@ extern "C"
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
 		return pTempGenerate->m_RoomsVector[iRoom]->m_Walls[iWall]->m_bIsHorizontal;
+	}
+
+	LG_WRAPPER_EXPORT bool GetStartRoom(void * pGenerate, int iRoom)
+	{
+		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
+		return pTempGenerate->m_RoomsVector[iRoom]->m_bIsStart;
+	}
+	LG_WRAPPER_EXPORT bool GetEndRoom(void * pGenerate, int iRoom)
+	{
+		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
+		return pTempGenerate->m_RoomsVector[iRoom]->m_bIsEnd;
 	}
 
 	LG_WRAPPER_EXPORT float GetRoomWallCenterPos_X(void * pGenerate, int iRoomArrayPos, int iWallArrayPos)

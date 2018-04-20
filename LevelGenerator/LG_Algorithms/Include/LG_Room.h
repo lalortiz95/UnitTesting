@@ -47,6 +47,16 @@ namespace LevelGenerator
 		bool m_bIsChecked;
 
 		/**
+		 *	@var Flag to determinate if the room is the start room.
+		 */
+		bool m_bIsStart;
+
+		/**
+		 *	@var Flag to determinate if the room is the end room.
+		 */
+		bool m_bIsEnd;
+
+		/**
 		 *	@var How tall the room is.
 		 */
 		float m_fHeight;

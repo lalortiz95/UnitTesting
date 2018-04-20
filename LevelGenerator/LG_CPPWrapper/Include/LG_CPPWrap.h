@@ -22,6 +22,8 @@ extern "C"
 	LG_WRAPPER_EXPORT void* GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y,
 		int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iHeight, int iSeed, int iSeparateRange, int iHallwayWidth);
 
+	LG_WRAPPER_EXPORT void DestroyLevel(void* pGenerate);
+
 
 	///************************************************************************/
 	///*                           Rooms Functions.			                  */
@@ -75,6 +77,8 @@ extern "C"
 	LG_WRAPPER_EXPORT float GetRoomFloorCenterPos_Z(void* pGenerate, int iRoomArrayPos);
 	LG_WRAPPER_EXPORT float GetRoomFloorWidth(void* pGenerate, int iRoomArrayPos);
 	LG_WRAPPER_EXPORT float GetRoomFloorHeight(void* pGenerate, int iRoomArrayPos);
+	LG_WRAPPER_EXPORT bool GetStartRoom(void * pGenerate, int iRoomArrayPos);
+	LG_WRAPPER_EXPORT bool GetEndRoom(void * pGenerate, int iRoomArrayPos);
 
 	/**
 	 *	@brief Returns room's ceiling center node position. This is used when exporting since most engines use that center position to spawn the object.

@@ -551,8 +551,6 @@ namespace LevelGenerator
 		float fDistancen1n2 = n1n2.Magnitude();
 		float fDistancen1n3 = n1n3.Magnitude();
 
-
-		//TODO: calcular las posiciones que tendrán los pisos de los pasillos con los nodos calculados, y llamar función que cree piso a partir de esos nodos.
 		/// n1n3 will represent the X axis from the outer node, while n1n2 will have the inner value in X axis.
 		if (fDistancen1n2 < fDistancen1n3)
 		{
@@ -819,7 +817,7 @@ namespace LevelGenerator
 	{
 		bool bFlagX = false;
 		bool bFlagY = false;
-		/// Depending oon the hall's case we see how to move it so that it doesn't collide.
+		/// Depending on the hall's case we see how to move it so that it doesn't collide.
 		switch (CornerToMove->m_eCaseCorner)
 		{
 		case ROOM1_TOPRIGHT:
@@ -827,8 +825,8 @@ namespace LevelGenerator
 			while (CornerToMove->CheckCollisionWithRoom(CollisionRoom))
 			{
 				/// Move the position of the hallway. node 0 from the hall to the bottom left node of room 1. And node 2 from the hallway is moved towards top right node from room 2.
-
-				/// Check if 
+				//TODO: aquí checar que no se encime con sus parents.
+				/// Check that when moving it stays inside of the parent room boundaries.
 				if (CornerToMove->m_pPolygon->m_pNodeVector[0]->m_Position.X >= CornerToMove->m_pParentRoom_1->m_pFloor->m_BottomLeft.m_Position.X)
 				{
 					/// We move the nodes that represent  the door of room 1.
@@ -1081,6 +1079,8 @@ namespace LevelGenerator
 							else
 							{
 								//TODO: Ninguna esquina funciono que pedo ???
+								int i = 0;
+								i = 5;
 							}
 						}
 
@@ -1119,6 +1119,8 @@ namespace LevelGenerator
 							else
 							{
 								//TODO: Ninguna esquina funciono que pedo ???
+								int i = 0;
+								i = 5;
 							}
 						}
 					}

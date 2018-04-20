@@ -5,6 +5,8 @@ namespace LevelGenerator
 	//! Default constructor.
 	LG_Room::LG_Room()
 	{
+		m_bIsStart = false;
+		m_bIsEnd = false;
 		m_bIsChecked = false;
 		m_iRoomCase = 0;
 		m_pFloor = nullptr;
@@ -28,6 +30,8 @@ namespace LevelGenerator
 	//! This function initialize the area of the room.
 	void LG_Room::Init(LG_Vector3D vPosToSpawn, float fWidth, float fHeight, float fDepth)
 	{
+		m_bIsStart = false;
+		m_bIsEnd = false;
 		m_fHeight = fHeight;
 		m_bIsChecked = false;
 		m_iRoomCase = 0;
@@ -98,6 +102,10 @@ namespace LevelGenerator
 
 		/// Reset this flag as false.
 		m_bIsChecked = false;
+		/// Reset this flag as false.
+		m_bIsStart = false;
+		/// Reset this flag as false.
+		m_bIsEnd = false;
 
 		///  Clears the room's connections.
 		if (m_RoomsConnections.size() != 0)

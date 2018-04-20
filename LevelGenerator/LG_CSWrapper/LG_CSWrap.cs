@@ -44,7 +44,9 @@ namespace LG_CSWrapper
     {
         public LG_CSRect()
         {
-
+            m_CenterPosition = new LG_Vector3();
+            m_fHeight = 0.0f;
+            m_fWidth = 0.0f;
         }
 
         public LG_CSRect(LG_Vector3 CenterPos, float fHeight, float fWidth)
@@ -56,13 +58,15 @@ namespace LG_CSWrapper
 
         ~LG_CSRect()
         {
-
+            m_CenterPosition = null;
+            m_fHeight = 0.0f;
+            m_fWidth = 0.0f;
         }
 
-        public LG_Vector3 m_CenterPosition;
+        public LG_Vector3 m_CenterPosition = null;
 
-        public float m_fHeight;
-        public float m_fWidth;
+        public float m_fHeight = 0.0f;
+        public float m_fWidth = 0.0f;
         public bool m_bIsHorizontal;
     }
 
@@ -75,7 +79,7 @@ namespace LG_CSWrapper
 
         ~LG_CSPolygon()
         {
-            m_pNodesPosition = new List<LG_Vector3>();
+            m_pNodesPosition = null;
         }
 
         /**
@@ -103,6 +107,10 @@ namespace LG_CSWrapper
         {
             iFirstParentRoom = 0;
             iSecondParentRoom = 0;
+            HallwayShape = null;
+            m_Walls = null;
+            m_Floors = null;
+            m_Ceilings = null;
             bIsCorner = false;
         }
 
@@ -144,7 +152,7 @@ namespace LG_CSWrapper
 
         ~LG_CSDoor()
         {
-
+            m_Door = null;
         }
 
         LG_CSRect m_Door;
@@ -167,18 +175,38 @@ namespace LG_CSWrapper
             m_Ceiling = new LG_CSRect();
             m_fWidth = 0.0f;
             m_fHeight = 0.0f;
+            m_bIsStart = false;
+            m_bIsEnd = false;
         }
 
         ~LG_CSRoom()
         {
             m_fHeight = 0.0f;
             m_fWidth = 0.0f;
-            m_pArrayConectionsID = new List<int>();
+            m_pArrayConectionsID = null;
+            m_Position = null;
+            m_TopLeftPosition = null;
+            m_TopRightPosition = null;
+            m_BottomLeftPosition = null;
+            m_BottomRightPosition = null;
             m_iParentID = 0;
             m_iID = 0;
-
+            m_Walls = null;
+            m_Floor = null;
+            m_Ceiling = null;
+            m_bIsStart = false;
+            m_bIsEnd = false;
         }
 
+        /**
+         *  @var
+         */
+        public bool m_bIsEnd;
+
+        /**
+         *  @var  
+         */
+        public bool m_bIsStart;
 
         /**
          *  @var
@@ -254,8 +282,12 @@ namespace LG_CSWrapper
     {
         [DllImport("LG_CPPWrapper", EntryPoint = "GenerateLevel", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y,
-                                                    int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iHeight, 
+                                                    int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iHeight,
                                                     int iSeed, int iSeparationRange, int iHallwayWidth);
+
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "DestroyLevel", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr DestroyLevel(IntPtr pGenate);
 
 
         ///************************************************************************/
@@ -268,11 +300,6 @@ namespace LG_CSWrapper
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomsParentID", CallingConvention = CallingConvention.Cdecl)]
         private static extern int GetRoomsParentID(IntPtr pGenerate, int iRoomArrayPosition);
 
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetRoomWidth", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetRoomWidth(IntPtr pGenerate, int iRoomArrayPosition);
-        //
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetRoomHeight", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetRoomHeight(IntPtr pGenerate, int iRoomArrayPosition);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomConectionsSize", CallingConvention = CallingConvention.Cdecl)]
         private static extern int GetRoomConectionsSize(IntPtr pGenerate, int iRoomArrayPosition);
@@ -282,11 +309,20 @@ namespace LG_CSWrapper
 
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomAmount", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int GetRoomAmount(IntPtr pGenerate);
+        private static extern int CS_GetRoomAmount(IntPtr pGenerate);
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetStartRoom", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool CS_GetStartRoom(IntPtr pGenerate, int iRoom);
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetEndRoom", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool CS_GetEndRoom(IntPtr pGenerate, int iRoom);
+
+        /////////////////////////////////////////////////////////////
+        /// @brief Functions to export the dates of the wall for every room.
+        ////////////////////////////////////////////////////////////
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomWallsAmount", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int GetRoomWallsAmount(IntPtr pGenerate, int iRoom);
-
+        private static extern int CS_GetRoomWallsAmount(IntPtr pGenerate, int iRoom);
 
         /// The flag that states if the wall is vertical or horizontal.
         [DllImport("LG_CPPWrapper", EntryPoint = "IsRoomWallHorizontal", CallingConvention = CallingConvention.Cdecl)]
@@ -304,11 +340,15 @@ namespace LG_CSWrapper
 
         /// The width and height of a room's wall.
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomWallHeight", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetRoomWallHeight(IntPtr pGenerate, int iRoomArrPos, int iWallArrPos);
+        private static extern float CS_GetRoomWallHeight(IntPtr pGenerate, int iRoomArrPos, int iWallArrPos);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomWallWidth", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetRoomWallWidth(IntPtr pGenerate, int iRoomArrPos, int iWallArrPos);
+        private static extern float CS_GetRoomWallWidth(IntPtr pGenerate, int iRoomArrPos, int iWallArrPos);
 
+
+        /////////////////////////////////////////////////////////////
+        /// @brief Functions to export the dates of the floor for every room.
+        ////////////////////////////////////////////////////////////
 
         /// The center positions of a room's floor.
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomFloorCenterPos_X", CallingConvention = CallingConvention.Cdecl)]
@@ -327,6 +367,9 @@ namespace LG_CSWrapper
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomFloorWidth", CallingConvention = CallingConvention.Cdecl)]
         private static extern float GetRoomFloorWidth(IntPtr pGenerate, int iRoomArrPos);
 
+        /////////////////////////////////////////////////////////////
+        /// @brief Functions to export the dates of the ceiling for every room.
+        ////////////////////////////////////////////////////////////
 
         /// The center positions of a room's ceiling.
         [DllImport("LG_CPPWrapper", EntryPoint = "GetRoomCeilingCenterPos_X", CallingConvention = CallingConvention.Cdecl)]
@@ -346,28 +389,6 @@ namespace LG_CSWrapper
         private static extern float GetRoomCeilingWidth(IntPtr pGenerate, int iRoomArrPos);
 
 
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetRoomPosition_X", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetRoomPosition_X(IntPtr pGenerate, int iRoomArrayPosition);
-        //
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetRoomPosition_Y", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetRoomPosition_Y(IntPtr pGenerate, int iRoomArrayPosition);
-        //
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetRoomPosition_Z", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetRoomPosition_Z(IntPtr pGenerate, int iRoomArrayPosition);
-
-
-
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetRoomNodePosition_X", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetRoomNodePosition_X(IntPtr pGenerate, int iRoomArrayPosition, int iNumOfNode);
-        //
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetRoomNodePosition_Y", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetRoomNodePosition_Y(IntPtr pGenerate, int iRoomArrayPosition, int iNumOfNode);
-        //
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetRoomNodePosition_Z", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetRoomNodePosition_Z(IntPtr pGenerate, int iRoomArrayPosition, int iNumOfNode);
-
-
-
 
         ///************************************************************************/
         ///*                            Hallway Functions.		                  */
@@ -376,20 +397,18 @@ namespace LG_CSWrapper
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayAmount", CallingConvention = CallingConvention.Cdecl)]
         private static extern int GetHallwayAmount(IntPtr pGenerate);
 
+        [DllImport("LG_CPPWrapper", EntryPoint = "IsCorner", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool IsCorner(IntPtr pGenerate, int iHallway);
+
+        /////////////////////////////////////////////////////////////
+        /// @brief Functions to export the dates of the wall for every hallway.
+        ////////////////////////////////////////////////////////////
+
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayWallsAmount", CallingConvention = CallingConvention.Cdecl)]
         private static extern int GetHallwayWallsAmount(IntPtr pGenerate, int iHallway);
 
-        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayFloorsAmount", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int GetHallwayFloorsAmount(IntPtr pGenerate, int iHallway);
-
-        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayCeilingsAmount", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int GetHallwayCeilingsAmount(IntPtr pGenerate, int iHallway);
-
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetNodeAmountFromHallway", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern int GetNodeAmountFromHawllway(IntPtr pGenerate, int iHallway);
-
-        [DllImport("LG_CPPWrapper", EntryPoint = "IsCorner", CallingConvention = CallingConvention.Cdecl)]
-        private static extern bool IsCorner(IntPtr pGenerate, int iHallway);
+        [DllImport("LG_CPPWrapper", EntryPoint = "IsHallwayWallHorizontal", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool IsHallwayWallHorizontal(IntPtr pGenerate, int iHallArrPos, int iWallArrPos);
 
         /// The center positions of a hallway's wall.
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayWallCenterPos_X", CallingConvention = CallingConvention.Cdecl)]
@@ -408,59 +427,60 @@ namespace LG_CSWrapper
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayWallWidth", CallingConvention = CallingConvention.Cdecl)]
         private static extern float GetHallwayWallWidth(IntPtr pGenerate, int iHallArrPos, int iWallArrPos);
 
-        [DllImport("LG_CPPWrapper", EntryPoint = "IsHallwayWallHorizontal", CallingConvention = CallingConvention.Cdecl)]
-        private static extern bool IsHallwayWallHorizontal(IntPtr pGenerate, int iHallArrPos, int iWallArrPos);
+        /////////////////////////////////////////////////////////////
+        /// @brief Functions to export the dates of the floor for every hallway.
+        ////////////////////////////////////////////////////////////
 
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayFloorsAmount", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int GetHallwayFloorsAmount(IntPtr pGenerate, int iHallway);
 
         /// The center positions of a hallway's Floor.
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayFloorCenterPos_X", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayFloorCenterPosition_X(IntPtr pGenerate, int iHallArrPos, int iWallArrPos);
+        private static extern float GetHallwayFloorCenterPosition_X(IntPtr pGenerate, int iHallArrPos, int iFloorArrPos);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayFloorCenterPos_Y", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayFloorCenterPosition_Y(IntPtr pGenerate, int iHallArrPos, int iWallArrPos);
+        private static extern float GetHallwayFloorCenterPosition_Y(IntPtr pGenerate, int iHallArrPos, int iFloorArrPos);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayFloorCenterPos_Z", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayFloorCenterPosition_Z(IntPtr pGenerate, int iHallArrPos, int iWallArrPos);
+        private static extern float GetHallwayFloorCenterPosition_Z(IntPtr pGenerate, int iHallArrPos, int iFloorArrPos);
 
         /// The width and height of a hallway's floor.
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayFloorHeight", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayFloorHeight(IntPtr pGenerate, int iRoomArrPos, int iWallArrPos);
+        private static extern float GetHallwayFloorHeight(IntPtr pGenerate, int iRoomArrPos, int iFloorArrPos);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayFloorWidth", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayFloorWidth(IntPtr pGenerate, int iRoomArrPos, int iWallArrPos);
+        private static extern float GetHallwayFloorWidth(IntPtr pGenerate, int iRoomArrPos, int iFloorArrPos);
+
+        /////////////////////////////////////////////////////////////
+        /// @brief Functions to export the dates of the ceiling for every hallway.
+        ////////////////////////////////////////////////////////////
+
+        [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayCeilingsAmount", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int GetHallwayCeilingsAmount(IntPtr pGenerate, int iHallway);
 
 
         /// The center positions of a hallway's ceiling.
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayCeilingCenterPos_X", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayCeilingCenterPosition_X(IntPtr pGenerate, int iHallArrPos, int iWallArrPos);
+        private static extern float GetHallwayCeilingCenterPosition_X(IntPtr pGenerate, int iHallArrPos, int iCeilingArrPos);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayCeilingCenterPos_Y", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayCeilingCenterPosition_Y(IntPtr pGenerate, int iHallArrPos, int iWallArrPos);
+        private static extern float GetHallwayCeilingCenterPosition_Y(IntPtr pGenerate, int iHallArrPos, int iCeilingArrPos);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayCeilingCenterPos_Z", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayCeilingCenterPosition_Z(IntPtr pGenerate, int iHallArrPos, int iWallArrPos);
+        private static extern float GetHallwayCeilingCenterPosition_Z(IntPtr pGenerate, int iHallArrPos, int iCeilingArrPos);
 
         /// The width and height of a hallway's ceiling.
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayCeilingHeight", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayCeilingHeight(IntPtr pGenerate, int iRoomArrPos, int iWallArrPos);
+        private static extern float GetHallwayCeilingHeight(IntPtr pGenerate, int iRoomArrPos, int iCeilingArrPos);
 
         [DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayCeilingWidth", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float GetHallwayCeilingWidth(IntPtr pGenerate, int iRoomArrPos, int iWallArrPos);
+        private static extern float GetHallwayCeilingWidth(IntPtr pGenerate, int iRoomArrPos, int iCeilingArrPos);
 
 
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayNodePosition_X", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetHallwayPosition_X(IntPtr pGenerate, int iHallwayArrayPosition, int iNode);
-        //
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayNodePosition_Y", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetHallwayPosition_Y(IntPtr pGenerate, int iHallwayArrayPosition, int iNode);
-        //
-        //[DllImport("LG_CPPWrapper", EntryPoint = "GetHallwayNodePosition_Z", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern float GetHallwayPosition_Z(IntPtr pGenerate, int iHallwayArrayPosition, int iNode);
-
-
-
-
-
+        ///************************************************************************/
+        ///*                            DIJKSTRA Functions.		                  */
+        ///************************************************************************/
+        ///
         [DllImport("LG_CPPWrapper", EntryPoint = "Pathfinding_DIJKSTRA", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Pathfinding_DIJKSTRA(IntPtr pGenerate, int iStartNode, int iEndNode);
 
@@ -494,83 +514,91 @@ namespace LG_CSWrapper
         }
 
 
-        public IntPtr CS_GenerateLevel(int iRoomAmount, int iMinSizeRoom_X, int iMinSizeRoom_Y,
+        public IntPtr CS_GenerateLevel(int iRoom, int iMinSizeRoom_X, int iMinSizeRoom_Y,
         int iMaxSizeRoom_X, int iMaxSizeRoom_Y, int iHeight, int iSeed, int iSeparationRange, int iHallwayWidth)
         {
-            IntPtr pGenerateLevel = GenerateLevel(iRoomAmount, iMinSizeRoom_X, iMinSizeRoom_Y, iMaxSizeRoom_X, iMaxSizeRoom_Y, iHeight, iSeed, iSeparationRange, iHallwayWidth);
+            IntPtr pGenerateLevel = GenerateLevel(iRoom, iMinSizeRoom_X, iMinSizeRoom_Y, iMaxSizeRoom_X, iMaxSizeRoom_Y, iHeight, iSeed, iSeparationRange, iHallwayWidth);
 
-            int RoomAmount = GetRoomAmount(pGenerateLevel);
+            int iRoomAmount = CS_GetRoomAmount(pGenerateLevel);
             int iHallwayAmount = GetHallwayAmount(pGenerateLevel);
-            int iNodeAmount = 0;
+
+            int iHallwayWallsAmount = 0;
+            int iHallwayFloorsAmount = 0;
+            int iHallwayCeilingAmount = 0;
+
+            int iRoomWallsAmount = 0;
 
             LG_CSHallway newHallway = null;
-            LG_Vector3 newVector = null;
+            LG_Vector3 CenterPosition = null;
             // Used to initialize walls, floors, and ceilings.
-            LG_CSRect TempRect = null;
+            LG_CSRect Hallway_WallTemp = null;
+            LG_CSRect Hallway_FloorTemp = null;
+            LG_CSRect Hallway_CeilingTemp = null;
+            /// 
+            LG_CSRect Room_WallTemp = null;
+            
             LG_CSRoom newRoom = null;
 
-            for (int i = 0; i < iHallwayAmount; ++i)
+            for (int iCountHallway = 0; iCountHallway < iHallwayAmount; ++iCountHallway)
             {
                 /// We allocate memory for a new hallway that is going to be generated.
                 newHallway = new LG_CSHallway();
 
-                iNodeAmount = GetHallwayWallsAmount(pGenerateLevel, i);
+                /// A flag that stores if the hallway is a corner.
+                newHallway.bIsCorner = IsCorner(pGenerateLevel, iCountHallway);
+                iHallwayWallsAmount = GetHallwayWallsAmount(pGenerateLevel, iCountHallway);
+                iHallwayFloorsAmount = GetHallwayFloorsAmount(pGenerateLevel, iCountHallway);
+                iHallwayCeilingAmount = GetHallwayCeilingsAmount(pGenerateLevel, iCountHallway);
 
-                for (int j = 0; j < iNodeAmount; ++j)
+                for (int iCountWalls = 0; iCountWalls < iHallwayWallsAmount; ++iCountWalls)
                 {
-                    newVector = new LG_Vector3();
+                    CenterPosition = new LG_Vector3();
 
                     /// Here we store the position of every node, from every hallway
-                    newVector.X = GetHallwayWallCenterPosition_X(pGenerateLevel, i, j);
-                    newVector.Y = GetHallwayWallCenterPosition_Z(pGenerateLevel, i, j);
-                    newVector.Z = GetHallwayWallCenterPosition_Y(pGenerateLevel, i, j);
+                    CenterPosition.X = GetHallwayWallCenterPosition_X(pGenerateLevel, iCountHallway, iCountWalls);
+                    CenterPosition.Y = GetHallwayWallCenterPosition_Z(pGenerateLevel, iCountHallway, iCountWalls);
+                    CenterPosition.Z = GetHallwayWallCenterPosition_Y(pGenerateLevel, iCountHallway, iCountWalls);
 
                     /// A new rect representing the tridimensional wall is now generated.
-                    TempRect = new LG_CSRect(newVector, GetHallwayWallHeight(pGenerateLevel, i, j), GetHallwayWallWidth(pGenerateLevel, i, j));
+                    Hallway_WallTemp = new LG_CSRect(CenterPosition, GetHallwayWallHeight(pGenerateLevel, iCountHallway, iCountWalls),
+                        GetHallwayWallWidth(pGenerateLevel, iCountHallway, iCountWalls));
 
                     ///
-                    TempRect.m_bIsHorizontal = IsHallwayWallHorizontal(pGenerateLevel, i, j);
+                    Hallway_WallTemp.m_bIsHorizontal = IsHallwayWallHorizontal(pGenerateLevel, iCountHallway, iCountWalls);
 
                     /// Now the wall is added to the list.
-                    newHallway.m_Walls.Add(TempRect);
+                    newHallway.m_Walls.Add(Hallway_WallTemp);
                 }
 
-                ///
-                iNodeAmount = GetHallwayFloorsAmount(pGenerateLevel, i);
-
-                for (int j = 0; j < iNodeAmount; j++)
+                for (int iCountFloors = 0; iCountFloors < iHallwayFloorsAmount; iCountFloors++)
                 {
                     /// We allocate memory for a new hallway that is going to be generated.
                     //newHallway = new LG_CSHallway();
                     /// At this point we allocate new memory to the vector and the rectangle to re use the variables, and fill with that information the floor. Eventually the ceiling.
-                    newVector = new LG_Vector3();
-                    newVector.X = GetHallwayFloorCenterPosition_X(pGenerateLevel, i, j);
-                    newVector.Y = GetHallwayFloorCenterPosition_Z(pGenerateLevel, i, j);
-                    newVector.Z = GetHallwayFloorCenterPosition_Y(pGenerateLevel, i, j);
+                    CenterPosition = new LG_Vector3();
+                    CenterPosition.X = GetHallwayFloorCenterPosition_X(pGenerateLevel, iCountHallway, iCountFloors);
+                    CenterPosition.Y = GetHallwayFloorCenterPosition_Z(pGenerateLevel, iCountHallway, iCountFloors);
+                    CenterPosition.Z = GetHallwayFloorCenterPosition_Y(pGenerateLevel, iCountHallway, iCountFloors);
 
-                    TempRect = new LG_CSRect(newVector, GetHallwayFloorHeight(pGenerateLevel, i, j), GetHallwayFloorWidth(pGenerateLevel, i, j));
+                    Hallway_FloorTemp = new LG_CSRect(CenterPosition, GetHallwayFloorHeight(pGenerateLevel, iCountHallway, iCountFloors),
+                        GetHallwayFloorWidth(pGenerateLevel, iCountHallway, iCountFloors));
 
-                    newHallway.m_Floors.Add(TempRect);
+                    newHallway.m_Floors.Add(Hallway_FloorTemp);
                 }
 
-                /// 
-                iNodeAmount = GetHallwayCeilingsAmount(pGenerateLevel, i);
-
-                for (int j = 0; j < iNodeAmount; j++)
-                { 
+                for (int iCountCeiling = 0; iCountCeiling < iHallwayCeilingAmount; iCountCeiling++)
+                {
                     /// We once again recycle our variables to complete the loop by storing the ceilings.
-                    newVector = new LG_Vector3();
-                    newVector.X = GetHallwayCeilingCenterPosition_X(pGenerateLevel, i, j);
-                    newVector.Y = GetHallwayCeilingCenterPosition_Z(pGenerateLevel, i, j);
-                    newVector.Z = GetHallwayCeilingCenterPosition_Y(pGenerateLevel, i, j);
+                    CenterPosition = new LG_Vector3();
+                    CenterPosition.X = GetHallwayCeilingCenterPosition_X(pGenerateLevel, iCountHallway, iCountCeiling);
+                    CenterPosition.Y = GetHallwayCeilingCenterPosition_Z(pGenerateLevel, iCountHallway, iCountCeiling);
+                    CenterPosition.Z = GetHallwayCeilingCenterPosition_Y(pGenerateLevel, iCountHallway, iCountCeiling);
 
-                    TempRect = new LG_CSRect(newVector, GetHallwayCeilingHeight(pGenerateLevel, i, j), GetHallwayCeilingWidth(pGenerateLevel, i, j));
+                    Hallway_CeilingTemp = new LG_CSRect(CenterPosition, GetHallwayCeilingHeight(pGenerateLevel, iCountHallway, iCountCeiling),
+                        GetHallwayCeilingWidth(pGenerateLevel, iCountHallway, iCountCeiling));
 
-                    newHallway.m_Ceilings.Add(TempRect);
+                    newHallway.m_Ceilings.Add(Hallway_CeilingTemp);
                 }
-
-                /// A flag that stores if the hallway is a corner.
-                newHallway.bIsCorner = IsCorner(pGenerateLevel, i);
 
                 /// The hallway is inserted to the list of hallways.
                 m_Hallway.Add(newHallway);
@@ -578,63 +606,73 @@ namespace LG_CSWrapper
 
 
             //TODO: moficiar esto para que tenga la nueva estructura de los cuartos.
-            for (int i = 0; i < RoomAmount; i++)
+            for (int iCountRoom = 0; iCountRoom < iRoomAmount; iCountRoom++)
             {
+                iRoomWallsAmount = 0;
                 /// 
                 newRoom = new LG_CSRoom();
                 /// We assign the room's ID.
-                newRoom.m_iID = GetRoomID(pGenerateLevel, i);
-
+                newRoom.m_iID = GetRoomID(pGenerateLevel, iCountRoom);
                 ///
-                iNodeAmount = GetRoomWallsAmount(pGenerateLevel, i);
-                /// 
-                for (int j = 0; j < iNodeAmount; j++)
-                {
-                    newVector = new LG_Vector3();
-                    /// the center node position is now stored.
-                    newVector.X = GetRoomWallCenterPosition_X(pGenerateLevel, i, j);
-                    newVector.Y = GetRoomWallCenterPosition_Z(pGenerateLevel, i, j);
-                    newVector.Z = GetRoomWallCenterPosition_Y(pGenerateLevel, i, j);
+                iRoomWallsAmount = CS_GetRoomWallsAmount(pGenerateLevel, iCountRoom);
+                newRoom.m_bIsEnd = CS_GetEndRoom(pGenerateLevel, iCountRoom);
+                newRoom.m_bIsStart = CS_GetStartRoom(pGenerateLevel, iCountRoom);
 
-                    TempRect = new LG_CSRect(newVector, GetRoomWallHeight(pGenerateLevel, i, j), GetRoomWallWidth(pGenerateLevel, i, j));
+                /// 
+                for (int iCountWalls = 0; iCountWalls < iRoomWallsAmount; iCountWalls++)
+                {
+                    CenterPosition = new LG_Vector3();
+                    /// the center node position is now stored.
+                    CenterPosition.X = GetRoomWallCenterPosition_X(pGenerateLevel, iCountRoom, iCountWalls);
+                    CenterPosition.Y = GetRoomWallCenterPosition_Z(pGenerateLevel, iCountRoom, iCountWalls);
+                    CenterPosition.Z = GetRoomWallCenterPosition_Y(pGenerateLevel, iCountRoom, iCountWalls);
+
+                    Room_WallTemp = new LG_CSRect(CenterPosition, CS_GetRoomWallHeight(pGenerateLevel, iCountRoom, iCountWalls),
+                        CS_GetRoomWallWidth(pGenerateLevel, iCountRoom, iCountWalls));
 
                     /// We store if the rect is supposed to be stretched in the X, or Z axis.
-                    TempRect.m_bIsHorizontal = IsRoomWallHorizontal(pGenerateLevel, i, j);
+                    Room_WallTemp.m_bIsHorizontal = IsRoomWallHorizontal(pGenerateLevel, iCountRoom, iCountWalls);
 
-                    newRoom.m_Walls.Add(TempRect);
+                    newRoom.m_Walls.Add(Room_WallTemp);
                 }
 
                 //TODO: llenar la infomación en temporales y después agregarlas al floor?
-                newVector = new LG_Vector3();
+                CenterPosition = new LG_Vector3();
                 /// Here the floor is stored in the iterating new room.
-                newVector.X = GetRoomFloorCenterPosition_X(pGenerateLevel, i);
-                newVector.Y = GetRoomFloorCenterPosition_Z(pGenerateLevel, i); 
-                newVector.Z = GetRoomFloorCenterPosition_Y(pGenerateLevel, i);
+                CenterPosition.X = GetRoomFloorCenterPosition_X(pGenerateLevel, iCountRoom);
+                CenterPosition.Y = GetRoomFloorCenterPosition_Z(pGenerateLevel, iCountRoom);
+                CenterPosition.Z = GetRoomFloorCenterPosition_Y(pGenerateLevel, iCountRoom);
 
-                TempRect = new LG_CSRect(newVector, GetRoomFloorHeight(pGenerateLevel, i), GetRoomFloorWidth(pGenerateLevel, i));
-                newRoom.m_Floor = TempRect;
+                /// 
+                newRoom.m_Floor = new LG_CSRect(CenterPosition, GetRoomFloorHeight(pGenerateLevel, iCountRoom),
+                                GetRoomFloorWidth(pGenerateLevel, iCountRoom));
 
                 /// Here the floor is stored in the iterating new room.
-                newVector = new LG_Vector3();
-                newVector.X = GetRoomCeilingCenterPosition_X(pGenerateLevel, i);
-                newVector.Y = GetRoomCeilingCenterPosition_Z(pGenerateLevel, i);
-                newVector.Z = GetRoomCeilingCenterPosition_Y(pGenerateLevel, i);
+                CenterPosition = new LG_Vector3();
+                CenterPosition.X = GetRoomCeilingCenterPosition_X(pGenerateLevel, iCountRoom);
+                CenterPosition.Y = GetRoomCeilingCenterPosition_Z(pGenerateLevel, iCountRoom);
+                CenterPosition.Z = GetRoomCeilingCenterPosition_Y(pGenerateLevel, iCountRoom);
 
-                TempRect = new LG_CSRect(newVector, GetRoomCeilingHeight(pGenerateLevel, i), GetRoomCeilingWidth(pGenerateLevel, i));
+                /// 
+                newRoom.m_Ceiling = new LG_CSRect(CenterPosition, GetRoomCeilingHeight(pGenerateLevel, iCountRoom),
+                    GetRoomCeilingWidth(pGenerateLevel, iCountRoom));
 
-                newRoom.m_Ceiling = TempRect;
-
-                int iConnectionSize = GetRoomConectionsSize(pGenerateLevel, i);
+                int iConnectionSize = GetRoomConectionsSize(pGenerateLevel, iCountRoom);
 
                 for (int j = 0; j < iConnectionSize; j++)
                 {
-                    newRoom.m_pArrayConectionsID.Add(GetOneRoomConectionID(pGenerateLevel, i, j));
+                    newRoom.m_pArrayConectionsID.Add(GetOneRoomConectionID(pGenerateLevel, iCountRoom, j));
                 }
 
                 m_Rooms.Add(newRoom);
             }
 
             return pGenerateLevel;
+        }
+
+        public void CS_DestroyLevel(IntPtr pGenerate)
+        {
+            DestroyLevel(pGenerate);
         }
     }
 }

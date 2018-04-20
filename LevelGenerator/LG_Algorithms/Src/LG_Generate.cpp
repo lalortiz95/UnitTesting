@@ -74,16 +74,16 @@ namespace LevelGenerator
 		/// Now we make connections, meaning hallways, to the rooms.
 		GenerateRoomsConnections();
 
-		//TODO: create ceilings and floors for hallways.
 		/// We run the hallway algorithm 
 		m_HG.Run(&m_RoomsVector, fHallwayWidth, MaxSize.Z);
 
-		/// 
+		/// The doors are created at this point now that the hallways are made, and there are doors generated. 
 		for (int32 i = 0; i < m_RoomsVector.size(); ++i)
 		{
 			m_RoomsVector[i]->CreateWalls();
 		}
-
+		
+		GenerateStartAndEnd();
 		/// Call the destroy function to release memory of the spawn zone.
 		m_pSpawnZone->Destroy();
 		/// Release memory.
@@ -132,7 +132,7 @@ namespace LevelGenerator
 		///
 		LG_Node PositionCenterSpawnZone;
 
-		PositionCenterSpawnZone.m_Position = LG_Vector3D(0, 0, 0);
+		PositionCenterSpawnZone.m_Position = LG_Vector3D(300, 300, 0);
 		/// Create a area to spawn the dots.
 		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, (float)uiRoomAmount * (float)SPAWN_ZONE, (float)uiRoomAmount * (float)SPAWN_ZONE);
 
@@ -253,6 +253,20 @@ namespace LevelGenerator
 			/// Return the result vector.
 			return VectorTruncate.Normalize() * (float)MAX_FORCE;
 		}
+	}
+
+	void LG_Generate::GenerateStartAndEnd()
+	{
+		int32 iStart = 0, iEnd = 0;
+
+		while (iStart == iEnd)
+		{
+			iStart = rand() % m_RoomsVector.size();
+			iEnd = rand() % m_RoomsVector.size();
+		}
+
+		m_RoomsVector[iStart]->m_bIsStart = true;
+		m_RoomsVector[iEnd]->m_bIsEnd = true;
 	}
 
 	//////////////////////////////////////////////////**************************************************************************/

@@ -156,6 +156,11 @@ namespace LevelGenerator
 		 */
 		LG_Vector3D TruncateVector(LG_Vector3D VectorTruncate);
 
+		/**
+		 *	@brief This function determinate which rooms are the start and the end of the dungeon.
+		 */
+		void GenerateStartAndEnd();
+
 
 		//////////////////////////////////////////////////**************************************************************************/
 		//////////////////////////////////////////////////*						 Currently this is not being used.				   */
