@@ -173,31 +173,31 @@ extern "C"
 	LG_WRAPPER_EXPORT float GetRoomWallCenterPos_X(void * pGenerate, int iRoomArrayPos, int iWallArrayPos)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_CenterNode.m_Position.X;
+		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_pRect->m_CenterNode.m_Position.X;
 	}
 
 	LG_WRAPPER_EXPORT float GetRoomWallCenterPos_Y(void * pGenerate, int iRoomArrayPos, int iWallArrayPos)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_CenterNode.m_Position.Y;
+		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_pRect->m_CenterNode.m_Position.Y;
 	}
 
 	LG_WRAPPER_EXPORT float GetRoomWallCenterPos_Z(void * pGenerate, int iRoomArrayPos, int iWallArrayPos)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_CenterNode.m_Position.Z;
+		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_pRect->m_CenterNode.m_Position.Z;
 	}
 
 	LG_WRAPPER_EXPORT float GetRoomWallWidth(void * pGenerate, int iRoomArrayPos, int iWallArrayPos)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_fWidth;
+		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_pRect->m_fWidth;
 	}
 
 	LG_WRAPPER_EXPORT float GetRoomWallHeight(void * pGenerate, int iRoomArrayPos, int iWallArrayPos)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_fHeight;
+		return pTempGenerate->m_RoomsVector[iRoomArrayPos]->m_Walls[iWallArrayPos]->m_pRect->m_fHeight;
 	}
 
 	LG_WRAPPER_EXPORT float GetDoorCenterPos_X(void * pGenerate, int iRoomArrayPos, int iDoorArrPos)
@@ -241,31 +241,31 @@ extern "C"
 	LG_WRAPPER_EXPORT float GetHallwayWallCenterPos_X(void * pGenerate, int iHallway, int iWall)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_Walls[iWall]->m_CenterNode.m_Position.X;
+		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_Walls[iWall]->m_pRect->m_CenterNode.m_Position.X;
 	}
 
 	LG_WRAPPER_EXPORT float GetHallwayWallCenterPos_Y(void * pGenerate, int iHallway, int iWall)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_Walls[iWall]->m_CenterNode.m_Position.Y;
+		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_Walls[iWall]->m_pRect->m_CenterNode.m_Position.Y;
 	}
 
 	LG_WRAPPER_EXPORT float GetHallwayWallCenterPos_Z(void * pGenerate, int iHallway, int iWall)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_Walls[iWall]->m_CenterNode.m_Position.Z;
+		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_Walls[iWall]->m_pRect->m_CenterNode.m_Position.Z;
 	}
 
 	LG_WRAPPER_EXPORT float GetHallwayWallWidth(void * pGenerate, int iHallway, int iWall)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_Walls[iWall]->m_fWidth;
+		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_Walls[iWall]->m_pRect->m_fWidth;
 	}
 
 	LG_WRAPPER_EXPORT float GetHallwayWallHeight(void * pGenerate, int iHallway, int iWall)
 	{
 		LevelGenerator::LG_Generate* pTempGenerate = reinterpret_cast<LevelGenerator::LG_Generate*>(pGenerate);
-		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_Walls[iWall]->m_fHeight;
+		return pTempGenerate->m_HG.m_FinalHallways[iHallway]->m_Walls[iWall]->m_pRect->m_fHeight;
 	}
 
 	LG_WRAPPER_EXPORT bool IsHallwayWallHorizontal(void * pGenerate, int iHallway, int iWall)

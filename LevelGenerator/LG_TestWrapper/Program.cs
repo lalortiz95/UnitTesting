@@ -1,12 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Collections;
 using System.IO;
 using System.Runtime.InteropServices;
 
 
-namespace LG_CSWrapper
+namespace LG_TestWrapper
 {
+
+
     public class LG_Vector3
     {
         public LG_Vector3()
@@ -536,7 +540,7 @@ namespace LG_CSWrapper
             LG_CSRect Hallway_CeilingTemp = null;
             /// 
             LG_CSRect Room_WallTemp = null;
-            
+
             LG_CSRoom newRoom = null;
 
             for (int iCountHallway = 0; iCountHallway < iHallwayAmount; ++iCountHallway)
@@ -613,11 +617,11 @@ namespace LG_CSWrapper
                 newRoom = new LG_CSRoom();
                 /// We assign the room's ID.
                 newRoom.m_iID = GetRoomID(pGenerateLevel, iCountRoom);
-                  
+                ///
                 iRoomWallsAmount = CS_GetRoomWallsAmount(pGenerateLevel, iCountRoom);
-
                 newRoom.m_bIsEnd = CS_GetEndRoom(pGenerateLevel, iCountRoom);
                 newRoom.m_bIsStart = CS_GetStartRoom(pGenerateLevel, iCountRoom);
+
                 /// 
                 for (int iCountWalls = 0; iCountWalls < iRoomWallsAmount; iCountWalls++)
                 {
@@ -673,6 +677,17 @@ namespace LG_CSWrapper
         public void CS_DestroyLevel(IntPtr pGenerate)
         {
             DestroyLevel(pGenerate);
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            LG_CSWrap pGenerate = new LG_CSWrap();
+            IntPtr LevelGeneration = pGenerate.CS_GenerateLevel(20, 25, 25, 35, 35, 10, 1818, 0, 5);
+           
         }
     }
 }

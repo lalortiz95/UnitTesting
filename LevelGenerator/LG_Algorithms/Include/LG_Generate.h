@@ -1,10 +1,11 @@
 #pragma once
 #include "LG_AlgorithmsPrerequisites.h"
+
+#include "LG_Room.h"
 #include "LG_HallwayGeneration.h"
 #include "LG_DelaunayTriangulation.h"
 #include "LG_MST.h"
 #include "LG_Dijkstra.h"
-#include "LG_Room.h"
 
 
 namespace LevelGenerator

@@ -94,9 +94,11 @@ namespace LevelGenerator
 						{
 							if (MidPoint.X + m_fHallwayWidth / 2 < Min_Pos.X)
 							{
+
 								/// Generate a vertical hallway.
 								GenerateVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 								continue;
+
 							}
 							else
 							{
@@ -119,6 +121,7 @@ namespace LevelGenerator
 								/// Generate a vertical hallway.
 								GenerateVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 								continue;
+
 							}
 						}
 					}
@@ -128,9 +131,9 @@ namespace LevelGenerator
 						{
 							if (MidPoint.Y + m_fHallwayWidth / 2 < Min_Pos.Y)
 							{
-								/// Generate a vertical hallway.
 								GenerateHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 								continue;
+
 							}
 							else
 							{
@@ -138,7 +141,7 @@ namespace LevelGenerator
 								if (((MidPoint.Y - m_fHallwayWidth / 2) - fDifference) > Max_Pos.Y)
 								{
 									MidPoint.Y -= fDifference;
-									/// Generate a vertical hallway.
+									///
 									GenerateHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 									continue;
 								}
@@ -153,6 +156,7 @@ namespace LevelGenerator
 								/// Generate a vertical hallway.
 								GenerateHorizontalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 								continue;
+
 							}
 						}
 					}
@@ -227,6 +231,7 @@ namespace LevelGenerator
 
 			else if (m_FinalHallways[iActual]->m_eHallwayType == HORIZONTAL)
 			{
+
 				if ((m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_BottomLeft.m_Position.X == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.X)
 					|| (m_FinalHallways[iActual]->m_pParentRoom_1->m_pFloor->m_BottomRight.m_Position.X == m_FinalHallways[iActual]->m_pFirstDoor->m_pFirstPosition->m_Position.X))
 				{
@@ -238,6 +243,7 @@ namespace LevelGenerator
 					m_FinalHallways[iActual]->m_pParentRoom_1->m_Doors.push_back(m_FinalHallways[iActual]->m_pSecondDoor);
 					m_FinalHallways[iActual]->m_pParentRoom_2->m_Doors.push_back(m_FinalHallways[iActual]->m_pFirstDoor);
 				}
+
 			}
 
 			else
@@ -329,13 +335,13 @@ namespace LevelGenerator
 		/// We see which room is on top of which one in order to know what room we subtract (or add) the height from.
 		if (bRoom1IsOnTop)
 		{
-			pBLNode->m_Position.Y -= (pRoom2->m_pFloor->m_fHeight / 2);
-			pTLNode->m_Position.Y += (pRoom1->m_pFloor->m_fHeight / 2);
+			pBLNode->m_Position.Y = pRoom2->m_pFloor->m_TopLeft.m_Position.Y;
+			pTLNode->m_Position.Y = pRoom1->m_pFloor->m_BottomLeft.m_Position.Y;
 		}
 		else
 		{
-			pBLNode->m_Position.Y -= (pRoom1->m_pFloor->m_fHeight / 2);
-			pTLNode->m_Position.Y += (pRoom2->m_pFloor->m_fHeight / 2);
+			pBLNode->m_Position.Y = pRoom1->m_pFloor->m_TopLeft.m_Position.Y;
+			pTLNode->m_Position.Y = pRoom2->m_pFloor->m_BottomLeft.m_Position.Y;
 		}
 
 
@@ -422,13 +428,13 @@ namespace LevelGenerator
 		/// We see which room is on top of which one in order to know what room we subtract (or add) the height from.
 		if (bRoom1IsLeft)
 		{
-			pBLNode->m_Position.X += (pRoom1->m_pFloor->m_fWidth / 2);
-			pBRNode->m_Position.X -= (pRoom2->m_pFloor->m_fWidth / 2);
+			pBLNode->m_Position.X = pRoom1->m_pFloor->m_BottomRight.m_Position.X;
+			pBRNode->m_Position.X = pRoom2->m_pFloor->m_BottomLeft.m_Position.X;
 		}
 		else
 		{
-			pBLNode->m_Position.X += (pRoom2->m_pFloor->m_fWidth / 2);
-			pBRNode->m_Position.X -= (pRoom1->m_pFloor->m_fWidth / 2);
+			pBLNode->m_Position.X = pRoom2->m_pFloor->m_BottomRight.m_Position.X;
+			pBRNode->m_Position.X = pRoom1->m_pFloor->m_BottomLeft.m_Position.X;
 		}
 
 
@@ -502,12 +508,12 @@ namespace LevelGenerator
 		if (bRoom1IsOnTop)
 		{
 			/// If the room 1 is on top, we add so that the hall starts underneath room 1.
-			spNode0->m_Position.Y += (pRoom1->m_pFloor->m_fHeight / 2);
+			spNode0->m_Position.Y = pRoom1->m_pFloor->m_BottomLeft.m_Position.Y;//+= (pRoom1->m_pFloor->m_fHeight / 2);
 		}
 		else
 		{
 			/// If the room 1 is on top, we subtract so that the hall starts on top of room 1.
-			spNode0->m_Position.Y -= (pRoom1->m_pFloor->m_fHeight / 2);
+			spNode0->m_Position.Y = pRoom1->m_pFloor->m_TopLeft.m_Position.Y;//-= (pRoom1->m_pFloor->m_fHeight / 2);
 		}
 		/// We subtract half the hallway width to place the node correctly.
 		spNode0->m_Position.X -= (m_fHallwayWidth / 2);
@@ -525,12 +531,12 @@ namespace LevelGenerator
 		if (bRoom2IsLeft)
 		{
 			/// 
-			spNode2->m_Position.X += (pRoom2->m_pFloor->m_fWidth / 2);
+			spNode2->m_Position.X = pRoom2->m_pFloor->m_BottomRight.m_Position.X;//+= (pRoom2->m_pFloor->m_fWidth / 2);
 		}
 		else
 		{
 			/// 
-			spNode2->m_Position.X -= (pRoom2->m_pFloor->m_fWidth / 2);
+			spNode2->m_Position.X = pRoom2->m_pFloor->m_BottomLeft.m_Position.X; //-= (pRoom2->m_pFloor->m_fWidth / 2);
 		}
 
 		/// 
@@ -600,7 +606,7 @@ namespace LevelGenerator
 			{
 				/// the case of the corner, room1 top left, room 2 bottom right.
 				pNewHall->m_eCaseCorner = ROOM1_TOPLEFT;
-				
+
 				/// Inner corner node. 
 				spNode4->m_Position = spNode1->m_Position;
 				/// 
@@ -1050,7 +1056,7 @@ namespace LevelGenerator
 
 						if (MoveCorner(CornerToReorganize, (*m_pRooms)[k]))
 						{
-							
+
 							/// Call the destroy function of the second corner.
 							pSecondCorner->Destroy();
 							/// Erase the allocated memory for this hallway.
@@ -1066,7 +1072,7 @@ namespace LevelGenerator
 							///
 							if (MoveCorner(pSecondCorner, (*m_pRooms)[k]))
 							{
-							
+
 								/// Call the destroy function of the CornerToReorganize.
 								CornerToReorganize->Destroy();
 								/// Erase the allocated memory for this hallway.

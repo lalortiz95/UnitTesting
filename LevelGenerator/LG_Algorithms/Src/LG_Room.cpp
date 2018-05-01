@@ -160,33 +160,43 @@ namespace LevelGenerator
 		/// Iterate the vector of doors to find their side. counter clock-wise.
 		for (int32 i = 0; i < m_Doors.size(); ++i)
 		{
-			if (m_Doors[i]->m_pFirstPosition->m_Position.X == m_pFloor->m_TopLeft.m_Position.X 
-				&& m_Doors[i]->m_pSecondPosition->m_Position.X == m_pFloor->m_TopLeft.m_Position.X)
+			/// Sometimes the decimals may differ betweem nodes, to avoid them from not being stored in a list we add of subtract delta.
+			if (m_Doors[i]->m_pFirstPosition->m_Position.X <= m_pFloor->m_TopLeft.m_Position.X   &&
+				m_Doors[i]->m_pFirstPosition->m_Position.X >= m_pFloor->m_TopLeft.m_Position.X   &&
+				m_Doors[i]->m_pSecondPosition->m_Position.X <= m_pFloor->m_TopLeft.m_Position.X   &&
+				m_Doors[i]->m_pSecondPosition->m_Position.X >= m_pFloor->m_TopLeft.m_Position.X)
 			{
 				LeftDoors.push_back(m_Doors[i]->m_pFirstPosition->m_Position.Y);
 				LeftDoors.push_back(m_Doors[i]->m_pSecondPosition->m_Position.Y);
 			}
 
-			else if (m_Doors[i]->m_pFirstPosition->m_Position.Y == m_pFloor->m_BottomLeft.m_Position.Y 
-				&& m_Doors[i]->m_pSecondPosition->m_Position.Y == m_pFloor->m_BottomLeft.m_Position.Y)
+			else if (m_Doors[i]->m_pFirstPosition->m_Position.Y <= m_pFloor->m_BottomLeft.m_Position.Y   &&
+				m_Doors[i]->m_pFirstPosition->m_Position.Y >= m_pFloor->m_BottomLeft.m_Position.Y   &&
+				m_Doors[i]->m_pSecondPosition->m_Position.Y <= m_pFloor->m_BottomLeft.m_Position.Y  &&
+				m_Doors[i]->m_pSecondPosition->m_Position.Y >= m_pFloor->m_BottomLeft.m_Position.Y)
 			{
 				BottomDoors.push_back(m_Doors[i]->m_pFirstPosition->m_Position.X);
 				BottomDoors.push_back(m_Doors[i]->m_pSecondPosition->m_Position.X);
 			}
 
-			else if (m_Doors[i]->m_pFirstPosition->m_Position.X == m_pFloor->m_BottomRight.m_Position.X 
-				&& m_Doors[i]->m_pSecondPosition->m_Position.X == m_pFloor->m_BottomRight.m_Position.X)
+			else if (m_Doors[i]->m_pFirstPosition->m_Position.X <= m_pFloor->m_BottomRight.m_Position.X   &&
+				m_Doors[i]->m_pFirstPosition->m_Position.X >= m_pFloor->m_BottomRight.m_Position.X   &&
+				m_Doors[i]->m_pSecondPosition->m_Position.X <= m_pFloor->m_BottomRight.m_Position.X  &&
+				m_Doors[i]->m_pSecondPosition->m_Position.X >= m_pFloor->m_BottomRight.m_Position.X)
 			{
 				RightDoors.push_back(m_Doors[i]->m_pFirstPosition->m_Position.Y);
 				RightDoors.push_back(m_Doors[i]->m_pSecondPosition->m_Position.Y);
 			}
 
-			else if (m_Doors[i]->m_pFirstPosition->m_Position.Y == m_pFloor->m_TopRight.m_Position.Y 
-				&& m_Doors[i]->m_pSecondPosition->m_Position.Y == m_pFloor->m_TopRight.m_Position.Y)
+			else if (m_Doors[i]->m_pFirstPosition->m_Position.Y <= m_pFloor->m_TopRight.m_Position.Y  &&
+				m_Doors[i]->m_pFirstPosition->m_Position.Y >= m_pFloor->m_TopRight.m_Position.Y  &&
+				m_Doors[i]->m_pSecondPosition->m_Position.Y <= m_pFloor->m_TopRight.m_Position.Y &&
+				m_Doors[i]->m_pSecondPosition->m_Position.Y >= m_pFloor->m_TopRight.m_Position.Y)
 			{
 				TopDoors.push_back(m_Doors[i]->m_pFirstPosition->m_Position.X);
 				TopDoors.push_back(m_Doors[i]->m_pSecondPosition->m_Position.X);
 			}
+
 		}
 
 		///we now sort the door nodes from the smallest to the biggest. For every wall, with that information we'll calculate the wall positions.
@@ -249,7 +259,7 @@ namespace LevelGenerator
 			WallTopRight.Z = m_fHeight;
 
 			/// Now the wall is created with all of it's components.
-			pNewRect->Init(WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight);
+			pNewRect->m_pRect->Init(WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight);
 
 			/// State if the wall is horizontal or vertical.
 			pNewRect->m_bIsHorizontal = bIsHorizontal;
@@ -343,7 +353,7 @@ namespace LevelGenerator
 			pNewRect->m_bIsHorizontal = bIsHorizontal;
 
 			/// Now the wall is created with all of it's components.
-			pNewRect->Init(WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight);
+			pNewRect->m_pRect->Init(WallTopLeft, WallTopRight, WallBottomLeft, WallBottomRight);
 			/// We now store the new wall that has just been created.
 			m_Walls.push_back(pNewRect);
 		}

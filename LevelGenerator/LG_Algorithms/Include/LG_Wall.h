@@ -4,7 +4,7 @@
 
 namespace LevelGenerator
 {
-	class LG_ALGORITHMS_EXPORT LG_Wall : public LG_Rect
+	class LG_ALGORITHMS_EXPORT LG_Wall 
 	{
 	public:
 
@@ -36,6 +36,7 @@ namespace LevelGenerator
 		 */
 		bool m_bIsHorizontal;
 
+		LG_Rect* m_pRect;
 
 		///************************************************************************/
 		///*						   Class Functions.							  */

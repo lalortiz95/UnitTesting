@@ -280,10 +280,10 @@ void LG_Visual::Renderer()
 			//SDL_SetRenderDrawColor(m_Renderer, 255, 255, 0, 0xFF);
 			SDL_RenderDrawLine(
 				m_Renderer,
-				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_TopLeft.m_Position.X,
-				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_TopLeft.m_Position.Y,
-				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_TopRight.m_Position.X,
-				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_TopRight.m_Position.Y);
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_pRect->m_TopLeft.m_Position.X,
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_pRect->m_TopLeft.m_Position.Y,
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_pRect->m_TopRight.m_Position.X,
+				(int32)AlgorithmGeneration.m_HG.m_FinalHallways[i]->m_Walls[j]->m_pRect->m_TopRight.m_Position.Y);
 
 
 		}
@@ -315,10 +315,10 @@ void LG_Visual::Renderer()
 			//TODO: draw a line between the bottom nodes of each rect.
 			SDL_RenderDrawLine(
 				m_Renderer,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_TopLeft.m_Position.X,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_TopLeft.m_Position.Y,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_TopRight.m_Position.X,
-				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_TopRight.m_Position.Y);
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_pRect->m_TopLeft.m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_pRect->m_TopLeft.m_Position.Y,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_pRect->m_TopRight.m_Position.X,
+				(int32)AlgorithmGeneration.m_RoomsVector[i]->m_Walls[j]->m_pRect->m_TopRight.m_Position.Y);
 
 		}
 		

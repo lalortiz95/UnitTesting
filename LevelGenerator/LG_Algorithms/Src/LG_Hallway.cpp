@@ -274,7 +274,7 @@ namespace LevelGenerator
 		TopRight = BottomRight;
 		TopLeft.Z = m_fHeight;
 		TopRight.Z = m_fHeight;
-		pNewWall->Init(TopLeft, TopRight, BottomLeft, BottomRight);
+		pNewWall->m_pRect->Init(TopLeft, TopRight, BottomLeft, BottomRight);
 		pNewWall->m_bIsHorizontal = bIsHorizontal;
 		return pNewWall;
 	}

@@ -1,7 +1,6 @@
 #pragma once
 #include "LG_AlgorithmsPrerequisites.h"
 
-
 #include "LG_Wall.h"
 #include <LG_Door.h>
 

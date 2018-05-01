@@ -80,9 +80,11 @@ namespace LevelGenerator
 		/// The doors are created at this point now that the hallways are made, and there are doors generated. 
 		for (int32 i = 0; i < m_RoomsVector.size(); ++i)
 		{
+
 			m_RoomsVector[i]->CreateWalls();
+
 		}
-		
+
 		GenerateStartAndEnd();
 		/// Call the destroy function to release memory of the spawn zone.
 		m_pSpawnZone->Destroy();
@@ -128,11 +130,11 @@ namespace LevelGenerator
 
 	//! Generates random positions for the rectangles, and separates them.
 	void LG_Generate::GenerateRooms(uint32 uiRoomAmount, LG_Vector3D MinSize, LG_Vector3D MaxSize, float fHeight)
-	{	
+	{
 		///
 		LG_Node PositionCenterSpawnZone;
 
-		PositionCenterSpawnZone.m_Position = LG_Vector3D(300, 300, 0);
+		PositionCenterSpawnZone.m_Position = LG_Vector3D(0, 0, 0);
 		/// Create a area to spawn the dots.
 		m_pSpawnZone = new LG_Rect(PositionCenterSpawnZone, (float)uiRoomAmount * (float)SPAWN_ZONE, (float)uiRoomAmount * (float)SPAWN_ZONE);
 
