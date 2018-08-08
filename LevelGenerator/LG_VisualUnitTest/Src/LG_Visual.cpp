@@ -166,7 +166,7 @@ void LG_Visual::Renderer()
 
 	/// Semilla bien chingona   41241  separacion 0
 	/// We generate our algorithms.
-	AlgorithmGeneration.Run(20, LG_Vector3D(25, 25, 0), LG_Vector3D(35, 35, 10), 1818, 0, 5.0f);//10.0f);// rand(), rand() % 11, 3.0f); //, 25346, 0);
+	AlgorithmGeneration.Run(50, LG_Vector3D(25, 25, 0), LG_Vector3D(35, 35, 9),/* rand()*/5665, 0, 5.0f);//10.0f);// rand(), rand() % 11, 3.0f); //, 25346, 0);
 
 
 	/*/// Aquí  se renderea el minimum spanning tree //////////////////////////////////////////////////

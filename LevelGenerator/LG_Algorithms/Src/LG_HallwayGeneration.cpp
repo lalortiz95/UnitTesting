@@ -94,11 +94,9 @@ namespace LevelGenerator
 						{
 							if (MidPoint.X + m_fHallwayWidth / 2 < Min_Pos.X)
 							{
-
 								/// Generate a vertical hallway.
 								GenerateVerticalHallway((*m_pRooms)[i], (*m_pRooms)[i]->m_RoomsConnections[j], MidPoint, fHeight);
 								continue;
-
 							}
 							else
 							{
@@ -170,12 +168,14 @@ namespace LevelGenerator
 		}/// First for.
 
 		bool bCheckCollisionWithHallways = true;
-
-		//TODO: Una en un chingo vale verga se queda en el while sin salir... que pedo correjir..
-		//TODO: Tambien con una separacion muy grande ocurre el mismo problema... que pedo correjir.
+		/// how many times it has entered to the while.
+		int32 iIterations = 0;
+		//TODO: cuamdo se cumple la segunda condicional del while significa que no importa cuantas veces se voltee un pasillo, siempre choca.
+		// ver de que manera mover el pasillo para que quede bien.
 		/// We will now check collision between the generated corner hallways, and the rooms. So that no hallway overlaps with nothing.
-		while (bCheckCollisionWithHallways)
+		while (bCheckCollisionWithHallways && iIterations < m_FinalHallways.size() / 2)
 		{
+			++iIterations;
 			bCheckCollisionWithHallways = false;
 			/// First the hallways are iterated.
 			for (int32 iActual = 0; iActual < m_FinalHallways.size(); ++iActual)
@@ -243,7 +243,6 @@ namespace LevelGenerator
 					m_FinalHallways[iActual]->m_pParentRoom_1->m_Doors.push_back(m_FinalHallways[iActual]->m_pSecondDoor);
 					m_FinalHallways[iActual]->m_pParentRoom_2->m_Doors.push_back(m_FinalHallways[iActual]->m_pFirstDoor);
 				}
-
 			}
 
 			else
