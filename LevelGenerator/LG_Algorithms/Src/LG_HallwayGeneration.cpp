@@ -187,20 +187,30 @@ namespace LevelGenerator
 				for (int32 iIterating = 0; iIterating < m_FinalHallways.size(); ++iIterating)
 				{
 					/// We make sure that we're not checking collision between the same hallways.
-					if (m_FinalHallways[iActual] != m_FinalHallways[iIterating])
+					if (m_FinalHallways[iActual] == m_FinalHallways[iIterating])
 					{
-						/// We now check collision between both hallways.
-						if (m_FinalHallways[iActual]->CheckCollisionWithHallway(m_FinalHallways[iIterating]))
+						continue;
+					}
+					/// We now check collision between both hallways.
+					if (m_FinalHallways[iActual]->CheckCollisionWithHallway(m_FinalHallways[iIterating]))
+					{
+						/// There are cases where no matter how many times we flip the hallways, they always end up colliding. 
+						///  for those cases we add a counter that tells us how many iterations there have been. If they're greater
+						/// than a number that is considered a lot of iterations, then we move that hallway.
+						if (iIterations >= m_FinalHallways.size() / 2 - 1)
 						{
-							LG_Room* TempRoom1 = m_FinalHallways[iActual]->m_pParentRoom_2;
-							LG_Room* TempRoom2 = m_FinalHallways[iActual]->m_pParentRoom_1;
-							m_FinalHallways[iActual]->Destroy();
-							delete m_FinalHallways[iActual];
-							m_FinalHallways.erase(m_FinalHallways.begin() + iActual);
-							m_FinalHallways.push_back(GenerateCornerHallway(TempRoom1, TempRoom2, fHeight));
-							bCheckCollisionWithHallways = true;
-							break;
+							//TODO: ver que se puedan recorrer los pasillos.
+						
 						}
+
+						LG_Room* TempRoom1 = m_FinalHallways[iActual]->m_pParentRoom_2;
+						LG_Room* TempRoom2 = m_FinalHallways[iActual]->m_pParentRoom_1;
+						m_FinalHallways[iActual]->Destroy();
+						delete m_FinalHallways[iActual];
+						m_FinalHallways.erase(m_FinalHallways.begin() + iActual);
+						m_FinalHallways.push_back(GenerateCornerHallway(TempRoom1, TempRoom2, fHeight));
+						bCheckCollisionWithHallways = true;
+						break;
 					}
 				}
 				if (bCheckCollisionWithHallways) break;
